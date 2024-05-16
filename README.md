@@ -1,7 +1,9 @@
-# Portifólio - Data Science
+<p align="center">
+    <h1 align="center">Portifólio - Data Science</h1>
+</p>
 
 
-<p align="center" style="font-size:20px">
+<p align="center" style="font-size: 40px;">
     <a href="https://oseiasdfarias.github.io/data-science-portifolio/">
     Portifólio
     </a>
