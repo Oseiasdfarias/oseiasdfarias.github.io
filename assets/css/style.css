@@ -657,7 +657,8 @@ footer{
     .featured-box{
         flex-direction: column;
         justify-content: center;
-        height: 100vh;
+        height: 130vh;
+        padding-bottom: 60px;
     }
     .featured-text{
         width: 100%;
