@@ -2,7 +2,7 @@
 
 
 <p align="center">
-    <a align="center" href="https://oseiasdfarias.github.io/data-science-portifolio/">
+    <a href="https://oseiasdfarias.github.io/data-science-portifolio/">
     <h2 align="center">Portifólio</h2>
     </a>
 </p>
