@@ -723,6 +723,12 @@ footer{
         justify-content: center;
         align-items: center;
     }
+    .btn{
+        font-size: 15px;
+    }
+    .featured-text-btn{
+        display: grid;
+    }
     .container {
         max-width: 100%;
         overflow-x: hidden;
