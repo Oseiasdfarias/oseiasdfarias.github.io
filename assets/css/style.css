@@ -723,6 +723,9 @@ footer{
         justify-content: center;
         align-items: center;
     }
+    .section {
+        padding-block: 6em;
+    }
     .btn{
         padding: 13px 40px;
         font-size: 22px;
