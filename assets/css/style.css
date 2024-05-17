@@ -724,7 +724,8 @@ footer{
         align-items: center;
     }
     .btn{
-        font-size: 20px;
+        padding: 13px 40px;
+        font-size: 22px;
     }
     .typedText{
         font-size: 32px;
