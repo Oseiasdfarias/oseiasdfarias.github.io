@@ -726,6 +726,9 @@ footer{
     .btn{
         font-size: 15px;
     }
+    .typedText{
+        font-size: 32px;
+    }
     .featured-text-btn{
         display: grid;
     }
