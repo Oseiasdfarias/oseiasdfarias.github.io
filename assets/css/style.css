@@ -98,6 +98,11 @@ i{
 /* ------- BASE -------- */
 body{
     background: var(--body-color);
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+
 }
 .container{
     width: 100%;
@@ -665,6 +670,7 @@ footer{
         justify-content: center;
         align-content: flex-start;
         min-height: 60vh;
+        margin-top: 99px;
     }
     .featured-text-btn{
         justify-content: center;
@@ -681,7 +687,7 @@ footer{
         justify-content: center;
         min-height: 150px;
         width: 100%;
-        margin-top: 65px;
+        margin-top: 130px;
     }
     .image, .image img{
         width: 225px;
@@ -716,6 +722,10 @@ footer{
     .project-container{
         justify-content: center;
         align-items: center;
+    }
+    .container {
+        max-width: 100%;
+        overflow-x: hidden;
     }
     .project-box{
         position: relative;
@@ -772,6 +782,9 @@ footer{
     nav{
         position: fixed;
         display: flex;
+        /* max-width: 100%; */
+        /* flex-direction: column; */
+        /* flex-wrap: wrap; */
         justify-content: space-between;
         width: 100%;
         height: 90px;
@@ -814,5 +827,9 @@ footer{
     .nav-menu-btn i{
         font-size: 28px;
         cursor: pointer;
+    }
+
+    .scroll-icon-box{
+        display: none;
     }
 }
