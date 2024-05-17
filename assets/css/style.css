@@ -727,6 +727,9 @@ footer{
         padding: 13px 40px;
         font-size: 22px;
     }
+    .top-header h1{
+        padding-top: 21px;
+    }
     .typedText{
         font-size: 32px;
     }
