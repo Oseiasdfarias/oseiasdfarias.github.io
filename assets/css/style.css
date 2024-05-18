@@ -6,42 +6,19 @@
 /* ----- VARIABLES ----- */
 
 
-
-/* Color Theme Swatches in Hex
-.Teals-1-hex { color: #0FC2C0; }
-.Teals-2-hex { color: #0CABA8; }
-.Teals-3-hex { color: #008F8C; }
-.Teals-4-hex { color: #015958; }
-.Teals-5-hex { color: #023535; }
-
-
-.Teals-1-rgba { color: rgba(15, 194, 192, 1); }
-.Teals-2-rgba { color: rgba(12, 171, 168, 1); }
-.Teals-3-rgba { color: rgba(0, 143, 140, 1); }
-.Teals-4-rgba { color: rgba(1, 89, 88, 1); }
-.Teals-5-rgba { color: rgba(2, 53, 53, 1); }
-
-
-.Teals-1-hsla { color: hsla(179, 85, 40, 1); }
-.Teals-2-hsla { color: hsla(178, 86, 35, 1); }
-.Teals-3-hsla { color: hsla(178, 100, 28, 1); }
-.Teals-4-hsla { color: hsla(179, 97, 17, 1); }
-.Teals-5-hsla { color: hsla(180, 92, 10, 1); } */
-
-
 :root{
     --body-color: rgb(250, 250, 250);
     --color-white: rgb(255, 255, 255);
 
     --text-color-second: rgb(68, 68, 68);
-    --text-color-third: rgb(15, 194, 192);
+    --text-color-third: rgb(10, 102, 194);
 
-    --first-color: rgb(15, 194, 192);
+    --first-color: rgb(10, 102, 194);
     /* --first-color: rgb(110, 87, 224); */
-    --first-color-hover: rgba(0, 143, 140, 1);
+    --first-color-hover: rgb(8, 77, 145);
 
-    /* --second-color: rgb(0, 201, 255); */
-    --second-color: rgb(15, 194, 192);
+    /* --second-color: rgb(10, 102, 194); */
+    --second-color: rgb(10, 102, 194);
     --third-color: #2F2926;
     --first-shadow-color: rgba(0, 0, 0, 0.1);
 }
