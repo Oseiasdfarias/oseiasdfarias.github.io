@@ -452,6 +452,7 @@ h3{
     justify-content: space-between;
     gap: 20px;
     flex-wrap: wrap;
+    margin-top: 20px;
 }
 .project-box{
     position: relative;
@@ -741,6 +742,7 @@ footer{
     }
     .project-container{
         justify-content: center;
+        margin-top: 20px;
     }
     .project-box{
         width: 100%;
