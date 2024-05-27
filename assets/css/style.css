@@ -662,6 +662,11 @@ footer{
     display: flex;
     gap: 30px;   
 }
+.footer-social-icons1{
+    display: flex;
+    gap: 30px;
+    margin-top: 17px;  
+}
 .bottom-footer{
     font-size: 14px;
     margin-top: 10px;
