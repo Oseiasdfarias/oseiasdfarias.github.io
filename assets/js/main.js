@@ -68,6 +68,24 @@ sr.reveal('.video-container iframe', {interval: 200})
 /* -- HEADINGS -- */
 sr.reveal('.top-header',{})
 
+sr.reveal('.left-element', {
+  origin: 'left',     // Animation starts from the left
+  distance: '50px',   // Movement distance
+  duration: 1000,     // Animation duration (1 second)
+  delay: 200,         // Delay before starting
+  easing: 'ease-out', // Smooth easing effect
+  reset: true         // Repeats when scrolling back
+});
+
+sr.reveal('.right-element', {
+  origin: 'right',    // Animation starts from the right
+  distance: '50px',   // Movement distance
+  duration: 1000,     // Animation duration (1 second)
+  delay: 200,         // Delay before starting
+  easing: 'ease-out', // Smooth easing effect
+  reset: true         // Repeats when scrolling back
+});
+
 /* ----- ## -- SCROLL REVEAL LEFT_RIGHT ANIMATION -- ## ----- */
 const srLeft = ScrollReveal({
   origin: 'left',
