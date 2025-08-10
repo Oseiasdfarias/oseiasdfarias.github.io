@@ -128,12 +128,23 @@ i{
     color: var(--text-color-primary);
     margin-bottom: 10px;
 }
+h2{
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-color-primary);
+    margin-bottom: 15px;
+}
 h3{
     font-size: 20px;
     font-weight: 600;
     color: var(--text-color-primary);
     margin-bottom: 15px;
     text-align: center;
+}
+
+.form-inputs input,
+.text-area textarea {
+    margin-bottom: 15px; /* Adiciona espaço entre os elementos dentro da div */
 }
 
 /* ----- NAVIGATION BAR ----- */
@@ -438,7 +449,7 @@ nav{
     align-items: center;
     padding: 20px 30px;
     width: 100%;
-    height: 315px;
+    height: 320px;
     background: var(--contact-info-bg);
     border-radius: 10px;
     box-shadow: 1px 8px 10px 2px var(--shadow-color);
