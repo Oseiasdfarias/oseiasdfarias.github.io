@@ -61,6 +61,7 @@ body{
 .container{
     width: 100%;
     position: relative;
+    overflow-x: hidden; /* <-- ADICIONE ESTA LINHA AQUI */
 }
 
 /* ----- SCROLL BAR ----- */
