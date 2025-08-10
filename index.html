@@ -4,21 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- --------- UNICONS ---------- -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
  
-    <!-- --------- CSS ---------- -->
     <link rel="stylesheet" href="assets/css/style.css">
 
-    <!-- --------- FAVICON ---------- -->
     <link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon">
 
-    <title>Portfolio | Oséias</title>
+    <title>Portfolio Backend | Oséias Farias</title>
 </head>
 <body>
    <div class="container">
-    <!-- --------------- HEADER --------------- -->
-      <nav id="header">
+    <nav id="header">
         <div class="nav-logo">
             <a href="#home">
                 <p class="nav-name">&phi;séias</p>
@@ -39,53 +35,51 @@
                     <a href="#projects" class="nav-link" onclick="myMenuFunction()">Projetos</a>
                     <div class="circle"></div>
                 </li>
+                 <li class="nav_list">
+                    <a href="#demos" class="nav-link" onclick="myMenuFunction()">Demos</a>
+                    <div class="circle"></div>
+                </li>
                 <li class="nav_list">
                     <a href="#contact" class="nav-link" onclick="myMenuFunction()">Contatos</a>
                     <div class="circle"></div>
                 </li>
-                <li class="nav_list">
-                    <a href="#youtube" class="nav-link" onclick="myMenuFunction()">YouTube</a>
-                    <div class="circle"></div>
-                </li>
             </ul>
         </div>
-        <div class="nav-button">
-            <a href='https://drive.google.com/file/d/1x5LWa7fbNa8bNUnlDzlR4PFnYU5UCo9V/view' target="_blank"><button class="btn">Baixar CV <i class="uil uil-file-alt"></i></button></a>
-        </div>
-        <div class="nav-menu-btn">
-            <i class="uil uil-bars" onclick="myMenuFunction()"></i>
+        
+        <div class="nav-right-cluster">
+            <i class="uil uil-moon theme-toggle" id="theme-button"></i>
+    
+            <div class="nav-button">
+                <a href='https://drive.google.com/file/d/1x5LWa7fbNa8bNUnlDzlR4PFnYU5UCo9V/view' target="_blank"><button class="btn">Baixar CV <i class="uil uil-file-alt"></i></button></a>
+            </div>
+            <div class="nav-menu-btn">
+                <i class="uil uil-bars" onclick="myMenuFunction()"></i>
+            </div>
         </div>
       </nav>
 
 
-    <!-- -------------- MAIN ---------------- -->
     <main class="wrapper">
-       <!-- -------------- FEATURED BOX ---------------- -->
        <section class="featured-box" id="home">
           <div class="featured-text">
             <div class="featured-text-card">
                 <span>&phi;séias Farias</span>
             </div>
             <div class="featured-name">
-                <p class="font_f">S&sigma;u  <br><span class="typedText"></span></p>
+                <p class="font_f">S&sigma;u <br><span class="typedText"></span></p>
             </div>
             <div class="featured-text-info">
-                <p>Técnico em Eletrotécnica pelo instituto federal do Pará e
-                   Bachareal em Engenharia Elétrica pela Universidade Federal do Pará,
-                   Durante minha jornada acadêmica, acumulei experiência em estágios em
-                   renomadas empresas como Eletrobrás/Eletronorte, Dow Corning e Grupo Piracanjuba.
+                <p>
+                    Mestrando em Engenharia Elétrica pela UFABC (bolsista FUNDEP/UFMG), pesquisando Antifragilidade Artificial aplicada a sistemas de controle, e simultaneamente cursando Mestrado em Computação Aplicada (UFPA), com foco na aplicação de aprendizado por reforço no controle de inversores de frequência. Atuo no desenvolvimento de soluções em Python/Java/MATLAB para arquiteturas antifrágeis. Engenheiro Eletricista (UFPA) e Técnico em Eletrotécnica (IFPA), com experiência profissional nas empresas Eletrobrás/Eletronorte, Dow e Piracanjuba.
                 </p>
             </div>
             <div class="featured-text-btn">
-                <button class="btn blue-btn" onclick=scrollToPosition()>Contate-me</button>
+                <button class="btn blue-btn" onclick="scrollToPosition('#contact')">Contate-me</button>
                 <a href='https://drive.google.com/file/d/1x5LWa7fbNa8bNUnlDzlR4PFnYU5UCo9V/view' target="_blank">
                     <button class="btn">Baixar CV <i class="uil uil-file-alt"></i></button>
                 </a>
             </div>
             <div class="social_icons">
-                <!-- <a href='https://drive.google.com/file/d/1x5LWa7fbNa8bNUnlDzlR4PFnYU5UCo9V/view' target="_blank">
-                    <div class="icon"><i class="uil uil-instagram"></i></div>
-                </a> -->
                 <a href='https://www.linkedin.com/in/oseiasfarias/' target="_blank">
                     <div class="icon"><i class="uil uil-linkedin-alt"></i></div>
                 </a>
@@ -99,7 +93,7 @@
           </div>
           <div class="featured-image">
             <div class="image">
-                <img src="assets/images/logo_oss.jpeg" alt="avatar">
+                <img src="assets/images/logo_os.jpg" alt="avatar">
             </div>
           </div>
           <div class="scroll-icon-box">
@@ -110,7 +104,6 @@
           </div>
 
        </section>
-       <!-- -------------- ABOUT BOX ---------------- -->
        <section class="section" id="about">
           <div class="top-header">
             <h1>Sobre Mim</h1>
@@ -118,181 +111,144 @@
           <div class="row">
             <div class="col">
                 <div class="about-info">
-                    <h3>Resumo</h3>
+                    <h3>Minha jornada</h3>
                     <p>
-                        Durante minha trajetória profissional, tive a oportunidade de participar de projetos impactantes em diversas áreas. No Grupo Piracanjuba, destaco o projeto de melhoria centrado na análise de dados, com o objetivo de aprimorar os processos de paradas não planejadas dos equipamentos UHT.
-
-                            Entendo que escolhas baseadas em dados têm um potencial disruptivo nas tomadas de decisões.
+                        Com sólida formação em Engenharia Elétrica e paixão por tecnologia, transitei para a área de desenvolvimento de software com foco em backend. Minha experiência em empresas de grande porte como Eletrobrás e Piracanjuba me proporcionou uma visão analítica e orientada a resultados, que hoje aplico na construção de sistemas robustos, escaláveis e eficientes, utilizando as melhores práticas de mercado e tecnologias como Java, Python, Spring e Docker.
                     </p>
-                    <div class="about-btn">
-                        <!-- <button class="btn">Download CV <i class="uil uil-import"></i></button> -->
-                    </div>
                 </div>
             </div>
             <div class="col">
                 <div class="skills-box">
                     <div class="skills-header">
-                        <h3>Ciência de Dados</h3>
+                        <h3>Desenvolvimento Backend</h3>
                     </div>
                     <div class="skills-list">
-                        <span>Estatística Descritiva</span>
-                        <span>Estatística Inferencial</span>
-                        <span>Teste de Hipótese</span>
+                        <span>Java</span>
+                        <span>Spring Boot</span>
                         <span>Python</span>
-                        <span>Pandas</span>
-                        <span>NumPy</span>
-                        <span>Matplotlib</span>
-                        <span>SciPy</span>
-                        <span>Scikit-Learn</span>
-                        <span>TersorFlow</span>
-                        <span>Keras</span>
-                        <span>PyTorch</span>
+                        <span>FastAPI</span>
+                        <span>APIs RESTful</span>
+                        <span>Docker</span>
+                        <span>Kubernetes</span>
+                        <span>Git</span>
+                        <span>CI/CD</span>
+                        <span>Arquitetura de Microsserviços</span>
                     </div>
                 </div>
                 <div class="skills-box">
                     <div class="skills-header">
-                        <h3>AWS Cloud</h3>
-                    </div>
-                    <div class="skills-list">
-                        <span>EC2</span>
-                        <span>S3</span>
-                        <span>Lambda</span>
-                        <span>Serverless</span>
-                        <span> Amazon Lightsail - AWS </span>
-                        <span>Infraestrutura como Código (IaC)</span>
-                    </div>
-                </div>
-                <div class="skills-box">
-                    <div class="skills-header">
-                        <h3>Database</h3>
+                        <h3>Habilidades Complementares</h3>
                     </div>
                     <div class="skills-list">
                         <span>MySQL</span>
-                        <span>SQL</span>
                         <span>BigQuery</span>
                         <span>SQLAlchemy</span>
+                        <span>Pandas & NumPy</span>
+                        <span>Scikit-Learn</span>
+                        <span>TensorFlow</span>
+                        <span>AWS (EC2, S3, Lambda)</span>
+                        <span>Infraestrutura como Código (IaC)</span>
                     </div>
                 </div>
             </div>
           </div>
        </section>
 
-       <!-- -------------- PROJECT BOX ---------------- -->
-
-       <section class="section" id="projects">
+              <section class="section" id="projects">
           <div class="top-header">
-              <h1>Projetos - Ciência de Dados</h1>
+              <h1>Projetos - Backend</h1>
           </div>
           <div class="project-container">
-            <a href="https://github.com/Oseiasdfarias/Case-Analise-Depressao" target="_blank" class="link_divs">
+            <a href="https://github.com/Oseiasdfarias/forum_hub_challenge" target="_blank" class="link_divs">
                 <div class="project-box">
-                    <img src="./assets/images/cases/depressao/depressao_logo.png" alt="" width="60%" class="imgs">
-                    <h3>Análise dos fatores<br> depressivos</h3>
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg" alt="Logotipo do Spring Boot" width="40%" class="imgs">
+                    <h3>API Fórum Hub<br>Spring Boot & JWT</h3>
                 </div>
             </a>
-            <a href="https://github.com/Oseiasdfarias/estatistica_do_basico_ao_avancado_EBA/blob/main/atividades/1.0_estatistica_descritiva/1.0_Desafio_Ifood.ipynb" target="_blank" class="link_divs">
+            <a href="https://github.com/Oseiasdfarias/full_fast_api" target="_blank" class="link_divs">
                 <div class="project-box">
-                    <img src="./assets/images/cases/ifood/ifood.png" alt="" width="60%" class="imgs">
-                    <h3>Análise Ifood - Estatística Descritiva</h3>
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/fastapi/fastapi-original.svg" alt="Logotipo do FastAPI" width="40%" class="imgs">
+                    <h3>API RESTful com<br>Python e FastAPI</h3>
                 </div>
             </a>
-            <a href="https://github.com/Oseiasdfarias/analise_house_price"  target="_blank"  class="link_divs">
+            <a href="https://github.com/Oseiasdfarias/AWS_lambda_com_python_e_serverless_framework" target="_blank" class="link_divs">
                 <div class="project-box">
-                    <img src="./assets/images/cases/house_price/house_price.png" alt="" width="60%" class="imgs">
-                    <h3>Análise de Preços de Casas <br> base de dados House Price</h3>
+                    <img src="https://cdn.worldvectorlogo.com/logos/aws-lambda.svg" alt="Logotipo da AWS Lambda" width="40%" class="imgs">
+                    <h3>AWS Lambda com Python<br>e Serverless</h3>
+                </div>
+            </a>
+            <a href="https://github.com/Oseiasdfarias/one_oracle_next_education" target="_blank" class="link_divs">
+                <div class="project-box">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original-wordmark.svg" alt="Logotipo do MySQL" width="40%" class="imgs">
+                    <h3>Hotel Alura<br>Java & MySQL</h3>
+                </div>
+            </a>
+            <a href="https://github.com/Oseiasdfarias/literalura" target="_blank" class="link_divs">
+                <div class="project-box">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" alt="Logotipo do Java" width="40%" class="imgs">
+                    <h3>Catálogo de Livros<br>Java & Spring</h3>
+                </div>
+            </a>
+            <a href="https://github.com/Oseiasdfarias/one-community" target="_blank" class="link_divs">
+                <div class="project-box">
+                    <img src="https://github.com/Oseiasdfarias/one-community/blob/main/utils/logo3.jpeg?raw=true" alt="Ícone de Comunidade" width="40%" class="imgs">
+                    <h3>Rede Social<br>One Community</h3>
                 </div>
             </a>
           </div>
        </section>
 
-
-       <!-- -------------- PROJECT BOX CLOUD ---------------- -->
-
-       <section class="section" id="projects1">
+       
+       <section class="section" id="demos">
         <div class="top-header">
-        <div>
-            <h1>Projetos - AWS, ETL, Web Scraping</h1>
+            <h1>Demos & Projetos em Ação</h1>
+            <span>Vídeos de projetos e protótipos.</span>
         </div>
-        <div class="project-container">
-            <a href="https://github.com/Oseiasdfarias/projeto_datawarehouse_do_zero" target="_blank" class="link_divs">
-                <div class="project-box">
-                    <img src="./assets/images/cloud/datawarehouse.png" alt="" width="60%" class="imgs">
-                    <h3>Implementando um Data Warehouse de Commodities</h3>
-                </div>
-            </a>
-            <a href="https://github.com/Oseiasdfarias/ETL-Ecommerce-produtos?tab=readme-ov-file" target="_blank" class="link_divs">
-              <div class="project-box">
-                  <img src="./assets/images/cloud/etl2.png" alt="" width="60%" class="imgs">
-                  <h3>Pipeline ETL com<br>Python e Web Scraping</h3>
-              </div>
-            </a>
-            <a href="https://github.com/Oseiasdfarias/full_fast_api" target="_blank" class="link_divs">
-                <div class="project-box">
-                    <img src="./assets/images/cloud/fast_api_logo.png" alt="" width="60%" class="imgs">
-                    <h3>FastAPI com Python</h3>
-                </div>
-            </a>
+        
+        <h2>Backend</h2>
+        <div class="video-container">
+            <iframe src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7227862667477020672?collapsed=1" frameborder="0" allowfullscreen="" title="Publicação Incorporada: Backend 1"></iframe>
+            <iframe src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7269745611371917314?collapsed=1" frameborder="0" allowfullscreen="" title="Publicação Incorporada: Backend 2"></iframe>
+            <iframe src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7219056143191404544?collapsed=1" frameborder="0" allowfullscreen="" title="Publicação Incorporada: Backend 3"></iframe>
+            <iframe src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7215744510608175107?collapsed=1" frameborder="0" allowfullscreen="" title="Publicação Incorporada: Backend 4"></iframe>
         </div>
 
-        <div class="project-container">
-            
-            <a href="https://github.com/Oseiasdfarias/ProjetoETL" target="_blank" class="link_divs">
-                <div class="project-box">
-                    <img src="./assets/images/cloud/etl.png" alt="" width="60%" class="imgs">
-                    <h3>Projeto ETL com Python</h3>
-                </div>
-            </a>
-            <a href="https://github.com/Oseiasdfarias/AWS_lambda_com_python_e_serverless_framework" target="_blank" class="link_divs">
-                <div class="project-box">
-                    <img src="./assets/images/cloud/aws.png" alt="" width="60%" class="imgs">
-                    <h3>AWS Lambda com Python e Serverless Framework</h3>
-                </div>
-                </a>            
-            <a href="https://github.com/Oseiasdfarias/github_actions" target="_blank" class="link_divs">
-                <div class="project-box">
-                    <img src="./assets/images/cloud/github_actions.png" alt="" width="60%" class="imgs">
-                    <h3>GitHub Actions</h3>
-                </div>
-            </a>
-          
-          </div>
-    </div>
-     </section>
+        <h2>Inteligência Artificial & Ciência de Dados</h2>
+        <div class="video-container">
+            <iframe src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:6783501619913887744?collapsed=1" frameborder="0" allowfullscreen="" title="Publicação Incorporada: IA 1"></iframe>
+            <iframe src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7193001231919857666?collapsed=1" frameborder="0" allowfullscreen="" title="Publicação Incorporada: IA 2"></iframe>
+            <iframe src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7198114035899207680?collapsed=1" frameborder="0" allowfullscreen="" title="Publicação Incorporada: IA 3"></iframe>
+        </div>
 
-
-       <!-- -------------- CONTACT BOX ---------------- -->
+        <h2>Sistemas Embarcados</h2>
+        <div class="video-container">
+             <iframe src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:6847625608244015104?collapsed=1" frameborder="0" allowfullscreen="" title="Publicação Incorporada: Embarcados 1"></iframe>
+             <iframe src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7300538852148957184?collapsed=1" frameborder="0" allowfullscreen="" title="Publicação Incorporada: Embarcados 2"></iframe>
+             <iframe src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7295909380040880128?collapsed=1" frameborder="0" allowfullscreen="" title="Publicação Incorporada: Embarcados 3"></iframe>
+        </div>
+       </section>
 
        <section class="section" id="contact">
           <div class="top-header">
             <h1>Entre em contato</h1>
-            <span>Você tem um projeto em mente, entre em contato comigo aqui</span>
+            <span>Você tem um projeto em mente? Fale comigo.</span>
           </div>
           <div class="row">
              <div class="col">
-                
                 <div class="contact-info">
                     <h2>Fale Comigo <i class="uil uil-corner-right-down"></i></h2>
                     <p><i class="uil uil-envelope"></i> Email: oseias.dfarias@gmail.com</p>
                     <p><i class="uil uil-phone"></i> Tel.: +55 (94) 98107 - 3474</p> 
                     <div class="footer-social-icons1">
-                        <a href='https://www.linkedin.com/in/oseiasfarias/' target="_blank">
-                            <div class="icon1"><i class="uil uil-linkedin-alt"></i></div>
-                        </a>
-                        <a href='https://oseiasfarias.medium.com' target="_blank">
-                            <div class="icon1"><i class="uil uil--medium-m"></i></div>
-                        </a>
-                        <a href='https://github.com/oseiasdfarias/' target="_blank">
-                            <div class="icon1"><i class="uil uil-github-alt"></i></div>
-                        </a>
+                        <a href='https://www.linkedin.com/in/oseiasfarias/' target="_blank"><div class="icon1"><i class="uil uil-linkedin-alt"></i></div></a>
+                        <a href='https://oseiasfarias.medium.com' target="_blank"><div class="icon1"><i class="uil uil--medium-m"></i></div></a>
+                        <a href='https://github.com/oseiasdfarias/' target="_blank"><div class="icon1"><i class="uil uil-github-alt"></i></div></a>
                     </div>
                 </div>
              </div>
              <div class="col">
                 <div class="form-control">
-                    <form
-                        action="https://formsubmit.co/ajax/c110a49cc1ab534d2724eca67e130885"
-                        method="POST"
-                        data-form>
+                    <form action="https://formsubmit.co/ajax/c110a49cc1ab534d2724eca67e130885" method="POST" data-form>
                         <div class="form-inputs">
                             <input type="hidden" name="_autoresponse" value="E-mail recebido, agradeço por entrar em contato. Retorno assim que possível.">
                             <input type="hidden" name="_template" value="table">
@@ -310,68 +266,33 @@
              </div>
           </div>
        </section>
-
-            <!-- -------------- YouTube Channel BOX ---------------- -->
-
-     <section class="section" id="youtube">
-        <div class="top-header">
-                <h1>Meu Canal no YouTube</h1>
-                <br>
-            <script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
-            <div class="elfsight-app-d3a2175e-1ec8-4b1a-888a-4ccd4d8ba438 top-header" data-elfsight-app-lazy></div>
-        </div>
-    </section>
-
     </main>
 
-    
-
-    <!-- --------------- FOOTER --------------- -->
     <footer>
         <div class="top-footer">
             <p>&phi;séias Farias .</p>
         </div>
         <div class="middle-footer">
             <ul class="footer-menu">
-                <li class="footer_menu_list">
-                    <a href="#home">Home</a>
-                </li>
-                <li class="footer_menu_list">
-                    <a href="#about">Sobre</a>
-                </li>
-                <li class="footer_menu_list">
-                    <a href="#projects">Projetos</a>
-                </li>
-                <li class="footer_menu_list">
-                    <a href="#contact">Contatos</a>
-                </li>
+                <li class="footer_menu_list"><a href="#home">Home</a></li>
+                <li class="footer_menu_list"><a href="#about">Sobre</a></li>
+                <li class="footer_menu_list"><a href="#projects">Projetos</a></li>
+                <li class="footer_menu_list"><a href="#contact">Contatos</a></li>
             </ul>
         </div>
         <div class="footer-social-icons">
-            <a href='https://www.linkedin.com/in/oseiasfarias/' target="_blank">
-                <div class="icon"><i class="uil uil-linkedin-alt"></i></div>
-            </a>
-            <a href='https://oseiasfarias.medium.com' target="_blank">
-                <div class="icon"><i class="uil uil--medium-m"></i></div>
-            </a>
-            <a href='https://github.com/oseiasdfarias/' target="_blank">
-                <div class="icon"><i class="uil uil-github-alt"></i></div>
-            </a>
+            <a href='https://www.linkedin.com/in/oseiasfarias/' target="_blank"><div class="icon"><i class="uil uil-linkedin-alt"></i></div></a>
+            <a href='https://oseiasfarias.medium.com' target="_blank"><div class="icon"><i class="uil uil--medium-m"></i></div></a>
+            <a href='https://github.com/oseiasdfarias/' target="_blank"><div class="icon"><i class="uil uil-github-alt"></i></div></a>
         </div>
         <div class="bottom-footer">
-            <p>Copyright &copy; <a href="#home">&phi;śeias D. Farias</a> baseado em template fornecido por <a href="https://www.ludiflex.com" target="_blank">Ludiflex</a></p>
+            <p>Copyright &copy; <a href="#home">&phi;śeias D. Farias</a> - baseado em template de <a href="https://www.ludiflex.com" target="_blank">Ludiflex</a></p>
         </div>
     </footer>
-
     </div>
 
-    <!-- ----- TYPING JS Link ----- -->
     <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
-
-       <!-- ----- SCROLL REVEAL JS Link----- -->
     <script src="https://unpkg.com/scrollreveal"></script>
-
-    <!-- ----- MAIN JS ----- -->
     <script src="assets/js/main.js"></script>
     <script src="assets/js/email.js"></script>
     <script src="assets/js/theme.js"></script>
