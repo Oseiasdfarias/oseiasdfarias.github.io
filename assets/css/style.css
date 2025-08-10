@@ -191,6 +191,37 @@ nav{
     padding-inline: 5px;
     margin-inline: 5px; /* Valor alterado */
 }
+/* ----- AJUSTE DO MENU DO RODAPÉ ----- */
+
+.nav-link1 {
+    /* Define o espaçamento horizontal entre os links */
+    margin-inline: 12px; 
+    
+    /* Mantém os estilos visuais dos outros links */
+    color: var(--text-color-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-link1:hover {
+    color: var(--highlight-color);
+}
+
+
+.footer-menu {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px; /* Espaço muito pequeno */
+}
+
+.footer_menu_list a {
+    padding: 3px 5px;
+    font-size: 0.9em; /* Opcional: reduzir tamanho da fonte */
+}
+
+
 .active-link{
     position: relative;
     color: var(--highlight-color);
