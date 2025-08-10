@@ -4,7 +4,7 @@ const darkTheme = 'dark-theme';
 const iconTheme = 'uil-sun'; // Icon to display when dark theme is active
 
 // Function to get current theme from body class
-const getCurrentTheme = () => document.body.classList.contains(darkTheme) ? 'light' : 'dark';
+const getCurrentTheme = () => document.body.classList.contains(darkTheme) ? 'dark' : 'light';
 
 // Function to get current icon from button class
 const getCurrentIcon = () => themeButton.classList.contains(iconTheme) ? 'uil-moon' : 'uil-sun';
