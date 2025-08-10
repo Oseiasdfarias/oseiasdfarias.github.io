@@ -23,21 +23,22 @@
 }
 
 body.dark-theme {
-/* ----- Dark Theme Colors (Nord+) ----- */
---body-color: #2e3440;
---nav-background: #434c5e;
---box-background: #3b4252;
---text-color-primary: #eceff4;
---text-color-secondary: #d8dee9;
---highlight-color: #88c0d0;
---highlight-color-hover: #8fbcbb;
---shadow-color: rgba(0, 0, 0, 0.5);
---icon-color: #88c0d0;
---icon-hover-color: #8fbcbb;
---contact-info-bg: #88c0d0;
---contact-info-text: #2e3440;
---input-border-color: #4c566a;
---footer-bg: #434c5e;
+    /* ----- Dark Theme Colors (Based on Dark Reader) ----- */
+    --body-color: #212324;
+    --nav-background: #212324;
+    --box-background: #181a1b;
+    --alt-section-bg: #27292a; /* Cor do rodapé usada para alternância */
+    --text-color-primary: #dad8d5;
+    --text-color-secondary: #bbb7b2;
+    --highlight-color: #98c379;
+    --highlight-color-hover: #a9d48a;
+    --shadow-color: rgba(0, 0, 0, 0.25);
+    --icon-color: var(--highlight-color);
+    --icon-hover-color: var(--highlight-color-hover);
+    --contact-info-bg: #1b4f82;
+    --contact-info-text: #e8e6e3;
+    --input-border-color: #494e50;
+    --footer-bg: #27292a;
 }
 
 /* ----- BASE ----- */
