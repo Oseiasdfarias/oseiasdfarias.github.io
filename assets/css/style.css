@@ -568,11 +568,11 @@ nav{
 .video-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 2rem;
+    gap: 3rem;
 }
 .video-container iframe {
     width: 100%;
-    min-height: 500px;
+    min-height: 450px;
     border: 1px solid var(--input-border-color);
     border-radius: 10px;
 }
@@ -706,6 +706,7 @@ footer{
     gap: 1.5rem;
     padding: 1.5rem;
     background-color: var(--box-background);
+    border: 1px solid var(--highlight-color);
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     transition: transform 0.3s, box-shadow 0.3s;
