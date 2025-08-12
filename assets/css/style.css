@@ -378,6 +378,7 @@ nav{
    text-decoration: none;
    color: var(--text-color-secondary);
    background: var(--box-background);
+   border: 1px solid var(--highlight-color);
    border-radius: 30px;
    box-shadow: 0 2px 5px 0 var(--shadow-color);
 }
@@ -392,6 +393,7 @@ nav{
     width: 100%;
     background: var(--box-background);
     box-shadow: 1px 8px 10px 2px var(--shadow-color);
+    border: 1px solid var(--highlight-color);
     border-radius: 20px;
 }
 .about-info p{
@@ -530,6 +532,7 @@ nav{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
+    
 }
 .link_divs {
     background: var(--box-background);
@@ -549,6 +552,10 @@ nav{
     padding: 20px;
     height: 250px;
     text-align: center;
+    padding: 20px;
+    box-shadow: 1px 8px 10px 2px var(--shadow-color);
+    border: 1px solid var(--highlight-color);
+    border-radius: 20px;
 }
 .project-box img {
     margin-bottom: 15px;
@@ -563,18 +570,20 @@ nav{
     margin-top: 2.5em;
     margin-bottom: 1em;
     padding-bottom: 0.3em;
-    border-bottom: 2px solid var(--highlight-color);
 }
 .video-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 3rem;
+    
 }
 .video-container iframe {
     width: 100%;
     min-height: 450px;
-    border: 1px solid var(--input-border-color);
     border-radius: 10px;
+    padding: 20px;
+    box-shadow: 1px 8px 10px 2px var(--shadow-color);
+    border: 1px solid var(--highlight-color);     border-radius: 20px;
 }
 
 /* ----- CONTACT SECTION ----- */

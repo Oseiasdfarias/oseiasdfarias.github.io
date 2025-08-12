@@ -36,9 +36,9 @@ function headerShadow() {
 
 /* ----- TYPING EFFECT ----- */
 var typingEffect = new Typed(".typedText",{
-  strings : ["Desenvolvedor Backend", "Engenheiro de Dados", "Apaixonado por Java & Python"],
+  strings : ["Desenvolvedor Backend", "Engenheiro de Dados", "Apaixonado por Java | Python"],
   loop : true,
-  typeSpeed : 100, 
+  typeSpeed : 80, 
   backSpeed : 80,
   backDelay : 2000
 })
