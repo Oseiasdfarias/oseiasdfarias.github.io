@@ -586,6 +586,18 @@ nav{
     border: 1px solid var(--highlight-color);     border-radius: 20px;
 }
 
+.eff_content-creation{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 50px;
+    text-align: center;
+    box-shadow: 1px 8px 10px 2px var(--shadow-color);
+    border: 1px solid var(--highlight-color);
+    border-radius: 20px;
+}
+
 /* ----- CONTACT SECTION ----- */
 .contact-info{
     position: relative;
