@@ -124,7 +124,7 @@ i{
 }
 .top-header{
     text-align: center;
-    margin-bottom: 4em;
+    margin-bottom: 2em;
 }
 .top-header h1{
     font-weight: 600;
@@ -365,22 +365,22 @@ nav{
     }
 }
 .scroll-btn{
-   position: absolute;
-   bottom: 0;
-   left: 50%;
-   translate: -50%;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   width: 180px;
-   height: 60px;
-   gap: 5px;
-   text-decoration: none;
-   color: var(--text-color-secondary);
-   background: var(--box-background);
-   border: 1px solid var(--highlight-color);
-   border-radius: 30px;
-   box-shadow: 0 2px 5px 0 var(--shadow-color);
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    translate: -50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 180px;
+    height: 60px;
+    gap: 5px;
+    text-decoration: none;
+    color: var(--text-color-secondary);
+    background: var(--box-background);
+    border: 1px solid var(--highlight-color);
+    border-radius: 30px;
+    box-shadow: 0 2px 5px 0 var(--shadow-color);
 }
 
 /* ----- ABOUT SECTION ----- */
@@ -497,35 +497,6 @@ nav{
 .experience-box p {
     font-size: 1em;
 }
-@media (max-width: 990px) {
-    .experience-container::before {
-        left: 20px;
-        transform: translateX(0);
-    }
-    .experience-box {
-        width: calc(100% - 50px);
-        float: right;
-        clear: both;
-        margin: 1rem 0 1rem 30px;
-        text-align: left;
-    }
-    .experience-box:nth-child(odd),
-    .experience-box:nth-child(even) {
-        float: right;
-        clear: both;
-        margin-left: 30px;
-        margin-right: 0;
-        text-align: left;
-    }
-    .experience-box::after {
-        left: -48px;
-    }
-    .experience-box:nth-child(odd)::after,
-    .experience-box:nth-child(even)::after {
-        left: -48px;
-        right: auto;
-    }
-}
 
 /* ----- PROJECTS SECTION ----- */
 .project-container{
@@ -588,6 +559,7 @@ nav{
 
 .eff_content-creation{
     display: flex;
+    background-color: var(--box-background);
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -804,17 +776,14 @@ footer{
 }
 
 /* ----- MEDIA QUERIES ----- */
-@media only screen and (max-width: 1024px){
-    .featured-text{
+@media only screen and (max-width: 1024px) {
+        .featured-text{
         padding: 0;
     }
     .image, .image img{
         width: 320px;
         height: 320px;
     }
-}
-
-@media only screen and (max-width: 1024px) {
     .nav-button { display: none; }
     .nav-menu.responsive{ left: 0; }
     .nav-menu{
@@ -877,6 +846,36 @@ footer{
     .project-container, .video-container {
         grid-template-columns: 1fr;
     }
+    .experience-container::before {
+        left: 20px;
+        transform: translateX(0);
+    }
+    .experience-box {
+        width: calc(100% - 50px);
+        float: right;
+        clear: both;
+        margin: 1rem 0 1rem 30px;
+        text-align: left;
+    }
+    .experience-box:nth-child(odd),
+    .experience-box:nth-child(even) {
+        float: right;
+        clear: both;
+        margin-left: 30px;
+        margin-right: 0;
+        text-align: left;
+    }
+    .experience-box::after {
+        left: -48px;
+    }
+    .experience-box:nth-child(odd)::after,
+    .experience-box:nth-child(even)::after {
+        left: -48px;
+        right: auto;
+    }
+    .scroll-btn{
+        bottom: -65px;
+    }
 }
 
 @media only screen and (max-width: 540px) {
@@ -887,5 +886,8 @@ footer{
     .input-field { width: 100%; }
     .bottom-footer p {
         margin-inline: 20px;
+    }
+    .section{
+    padding-block: 2em;
     }
 }
