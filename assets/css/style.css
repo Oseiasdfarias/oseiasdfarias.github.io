@@ -890,4 +890,7 @@ footer{
     .section{
     padding-block: 2em;
     }
+    .featured-box {
+        padding-block: 2em;
+    }
 }
