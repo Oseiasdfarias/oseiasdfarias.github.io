@@ -29,10 +29,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
             
             if (result.success) {
-                // Show success message
-                showMessage('Mensagem enviada com sucesso! Entrarei em contato em breve.', 'success');
-                
-                // Reset form
+                // MODIFICADO: Usa a chave de tradução
+                showMessage('formSuccess', 'success');
                 contactForm.reset();
             } else {
                 throw new Error(result.message || 'Erro ao enviar mensagem');
@@ -40,7 +38,8 @@ document.addEventListener('DOMContentLoaded', function() {
             
         } catch (error) {
             console.error('Error:', error);
-            showMessage('Erro ao enviar mensagem. Tente novamente ou entre em contato diretamente por email.', 'error');
+            // MODIFICADO: Usa a chave de tradução
+            showMessage('formError', 'error');
         } finally {
             // Reset button state
             btnText.style.display = 'block';
@@ -49,7 +48,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    function showMessage(message, type) {
+    function showMessage(messageKey, type) {
+        // Pega o idioma atual e a tradução
+        const currentLang = localStorage.getItem('selectedLanguage') || 'pt';
+        const message = translations[currentLang][messageKey];
+
         formMessage.textContent = message;
         formMessage.className = type;
         formMessage.style.display = 'block';

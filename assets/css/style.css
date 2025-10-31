@@ -210,7 +210,7 @@ nav.scrolled {
     text-transform: uppercase;
 }
 .hero h1 {
-    font-size: 64px;
+    font-size: 44px;
     font-weight: 800;
     color: var(--text-color-primary);
     line-height: 1.1;
@@ -265,8 +265,8 @@ nav.scrolled {
     justify-content: center;
 }
 .hero-image-container {
-    width: 400px;
-    height: 400px;
+    width: 350px;
+    height: 350px;
     position: relative;
 }
 .hero-image-container::before {
@@ -696,7 +696,39 @@ section {
             color: var(--text-color-secondary);
             font-size: 14px;
         }
+        /* ----- Controles da Navbar (Idioma e Tema) ----- */
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px; /* Espaço entre o idioma e o tema */
+        }
 
+        /* Estilo para o novo botão de idioma */
+        #language-toggle {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-color-secondary);
+            cursor: pointer;
+            width: 38px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1.5px solid var(--text-color-secondary);
+            border-radius: 6px;
+            transition: var(--transition-smooth);
+            padding-top: 1px; /* Ajuste fino de alinhamento */
+        }
+
+        #language-toggle:hover {
+            color: var(--highlight-color);
+            border-color: var(--highlight-color);
+            transform: scale(1.05);
+            /* Usando um brilho sutil do tema */
+            background: rgba(102, 126, 234, 0.1); 
+        }
+
+        /* O .theme-toggle já tem seus próprios estilos e se encaixa aqui */
         /* ----- RESPONSIVE ----- */
         @media (max-width: 1024px) {
             .hero {

@@ -6,63 +6,68 @@
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-    <title>Portfolio Backend | Oséias Farias</title>
-    
+    <title data-key="pageTitle">Portfolio Backend | Oséias Farias</title>
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
 </head>
 <body class="dark-theme">
-    <!-- NAVIGATION -->
     <nav id="navbar">
-    <div class="nav-logo">φséias</div>
-    <div class="nav-menu" id="myNavMenu">
-        <a href="#home" class="nav-link active">Home</a>
-        <a href="#about" class="nav-link">Sobre</a>
-        <a href="#skills" class="nav-link">Skills</a>
-        <a href="#projects" class="nav-link">Projetos</a>
-        <a href="#experience" class="nav-link">Experiência</a>
-        <a href="#education" class="nav-link">Formação</a>
-        <a href="#contact" class="nav-link">Contato</a>
-    </div>
-    <i class="uil uil-moon theme-toggle" id="theme-toggle"></i>
-</nav>
+        <div class="nav-logo">φséias</div>
+        <div class="nav-menu" id="myNavMenu">
+            <a href="#home" class="nav-link active" data-key="navHome">Home</a>
+            <a href="#about" class="nav-link" data-key="navAbout">Sobre</a>
+            <a href="#skills" class="nav-link" data-key="navSkills">Skills</a>
+            <a href="#projects" class="nav-link" data-key="navProjects">Projetos</a>
+            <a href="#experience" class="nav-link" data-key="navExperience">Experiência</a>
+            <a href="#education" class="nav-link" data-key="navEducation">Formação</a>
+            <a href="#contact" class="nav-link" data-key="navContact">Contato</a>
+        </div>
+        <div class="nav-controls">
+            <div id="language-toggle">PT</div>
+            
+            <i class="uil uil-moon theme-toggle" id="theme-toggle"></i>
+        </div>
+    </nav>
 
-    <!-- HERO SECTION -->
     <section class="hero" id="home">
         <div class="hero-content">
-            <div class="featured-text-card"></div>
-            <h1 class="featured-name fade-in-up delay-1" style="color: var(--text-color-secondary); line-height: 1.; font-size: 35px;">
-                <span class="gradient-text typedText"></span>
+            <div class="hero-badge" data-key="heroBadge">
+                Desenvolvedor Backend Full-Stack
+            </div>
+            <h1 class="fade-in-up delay-1">
+                <span data-key="heroTitle1"></span> <span class="gradient-text typedText"></span>
             </h1>
-            <p class="featured-text-info hero-description fade-in-up delay-2">
-                Mestrando em Engenharia Elétrica pela UFABC, especializado em criar APIs robustas e escaláveis com Java, Python, Spring Boot e FastAPI. Apaixonado por transformar dados em soluções inteligentes.
+            <p class="hero-description fade-in-up delay-2" data-key="heroDescription">
+                Mestrando em Engenharia Elétrica pela UFABC, especializado em criar APIs robustas e escaláveis com Java, Python, Spring Boot e FastAPI. Apaixonado por transformar dados em soluções inteligentes que impulsionam negócios. Vamos construir algo incrível juntos?
             </p>
-            <div class="featured-text-btn hero-buttons fade-in-up delay-3">
-                <button class="btn btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Entre em Contato</button>
+            <div class="hero-buttons fade-in-up delay-3">
+                <button class="btn btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">
+                    <span data-key="heroBtnPrimary">Vamos Conversar</span>
+                </button>
                 <a href="https://drive.google.com/file/d/1-oMiFFC3QAbU6JhIeo6svznmm1pWMtzW/view" target="_blank">
-                    <button class="btn btn-outline">Download CV</button>
+                    <button class="btn btn-outline" data-key="heroBtnOutline">Baixar CV</button>
                 </a>
             </div>
-            <div class="social_icons social-icons fade-in-up delay-4">
+            <div class="social-icons fade-in-up delay-4">
                 <a href="https://www.linkedin.com/in/oseiasfarias/" target="_blank" class="social-icon"><i class="uil uil-linkedin-alt"></i></a>
                 <a href="https://oseiasfarias.medium.com" target="_blank" class="social-icon"><i class="fab fa-medium"></i></a>
                 <a href="https://github.com/oseiasdfarias/" target="_blank" class="social-icon"><i class="uil uil-github-alt"></i></a>
                 <a href="https://youtube.com/@oseiasdfarias" target="_blank" class="social-icon"><i class="uil uil-youtube"></i></a>
             </div>
         </div>
-        <div class="featured-image hero-image">
+        <div class="hero-image">
             <div class="hero-image-container">
                 <img src="assets/images/logo.jpg" alt="Oséias Farias">
             </div>
         </div>
     </section>
 
-    <!-- ABOUT SECTION -->
     <section id="about">
         <div class="section-header top-header">
-            <h2 class="section-title">Sobre Mim</h2>
-            <p class="section-subtitle">Conheça minha trajetória e paixão por tecnologia</p>
+            <h2 class="section-title" data-key="aboutTitle">Sobre Mim</h2>
+            <p class="section-subtitle" data-key="aboutSubtitle">Conheça minha trajetória e paixão por tecnologia</p>
         </div>
         <div class="card about-info left-element">
-            <p style="color: var(--text-color-secondary); line-height: 1.8; font-size: 16px;">
+            <p style="color: var(--text-color-secondary); line-height: 1.8; font-size: 16px;" data-key="aboutDescription">
                 Como Desenvolvedor Backend com foco em Java e Python, minha carreira é dedicada à criação de APIs REST robustas utilizando frameworks como Spring Boot e FastAPI. Tenho experiência em garantir a segurança de aplicações com Spring Security e em trabalhar com persistência de dados usando JPA, MySQL e PostgreSQL.
                 <br><br>
                 Minha formação no programa ONE - Oracle Next Education solidificou minhas habilidades práticas em integração de sistemas e na implementação e consumo de APIs. Além do desenvolvimento, sou um membro ativo do Comitê AlumniOne, onde contribuo com a criação de conteúdo sobre tecnologia para a newsletter da comunidade.
@@ -70,11 +75,10 @@
         </div>
     </section>
 
-    <!-- SKILLS SECTION -->
     <section id="skills" style="background: var(--box-background);">
         <div class="section-header top-header">
-            <h2 class="section-title">Habilidades Técnicas</h2>
-            <p class="section-subtitle">Tecnologias e ferramentas que domino</p>
+            <h2 class="section-title" data-key="skillsTitle">Habilidades Técnicas</h2>
+            <p class="section-subtitle" data-key="skillsSubtitle">Tecnologias e ferramentas que domino</p>
         </div>
         <div class="skills-box skills-grid">
             <div class="skill-item">
@@ -122,21 +126,41 @@
         </div>
     </section>
 
-    <!-- PROJECTS SECTION -->
     <section id="projects">
         <div class="section-header top-header">
-            <h2 class="section-title">Projetos em Destaque</h2>
-            <p class="section-subtitle">Alguns dos meus trabalhos mais recentes</p>
+            <h2 class="section-title" data-key="projectsTitle">Projetos em Destaque</h2>
+            <p class="section-subtitle" data-key="projectsSubtitle">Alguns dos meus trabalhos mais recentes</p>
         </div>
         <div class="projects-grid">
+                        <a href="https://github.com/Oseiasdfarias/oseias_desafio_elite_dev_ia" target="_blank" style="text-decoration: none;">
+                <div class="project-box project-card">
+                    <div class="project-image">
+                        <img src="https://github.com/Oseiasdfarias/oseias_desafio_elite_dev_ia/blob/main/util/logo.png?raw=true" alt="Agente SDR com IA" style="width: 100px;">
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title" data-key="project6Title">Agente SDR com IA (OpenAI)</h3>
+                        <p class="project-description" data-key="project6Desc">
+                            Agente SDR automatizado com OpenAI e FastAPI (serverless). Utiliza React para o chat, Redis (Upstash) para sessões e integra com Cal.com e Pipefy.
+                        </p>
+                        <div class="project-tags">
+                            <span class="project-tag">OpenAI</span>
+                            <span class="project-tag">FastAPI</span>
+                            <span class="project-tag">React</span>
+                            <span class="project-tag">Redis</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            </a>
             <a href="https://github.com/Oseiasdfarias/forum_hub_challenge" target="_blank" style="text-decoration: none;">
                 <div class="project-box project-card">
                     <div class="project-image">
                         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg" alt="Spring Boot">
                     </div>
                     <div class="project-content">
-                        <h3 class="project-title">API RESTful FastAPI</h3>
-                        <p class="project-description">
+                        <h3 class="project-title" data-key="project1Title">API RESTful FastAPI</h3>
+                        <p class="project-description" data-key="project1Desc">
                             Sistema completo de gerenciamento com Python, FastAPI, SQLAlchemy e PostgreSQL. Alta performance e documentação automática.
                         </p>
                         <div class="project-tags">
@@ -148,15 +172,14 @@
                     </div>
                 </div>
             </a>
-
             <a href="https://github.com/Oseiasdfarias/AWS_lambda_com_python_e_serverless_framework" target="_blank" style="text-decoration: none;">
                 <div class="project-box project-card">
                     <div class="project-image">
                         <img src="https://cdn.worldvectorlogo.com/logos/aws-lambda.svg" alt="AWS Lambda">
                     </div>
                     <div class="project-content">
-                        <h3 class="project-title">AWS Lambda Serverless</h3>
-                        <p class="project-description">
+                        <h3 class="project-title" data-key="project2Title">AWS Lambda Serverless</h3>
+                        <p class="project-description" data-key="project2Desc">
                             Aplicação serverless com Python, AWS Lambda, API Gateway e DynamoDB. Arquitetura escalável e econômica.
                         </p>
                         <div class="project-tags">
@@ -168,15 +191,14 @@
                     </div>
                 </div>
             </a>
-
             <a href="https://github.com/Oseiasdfarias/literalura" target="_blank" style="text-decoration: none;">
                 <div class="project-box project-card">
                     <div class="project-image">
                         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" alt="Java">
                     </div>
                     <div class="project-content">
-                        <h3 class="project-title">Catálogo de Livros</h3>
-                        <p class="project-description">
+                        <h3 class="project-title" data-key="project3Title">Catálogo de Livros</h3>
+                        <p class="project-description" data-key="project3Desc">
                             Sistema de catálogo com integração de API externa, Spring Data JPA e relacionamentos complexos de banco de dados.
                         </p>
                         <div class="project-tags">
@@ -188,15 +210,14 @@
                     </div>
                 </div>
             </a>
-
             <a href="https://github.com/Oseiasdfarias/one_oracle_next_education" target="_blank" style="text-decoration: none;">
                 <div class="project-box project-card">
                     <div class="project-image">
                         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original-wordmark.svg" alt="MySQL">
                     </div>
                     <div class="project-content">
-                        <h3 class="project-title">Hotel Alura</h3>
-                        <p class="project-description">
+                        <h3 class="project-title" data-key="project4Title">Hotel Alura</h3>
+                        <p class="project-description" data-key="project4Desc">
                             Sistema de gerenciamento hoteleiro com Java Swing, MySQL e padrões de design MVC. Interface intuitiva e funcional.
                         </p>
                         <div class="project-tags">
@@ -208,15 +229,14 @@
                     </div>
                 </div>
             </a>
-
             <a href="https://github.com/Oseiasdfarias/one-community" target="_blank" style="text-decoration: none;">
                 <div class="project-box project-card">
                     <div class="project-image">
                         <img src="https://github.com/Oseiasdfarias/one-community/blob/main/utils/logo3.jpeg?raw=true" alt="One Community" style="width: 100px;">
                     </div>
                     <div class="project-content">
-                        <h3 class="project-title">Rede Social One Community</h3>
-                        <p class="project-description">
+                        <h3 class="project-title" data-key="project5Title">Rede Social One Community</h3>
+                        <p class="project-description" data-key="project5Desc">
                             Plataforma de rede social desenvolvida para a comunidade Oracle Next Education com funcionalidades completas.
                         </p>
                         <div class="project-tags">
@@ -231,67 +251,61 @@
         </div>
     </section>
 
-    <!-- EXPERIENCE SECTION -->
     <section id="experience" style="background: var(--box-background);">
         <div class="section-header top-header">
-            <h2 class="section-title">Experiência Profissional</h2>
-            <p class="section-subtitle">Minha jornada no mercado de tecnologia</p>
+            <h2 class="section-title" data-key="expTitle">Experiência Profissional</h2>
+            <p class="section-subtitle" data-key="expSubtitle">Minha jornada no mercado de tecnologia</p>
         </div>
-        
         <div style="max-width: 1000px; margin: 0 auto;">
             <div class="card left-element" style="margin-bottom: 30px;">
                 <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px; flex-wrap: wrap;">
                     <div>
                         <h3 style="color: var(--highlight-color); margin-bottom: 5px;">
-                            <i class="uil uil-atom"></i> Pesquisador de Mestrado
+                            <i class="uil uil-atom"></i> <span data-key="exp1Title">Pesquisador de Mestrado</span>
                         </h3>
                         <p style="color: var(--text-color-primary); font-weight: 600;">FUNDEP / UFABC</p>
                     </div>
-                    <span style="color: var(--text-color-secondary); font-size: 14px;">abr 2025 - presente</span>
+                    <span style="color: var(--text-color-secondary); font-size: 14px;" data-key="exp1Date">abr 2025 - presente</span>
                 </div>
-                <p style="color: var(--text-color-secondary); line-height: 1.6;">
+                <p style="color: var(--text-color-secondary); line-height: 1.6;" data-key="exp1Desc">
                     Desenvolvimento em Python, Java e MATLAB para sistemas de controle com Antifragilidade Artificial, integrando simulação HIL, FPAA/FPGA e IA.
                 </p>
             </div>
-
             <div class="card right-element" style="margin-bottom: 30px;">
                 <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px; flex-wrap: wrap;">
                     <div>
                         <h3 style="color: var(--highlight-color); margin-bottom: 5px;">
-                            <i class="uil uil-constructor"></i> Oficial de Manutenção
+                            <i class="uil uil-constructor"></i> <span data-key="exp2Title">Oficial de Manutenção</span>
                         </h3>
                         <p style="color: var(--text-color-primary); font-weight: 600;">Dow (Terceirizado)</p>
                     </div>
-                    <span style="color: var(--text-color-secondary); font-size: 14px;">dez 2024 - mar 2025</span>
+                    <span style="color: var(--text-color-secondary); font-size: 14px;" data-key="exp2Date">dez 2024 - mar 2025</span>
                 </div>
-                <p style="color: var(--text-color-secondary); line-height: 1.6;">
+                <p style="color: var(--text-color-secondary); line-height: 1.6;" data-key="exp2Desc">
                     Supervisão de equipes de manutenção, elaboração de procedimentos, gestão de mudanças (MOC) e cotação de materiais via MRO.
                 </p>
             </div>
-
             <div class="card left-element" style="margin-bottom: 30px;">
                 <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px; flex-wrap: wrap;">
                     <div>
                         <h3 style="color: var(--highlight-color); margin-bottom: 5px;">
-                            <i class="uil uil-chart-line"></i> Estágio em Manutenção UHT
+                            <i class="uil uil-chart-line"></i> <span data-key="exp3Title">Estágio em Manutenção UHT</span>
                         </h3>
                         <p style="color: var(--text-color-primary); font-weight: 600;">Grupo Piracanjuba</p>
                     </div>
-                    <span style="color: var(--text-color-secondary); font-size: 14px;">set 2023 - mar 2024</span>
+                    <span style="color: var(--text-color-secondary); font-size: 14px;" data-key="exp3Date">set 2023 - mar 2024</span>
                 </div>
-                <p style="color: var(--text-color-secondary); line-height: 1.6;">
+                <p style="color: var(--text-color-secondary); line-height: 1.6;" data-key="exp3Desc">
                     Otimização de linhas de produção com análise de dados (Python, Pandas) para reduzir paradas e aumentar a eficiência operacional.
                 </p>
             </div>
         </div>
     </section>
 
-
-        <!-- EDUCATION SECTION -->
     <section id="education" style="background: var(--box-background);">
         <div class="section-header top-header">
-            <h2 class="section-title">Formação Acadêmica</h2>
-            <p class="section-subtitle">Minha jornada educacional reflete uma base sólida em engenharia e uma especialização crescente em computação e inteligência artificial.</p>
+            <h2 class="section-title" data-key="eduTitle">Formação Acadêmica</h2>
+            <p class="section-subtitle" data-key="eduSubtitle">Minha jornada educacional reflete uma base sólida em engenharia e uma especialização crescente em computação e inteligência artificial.</p>
         </div>
         <div class="education-grid">
             <div class="education-card left-element">
@@ -299,10 +313,10 @@
                     <img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/Ufabc_logo.png" alt="Logo da UFABC" class="education-logo">
                 </div>
                 <div class="education-details">
-                    <h3>Mestrado em Engenharia Elétrica</h3>
+                    <h3 data-key="edu1Title">Mestrado em Engenharia Elétrica</h3>
                     <p class="education-institution">Universidade Federal do ABC (UFABC)</p>
-                    <p class="education-period">Previsão: 04/2025 a 04/2027</p>
-                    <p class="education-description">Área de Pesquisa: Atifragilidade Artificial. Cursos em FPGA, IA e Engenharia de Software.</p>
+                    <p class="education-period" data-key="edu1Date">Previsão: 04/2025 a 04/2027</p>
+                    <p class="education-description" data-key="edu1Desc">Área de Pesquisa: Atifragilidade Artificial. Cursos em FPGA, IA e Engenharia de Software.</p>
                 </div>
             </div>
             <div class="education-card right-element">
@@ -310,10 +324,10 @@
                     <img src="https://ascom.ufpa.br/images/Brasao/UFPA.png" alt="Logo da UFPA" class="education-logo">
                 </div>
                 <div class="education-details">
-                    <h3>Mestrado em Computação Aplicada</h3>
+                    <h3 data-key="edu2Title">Mestrado em Computação Aplicada</h3>
                     <p class="education-institution">Universidade Federal do Pará (UFPA)</p>
-                    <p class="education-period">Previsão: 03/2025 a 03/2027</p>
-                    <p class="education-description">Ênfase em Inteligência Artificial, com pesquisa em Deep Learning aplicado a Veículos Elétricos.</p>
+                    <p class="education-period" data-key="edu2Date">Previsão: 03/2025 a 03/2027</p>
+                    <p class="education-description" data-key="edu2Desc">Ênfase em Inteligência Artificial, com pesquisa em Deep Learning aplicado a Veículos Elétricos.</p>
                 </div>
             </div>
             <div class="education-card left-element">
@@ -321,10 +335,10 @@
                     <img src="https://ascom.ufpa.br/images/Brasao/UFPA.png" alt="Logo da UFPA" class="education-logo">
                 </div>
                 <div class="education-details">
-                    <h3>Bacharelado em Engenharia Elétrica</h3>
+                    <h3 data-key="edu3Title">Bacharelado em Engenharia Elétrica</h3>
                     <p class="education-institution">Universidade Federal do Pará (UFPA)</p>
-                    <p class="education-period">03/2017 a 06/2024</p>
-                    <p class="education-description">Tese: Desenvolvimento de Protótipo e Gêmeo Digital para Laboratório Virtual de Sistemas Dinâmicos.</p>
+                    <p class="education-period" data-key="edu3Date">03/2017 a 06/2024</p>
+                    <p class="education-description" data-key="edu3Desc">Tese: Desenvolvimento de Protótipo e Gêmeo Digital para Laboratório Virtual de Sistemas Dinâmicos.</p>
                 </div>
             </div>
             <div class="education-card right-element">
@@ -333,10 +347,10 @@
                     <img src="https://camo.githubusercontent.com/53dad781ea629bb7ddf74c8f20ac028007c257c1ad532f1a7e7612e4b46773c9/68747470733a2f2f692e70696e696d672e636f6d2f6f726967696e616c732f34392f37322f36652f34393732366536356636623335633265386533363661313663303733346662372e706e67" alt="Logo da Alura" class="education-logo">
                 </div>
                 <div class="education-details">
-                    <h3>Formação Backend Java</h3>
+                    <h3 data-key="edu4Title">Formação Backend Java</h3>
                     <p class="education-institution">ONE - Oracle Next Education & Alura</p>
-                    <p class="education-period">01/2024 a 06/2024</p>
-                    <p class="education-description">Foco em APIs com Spring Boot, Java, Orientação a Objetos, JPA, Spring Security e SQL.</p>
+                    <p class="education-period" data-key="edu4Date">01/2024 a 06/2024</p>
+                    <p class="education-description" data-key="edu4Desc">Foco em APIs com Spring Boot, Java, Orientação a Objetos, JPA, Spring Security e SQL.</p>
                 </div>
             </div>
             <div class="education-card left-element">
@@ -344,55 +358,47 @@
                     <img src="https://upload.wikimedia.org/wikipedia/commons/3/3d/Instituto_Federal_do_Par%C3%A1_-_Marca_Vertical_2015.svg" alt="Logo do IFPA" class="education-logo">
                 </div>
                 <div class="education-details">
-                    <h3>Técnico em Eletrotécnica</h3>
+                    <h3 data-key="edu5Title">Técnico em Eletrotécnica</h3>
                     <p class="education-institution">Instituto Federal do Pará (IFPA)</p>
-                    <p class="education-period">02/2012 a 12/2016</p>
-                    <p class="education-description">Cursos relevantes em programação de microcontroladores (Arduino, ESP32) com C/C++.</p>
+                    <p class="education-period" data-key="edu5Date">02/2012 a 12/2016</p>
+                    <p class="education-description" data-key="edu5Desc">Cursos relevantes em programação de microcontroladores (Arduino, ESP32) com C/C++.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CONTACT SECTION -->
     <section id="contact">
         <div class="section-header top-header">
-            <h2 class="section-title">Entre em Contato</h2>
-            <p class="section-subtitle">Vamos conversar sobre seu próximo projeto</p>
+            <h2 class="section-title" data-key="contactTitle">Entre em Contato</h2>
+            <p class="section-subtitle" data-key="contactSubtitle">Vamos conversar sobre seu próximo projeto</p>
         </div>
-        
         <div class="contact-container">
             <div class="form-control contact-form">
                 <form id="contact-form">
-                    <input type="hidden" name="_autoresponse" value="E-mail recebido, agradeço por entrar em contato. Retorno assim que possível.">
+                    <input type="hidden" name="_autoresponse" data-key="formAutoresponse" value="E-mail recebido, agradeço por entrar em contato. Retorno assim que possível.">
                     <input type="hidden" name="_template" value="table">
                     <input type="hidden" name="_captcha" value="false">
-                    
                     <div class="form-group">
-                        <label for="nome">Nome Completo</label>
-                        <input type="text" id="nome" name="nome" required placeholder="Seu nome">
+                        <label for="nome" data-key="formName">Nome Completo</label>
+                        <input type="text" id="nome" name="nome" required data-placeholder-key="formNamePlaceholder" placeholder="Seu nome">
                     </div>
-                    
                     <div class="form-group">
-                        <label for="email">E-mail</label>
-                        <input type="email" id="email" name="email" required placeholder="seu@email.com">
+                        <label for="email" data-key="formEmail">E-mail</label>
+                        <input type="email" id="email" name="email" required data-placeholder-key="formEmailPlaceholder" placeholder="seu@email.com">
                     </div>
-                    
                     <div class="form-group">
-                        <label for="mensagem">Mensagem</label>
-                        <textarea id="mensagem" name="mensagem" required placeholder="Descreva seu projeto ou dúvida..."></textarea>
+                        <label for="mensagem" data-key="formMessage">Mensagem</label>
+                        <textarea id="mensagem" name="mensagem" required data-placeholder-key="formMessagePlaceholder" placeholder="Descreva seu projeto ou dúvida..."></textarea>
                     </div>
-                    
                     <button type="submit" class="btn btn-primary" style="width: 100%;" id="submit-btn">
-                        <span id="btn-text">Enviar Mensagem</span>
+                        <span id="btn-text" data-key="formBtn">Enviar Mensagem</span>
                         <div id="btn-loading" style="display: none;">
-                            <i class="uil uil-spinner spin"></i> Enviando...
+                            <i class="uil uil-spinner spin"></i> <span data-key="formBtnLoading">Enviando...</span>
                         </div>
                     </button>
-                    
                     <div id="form-message" style="margin-top: 15px; display: none;"></div>
                 </form>
             </div>
-
             <div class="contact-info" style="margin-top: 50px; text-align: center;">
                 <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-bottom: 30px;">
                     <div>
@@ -405,44 +411,32 @@
                     </div>
                     <div>
                         <i class="uil uil-map-marker" style="font-size: 24px; color: var(--highlight-color);"></i>
-                        <p style="margin-top: 10px; color: var(--text-color-secondary);">São Paulo, Brasil</p>
+                        <p style="margin-top: 10px; color: var(--text-color-secondary);" data-key="contactLocation">São Paulo, Brasil</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer>
         <div class="footer-content">
             <div class="footer-logo">φséias Farias</div>
-            
             <div class="footer-links">
-                <a href="#home" class="footer-link">Home</a>
-                <a href="#about" class="footer-link">Sobre</a>
-                <a href="#skills" class="footer-link">Skills</a>
-                <a href="#projects" class="footer-link">Projetos</a>
-                <a href="#experience" class="footer-link">Experiência</a>
-                <a href="#education" class="footer-link">Formação</a>
-                <a href="#contact" class="footer-link">Contato</a>
+                <a href="#home" class="footer-link" data-key="navHome">Home</a>
+                <a href="#about" class="footer-link" data-key="navAbout">Sobre</a>
+                <a href="#skills" class="footer-link" data-key="navSkills">Skills</a>
+                <a href="#projects" class="footer-link" data-key="navProjects">Projetos</a>
+                <a href="#experience" class="footer-link" data-key="navExperience">Experiência</a>
+                <a href="#education" class="footer-link" data-key="navEducation">Formação</a>
+                <a href="#contact" class="footer-link" data-key="navContact">Contato</a>
             </div>
-            
             <div class="footer-social">
-                <a href="https://www.linkedin.com/in/oseiasfarias/" target="_blank" class="social-icon">
-                    <i class="uil uil-linkedin-alt"></i>
-                </a>
-                <a href="https://oseiasfarias.medium.com" target="_blank" class="social-icon">
-                    <i class="fab fa-medium"></i>
-                </a>
-                <a href="https://github.com/oseiasdfarias/" target="_blank" class="social-icon">
-                    <i class="uil uil-github-alt"></i>
-                </a>
-                <a href="https://youtube.com/@oseiasdfarias" target="_blank" class="social-icon">
-                    <i class="uil uil-youtube"></i>
-                </a>
+                <a href="https://www.linkedin.com/in/oseiasfarias/" target="_blank" class="social-icon"><i class="uil uil-linkedin-alt"></i></a>
+                <a href="https://oseiasfarias.medium.com" target="_blank" class="social-icon"><i class="fab fa-medium"></i></a>
+                <a href="https://github.com/oseiasdfarias/" target="_blank" class="social-icon"><i class="uil uil-github-alt"></i></a>
+                <a href="https://youtube.com/@oseiasdfarias" target="_blank" class="social-icon"><i class="uil uil-youtube"></i></a>
             </div>
-            
-            <p class="copyright">
+            <p class="copyright" data-key="footerCopyright">
                 © 2025 Oséias Farias. Todos os direitos reservados.
             </p>
         </div>
@@ -450,8 +444,19 @@
 
     <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
     <script src="https://unpkg.com/scrollreveal"></script>
+
+    <script src="assets/js/language.js"></script>
+    
     <script src="assets/js/main.js"></script>
+    
     <script src="assets/js/email.js"></script>
-    <script src="assets/js/theme.js"></script>
+
+    <script>
+        // Inicializa o idioma ao carregar a página
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('selectedLanguage') || 'pt';
+            setLanguage(savedLang);
+        });
+    </script>
 </body>
 </html>
