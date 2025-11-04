@@ -218,7 +218,7 @@ nav.scrolled {
     text-transform: uppercase;
 }
 .hero h1 {
-    font-size: 44px;
+    font-size: 34px;
     font-weight: 800;
     color: var(--text-color-primary);
     line-height: 1.1;
@@ -756,6 +756,12 @@ section {
             .nav-menu {
                 display: none;
             }
+            .social-icons {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 1rem;
+}
         }
 
         @media (max-width: 768px) {
