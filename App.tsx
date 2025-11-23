@@ -253,7 +253,7 @@ const App: React.FC = () => {
             <div className="relative w-72 h-72 md:w-96 md:h-96">
               <div className="absolute inset-0 rounded-full bg-gradient-primary blur-3xl opacity-20 animate-pulse" />
               <img 
-                src="assets/images/logo2.jpg" 
+                src="assets/images/logo.jpg" 
                 alt="Oséias Farias" 
                 className="relative w-full h-full object-cover rounded-full border-4 border-white/10 shadow-2xl"
                 onError={(e) => {
