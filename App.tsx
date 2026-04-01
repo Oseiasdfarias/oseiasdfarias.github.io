@@ -160,8 +160,18 @@ const App: React.FC = () => {
   return (
     <div className={`relative min-h-screen ${bg} ${textSec} selection:bg-accent/20 selection:text-accent transition-colors duration-300`}>
 
+      {/* ── Full-screen background image ─────────────────────────────────── */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <img
+          src="https://news.mit.edu/sites/default/files/styles/news_article__image_gallery/public/images/202507/MIT_Learning-Symmetric-01_0.jpg"
+          alt=""
+          className="w-full h-full object-cover opacity-[0.10] dark:opacity-[0.07]"
+        />
+        <div className="absolute inset-0 bg-slate-50/80 dark:bg-navy/85" />
+      </div>
+
       {/* ── Mobile top bar ───────────────────────────────────────────────── */}
-      <header className={`lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 h-14 ${bgCard} backdrop-blur border-b ${border}`}>
+      <header className={`lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 h-14 backdrop-blur border-b ${border} bg-slate-50/80 dark:bg-navy/80`}>
         <span className={`font-display font-bold ${textPri} text-lg`}>Oséias Farias</span>
         <div className="flex items-center gap-3">
           <button
@@ -206,23 +216,10 @@ const App: React.FC = () => {
       </AnimatePresence>
 
       {/* ── Main layout ──────────────────────────────────────────────────── */}
-      <div className="mx-auto min-h-screen max-w-screen-xl px-6 md:px-12 lg:px-24 lg:flex">
+      <div className="relative z-10 mx-auto min-h-screen max-w-screen-xl px-6 md:px-12 lg:px-24 lg:flex">
 
         {/* ════════════════════ SIDEBAR ════════════════════ */}
-        <header className="hidden lg:flex lg:sticky lg:top-0 lg:max-h-screen lg:w-[42%] lg:flex-col lg:justify-between lg:py-24 lg:pr-12 relative overflow-hidden">
-
-          {/* Background image */}
-          <div className="absolute inset-0 z-0 pointer-events-none">
-            <img
-              src="https://news.mit.edu/sites/default/files/styles/news_article__image_gallery/public/images/202507/MIT_Learning-Symmetric-01_0.jpg"
-              alt=""
-              className="w-full h-full object-cover opacity-[0.12] dark:opacity-[0.08]"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-slate-50/60 to-slate-50 dark:via-navy/60 dark:to-navy" />
-            <div className="absolute inset-0 bg-gradient-to-b from-slate-50/40 via-transparent to-slate-50/80 dark:from-navy/40 dark:to-navy/80" />
-          </div>
-
-          {/* Sidebar content sits above the image */}
+        <header className="hidden lg:flex lg:sticky lg:top-0 lg:max-h-screen lg:w-[42%] lg:flex-col lg:justify-between lg:py-24 lg:pr-12 relative">
           <div className="relative z-10 flex flex-col justify-between h-full">
 
           {/* Top block */}
