@@ -162,22 +162,15 @@ const App: React.FC = () => {
 
       {/* ── Full-screen background image ─────────────────────────────────── */}
       <div className="fixed inset-0 z-0 pointer-events-none">
-        {/* Light: imagem escurecida via filter + overlay escuro */}
         <img
           src="https://news.mit.edu/sites/default/files/styles/news_article__image_gallery/public/images/202507/MIT_Learning-Symmetric-01_0.jpg"
           alt=""
-          className="dark:hidden w-full h-full object-cover opacity-80"
-          style={{ filter: 'brightness(0.25) saturate(0.8)' }}
+          className="w-full h-full object-cover opacity-[0.25] dark:opacity-[0.25]"
         />
-        <div className="dark:hidden absolute inset-0 bg-slate-900/30" />
-
-        {/* Dark: imagem suave sobre fundo navy */}
-        <img
-          src="https://news.mit.edu/sites/default/files/styles/news_article__image_gallery/public/images/202507/MIT_Learning-Symmetric-01_0.jpg"
-          alt=""
-          className="hidden dark:block w-full h-full object-cover opacity-[0.25]"
-        />
-        <div className="hidden dark:block absolute inset-0 bg-navy/70" />
+        {/* Light: overlay claro deixa fundo mais pálido, textos escuros legíveis */}
+        <div className="absolute inset-0 bg-white/70 dark:hidden" />
+        {/* Dark: overlay navy preserva profundidade */}
+        <div className="absolute inset-0 hidden dark:block bg-navy/70" />
       </div>
 
       {/* ── Mobile top bar ───────────────────────────────────────────────── */}
@@ -229,8 +222,8 @@ const App: React.FC = () => {
       <div className="relative z-10 mx-auto min-h-screen max-w-screen-xl px-6 md:px-12 lg:px-24 lg:flex">
 
         {/* ════════════════════ SIDEBAR ════════════════════ */}
-        <header className="hidden lg:flex lg:sticky lg:top-0 lg:max-h-screen lg:w-[42%] lg:flex-col lg:justify-between lg:py-24 lg:pr-12 relative">
-          <div className="relative z-10 flex flex-col justify-between h-full">
+        <header className="hidden lg:flex lg:sticky lg:top-0 lg:h-screen lg:w-[42%] lg:flex-col lg:justify-between lg:py-24 lg:pr-12">
+          <div className="flex flex-col justify-between h-full">
 
           {/* Top block */}
           <div>
