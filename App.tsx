@@ -67,7 +67,6 @@ const App: React.FC = () => {
   const [lang,          setLang]          = useState<Language>('pt');
   const [activeSection, setActiveSection] = useState<string>('about');
   const [isMenuOpen,    setIsMenuOpen]    = useState(false);
-  const [mouse,         setMouse]         = useState({ x: 0, y: 0 });
   const [formStatus,    setFormStatus]    = useState<'idle'|'sending'|'success'|'error'>('idle');
   const [hoveredCard,   setHoveredCard]   = useState<number | null>(null);
 
@@ -88,12 +87,6 @@ const App: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
-  // ── Mouse spotlight ──────────────────────────────────────────────────────
-  useEffect(() => {
-    const handle = (e: MouseEvent) => setMouse({ x: e.clientX, y: e.clientY });
-    window.addEventListener('mousemove', handle);
-    return () => window.removeEventListener('mousemove', handle);
-  }, []);
 
   // ── Form submit ──────────────────────────────────────────────────────────
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -137,13 +130,6 @@ const App: React.FC = () => {
   return (
     <div className="relative min-h-screen bg-navy text-lightSlate selection:bg-accent/20 selection:text-accent">
 
-      {/* ── Cursor spotlight ─────────────────────────────────────────────── */}
-      <div
-        className="pointer-events-none fixed inset-0 z-30 hidden lg:block transition-opacity duration-300"
-        style={{
-          background: `radial-gradient(700px at ${mouse.x}px ${mouse.y}px, rgba(56,189,248,0.06), transparent 80%)`,
-        }}
-      />
 
       {/* ── Mobile top bar ───────────────────────────────────────────────── */}
       <header className="lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 h-14 bg-navy/90 backdrop-blur border-b border-navyBorder">
