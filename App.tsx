@@ -234,13 +234,9 @@ const App: React.FC = () => {
                 {content.hero.title}
               </h2>
 
-              {/* Availability badge */}
+              {/* Affiliation badge */}
               <div className="inline-flex items-center gap-2 mb-5">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green" />
-                </span>
-                <span className="font-mono text-xs text-green tracking-wide">
+                <span className={`font-mono text-xs ${textMut} tracking-wide`}>
                   {content.hero.availability}
                 </span>
               </div>

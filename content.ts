@@ -17,7 +17,7 @@ export const translations: Record<Language, Content> = {
       description:  "Em início de carreira, construindo base sólida em backend e IA. Mestrando com dupla titulação (UFABC / UFPA), aprendendo na prática com projetos reais e pesquisa acadêmica.",
       btnPrimary:   "Ver Projetos",
       btnOutline:   "Baixar Currículo",
-      availability: "Aberto a oportunidades",
+      availability: "UFABC · UFPA · Verzel",
     },
     about: {
       title: "Sobre Mim",
@@ -81,7 +81,7 @@ export const translations: Record<Language, Content> = {
       description:  "Early in my career, building a solid foundation in backend and AI. Dual Master's candidate (UFABC / UFPA), learning through real projects and academic research.",
       btnPrimary:   "View Projects",
       btnOutline:   "Download CV",
-      availability: "Open to opportunities",
+      availability: "UFABC · UFPA · Verzel",
     },
     about: {
       title: "About Me",
