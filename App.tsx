@@ -229,7 +229,7 @@ const App: React.FC = () => {
           <div>
             {/* Profile photo */}
             {/* Profile photo — menor em lg, maior em xl */}
-            <div className="mb-4 xl:mb-8">
+            <div className="mb-3">
               <div className={`relative w-16 h-16 xl:w-24 xl:h-24 rounded-full overflow-hidden ring-2 ${border} ring-offset-2 ${darkMode ? 'ring-offset-navy' : 'ring-offset-slate-50'}`}>
                 <img
                   src="https://github.com/oseiasdfarias.png"
@@ -241,16 +241,16 @@ const App: React.FC = () => {
 
             {/* Name + title */}
             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-              <p className="font-mono text-xs text-accent mb-1.5 tracking-wider">{content.hero.greeting}</p>
-              <h1 className={`text-3xl xl:text-4xl font-bold font-display ${textPri} leading-tight mb-1.5`}>
+              <p className="font-mono text-xs text-accent mb-1 tracking-wider">{content.hero.greeting}</p>
+              <h1 className={`text-3xl xl:text-4xl font-bold font-display ${textPri} leading-tight mb-1`}>
                 Oséias Farias.
               </h1>
-              <h2 className={`text-sm xl:text-base font-semibold font-display ${textSec} mb-3 leading-snug`}>
+              <h2 className={`text-sm xl:text-base font-semibold font-display ${textSec} mb-2 leading-snug`}>
                 {content.hero.title}
               </h2>
 
               {/* Affiliation badge */}
-              <div className="inline-flex items-center gap-2 mb-3 xl:mb-5">
+              <div className="inline-flex items-center gap-2 mb-2">
                 <span className={`font-mono text-xs ${textMut} tracking-wide`}>
                   {content.hero.availability}
                 </span>
@@ -263,7 +263,7 @@ const App: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="mt-6 xl:mt-10 flex flex-col gap-0.5"
+              className="mt-4 flex flex-col gap-0"
             >
               {NAV_SECTIONS.map(s => {
                 const isActive = activeSection === s;
@@ -271,7 +271,7 @@ const App: React.FC = () => {
                   <button
                     key={s}
                     onClick={() => scrollTo(s)}
-                    className="group flex items-center gap-4 py-1.5 text-left transition-all duration-200"
+                    className="group flex items-center gap-4 py-1 text-left transition-all duration-200"
                   >
                     <span
                       className={`h-px transition-all duration-200 ${
@@ -300,7 +300,7 @@ const App: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="flex flex-col gap-3 xl:gap-5"
+            className="flex flex-col gap-2"
           >
             {/* CV button */}
             <a
