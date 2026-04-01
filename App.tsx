@@ -165,9 +165,12 @@ const App: React.FC = () => {
         <img
           src="https://news.mit.edu/sites/default/files/styles/news_article__image_gallery/public/images/202507/MIT_Learning-Symmetric-01_0.jpg"
           alt=""
-          className="w-full h-full object-cover opacity-[0.10] dark:opacity-[0.07]"
+          className="w-full h-full object-cover opacity-[0.22] dark:opacity-[0.35]"
         />
-        <div className="absolute inset-0 bg-slate-50/80 dark:bg-navy/85" />
+        {/* Light: overlay escuro suave para criar contraste com os textos */}
+        <div className="absolute inset-0 bg-slate-200/60 dark:hidden" />
+        {/* Dark: overlay navy leve para manter legibilidade */}
+        <div className="absolute inset-0 hidden dark:block bg-navy/65" />
       </div>
 
       {/* ── Mobile top bar ───────────────────────────────────────────────── */}
