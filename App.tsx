@@ -1,475 +1,612 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Moon, Sun, Github, Linkedin, Youtube, Mail, MapPin, Phone, 
-  Code2, Terminal, Globe, BookOpen,
-  ExternalLink, Menu, X, Award, GraduationCap, FileCheck
+import {
+  Github, Linkedin, Youtube, BookOpen, Mail,
+  ExternalLink, ArrowUpRight, Menu, X,
+  FlaskConical, Briefcase, GraduationCap, Award, Globe,
 } from 'lucide-react';
-import { translations, getProjects, getExperience, getEducation, getCertifications } from './content';
+import {
+  translations, getProjects, getExperience,
+  getEducation, getCertifications, getResearch,
+} from './content';
 import { Language } from './types';
-import { SectionHeader, Button } from './components/UIComponents';
 
+// ─── Helpers ────────────────────────────────────────────────────────────────
+
+const categoryColor: Record<string, string> = {
+  backend:  'text-accent  border-accent/30  bg-accent/5',
+  ai:       'text-accent2 border-accent2/30 bg-accent2/5',
+  research: 'text-green   border-green/30   bg-green/5',
+  embedded: 'text-orange-400 border-orange-400/30 bg-orange-400/5',
+};
+
+const categoryLabel: Record<string, Record<Language, string>> = {
+  backend:  { pt: 'Backend',   en: 'Backend'  },
+  ai:       { pt: 'IA',        en: 'AI'       },
+  research: { pt: 'Pesquisa',  en: 'Research' },
+  embedded: { pt: 'Embarcado', en: 'Embedded' },
+};
+
+const typeColor: Record<string, string> = {
+  industry: 'text-accent  border-accent/20  bg-accent/5',
+  research: 'text-accent2 border-accent2/20 bg-accent2/5',
+};
+
+const typeLabel: Record<string, Record<Language, string>> = {
+  industry: { pt: 'Mercado',  en: 'Industry' },
+  research: { pt: 'Pesquisa', en: 'Research' },
+};
+
+// ─── Nav config ─────────────────────────────────────────────────────────────
+const NAV_SECTIONS = ['about', 'research', 'experience', 'projects', 'education', 'contact'] as const;
+
+// ─── Fade-in wrapper ─────────────────────────────────────────────────────────
+const FadeIn: React.FC<{ children: React.ReactNode; delay?: number }> = ({ children, delay = 0 }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 24 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: '-60px' }}
+    transition={{ duration: 0.5, delay }}
+  >
+    {children}
+  </motion.div>
+);
+
+// ─── Section heading ─────────────────────────────────────────────────────────
+const SectionTitle: React.FC<{ label: string }> = ({ label }) => (
+  <div className="flex items-center gap-4 mb-12">
+    <h2 className="text-lg font-bold font-display text-lightestSlate whitespace-nowrap tracking-wide">
+      {label}
+    </h2>
+    <div className="flex-1 h-px bg-navyBorder" />
+  </div>
+);
+
+// ─── App ─────────────────────────────────────────────────────────────────────
 const App: React.FC = () => {
-  const [lang, setLang] = useState<Language>('pt');
-  const [darkMode, setDarkMode] = useState(true);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [lang,          setLang]          = useState<Language>('pt');
+  const [activeSection, setActiveSection] = useState<string>('about');
+  const [isMenuOpen,    setIsMenuOpen]    = useState(false);
+  const [mouse,         setMouse]         = useState({ x: 0, y: 0 });
+  const [formStatus,    setFormStatus]    = useState<'idle'|'sending'|'success'|'error'>('idle');
+  const [hoveredCard,   setHoveredCard]   = useState<number | null>(null);
 
   const content = translations[lang];
 
+  // ── Active section via IntersectionObserver ──────────────────────────────
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    const savedLang = localStorage.getItem('lang') as Language;
-    
-    if (savedTheme === 'light') {
-      setDarkMode(false);
-      document.documentElement.classList.remove('dark');
-    } else {
-      setDarkMode(true);
-      document.documentElement.classList.add('dark');
-    }
-
-    if (savedLang) setLang(savedLang);
+    const sections = document.querySelectorAll<HTMLElement>('section[id]');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) setActiveSection(entry.target.id);
+        });
+      },
+      { rootMargin: '-20% 0px -75% 0px' },
+    );
+    sections.forEach(s => observer.observe(s));
+    return () => observer.disconnect();
   }, []);
 
-  const toggleTheme = () => {
-    setDarkMode(!darkMode);
-    if (darkMode) {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    } else {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    }
-  };
-
-  const toggleLang = () => {
-    const newLang = lang === 'pt' ? 'en' : 'pt';
-    setLang(newLang);
-    localStorage.setItem('lang', newLang);
-  };
-
-  const [typedText, setTypedText] = useState('');
-  const [typeIndex, setTypeIndex] = useState(0);
-  const [textIndex, setTextIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-
+  // ── Mouse spotlight ──────────────────────────────────────────────────────
   useEffect(() => {
-    const currentString = content.hero.typed[textIndex];
-    const typeSpeed = isDeleting ? 40 : 80;
-    
-    const timeout = setTimeout(() => {
-      if (!isDeleting && typeIndex < currentString.length) {
-        setTypedText(currentString.substring(0, typeIndex + 1));
-        setTypeIndex(prev => prev + 1);
-      } else if (isDeleting && typeIndex > 0) {
-        setTypedText(currentString.substring(0, typeIndex - 1));
-        setTypeIndex(prev => prev - 1);
-      } else if (!isDeleting && typeIndex === currentString.length) {
-        setTimeout(() => setIsDeleting(true), 2500);
-      } else if (isDeleting && typeIndex === 0) {
-        setIsDeleting(false);
-        setTextIndex((prev) => (prev + 1) % content.hero.typed.length);
-      }
-    }, typeSpeed);
+    const handle = (e: MouseEvent) => setMouse({ x: e.clientX, y: e.clientY });
+    window.addEventListener('mousemove', handle);
+    return () => window.removeEventListener('mousemove', handle);
+  }, []);
 
-    return () => clearTimeout(timeout);
-  }, [typedText, isDeleting, textIndex, content.hero.typed]);
-
+  // ── Form submit ──────────────────────────────────────────────────────────
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFormStatus('sending');
     const form = e.currentTarget;
-    const formData = new FormData(form);
-    
     try {
       await fetch('https://formsubmit.co/ajax/c110a49cc1ab534d2724eca67e130885', {
-        method: 'POST',
-        body: formData
+        method: 'POST', body: new FormData(form),
       });
       setFormStatus('success');
       form.reset();
       setTimeout(() => setFormStatus('idle'), 5000);
-    } catch (err) {
+    } catch {
       setFormStatus('error');
       setTimeout(() => setFormStatus('idle'), 5000);
     }
   };
 
-  const navLinks = [
-    { key: 'home', label: content.nav.home },
-    { key: 'about', label: content.nav.about },
-    { key: 'experience', label: content.nav.experience },
-    { key: 'projects', label: content.nav.projects },
-    { key: 'certifications', label: "Certifications" },
-    { key: 'contact', label: content.nav.contact },
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    setIsMenuOpen(false);
+  };
+
+  const projects = getProjects(lang);
+  const experience = getExperience(lang);
+  const education  = getEducation(lang);
+  const research   = getResearch(lang);
+  const certs      = getCertifications(lang);
+
+  // ── Socials ──────────────────────────────────────────────────────────────
+  const socials = [
+    { icon: Github,   href: "https://github.com/oseiasdfarias/",            label: "GitHub"   },
+    { icon: Linkedin, href: "https://www.linkedin.com/in/oseiasfarias/",    label: "LinkedIn" },
+    { icon: Youtube,  href: "https://youtube.com/@oseiasdfarias",           label: "YouTube"  },
+    { icon: BookOpen, href: "https://oseiasfarias.medium.com",              label: "Medium"   },
+    { icon: Mail,     href: "mailto:oseias@example.com",                    label: "Email"    },
   ];
 
+  // ─────────────────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-dark text-slate-800 dark:text-gray-400 font-sans transition-colors duration-300">
-      
-      {/* Navbar */}
-      <nav className="fixed top-0 w-full z-50 bg-white/90 dark:bg-dark/90 backdrop-blur-md border-b border-gray-200 dark:border-white/5 h-16">
-        <div className="max-w-6xl mx-auto px-6 h-full flex justify-between items-center">
-          <a href="#home" className="text-xl font-bold font-display text-slate-900 dark:text-white">
-            φséias
-          </a>
+    <div className="relative min-h-screen bg-navy text-lightSlate selection:bg-accent/20 selection:text-accent">
 
-          <div className="hidden md:flex items-center gap-6">
-            {navLinks.map(link => (
-              <a 
-                key={link.key}
-                href={`#${link.key}`}
-                className="text-[11px] font-bold uppercase tracking-widest text-gray-500 hover:text-primary transition-colors"
-              >
-                {link.label}
-              </a>
-            ))}
-            
-            <div className="w-px h-4 bg-gray-200 dark:bg-white/10 mx-1" />
-            
-            <div className="flex items-center gap-2">
-               <button 
-                onClick={toggleLang}
-                className="text-[10px] font-bold px-2 py-1 rounded border border-gray-200 dark:border-white/10 hover:border-primary hover:text-primary transition-all"
-              >
-                {lang.toUpperCase()}
-              </button>
-              <button 
-                onClick={toggleTheme}
-                className="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-white/5 transition-colors text-gray-500"
-              >
-                {darkMode ? <Moon size={16} /> : <Sun size={16} />}
-              </button>
-            </div>
-          </div>
+      {/* ── Cursor spotlight ─────────────────────────────────────────────── */}
+      <div
+        className="pointer-events-none fixed inset-0 z-30 hidden lg:block transition-opacity duration-300"
+        style={{
+          background: `radial-gradient(700px at ${mouse.x}px ${mouse.y}px, rgba(56,189,248,0.06), transparent 80%)`,
+        }}
+      />
 
-          <div className="md:hidden flex items-center gap-4">
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-gray-500">
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
+      {/* ── Mobile top bar ───────────────────────────────────────────────── */}
+      <header className="lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 h-14 bg-navy/90 backdrop-blur border-b border-navyBorder">
+        <span className="font-display font-bold text-lightestSlate text-lg">Oséias Farias</span>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setLang(l => l === 'pt' ? 'en' : 'pt')}
+            className="font-mono text-[10px] font-bold px-2 py-1 rounded border border-navyBorder text-slate hover:text-accent hover:border-accent/40 transition-colors"
+          >
+            {lang.toUpperCase()}
+          </button>
+          <button onClick={() => setIsMenuOpen(o => !o)} className="text-lightSlate">
+            {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
         </div>
+      </header>
 
-        <AnimatePresence>
-          {isMenuOpen && (
-            <motion.div 
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="md:hidden bg-white dark:bg-dark border-b border-gray-200 dark:border-white/5 overflow-hidden"
-            >
-              <div className="flex flex-col p-6 gap-4">
-                {navLinks.map(link => (
-                  <a 
-                    key={link.key}
-                    href={`#${link.key}`}
-                    onClick={() => setIsMenuOpen(false)}
-                    className="text-base font-medium"
-                  >
-                    {link.label}
-                  </a>
-                ))}
-                 <div className="flex gap-4 mt-4 pt-4 border-t border-gray-100 dark:border-white/5">
-                    <button onClick={toggleLang} className="text-sm font-bold">{lang === 'pt' ? 'Mudar para Inglês' : 'Switch to Portuguese'}</button>
-                    <button onClick={toggleTheme}>{darkMode ? 'Light Mode' : 'Dark Mode'}</button>
-                 </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
-
-      {/* Hero Section */}
-      <section id="home" className="min-h-screen pt-16 flex flex-col justify-center relative overflow-hidden">
-        {/* Background Image & Overlay */}
-        <div className="absolute inset-0 z-0">
-            <img 
-                src="https://news.mit.edu/sites/default/files/styles/news_article__image_gallery/public/images/202507/MIT_Learning-Symmetric-01_0.jpg" 
-                alt="AI Background" 
-                className="w-full h-full object-cover opacity-30 dark:opacity-20"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-gray-50/90 via-gray-50/50 to-transparent dark:from-dark/90 dark:via-dark/50 dark:to-transparent" />
-        </div>
-        
-        <div className="absolute top-[20%] right-[10%] w-[300px] h-[300px] bg-primary/10 rounded-full blur-[120px] z-0 animate-pulse" />
-        <div className="absolute bottom-[20%] left-[10%] w-[200px] h-[200px] bg-secondary/10 rounded-full blur-[120px] z-0 animate-pulse" />
-
-        <div className="container mx-auto max-w-5xl px-6 grid md:grid-cols-2 gap-12 items-center relative z-10">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
+      {/* ── Mobile overlay menu ──────────────────────────────────────────── */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            exit={{ opacity: 0, y: -8 }}
+            className="lg:hidden fixed top-14 left-0 right-0 z-40 bg-navyCard border-b border-navyBorder px-6 py-6 flex flex-col gap-4"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/5 border border-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider mb-6 backdrop-blur-sm">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary"></span>
-              </span>
-              {content.hero.badge}
-            </div>
-            
-            <h1 className="text-4xl md:text-6xl font-bold font-display leading-tight mb-6 text-slate-900 dark:text-gray-100">
-              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                {typedText}
-              </span>
-              <span className="animate-pulse text-gray-400 font-light">|</span>
-            </h1>
-            
-            <p className="text-base text-gray-600 dark:text-gray-400 mb-8 max-w-lg leading-relaxed">
-              {content.hero.description}
-            </p>
-            
-            <div className="flex flex-wrap gap-4">
-              <Button onClick={() => document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth'})}>
-                {content.hero.btnPrimary}
-              </Button>
-              <Button variant="outline" href="https://drive.google.com/file/d/1-oMiFFC3QAbU6JhIeo6svznmm1pWMtzW/view">
-                {content.hero.btnOutline}
-              </Button>
-            </div>
-
-            <div className="flex gap-5 mt-10">
-               {[
-                 { icon: Linkedin, href: "https://www.linkedin.com/in/oseiasfarias/" },
-                 { icon: Github, href: "https://github.com/oseiasdfarias/" },
-                 { icon: Youtube, href: "https://youtube.com/@oseiasdfarias" },
-                 { icon: BookOpen, href: "https://oseiasfarias.medium.com" }
-               ].map((item, idx) => (
-                 <a key={idx} href={item.href} target="_blank" rel="noreferrer" className="text-gray-400 hover:text-primary transition-colors">
-                   <item.icon size={20} />
-                 </a>
-               ))}
-            </div>
+            {NAV_SECTIONS.map(s => (
+              <button
+                key={s}
+                onClick={() => scrollTo(s)}
+                className="text-left text-sm font-bold uppercase tracking-widest text-lightSlate hover:text-accent transition-colors"
+              >
+                {content.nav[s as keyof typeof content.nav]}
+              </button>
+            ))}
           </motion.div>
+        )}
+      </AnimatePresence>
 
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            className="flex justify-center md:justify-end"
+      {/* ── Main layout ──────────────────────────────────────────────────── */}
+      <div className="mx-auto min-h-screen max-w-screen-xl px-6 md:px-12 lg:px-24 lg:flex">
+
+        {/* ════════════════════ SIDEBAR ════════════════════ */}
+        <header className="hidden lg:flex lg:sticky lg:top-0 lg:max-h-screen lg:w-[42%] lg:flex-col lg:justify-between lg:py-24 lg:pr-12">
+
+          {/* Top block */}
+          <div>
+            {/* Profile photo */}
+            <div className="mb-8">
+              <div className="relative w-20 h-20 rounded-full overflow-hidden ring-2 ring-navyBorder ring-offset-2 ring-offset-navy">
+                <img
+                  src="https://github.com/oseiasdfarias.png"
+                  alt="Oséias Farias"
+                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                />
+              </div>
+            </div>
+
+            {/* Name + title */}
+            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+              <p className="font-mono text-xs text-accent mb-2 tracking-wider">{content.hero.greeting}</p>
+              <h1 className="text-4xl font-bold font-display text-lightestSlate leading-tight mb-2">
+                Oséias Farias.
+              </h1>
+              <h2 className="text-lg font-semibold font-display text-lightSlate mb-4">
+                {content.hero.title}
+              </h2>
+
+              {/* Availability badge */}
+              <div className="inline-flex items-center gap-2 mb-6">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green" />
+                </span>
+                <span className="font-mono text-[11px] text-green tracking-wide">
+                  {content.hero.availability}
+                </span>
+              </div>
+
+              <p className="text-sm text-slate leading-relaxed max-w-xs">
+                {content.hero.description}
+              </p>
+            </motion.div>
+
+            {/* Nav links */}
+            <motion.nav
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="mt-12 flex flex-col gap-1"
+            >
+              {NAV_SECTIONS.map(s => {
+                const isActive = activeSection === s;
+                return (
+                  <button
+                    key={s}
+                    onClick={() => scrollTo(s)}
+                    className="group flex items-center gap-4 py-2 text-left transition-all duration-200"
+                  >
+                    <span
+                      className={`h-px transition-all duration-200 ${
+                        isActive
+                          ? 'w-12 bg-lightestSlate'
+                          : 'w-6 bg-slate group-hover:w-10 group-hover:bg-lightSlate'
+                      }`}
+                    />
+                    <span
+                      className={`font-mono text-[11px] font-bold uppercase tracking-widest transition-colors duration-200 ${
+                        isActive
+                          ? 'text-lightestSlate'
+                          : 'text-slate group-hover:text-lightSlate'
+                      }`}
+                    >
+                      {content.nav[s as keyof typeof content.nav]}
+                    </span>
+                  </button>
+                );
+              })}
+            </motion.nav>
+          </div>
+
+          {/* Bottom block — socials + lang toggle */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="flex flex-col gap-5"
           >
-            <div className="relative w-64 h-64 md:w-80 md:h-80 grayscale hover:grayscale-0 transition-all duration-500">
-              <img 
-                src="https://media.licdn.com/dms/image/v2/D4D03AQE0Hj1p9wKVIA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1708453472659?e=1742428800&v=beta&t=Z7y4B_KkqvW-7wEge02uXGvCjF2aZc8Xg6-c5E4qJ_g"
-                onError={(e) => e.currentTarget.src = 'https://github.com/oseiasdfarias.png'} 
-                alt="Oséias Farias" 
-                className="relative w-full h-full object-cover rounded-2xl shadow-2xl skew-y-3 hover:skew-y-0 transition-transform"
-              />
+            {/* CV button */}
+            <a
+              href="https://drive.google.com/file/d/1-oMiFFC3QAbU6JhIeo6svznmm1pWMtzW/view"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 text-[11px] font-mono font-bold text-accent border border-accent/30 rounded px-3 py-1.5 w-fit hover:bg-accent/10 transition-colors group"
+            >
+              {content.hero.btnOutline}
+              <ArrowUpRight size={13} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            </a>
+
+            {/* Social icons */}
+            <div className="flex items-center gap-5">
+              {socials.map(s => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={s.label}
+                  className="text-slate hover:text-accent hover:-translate-y-0.5 transition-all duration-200"
+                >
+                  <s.icon size={18} />
+                </a>
+              ))}
             </div>
+
+            {/* Lang toggle */}
+            <button
+              onClick={() => setLang(l => l === 'pt' ? 'en' : 'pt')}
+              className="flex items-center gap-2 text-[10px] font-mono font-bold text-slate hover:text-accent transition-colors w-fit group"
+            >
+              <Globe size={13} className="group-hover:rotate-12 transition-transform" />
+              {lang === 'pt' ? 'Switch to English' : 'Mudar para Português'}
+            </button>
           </motion.div>
-        </div>
-      </section>
+        </header>
 
-      {/* Simplified Bento Grid */}
-      <section id="about" className="py-16">
-        <div className="container mx-auto max-w-5xl px-6">
-           <SectionHeader title={content.about.title} subtitle={content.about.subtitle} />
-           
-           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-             
-             {/* Bio Layout - More Compact */}
-             <div className="md:col-span-2 bg-white dark:bg-darkCard p-6 rounded-2xl border border-gray-100 dark:border-white/5">
-                <div className="flex items-center gap-2 mb-4 text-primary">
-                    <Terminal size={20} />
-                    <span className="font-bold text-sm uppercase tracking-wider">Bio</span>
-                </div>
-                <div className="space-y-3 text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
-                   {content.about.description.split('. ').map((s, i) => (
-                      <p key={i}>{s}.</p>
-                   ))}
-                </div>
-             </div>
+        {/* ════════════════════ MAIN CONTENT ════════════════════ */}
+        <main className="lg:w-[58%] pt-20 lg:pt-24 pb-24">
 
-             <div className="flex flex-col gap-4">
-                {/* Stack Box */}
-                <div className="flex-1 bg-gray-100 dark:bg-gradient-to-br dark:from-darkCard dark:to-black p-6 rounded-2xl border border-gray-200 dark:border-white/5 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:14px_14px]" />
-                    <h3 className="text-sm font-bold mb-4 text-gray-900 dark:text-white relative z-10">{content.skills.title}</h3>
-                    <div className="flex flex-wrap gap-2 relative z-10">
-                    {["Java", "Python", "AWS", "Docker", "ML", "FPGA"].map(skill => (
-                        <span key={skill} className="px-2 py-1 bg-white dark:bg-white/5 rounded text-[10px] font-medium text-gray-600 dark:text-white/80 border border-gray-200 dark:border-white/5 shadow-sm dark:shadow-none">
-                            {skill}
-                        </span>
+          {/* ── ABOUT ──────────────────────────────────────────── */}
+          <section id="about" className="mb-24 scroll-mt-24">
+            <SectionTitle label={content.about.title} />
+            <div className="space-y-4">
+              {content.about.description.map((para, i) => (
+                <FadeIn key={i} delay={i * 0.08}>
+                  <p
+                    className="text-sm leading-relaxed text-lightSlate"
+                    dangerouslySetInnerHTML={{ __html: para }}
+                  />
+                </FadeIn>
+              ))}
+
+              {/* Dual identity pills */}
+              <FadeIn delay={0.3}>
+                <div className="flex gap-3 pt-4 flex-wrap">
+                  <span className="inline-flex items-center gap-2 text-xs font-mono font-bold px-3 py-1.5 rounded-full border border-accent/30 text-accent bg-accent/5">
+                    <Briefcase size={12} />
+                    {content.about.industryLabel}
+                  </span>
+                  <span className="inline-flex items-center gap-2 text-xs font-mono font-bold px-3 py-1.5 rounded-full border border-accent2/30 text-accent2 bg-accent2/5">
+                    <FlaskConical size={12} />
+                    {content.about.academiaLabel}
+                  </span>
+                </div>
+              </FadeIn>
+
+              {/* Skills grid */}
+              <FadeIn delay={0.35}>
+                <div className="mt-4 pt-4 border-t border-navyBorder">
+                  <p className="font-mono text-[10px] text-slate uppercase tracking-widest mb-3">Stack principal</p>
+                  <div className="flex flex-wrap gap-2">
+                    {["Java", "Python", "Spring Boot", "FastAPI", "Quarkus", "AWS", "Docker", "PostgreSQL", "FPGA", "TensorFlow"].map(skill => (
+                      <span key={skill} className="font-mono text-[10px] text-slate hover:text-accent px-2 py-1 rounded border border-navyBorder hover:border-accent/30 bg-navyCard transition-colors cursor-default">
+                        {skill}
+                      </span>
                     ))}
-                    </div>
+                  </div>
                 </div>
+              </FadeIn>
+            </div>
+          </section>
 
-                {/* Location Box */}
-                <div className="p-6 rounded-2xl bg-gray-100 dark:bg-darkCard border border-gray-200 dark:border-white/5 flex items-center justify-between">
-                    <div>
-                        <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">Location</p>
-                        <p className="text-sm font-bold mt-1 text-gray-900 dark:text-white">São Paulo, BR</p>
+          {/* ── RESEARCH ───────────────────────────────────────── */}
+          <section id="research" className="mb-24 scroll-mt-24">
+            <SectionTitle label={content.research.title} />
+            <div className="flex flex-col gap-4">
+              {research.map((item, i) => (
+                <FadeIn key={i} delay={i * 0.1}>
+                  <div className="group relative p-6 rounded-lg border border-navyBorder bg-navyCard hover:border-accent2/40 hover:bg-navyHover transition-all duration-300">
+                    {/* Status badge */}
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="font-mono text-[10px] text-slate">{item.period}</span>
+                      {item.status === 'ongoing' && (
+                        <span className="flex items-center gap-1.5 font-mono text-[10px] text-accent2">
+                          <span className="relative flex h-1.5 w-1.5">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent2 opacity-75" />
+                            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-accent2" />
+                          </span>
+                          Em andamento
+                        </span>
+                      )}
                     </div>
-                    <Globe size={24} className="text-gray-400 dark:text-gray-600" />
-                </div>
-             </div>
+                    <h3 className="font-display font-bold text-lightestSlate group-hover:text-accent2 transition-colors mb-1 text-base">
+                      {item.title}
+                    </h3>
+                    <p className="font-mono text-[11px] text-accent2/70 mb-3">{item.institution}</p>
+                    <p className="text-sm text-slate leading-relaxed mb-4">{item.description}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {item.tags.map(tag => (
+                        <span key={tag} className="font-mono text-[10px] text-accent2/80 px-2 py-0.5 rounded border border-accent2/20 bg-accent2/5">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </FadeIn>
+              ))}
+            </div>
+          </section>
 
-           </div>
-        </div>
-      </section>
-
-      {/* Experience Timeline */}
-      <section id="experience" className="py-16 bg-gray-50/50 dark:bg-darkCard/30">
-        <div className="container mx-auto max-w-4xl px-6">
-           <SectionHeader title={content.experience.title} subtitle={content.experience.subtitle} centered={false} />
-           
-           <div className="mt-12 space-y-8 pl-4">
-              {getExperience(lang).map((exp, i) => (
-                <div key={i} className="relative pl-8 border-l border-gray-200 dark:border-white/10 pb-8 last:pb-0 last:border-0">
-                   <div className="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-primary" />
-                   
-                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-1">
-                      <h3 className="text-lg font-bold text-slate-900 dark:text-gray-100">{exp.title}</h3>
-                      <span className="text-xs font-mono text-primary/80 mt-1 sm:mt-0">
+          {/* ── EXPERIENCE ─────────────────────────────────────── */}
+          <section id="experience" className="mb-24 scroll-mt-24">
+            <SectionTitle label={content.experience.title} />
+            <div className="flex flex-col gap-1">
+              {experience.map((exp, i) => (
+                <FadeIn key={i} delay={i * 0.08}>
+                  <div className="group relative grid sm:grid-cols-[120px_1fr] gap-3 p-5 rounded-lg border border-transparent hover:border-navyBorder hover:bg-navyCard transition-all duration-300">
+                    {/* Period column */}
+                    <div className="pt-0.5">
+                      <span className="font-mono text-[10px] text-slate leading-relaxed">
                         {exp.period}
                       </span>
-                   </div>
-                   
-                   <div className="flex items-center gap-1.5 mb-2 text-xs font-bold uppercase tracking-wider text-gray-500">
-                      {exp.company}
-                   </div>
-                   
-                   <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl">
-                      {exp.description}
-                   </p>
-                </div>
-              ))}
-           </div>
-        </div>
-      </section>
-
-      {/* Projects Grid - More Compact */}
-      <section id="projects" className="py-16">
-        <div className="container mx-auto max-w-6xl px-6">
-           <SectionHeader title={content.projects.title} subtitle={content.projects.subtitle} />
-           
-           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {getProjects(lang).map((project, idx) => (
-                <motion.div
-                   key={idx}
-                   whileHover={{ y: -5 }}
-                   className="group bg-white dark:bg-darkCard rounded-xl overflow-hidden border border-gray-200 dark:border-white/5 hover:border-primary/30 transition-all duration-300"
-                >
-                    <div className="h-40 overflow-hidden relative">
-                        <img 
-                        src={project.image} 
-                        alt={project.title} 
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-4">
-                            {project.link && (
-                                <a href={project.link} target="_blank" rel="noreferrer" className="text-white flex items-center gap-2 text-sm font-bold border border-white/30 px-4 py-2 rounded-full hover:bg-white hover:text-black transition-colors">
-                                    View Data <ExternalLink size={14} />
-                                </a>
-                            )}
-                        </div>
                     </div>
-                    
-                    <div className="p-5">
-                        <h3 className="font-bold text-base mb-2 group-hover:text-primary transition-colors text-slate-900 dark:text-white">{project.title}</h3>
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
-                        {project.description}
-                        </p>
-                        <div className="flex flex-wrap gap-1.5">
-                        {project.tags.slice(0, 3).map(tag => (
-                            <span key={tag} className="text-[10px] uppercase font-bold px-1.5 py-0.5 bg-gray-100 dark:bg-white/5 rounded text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-white/5">
-                                {tag}
-                            </span>
+                    {/* Content column */}
+                    <div>
+                      <div className="flex items-center gap-2 mb-0.5 flex-wrap">
+                        <h3 className="font-display font-bold text-lightestSlate group-hover:text-accent transition-colors text-sm">
+                          {exp.title}
+                        </h3>
+                        <span className={`font-mono text-[9px] font-bold px-1.5 py-0.5 rounded border ${typeColor[exp.type]}`}>
+                          {typeLabel[exp.type][lang]}
+                        </span>
+                      </div>
+                      <p className="font-mono text-[11px] text-accent/70 mb-2">{exp.company}</p>
+                      <p className="text-[13px] text-slate leading-relaxed mb-3">{exp.description}</p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {exp.tags.map(tag => (
+                          <span key={tag} className="font-mono text-[10px] text-accent px-1.5 py-0.5 rounded border border-accent/20 bg-accent/5">
+                            {tag}
+                          </span>
                         ))}
-                        </div>
+                      </div>
                     </div>
-                </motion.div>
+                  </div>
+                </FadeIn>
               ))}
-           </div>
-        </div>
-      </section>
+            </div>
+          </section>
 
-      {/* Compact List for Education & Certifications */}
-      <section id="certifications" className="py-16 bg-gray-50/50 dark:bg-darkCard/30">
-         <div className="container mx-auto max-w-5xl px-6">
-            <div className="grid lg:grid-cols-2 gap-12">
-               
-               <div>
-                  <h3 className="text-xl font-display font-bold mb-6 flex items-center gap-2">
-                     <GraduationCap className="text-primary" size={20} /> {content.education.title}
-                  </h3>
-                  <div className="space-y-4">
-                     {getEducation(lang).map((edu, idx) => (
-                        <div key={idx} className="flex gap-4 group">
-                           <div className="w-16 h-16 flex-shrink-0 bg-white dark:bg-[#202025] p-1 rounded-lg border border-gray-100 dark:border-white/5">
-                              <img src={edu.logo} alt="logo" className="w-full h-full object-contain opacity-80 group-hover:opacity-100 transition-opacity" />
-                           </div>
-                           <div>
-                              <h4 className="font-bold text-sm text-slate-800 dark:text-gray-200">{edu.title}</h4>
-                              <p className="text-xs text-gray-500 mb-0.5">{edu.institution} • {edu.period}</p>
-                           </div>
+          {/* ── PROJECTS ───────────────────────────────────────── */}
+          <section id="projects" className="mb-24 scroll-mt-24">
+            <SectionTitle label={content.projects.title} />
+            <div
+              className="flex flex-col gap-1"
+              onMouseLeave={() => setHoveredCard(null)}
+            >
+              {projects.map((proj, i) => (
+                <FadeIn key={i} delay={i * 0.06}>
+                  <div
+                    className={`group relative p-5 rounded-lg border transition-all duration-300 ${
+                      hoveredCard !== null && hoveredCard !== i
+                        ? 'opacity-40 border-transparent'
+                        : 'border-transparent hover:border-navyBorder hover:bg-navyCard opacity-100'
+                    }`}
+                    onMouseEnter={() => setHoveredCard(i)}
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1 flex-wrap">
+                          <h3 className="font-display font-bold text-lightestSlate group-hover:text-accent transition-colors text-sm">
+                            {proj.title}
+                          </h3>
+                          <span className={`font-mono text-[9px] font-bold px-1.5 py-0.5 rounded border ${categoryColor[proj.category]}`}>
+                            {categoryLabel[proj.category][lang]}
+                          </span>
                         </div>
-                     ))}
-                  </div>
-               </div>
-
-               <div>
-                  <h3 className="text-xl font-display font-bold mb-6 flex items-center gap-2">
-                     <Award className="text-secondary" size={20} /> {content.certifications.title}
-                  </h3>
-                  <div className="grid grid-cols-1 gap-3">
-                     {getCertifications(lang).map((cert, idx) => (
-                        <div key={idx} className="flex justify-between items-center p-3 bg-white dark:bg-darkCard rounded-lg border border-gray-100 dark:border-white/5 hover:border-secondary/30 transition-colors">
-                            <div className="truncate pr-4">
-                                <h4 className="font-bold text-xs text-slate-800 dark:text-gray-200 truncate">{cert.title}</h4>
-                                <p className="text-[10px] uppercase tracking-wide text-gray-500">{cert.issuer}</p>
-                            </div>
-                            <span className="text-[10px] font-mono text-gray-400 whitespace-nowrap">
-                                {cert.date}
+                        <p className="text-[13px] text-slate leading-relaxed mb-3">{proj.description}</p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {proj.tags.map(tag => (
+                            <span key={tag} className="font-mono text-[10px] text-slate px-1.5 py-0.5 rounded border border-navyBorder bg-navyCard">
+                              {tag}
                             </span>
+                          ))}
                         </div>
-                     ))}
+                      </div>
+                      {/* Project image thumbnail */}
+                      <div className="hidden sm:block w-20 h-16 rounded overflow-hidden border border-navyBorder flex-shrink-0 opacity-70 group-hover:opacity-100 transition-opacity">
+                        <img src={proj.image} alt={proj.title} className="w-full h-full object-cover" />
+                      </div>
+                    </div>
+                    {/* Link overlay */}
+                    {proj.link && (
+                      <a
+                        href={proj.link}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="absolute inset-0 rounded-lg"
+                        aria-label={`Ver ${proj.title}`}
+                      />
+                    )}
+                    {proj.link && (
+                      <div className="mt-3 flex items-center gap-1 text-accent text-[11px] font-mono font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                        GitHub <ExternalLink size={11} />
+                      </div>
+                    )}
                   </div>
-               </div>
-
+                </FadeIn>
+              ))}
             </div>
-         </div>
-      </section>
 
-      {/* Compact Contact */}
-      <section id="contact" className="py-16">
-         <div className="container mx-auto max-w-2xl px-6">
-            <div className="bg-white dark:bg-darkCard border border-gray-200 dark:border-white/5 rounded-3xl p-8 text-center relative overflow-hidden shadow-lg dark:shadow-none">
-               <div className="hidden dark:block absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-[60px]" />
-               
-               <h2 className="text-2xl md:text-3xl font-bold font-display mb-3 text-slate-900 dark:text-white relative z-10">
-                  {content.contact.title}
-               </h2>
-               <p className="text-sm text-gray-500 dark:text-gray-400 mb-8 max-w-md mx-auto relative z-10">
-                  {content.contact.subtitle}
-               </p>
+            <FadeIn delay={0.3}>
+              <a
+                href="https://github.com/oseiasdfarias"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 mt-6 text-sm font-bold text-accent hover:gap-3 transition-all group"
+              >
+                {content.projects.viewAll}
+                <ArrowUpRight size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </a>
+            </FadeIn>
+          </section>
 
-               <form onSubmit={handleFormSubmit} className="space-y-3 text-left relative z-10">
-                  <div className="grid md:grid-cols-2 gap-3">
-                     <input type="text" name="name" placeholder={content.contact.formName} required
-                        className="w-full bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-primary/50 transition-colors text-slate-900 dark:text-white" />
-                     <input type="email" name="email" placeholder={content.contact.formEmail} required
-                        className="w-full bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-primary/50 transition-colors text-slate-900 dark:text-white" />
+          {/* ── EDUCATION & CERTS ──────────────────────────────── */}
+          <section id="education" className="mb-24 scroll-mt-24">
+            <SectionTitle label={content.education.title} />
+
+            <div className="flex flex-col gap-3 mb-12">
+              {education.map((edu, i) => (
+                <FadeIn key={i} delay={i * 0.07}>
+                  <div className="group flex items-start gap-4 p-4 rounded-lg border border-transparent hover:border-navyBorder hover:bg-navyCard transition-all duration-300">
+                    <div className="w-10 h-10 flex-shrink-0 rounded border border-navyBorder bg-navyCard p-1 overflow-hidden">
+                      <img src={edu.logo} alt={edu.institution} className="w-full h-full object-contain opacity-80 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                    <div>
+                      <h4 className="font-display font-bold text-lightestSlate text-sm group-hover:text-accent transition-colors">
+                        {edu.title}
+                      </h4>
+                      <p className="font-mono text-[11px] text-accent/70">{edu.institution} · {edu.period}</p>
+                      <p className="text-[12px] text-slate mt-0.5">{edu.description}</p>
+                    </div>
                   </div>
-                  <textarea name="message" rows={3} placeholder={content.contact.formMessage} required
-                     className="w-full bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-primary/50 transition-colors resize-none text-slate-900 dark:text-white" />
-                  
-                  <button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-lg text-sm transition-colors shadow-lg shadow-primary/20">
-                     {formStatus === 'sending' ? content.contact.sending : content.contact.btnSend}
-                  </button>
-                  {formStatus === 'success' && <p className="text-green-500 dark:text-green-400 text-xs text-center">{content.contact.success}</p>}
-               </form>
+                </FadeIn>
+              ))}
             </div>
-         </div>
-      </section>
 
-      {/* Footer */}
-      <footer className="py-6 border-t border-gray-200 dark:border-white/5 text-center">
-         <p className="text-gray-500 text-xs">
-            {content.footer.rights}
-         </p>
-      </footer>
+            {/* Certifications */}
+            <div className="flex items-center gap-4 mb-8">
+              <h3 className="text-sm font-bold font-display text-lightestSlate flex items-center gap-2 whitespace-nowrap">
+                <Award size={16} className="text-accent2" />
+                {content.certifications.title}
+              </h3>
+              <div className="flex-1 h-px bg-navyBorder" />
+            </div>
+            <div className="flex flex-col gap-2">
+              {certs.map((cert, i) => (
+                <FadeIn key={i} delay={i * 0.04}>
+                  <div className="group flex items-center justify-between p-3 rounded border border-navyBorder hover:border-accent2/30 hover:bg-navyCard transition-all duration-200">
+                    <div className="min-w-0 flex-1">
+                      <h4 className="font-display font-semibold text-xs text-lightestSlate truncate group-hover:text-accent2 transition-colors">
+                        {cert.title}
+                      </h4>
+                      <p className="font-mono text-[10px] uppercase tracking-wider text-slate">{cert.issuer}</p>
+                    </div>
+                    <span className="font-mono text-[10px] text-slate whitespace-nowrap ml-4">{cert.date}</span>
+                  </div>
+                </FadeIn>
+              ))}
+            </div>
+          </section>
+
+          {/* ── CONTACT ────────────────────────────────────────── */}
+          <section id="contact" className="scroll-mt-24">
+            <SectionTitle label={content.contact.title} />
+            <FadeIn>
+              <p className="text-sm text-slate leading-relaxed mb-8 max-w-md">
+                {content.contact.subtitle}
+              </p>
+
+              <form onSubmit={handleFormSubmit} className="space-y-4 max-w-md">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <input
+                    type="text" name="name" required
+                    placeholder={content.contact.formName}
+                    className="w-full bg-navyCard border border-navyBorder rounded-lg px-4 py-2.5 text-sm text-lightestSlate placeholder-slate focus:outline-none focus:border-accent/50 transition-colors font-sans"
+                  />
+                  <input
+                    type="email" name="email" required
+                    placeholder={content.contact.formEmail}
+                    className="w-full bg-navyCard border border-navyBorder rounded-lg px-4 py-2.5 text-sm text-lightestSlate placeholder-slate focus:outline-none focus:border-accent/50 transition-colors font-sans"
+                  />
+                </div>
+                <textarea
+                  name="message" rows={4} required
+                  placeholder={content.contact.formMessage}
+                  className="w-full bg-navyCard border border-navyBorder rounded-lg px-4 py-2.5 text-sm text-lightestSlate placeholder-slate focus:outline-none focus:border-accent/50 transition-colors resize-none font-sans"
+                />
+                <button
+                  type="submit"
+                  disabled={formStatus === 'sending'}
+                  className="inline-flex items-center gap-2 font-mono font-bold text-sm text-accent border border-accent/40 rounded-lg px-6 py-2.5 hover:bg-accent/10 transition-colors disabled:opacity-50"
+                >
+                  {formStatus === 'sending' ? content.contact.sending : content.contact.btnSend}
+                  {formStatus !== 'sending' && <ArrowUpRight size={14} />}
+                </button>
+                {formStatus === 'success' && (
+                  <p className="text-green text-xs font-mono">{content.contact.success}</p>
+                )}
+                {formStatus === 'error' && (
+                  <p className="text-red-400 text-xs font-mono">{content.contact.error}</p>
+                )}
+              </form>
+            </FadeIn>
+          </section>
+
+          {/* ── FOOTER ─────────────────────────────────────────── */}
+          <footer className="mt-24 pt-8 border-t border-navyBorder">
+            <p className="font-mono text-[11px] text-slate">
+              {content.footer.rights} · {content.footer.builtWith}
+            </p>
+          </footer>
+        </main>
+      </div>
     </div>
   );
 };

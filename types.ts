@@ -2,31 +2,29 @@ export type Language = 'pt' | 'en';
 
 export interface Content {
   nav: {
-    home: string;
     about: string;
-    skills: string;
-    projects: string;
+    research: string;
     experience: string;
+    projects: string;
     education: string;
     contact: string;
   };
   hero: {
-    badge: string;
+    greeting: string;
+    name: string;
+    title: string;
     description: string;
     btnPrimary: string;
     btnOutline: string;
-    typed: string[];
+    availability: string;
   };
   about: {
     title: string;
-    subtitle: string;
-    description: string;
+    description: string[];
+    industryLabel: string;
+    academiaLabel: string;
   };
-  skills: {
-    title: string;
-    subtitle: string;
-  };
-  projects: {
+  research: {
     title: string;
     subtitle: string;
   };
@@ -34,13 +32,16 @@ export interface Content {
     title: string;
     subtitle: string;
   };
-  education: {
+  projects: {
     title: string;
     subtitle: string;
+    viewAll: string;
+  };
+  education: {
+    title: string;
   };
   certifications: {
     title: string;
-    subtitle: string;
   };
   contact: {
     title: string;
@@ -55,6 +56,7 @@ export interface Content {
   };
   footer: {
     rights: string;
+    builtWith: string;
   };
 }
 
@@ -64,6 +66,7 @@ export interface ProjectData {
   tags: string[];
   image: string;
   link: string;
+  category: 'backend' | 'ai' | 'research' | 'embedded';
 }
 
 export interface ExperienceData {
@@ -71,7 +74,8 @@ export interface ExperienceData {
   company: string;
   period: string;
   description: string;
-  icon: 'work' | 'research';
+  type: 'industry' | 'research';
+  tags: string[];
 }
 
 export interface EducationData {
@@ -89,4 +93,14 @@ export interface CertificationData {
   credentialId?: string;
   link?: string;
   skills: string[];
+}
+
+export interface ResearchData {
+  title: string;
+  institution: string;
+  period: string;
+  description: string;
+  tags: string[];
+  link?: string;
+  status: 'ongoing' | 'completed';
 }
