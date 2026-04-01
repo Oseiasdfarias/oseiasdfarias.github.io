@@ -13,8 +13,8 @@ export const translations: Record<Language, Content> = {
     hero: {
       greeting:     "Olá, meu nome é",
       name:         "Oséias Farias.",
-      title:        "Engenheiro Backend & Pesquisador de IA.",
-      description:  "Especialista em sistemas distribuídos, IA generativa e sistemas embarcados. Mestrando com dupla titulação (UFABC / UFPA), pesquisando Antifragilidade Artificial e Deep Learning.",
+      title:        "Desenvolvedor Backend Júnior & Pesquisador.",
+      description:  "Em início de carreira, construindo base sólida em backend e IA. Mestrando com dupla titulação (UFABC / UFPA), aprendendo na prática com projetos reais e pesquisa acadêmica.",
       btnPrimary:   "Ver Projetos",
       btnOutline:   "Baixar Currículo",
       availability: "Aberto a oportunidades",
@@ -22,9 +22,9 @@ export const translations: Record<Language, Content> = {
     about: {
       title: "Sobre Mim",
       description: [
-        "Sou um engenheiro backend e pesquisador de IA apaixonado por resolver problemas complexos na interseção entre software industrial e pesquisa avançada. Atualmente atuo como Trainee Dev IA na <strong>Lunella (Verzel)</strong>, desenvolvendo microserviços com Python, Java Quarkus e AWS.",
-        "No lado acadêmico, curso dois mestrados simultâneos: <strong>Engenharia Elétrica na UFABC</strong> (Antifragilidade Artificial em sistemas FPGA/FPAA) e <strong>Computação Aplicada na UFPA</strong> (Inteligência Artificial & Deep Learning). Tenho graduação em Engenharia Elétrica pela UFPA e especialização em Sistemas Embarcados IoT pelo IFMA.",
-        "Minha filosofia é unir rigor acadêmico com entregas de mercado — código que funciona em produção <em>e</em> contribui para o avanço do conhecimento.",
+        "Sou desenvolvedor backend júnior com formação em Engenharia Elétrica e uma trajetória incomum: comecei na área técnica industrial, migrei para software e hoje combino desenvolvimento com pesquisa acadêmica. Atualmente faço estágio/trainee como Dev IA na <strong>Lunella (Verzel)</strong>, onde aprendo na prática com Python, Java Quarkus e AWS.",
+        "No lado acadêmico, curso dois mestrados simultâneos: <strong>Engenharia Elétrica na UFABC</strong> (pesquisa em sistemas FPGA/FPAA) e <strong>Computação Aplicada na UFPA</strong> (Inteligência Artificial & Deep Learning). A pesquisa me força a pensar com profundidade — um hábito que levo para o código.",
+        "Ainda estou construindo minha experiência de mercado, mas me dedico intensamente a isso: projetos práticos, cursos, pesquisa e trabalho real. Se você busca alguém que aprende rápido, estuda com seriedade e traz uma visão diferente — vamos conversar.",
       ],
       industryLabel: "Mercado",
       academiaLabel: "Academia",
@@ -77,8 +77,8 @@ export const translations: Record<Language, Content> = {
     hero: {
       greeting:     "Hi, my name is",
       name:         "Oséias Farias.",
-      title:        "Backend Engineer & AI Researcher.",
-      description:  "Specialist in distributed systems, generative AI, and embedded systems. Dual Master's candidate (UFABC / UFPA), researching Artificial Antifragility and Deep Learning.",
+      title:        "Junior Backend Developer & Researcher.",
+      description:  "Early in my career, building a solid foundation in backend and AI. Dual Master's candidate (UFABC / UFPA), learning through real projects and academic research.",
       btnPrimary:   "View Projects",
       btnOutline:   "Download CV",
       availability: "Open to opportunities",
@@ -86,9 +86,9 @@ export const translations: Record<Language, Content> = {
     about: {
       title: "About Me",
       description: [
-        "I'm a backend engineer and AI researcher passionate about solving complex problems at the intersection of industrial software and advanced research. Currently working as an AI Dev Trainee at <strong>Lunella (Verzel)</strong>, building microservices with Python, Java Quarkus, and AWS.",
-        "On the academic side, I'm pursuing two simultaneous master's degrees: <strong>Electrical Engineering at UFABC</strong> (Artificial Antifragility in FPGA/FPAA systems) and <strong>Applied Computing at UFPA</strong> (Artificial Intelligence & Deep Learning). I hold a Bachelor's in Electrical Engineering from UFPA and a specialization in Embedded IoT Systems from IFMA.",
-        "My philosophy is to bridge academic rigor with market deliverables — code that works in production <em>and</em> advances the state of knowledge.",
+        "I'm a junior backend developer with a background in Electrical Engineering and an unusual path: I started in industrial maintenance, transitioned into software, and now combine development with academic research. I'm currently an AI Dev Trainee at <strong>Lunella (Verzel)</strong>, learning hands-on with Python, Java Quarkus, and AWS.",
+        "On the academic side, I'm pursuing two simultaneous master's degrees: <strong>Electrical Engineering at UFABC</strong> (FPGA/FPAA systems research) and <strong>Applied Computing at UFPA</strong> (Artificial Intelligence & Deep Learning). Research teaches me to think deeply — a habit I carry into my code.",
+        "I'm still building my professional experience, but I'm fully committed to it: practical projects, continuous learning, research, and real-world work. If you're looking for someone who learns fast, studies seriously, and brings a different perspective — let's talk.",
       ],
       industryLabel: "Industry",
       academiaLabel: "Academia",

@@ -208,7 +208,7 @@ const App: React.FC = () => {
               <h1 className="text-4xl font-bold font-display text-lightestSlate leading-tight mb-2">
                 Oséias Farias.
               </h1>
-              <h2 className="text-lg font-semibold font-display text-lightSlate mb-4">
+              <h2 className="text-base font-semibold font-display text-lightSlate mb-4 leading-snug">
                 {content.hero.title}
               </h2>
 
