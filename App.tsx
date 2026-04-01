@@ -162,15 +162,22 @@ const App: React.FC = () => {
 
       {/* ── Full-screen background image ─────────────────────────────────── */}
       <div className="fixed inset-0 z-0 pointer-events-none">
+        {/* Light: imagem escurecida via filter + overlay escuro */}
         <img
           src="https://news.mit.edu/sites/default/files/styles/news_article__image_gallery/public/images/202507/MIT_Learning-Symmetric-01_0.jpg"
           alt=""
-          className="w-full h-full object-cover opacity-[0.22] dark:opacity-[0.35]"
+          className="dark:hidden w-full h-full object-cover opacity-80"
+          style={{ filter: 'brightness(0.25) saturate(0.8)' }}
         />
-        {/* Light: overlay escuro suave para criar contraste com os textos */}
-        <div className="absolute inset-0 bg-slate-200/60 dark:hidden" />
-        {/* Dark: overlay navy leve para manter legibilidade */}
-        <div className="absolute inset-0 hidden dark:block bg-navy/65" />
+        <div className="dark:hidden absolute inset-0 bg-slate-900/30" />
+
+        {/* Dark: imagem suave sobre fundo navy */}
+        <img
+          src="https://news.mit.edu/sites/default/files/styles/news_article__image_gallery/public/images/202507/MIT_Learning-Symmetric-01_0.jpg"
+          alt=""
+          className="hidden dark:block w-full h-full object-cover opacity-[0.25]"
+        />
+        <div className="hidden dark:block absolute inset-0 bg-navy/70" />
       </div>
 
       {/* ── Mobile top bar ───────────────────────────────────────────────── */}
