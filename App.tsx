@@ -222,8 +222,8 @@ const App: React.FC = () => {
       <div className="relative z-10 mx-auto min-h-screen max-w-screen-xl px-6 md:px-12 lg:px-24 lg:flex">
 
         {/* ════════════════════ SIDEBAR ════════════════════ */}
-        <header className="hidden lg:flex lg:sticky lg:top-0 lg:h-screen lg:w-[42%] lg:flex-col lg:justify-between lg:py-24 lg:pr-12">
-          <div className="flex flex-col justify-between h-full">
+        <header className="hidden lg:flex lg:sticky lg:top-0 lg:h-screen lg:w-[42%] lg:flex-col lg:justify-between lg:py-12 xl:py-24 lg:pr-12 lg:overflow-y-auto">
+          <div className="flex flex-col justify-between min-h-full gap-10">
 
           {/* Top block */}
           <div>
