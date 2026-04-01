@@ -256,10 +256,6 @@ const App: React.FC = () => {
                 </span>
               </div>
 
-              {/* Descrição — só em xl para não estourar em lg */}
-              <p className={`hidden xl:block text-[15px] ${textMut} leading-relaxed max-w-xs`}>
-                {content.hero.description}
-              </p>
             </motion.div>
 
             {/* Nav links */}
