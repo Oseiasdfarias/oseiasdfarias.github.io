@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br" class="scroll-smooth">
+<html lang="pt-br" class="scroll-smooth dark">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="https://lucide.dev/favicon.svg" />
@@ -13,58 +13,139 @@
         theme: {
           extend: {
             fontFamily: {
-              sans: ['Inter', 'sans-serif'],
+              sans:    ['Inter', 'sans-serif'],
               display: ['Space Grotesk', 'sans-serif'],
-              mono: ['JetBrains Mono', 'monospace'],
+              mono:    ['JetBrains Mono', 'monospace'],
+              pixel:   ['"VT323"', 'monospace'],
             },
             colors: {
-              navy:        '#0a0f1e',
-              navyCard:    '#0f1728',
-              navyHover:   '#172035',
-              navyBorder:  '#1e2d4a',
-              accent:      '#38bdf8',
-              accent2:     '#818cf8',
-              green:       '#4ade80',
-              slate:       '#8892b0',
-              lightSlate:  '#a8b2d8',
-              lightestSlate: '#ccd6f6',
+              /* ── Dark theme (lab / oscilloscope) ─────────── */
+              navy:          '#080c18',
+              navyCard:      '#0d1226',
+              navyHover:     '#131a30',
+              navyBorder:    '#1e2d4a',
+              accent:        '#f59e0b',   /* amber — EE / lab */
+              accent2:       '#818cf8',   /* indigo — ML / AI */
+              green:         '#10b981',   /* emerald */
+              slate:         '#6272a4',
+              lightSlate:    '#a8b2d8',
+              lightestSlate: '#e8eaf6',
+              /* ── Light theme (academic paper) ────────────── */
+              paper:         '#faf8f3',
+              paperCard:     '#ffffff',
+              paperHover:    '#f5ede0',
+              paperBorder:   '#ddd0b8',
+              amberDark:     '#b45309',
             },
-            backgroundImage: {
-              'gradient-accent': 'linear-gradient(135deg, #38bdf8, #818cf8)',
-            },
-            animation: {
-              'fade-in': 'fadeIn 0.6s ease-out forwards',
-            },
-            keyframes: {
-              fadeIn: {
-                '0%': { opacity: '0', transform: 'translateY(16px)' },
-                '100%': { opacity: '1', transform: 'translateY(0)' },
-              }
-            }
           }
         }
       }
     </script>
-    <!-- Google Fonts -->
+
+    <!-- Google Fonts: Inter + Space Grotesk + JetBrains Mono + VT323 (pixel) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=VT323&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="/index.css">
-  <script type="importmap">
+    <style>
+      /* ── Scanlines overlay (dark mode only) ─────────────────── */
+      .dark .scanlines::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 3px,
+          rgba(0, 0, 0, 0.06) 3px,
+          rgba(0, 0, 0, 0.06) 4px
+        );
+        pointer-events: none;
+        z-index: 4;
+      }
+
+      /* ── Pixel offset shadow on card hover ──────────────────── */
+      .pixel-card {
+        transition: box-shadow 0.15s steps(2), border-color 0.15s steps(2), transform 0.15s steps(2);
+      }
+      .pixel-card:hover {
+        box-shadow: 4px 4px 0px 0px #f59e0b;
+        transform: translate(-2px, -2px);
+      }
+      .pixel-card-indigo:hover {
+        box-shadow: 4px 4px 0px 0px #818cf8;
+        transform: translate(-2px, -2px);
+      }
+      .light .pixel-card:hover,
+      :not(.dark) .pixel-card:hover {
+        box-shadow: 4px 4px 0px 0px #b45309;
+      }
+
+      /* ── Blinking block cursor ──────────────────────────────── */
+      @keyframes pixel-blink {
+        0%, 49%  { opacity: 1; }
+        50%, 100% { opacity: 0; }
+      }
+      .pixel-cursor::after {
+        content: '█';
+        font-family: 'VT323', monospace;
+        color: #f59e0b;
+        margin-left: 4px;
+        animation: pixel-blink 1s step-end infinite;
+        font-size: 0.9em;
+      }
+
+      /* ── Pixel dot pulse (nav active) ───────────────────────── */
+      @keyframes pixel-pulse {
+        0%, 100% { opacity: 1; }
+        50%       { opacity: 0.3; }
+      }
+      .pixel-dot {
+        animation: pixel-pulse 1.5s step-start infinite;
+      }
+
+      /* ── CRT vignette (dark mode only) ──────────────────────── */
+      .dark .crt-vignette::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(ellipse at center,
+          transparent 60%,
+          rgba(0, 0, 0, 0.35) 100%
+        );
+        pointer-events: none;
+        z-index: 3;
+      }
+
+      /* ── Pixel tag borders ───────────────────────────────────── */
+      .tag-pixel {
+        image-rendering: pixelated;
+        clip-path: polygon(
+          0 2px, 2px 2px, 2px 0,
+          calc(100% - 2px) 0, calc(100% - 2px) 2px, 100% 2px,
+          100% calc(100% - 2px), calc(100% - 2px) calc(100% - 2px),
+          calc(100% - 2px) 100%, 2px 100%, 2px calc(100% - 2px),
+          0 calc(100% - 2px)
+        );
+      }
+    </style>
+
+
+    <link rel="stylesheet" href="/index.css">
+    <script type="importmap">
 {
   "imports": {
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/":        "https://aistudiocdn.com/react@^19.2.0/",
+    "react":         "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/":    "https://aistudiocdn.com/react-dom@^19.2.0/",
     "framer-motion": "https://aistudiocdn.com/framer-motion@^12.23.24",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0"
+    "lucide-react":  "https://aistudiocdn.com/lucide-react@^0.554.0"
   }
 }
 </script>
-  <script type="module" crossorigin src="/assets/index-CODGbLiT.js"></script>
-</head>
-  <body class="bg-slate-50 text-slate-700 dark:bg-navy dark:text-lightSlate font-sans transition-colors duration-300">
+    <script type="module" crossorigin src="/assets/index-B4JpzDEn.js"></script>
+  </head>
+  <body class="bg-paper text-slate-700 dark:bg-navy dark:text-lightSlate font-sans transition-colors duration-300">
     <div id="root"></div>
-</body>
+  </body>
 </html>
