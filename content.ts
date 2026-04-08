@@ -22,9 +22,9 @@ export const translations: Record<Language, Content> = {
     about: {
       title: "Sobre Mim",
       description: [
-        "Sou desenvolvedor backend júnior com formação em Engenharia Elétrica e uma trajetória incomum: comecei na área técnica industrial, migrei para software e hoje combino desenvolvimento com pesquisa acadêmica. Atualmente faço estágio/trainee como Dev IA na <strong>Lunella (Verzel)</strong>, onde aprendo na prática com Python, Java Quarkus e AWS.",
-        "No lado acadêmico, curso dois mestrados simultâneos: <strong>Engenharia Elétrica na UFABC</strong> (pesquisa em sistemas FPGA/FPAA) e <strong>Computação Aplicada na UFPA</strong> (Inteligência Artificial & Deep Learning). A pesquisa me força a pensar com profundidade — um hábito que levo para o código.",
-        "Ainda estou construindo minha experiência de mercado, mas me dedico intensamente a isso: projetos práticos, cursos, pesquisa e trabalho real. Se você busca alguém que aprende rápido, estuda com seriedade e traz uma visão diferente — vamos conversar.",
+        "Sou Trainee Dev IA na <strong>Verzel</strong>, atuando no desenvolvimento da plataforma <strong>Lunella</strong> — solução de automação de atendimento com IA. Trabalho com backend em Python e Java (Quarkus), integração de serviços AWS (SQS, SNS, EventBridge, Lambda), Vue.js e bancos de dados PostgreSQL, DynamoDB e Redis.",
+        "No lado acadêmico, sou pesquisador bolsista no mestrado em <strong>Engenharia Elétrica na UFABC</strong> (Reconfiguração Artificial / Antifragilidade), com desenvolvimento de agentes em Java e simulações em Matlab/HIL. Curso também o mestrado em <strong>Computação Aplicada na UFPA</strong>, com foco em IA e Deep Learning.",
+        "Minha trajetória combina engenharia elétrica, ciência de dados e desenvolvimento de software. Busco aliar rigor acadêmico à prática para construir soluções tecnológicas com foco em IA generativa e microsserviços.",
       ],
       industryLabel: "Mercado",
       academiaLabel: "Academia",
@@ -86,9 +86,9 @@ export const translations: Record<Language, Content> = {
     about: {
       title: "About Me",
       description: [
-        "I'm a junior backend developer with a background in Electrical Engineering and an unusual path: I started in industrial maintenance, transitioned into software, and now combine development with academic research. I'm currently an AI Dev Trainee at <strong>Lunella (Verzel)</strong>, learning hands-on with Python, Java Quarkus, and AWS.",
-        "On the academic side, I'm pursuing two simultaneous master's degrees: <strong>Electrical Engineering at UFABC</strong> (FPGA/FPAA systems research) and <strong>Applied Computing at UFPA</strong> (Artificial Intelligence & Deep Learning). Research teaches me to think deeply — a habit I carry into my code.",
-        "I'm still building my professional experience, but I'm fully committed to it: practical projects, continuous learning, research, and real-world work. If you're looking for someone who learns fast, studies seriously, and brings a different perspective — let's talk.",
+        "I'm an AI Dev Trainee at <strong>Verzel</strong>, working on <strong>Lunella</strong> — an AI-powered customer service automation platform. My work covers backend development in Python and Java (Quarkus), AWS integration (SQS, SNS, EventBridge, Lambda), Vue.js support, and databases including PostgreSQL, DynamoDB, and Redis.",
+        "On the academic side, I'm a research scholar in the <strong>Electrical Engineering Master's at UFABC</strong> (Artificial Reconfiguration / Antifragility), developing Java agents and Matlab/HIL simulations. I'm also enrolled in the <strong>Applied Computing Master's at UFPA</strong>, focused on AI and Deep Learning.",
+        "My background bridges electrical engineering, data science, and software development. I aim to combine academic rigor with practical delivery — building solutions focused on generative AI and microservices architecture.",
       ],
       industryLabel: "Industry",
       academiaLabel: "Academia",
@@ -163,9 +163,9 @@ export const getProjects = (lang: Language): ProjectData[] => [
   {
     title: "Lunella AI Platform",
     description: lang === 'pt'
-      ? "Plataforma de automação de atendimento ao cliente com IA generativa. Backend em Python/Java Quarkus, microserviços na AWS (Lambda, SQS, SNS) e interface Vue.js com dados em PostgreSQL/DynamoDB."
-      : "AI-powered customer service automation platform. Backend in Python/Java Quarkus, microservices on AWS (Lambda, SQS, SNS) and Vue.js interface with PostgreSQL/DynamoDB.",
-    tags: ["Java", "Quarkus", "Python", "AWS Lambda", "Vue.js", "DynamoDB"],
+      ? "Plataforma de automação de atendimento com IA generativa. Backend Python/Java Quarkus, microserviços AWS (SQS, SNS, EventBridge, Lambda), Vue.js e bancos PostgreSQL, DynamoDB e Redis."
+      : "AI-powered customer service automation platform. Python/Java Quarkus backend, AWS microservices (SQS, SNS, EventBridge, Lambda), Vue.js and PostgreSQL, DynamoDB, Redis.",
+    tags: ["Java", "Quarkus", "Python", "AWS", "Vue.js", "Redis", "DynamoDB"],
     image: "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?q=80&w=2006&auto=format&fit=crop",
     link: "",
     category: "ai",
@@ -173,21 +173,21 @@ export const getProjects = (lang: Language): ProjectData[] => [
   {
     title: "Artificial Antifragility System",
     description: lang === 'pt'
-      ? "Sistema de controle antifrágil com FPGA/FPAA e agentes de IA. Pesquisa de mestrado com Hardware-in-the-Loop para validação de sistemas que melhoram sob perturbação."
-      : "Antifragile control system with FPGA/FPAA and AI agents. Master's research using Hardware-in-the-Loop to validate systems that improve under disruption.",
-    tags: ["FPAA", "FPGA", "Java", "Matlab", "HIL", "Control Systems"],
+      ? "Sistema de controle antifrágil com FPGA/FPAA e agentes Java. Pesquisa de mestrado com ambiente simulado em Matlab integrado via Hardware-in-the-Loop (HIL)."
+      : "Antifragile control system with FPGA/FPAA and Java agents. Master's research with Matlab simulation environment integrated via Hardware-in-the-Loop (HIL).",
+    tags: ["FPAA", "FPGA", "Java", "Matlab", "HIL", "Python"],
     image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop",
     link: "",
     category: "research",
   },
   {
-    title: "API Fórum Hub",
+    title: "Hotel Booking REST API",
     description: lang === 'pt'
-      ? "API REST completa com Spring Boot, JWT, Flyway e MySQL. Autenticação stateless, migrações de banco versionadas e cobertura de testes com JUnit 5."
-      : "Complete REST API with Spring Boot, JWT, Flyway, and MySQL. Stateless auth, versioned DB migrations, and test coverage with JUnit 5.",
-    tags: ["Java", "Spring Boot", "Spring Security", "MySQL", "JWT"],
-    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop",
-    link: "https://github.com/Oseiasdfarias/forum_hub_challenge",
+      ? "API REST completa para sistema de reserva de hotéis com Flask, autenticação JWT, integração com banco de dados e deploy. Desenvolvida como projeto prático do curso REST APIs com Python."
+      : "Complete REST API for hotel booking system using Flask, JWT auth, database integration and deployment. Built as a practical project for the REST APIs with Python course.",
+    tags: ["Python", "Flask", "JWT", "REST API", "SQLAlchemy"],
+    image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop",
+    link: "https://github.com/Oseiasdfarias/reserva-hoteis-api",
     category: "backend",
   },
   {
@@ -201,24 +201,24 @@ export const getProjects = (lang: Language): ProjectData[] => [
     category: "backend",
   },
   {
-    title: "AWS Serverless App",
+    title: "API Fórum Hub",
     description: lang === 'pt'
-      ? "Arquitetura serverless escalável com AWS Lambda, API Gateway e DynamoDB. Deploy com Serverless Framework, cold start otimizado e custo zero em idle."
-      : "Scalable serverless architecture with AWS Lambda, API Gateway, and DynamoDB. Deployed with Serverless Framework, optimized cold start, zero idle cost.",
-    tags: ["Python", "AWS Lambda", "Serverless", "DynamoDB", "API Gateway"],
-    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop",
-    link: "https://github.com/Oseiasdfarias/AWS_lambda_com_python_e_serverless_framework",
+      ? "API REST com Spring Boot 3, Spring Security, JWT e Flyway. Autenticação stateless, migrações versionadas e testes com JUnit 5. Desafio do programa Oracle ONE."
+      : "REST API with Spring Boot 3, Spring Security, JWT and Flyway. Stateless auth, versioned migrations and JUnit 5 tests. Oracle ONE program challenge.",
+    tags: ["Java", "Spring Boot", "Spring Security", "MySQL", "JWT"],
+    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop",
+    link: "https://github.com/Oseiasdfarias/forum_hub_challenge",
     category: "backend",
   },
   {
-    title: "Catálogo LiteraLura",
+    title: "LabVirtual — Simulador de Controle",
     description: lang === 'pt'
-      ? "Integração com API Gutendex para catálogo de livros. Spring Data JPA, PostgreSQL e interface CLI interativa para busca, filtragem e persistência de dados literários."
-      : "Gutendex API integration for book catalog. Spring Data JPA, PostgreSQL, and interactive CLI for searching, filtering, and persisting literary data.",
-    tags: ["Java", "Spring Data JPA", "PostgreSQL", "CLI"],
-    image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=2028&auto=format&fit=crop",
-    link: "https://github.com/Oseiasdfarias/literalura",
-    category: "backend",
+      ? "Biblioteca Python com simuladores gráficos 3D (VPython) para estudo de sistemas de controle. Projeto acadêmico UFPA que elimina a necessidade de protótipos físicos no ensino de controle."
+      : "Python library with 3D graphical simulators (VPython) for control systems study. UFPA academic project eliminating the need for physical prototypes in control engineering education.",
+    tags: ["Python", "VPython", "Control Systems", "Simulation", "UFPA"],
+    image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=2070&auto=format&fit=crop",
+    link: "https://github.com/Oseiasdfarias/LabVirtual",
+    category: "research",
   },
 ];
 
@@ -226,43 +226,53 @@ export const getProjects = (lang: Language): ProjectData[] => [
 export const getExperience = (lang: Language): ExperienceData[] => [
   {
     title:   lang === 'pt' ? "Trainee Dev IA" : "AI Dev Trainee",
-    company: "Lunella · Verzel Soluções em Sistemas",
+    company: "Verzel Soluções em Sistemas · Lunella",
     period:  lang === 'pt' ? "dez 2025 – presente" : "Dec 2025 – Present",
     description: lang === 'pt'
-      ? "Desenvolvimento backend com Python e Java Quarkus para plataforma de atendimento com IA generativa. Microserviços na AWS (SQS, SNS, Lambda), interfaces com Vue.js e bancos PostgreSQL/DynamoDB."
-      : "Backend development with Python and Java Quarkus for a generative AI customer service platform. Microservices on AWS (SQS, SNS, Lambda), Vue.js interfaces, and PostgreSQL/DynamoDB databases.",
+      ? "Desenvolvimento backend com Python e Java Quarkus para plataforma de atendimento com IA generativa. Integração de serviços AWS (SQS, SNS, EventBridge, Lambda), Vue.js e bancos PostgreSQL, DynamoDB e Redis."
+      : "Backend development with Python and Java Quarkus for a generative AI customer service platform. AWS integration (SQS, SNS, EventBridge, Lambda), Vue.js, and PostgreSQL, DynamoDB, Redis.",
     type: "industry",
-    tags: ["Python", "Java", "AWS", "Quarkus", "Vue.js"],
+    tags: ["Python", "Java", "Quarkus", "AWS", "Redis", "Vue.js"],
   },
   {
-    title:   lang === 'pt' ? "Pesquisador Mestrando (Bolsista)" : "Master's Researcher (Scholar)",
-    company: "Fundep / UFABC",
+    title:   lang === 'pt' ? "Pesquisador Mestrando (Bolsista FUNDEP)" : "Master's Researcher (FUNDEP Scholar)",
+    company: "FUNDEP / UFABC",
     period:  lang === 'pt' ? "abr 2025 – presente" : "Apr 2025 – Present",
     description: lang === 'pt'
-      ? "Pesquisa em Antifragilidade Artificial: desenvolvimento de soluções em Python/Java para reconfiguração dinâmica de sistemas de controle em FPAA/FPGA com Hardware-in-the-Loop."
-      : "Research in Artificial Antifragility: development of Python/Java solutions for dynamic reconfiguration of control systems in FPAA/FPGA with Hardware-in-the-Loop.",
+      ? "Pesquisa em Antifragilidade Artificial: agentes Java para reconfiguração autônoma de circuitos FPAA, simulação em Matlab integrada via HIL e treinamento de algoritmos de IA para detecção adaptativa de falhas."
+      : "Research in Artificial Antifragility: Java agents for autonomous FPAA reconfiguration, Matlab simulation via HIL, and AI algorithm training for adaptive fault detection.",
     type: "research",
     tags: ["Python", "Java", "FPGA", "FPAA", "Matlab", "HIL"],
   },
   {
-    title:   lang === 'pt' ? "Estagiário em Manutenção" : "Maintenance Intern",
+    title:   lang === 'pt' ? "Oficial de Manutenção" : "Maintenance Officer",
+    company: "Dow · Terceirizado",
+    period:  lang === 'pt' ? "dez 2024 – mar 2025" : "Dec 2024 – Mar 2025",
+    description: lang === 'pt'
+      ? "Acompanhamento de equipes de manutenção mecânica e elétrica, elaboração de procedimentos, validação de riscos, gestão de mudanças (MOC) e treinamento de colaboradores."
+      : "Supervision of mechanical and electrical maintenance teams, procedure writing, risk validation, change management (MOC) and staff training.",
+    type: "industry",
+    tags: ["Manutenção", "MOC", "Excel", "Procedimentos"],
+  },
+  {
+    title:   lang === 'pt' ? "Estagiário em Manutenção UHT" : "UHT Maintenance Intern",
     company: "Grupo Piracanjuba",
     period:  lang === 'pt' ? "set 2023 – mar 2024" : "Sep 2023 – Mar 2024",
     description: lang === 'pt'
-      ? "Análise de dados de produção com Python (Pandas) e Excel para identificação de gargalos e otimização de processos industriais no setor de laticínios."
-      : "Production data analysis with Python (Pandas) and Excel to identify bottlenecks and optimize industrial processes in the dairy sector.",
+      ? "Projeto de ciência de dados para otimizar eficiência das linhas UHT. Análise de dados históricos com Pandas, Matplotlib e Seaborn para reduzir paradas não planejadas e padronizar viradas de volume."
+      : "Data science project to optimize UHT line efficiency. Analysis of historical data with Pandas, Matplotlib and Seaborn to reduce unplanned downtime and standardize volume changeovers.",
     type: "industry",
-    tags: ["Python", "Pandas", "Excel", "Data Analysis"],
+    tags: ["Python", "Pandas", "Matplotlib", "Seaborn", "Excel"],
   },
   {
-    title:   lang === 'pt' ? "Técnico em Eletrotécnica" : "Electrotechnics Technician",
-    company: "IFPA",
-    period:  "2012 – 2016",
+    title:   lang === 'pt' ? "Bolsista de Iniciação Científica" : "Undergraduate Research Scholar",
+    company: "LACUT · Universidade Federal do Pará",
+    period:  lang === 'pt' ? "set 2022 – ago 2023" : "Sep 2022 – Aug 2023",
     description: lang === 'pt'
-      ? "Manutenção preventiva e corretiva em sistemas elétricos industriais. Eletrônica analógica e digital, programação em C para microcontroladores."
-      : "Preventive and corrective maintenance of industrial electrical systems. Analog and digital electronics, C programming for microcontrollers.",
-    type: "industry",
-    tags: ["C", "Electronics", "Maintenance", "PLC"],
+      ? "Projeto de construção de um Radiotelescópio Amador no campus de Tucuruí. Levantamento de hardware/software, pesquisa bibliográfica e orçamento de dispositivos. Resultados apresentados no simpósio científico do LACUT."
+      : "Amateur Radio Telescope construction project at the Tucuruí campus. Hardware/software survey, bibliographic research and device budgeting. Results presented at the LACUT scientific symposium.",
+    type: "research",
+    tags: ["Pesquisa", "Hardware", "Radioastronomia", "Python"],
   },
 ];
 
@@ -294,8 +304,8 @@ export const getEducation = (lang: Language): EducationData[] => [
     institution: "UFPA",
     period:      "Jan 2017 – Sep 2024",
     description: lang === 'pt'
-      ? "Controle de Sistemas · Gêmeos Digitais · Python/Matlab"
-      : "Control Systems · Digital Twins · Python/Matlab",
+      ? "TCC: Gêmeo Digital para Lab. Virtual de Controle · Artigo publicado · Monitor de Instalações Elétricas"
+      : "Thesis: Digital Twin for Virtual Control Lab · Published paper · Electrical Installations teaching assistant",
     logo:        "https://ufpa.br/wp-content/uploads/2023/12/Brasao-UFPA_Sigla-300x281.png",
   },
   {
@@ -308,26 +318,26 @@ export const getEducation = (lang: Language): EducationData[] => [
 ];
 
 // ─── Certifications ────────────────────────────────────────────────────────
-export const getCertifications = (lang: Language): CertificationData[] => [
+export const getCertifications = (_lang: Language): CertificationData[] => [
   {
-    title:  "AWS Machine Learning Foundations",
-    issuer: "Udacity",
-    date:   "Oct 2021",
-    skills: ["AWS", "Machine Learning", "Deep Learning"],
-    link:   "#",
-  },
-  {
-    title:  "Deep Learning A-Z™: Hands-On Artificial Neural Networks",
+    title:  "REST APIs com Python e Flask",
     issuer: "Udemy",
-    date:   "2021",
-    skills: ["Python", "TensorFlow", "Keras"],
+    date:   "Out 2025",
+    skills: ["Python", "Flask", "REST API"],
+    link:   "https://udemy.com/certificate/UC-563dd22a-5969-472b-903f-810314964a90",
+  },
+  {
+    title:  "EBA — Estatística do Básico ao Avançado",
+    issuer: "EBA",
+    date:   "Abr 2025",
+    skills: ["Python", "Estatística", "Pandas", "Data Science"],
     link:   "#",
   },
   {
-    title:  "Formação Java e Orientação a Objetos",
+    title:  "Formação SQL com MySQL Server da Oracle",
     issuer: "Alura / Oracle ONE",
-    date:   "Apr 2024",
-    skills: ["Java", "OOP", "Spring"],
+    date:   "Nov 2024",
+    skills: ["MySQL", "SQL"],
     link:   "#",
   },
   {
@@ -338,17 +348,38 @@ export const getCertifications = (lang: Language): CertificationData[] => [
     link:   "#",
   },
   {
-    title:  "REST APIs com Python e Flask",
-    issuer: "Udemy",
-    date:   "Oct 2025",
-    skills: ["Python", "Flask", "API Rest"],
+    title:  "Programa Oracle Next Education — Backend Java",
+    issuer: "Alura / Oracle ONE",
+    date:   "Jul 2024",
+    skills: ["Java", "Spring Boot", "PostgreSQL"],
     link:   "#",
   },
   {
-    title:  "AWS Lambda com Python e Serverless",
+    title:  "AWS Lambda com Python e Serverless Framework",
     issuer: "Udemy",
-    date:   "Apr 2024",
+    date:   "Abr 2024",
     skills: ["AWS Lambda", "Serverless", "Python"],
+    link:   "https://udemy.com/certificate/UC-e9b6a86d-443f-47a8-81b9-9f4f46a20ef8",
+  },
+  {
+    title:  "Capacitação em Sistemas Embarcados — IoT",
+    issuer: "IFMA / SOFTEX",
+    date:   "Nov 2024",
+    skills: ["Embedded Systems", "IoT", "Microcontrollers", "C/C++"],
+    link:   "#",
+  },
+  {
+    title:  "Curso de Capacitação em Inteligência Artificial",
+    issuer: "IFAL",
+    date:   "Jan 2021",
+    skills: ["Inteligência Artificial", "Deep Learning", "Python"],
+    link:   "#",
+  },
+  {
+    title:  "AWS Machine Learning Foundations",
+    issuer: "Udacity",
+    date:   "Out 2021",
+    skills: ["AWS", "Machine Learning", "Deep Learning"],
     link:   "#",
   },
   {
@@ -356,6 +387,6 @@ export const getCertifications = (lang: Language): CertificationData[] => [
     issuer: "Udemy",
     date:   "2021",
     skills: ["Scikit-Learn", "Pandas", "Data Science"],
-    link:   "#",
+    link:   "https://udemy.com/certificate/UC-e38f3500-7c76-40d9-aa3d-414dfc3a9d9c",
   },
 ];
