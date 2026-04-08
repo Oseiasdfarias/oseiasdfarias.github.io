@@ -19,23 +19,23 @@
               pixel:   ['"VT323"', 'monospace'],
             },
             colors: {
-              /* ── Dark theme (warm graphite / academic library) ─ */
-              navy:          '#111009',   /* near-black, warm tint    */
-              navyCard:      '#1c1912',   /* card surface             */
-              navyHover:     '#25201a',   /* hover state              */
-              navyBorder:    '#352d20',   /* warm brown border        */
-              accent:        '#c9a45a',   /* muted gold — scholarly   */
-              accent2:       '#6fa88c',   /* sage green — ML / AI     */
-              green:         '#6a9e6a',   /* forest green             */
-              slate:         '#7a6b58',   /* warm muted body          */
-              lightSlate:    '#b5a48c',   /* secondary text           */
-              lightestSlate: '#e8d9c0',   /* headings — warm cream    */
-              /* ── Light theme (academic journal / parchment) ─── */
-              paper:         '#f5f2eb',   /* parchment background     */
+              /* ── Dark theme (minimal / charcoal) ─────────────── */
+              navy:          '#111111',   /* near-black               */
+              navyCard:      '#1a1a1a',   /* card surface             */
+              navyHover:     '#222222',   /* hover state              */
+              navyBorder:    '#2e2e2e',   /* subtle border            */
+              accent:        '#c8a870',   /* gold discreto — único    */
+              accent2:       '#a89070',   /* gold escuro — secundário */
+              green:         '#7a9e7a',   /* verde muted (status)     */
+              slate:         '#666666',   /* muted text               */
+              lightSlate:    '#999999',   /* secondary text           */
+              lightestSlate: '#e8e8e8',   /* headings                 */
+              /* ── Light theme (minimal / paper) ──────────────── */
+              paper:         '#fafaf8',   /* branco levemente quente  */
               paperCard:     '#ffffff',   /* card surface             */
-              paperHover:    '#ece7da',   /* hover state              */
-              paperBorder:   '#c6bba6',   /* dividers / borders       */
-              amberDark:     '#7a5a1e',   /* dark gold (pixel shadow) */
+              paperHover:    '#f0eeea',   /* hover state              */
+              paperBorder:   '#d8d4cc',   /* dividers                 */
+              amberDark:     '#8a6e30',   /* pixel shadow light mode  */
             },
           }
         }
@@ -69,16 +69,16 @@
         transition: box-shadow 0.15s steps(2), border-color 0.15s steps(2), transform 0.15s steps(2);
       }
       .pixel-card:hover {
-        box-shadow: 4px 4px 0px 0px #c9a45a;
+        box-shadow: 4px 4px 0px 0px #c8a870;
         transform: translate(-2px, -2px);
       }
       .pixel-card-indigo:hover {
-        box-shadow: 4px 4px 0px 0px #6fa88c;
+        box-shadow: 4px 4px 0px 0px #a89070;
         transform: translate(-2px, -2px);
       }
       .light .pixel-card:hover,
       :not(.dark) .pixel-card:hover {
-        box-shadow: 4px 4px 0px 0px #7a5a1e;
+        box-shadow: 4px 4px 0px 0px #5a3a20;
       }
       .light .pixel-card-indigo:hover,
       :not(.dark) .pixel-card-indigo:hover {
@@ -93,7 +93,7 @@
       .pixel-cursor::after {
         content: '█';
         font-family: 'VT323', monospace;
-        color: #c9a45a;
+        color: #c8a870;
         margin-left: 4px;
         animation: pixel-blink 1s step-end infinite;
         font-size: 0.9em;
@@ -147,7 +147,7 @@
   }
 }
 </script>
-    <script type="module" crossorigin src="/assets/index-gwV5b1MZ.js"></script>
+    <script type="module" crossorigin src="/assets/index-PQ5OmosE.js"></script>
   </head>
   <body class="bg-paper text-slate-800 dark:bg-navy dark:text-lightSlate font-sans transition-colors duration-300">
     <div id="root"></div>
