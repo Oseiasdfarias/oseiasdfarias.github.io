@@ -19,23 +19,23 @@
               pixel:   ['"VT323"', 'monospace'],
             },
             colors: {
-              /* ── Dark theme (lab / oscilloscope) ─────────── */
-              navy:          '#080c18',
-              navyCard:      '#0d1226',
-              navyHover:     '#131a30',
-              navyBorder:    '#1e2d4a',
-              accent:        '#f59e0b',   /* amber — EE / lab */
-              accent2:       '#818cf8',   /* indigo — ML / AI */
-              green:         '#10b981',   /* emerald */
-              slate:         '#6272a4',
-              lightSlate:    '#a8b2d8',
-              lightestSlate: '#e8eaf6',
-              /* ── Light theme (academic paper) ────────────── */
-              paper:         '#faf8f3',
-              paperCard:     '#ffffff',
-              paperHover:    '#f5ede0',
-              paperBorder:   '#ddd0b8',
-              amberDark:     '#b45309',
+              /* ── Dark theme (research lab / academic night) ─── */
+              navy:          '#0c1020',   /* deep academic dark       */
+              navyCard:      '#131828',   /* card surface             */
+              navyHover:     '#192036',   /* hover state              */
+              navyBorder:    '#1e2c46',   /* dividers / borders       */
+              accent:        '#6b9fd4',   /* steel blue — primary     */
+              accent2:       '#4da898',   /* teal — ML / AI           */
+              green:         '#5a9e72',   /* muted forest green       */
+              slate:         '#5a6b85',   /* muted body text          */
+              lightSlate:    '#8faec8',   /* secondary text           */
+              lightestSlate: '#d4e4f5',   /* headings                 */
+              /* ── Light theme (academic journal / parchment) ─── */
+              paper:         '#f5f2eb',   /* parchment background     */
+              paperCard:     '#ffffff',   /* card surface             */
+              paperHover:    '#ece7da',   /* hover state              */
+              paperBorder:   '#c6bba6',   /* dividers / borders       */
+              amberDark:     '#1a4b8a',   /* deep blue (pixel shadow) */
             },
           }
         }
@@ -69,16 +69,20 @@
         transition: box-shadow 0.15s steps(2), border-color 0.15s steps(2), transform 0.15s steps(2);
       }
       .pixel-card:hover {
-        box-shadow: 4px 4px 0px 0px #f59e0b;
+        box-shadow: 4px 4px 0px 0px #6b9fd4;
         transform: translate(-2px, -2px);
       }
       .pixel-card-indigo:hover {
-        box-shadow: 4px 4px 0px 0px #818cf8;
+        box-shadow: 4px 4px 0px 0px #4da898;
         transform: translate(-2px, -2px);
       }
       .light .pixel-card:hover,
       :not(.dark) .pixel-card:hover {
-        box-shadow: 4px 4px 0px 0px #b45309;
+        box-shadow: 4px 4px 0px 0px #1a4b8a;
+      }
+      .light .pixel-card-indigo:hover,
+      :not(.dark) .pixel-card-indigo:hover {
+        box-shadow: 4px 4px 0px 0px #1a7a6e;
       }
 
       /* ── Blinking block cursor ──────────────────────────────── */
@@ -89,7 +93,7 @@
       .pixel-cursor::after {
         content: '█';
         font-family: 'VT323', monospace;
-        color: #f59e0b;
+        color: #6b9fd4;
         margin-left: 4px;
         animation: pixel-blink 1s step-end infinite;
         font-size: 0.9em;
@@ -143,9 +147,9 @@
   }
 }
 </script>
-    <script type="module" crossorigin src="/assets/index-B4JpzDEn.js"></script>
+    <script type="module" crossorigin src="/assets/index-DK5JE1qL.js"></script>
   </head>
-  <body class="bg-paper text-slate-700 dark:bg-navy dark:text-lightSlate font-sans transition-colors duration-300">
+  <body class="bg-paper text-slate-800 dark:bg-navy dark:text-lightSlate font-sans transition-colors duration-300">
     <div id="root"></div>
   </body>
 </html>
