@@ -3,11 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Github, Linkedin, Youtube, BookOpen, Mail,
   ExternalLink, ArrowUpRight, Menu, X,
-  FlaskConical, Briefcase, Award, Globe, Sun, Moon,
+  FlaskConical, Briefcase, Award, Globe, Sun, Moon, Heart, FileText,
 } from 'lucide-react';
 import {
   translations, getProjects, getExperience,
-  getEducation, getCertifications, getResearch,
+  getEducation, getCertifications, getResearch, getPublications,
 } from './content';
 import { Language } from './types';
 
@@ -28,13 +28,15 @@ const categoryLabel: Record<string, Record<Language, string>> = {
 };
 
 const typeColor: Record<string, string> = {
-  industry: 'text-accent  border-accent/20  bg-accent/5',
-  research: 'text-accent2 border-accent2/20 bg-accent2/5',
+  industry:  'text-accent  border-accent/20  bg-accent/5',
+  research:  'text-accent2 border-accent2/20 bg-accent2/5',
+  volunteer: 'text-green   border-green/20   bg-green/5',
 };
 
 const typeLabel: Record<string, Record<Language, string>> = {
-  industry: { pt: 'Mercado',  en: 'Industry' },
-  research: { pt: 'Pesquisa', en: 'Research' },
+  industry:  { pt: 'Mercado',       en: 'Industry'   },
+  research:  { pt: 'Pesquisa',      en: 'Research'   },
+  volunteer: { pt: 'Voluntariado',  en: 'Volunteer'  },
 };
 
 const NAV_SECTIONS = ['about', 'research', 'experience', 'projects', 'education', 'contact'] as const;
@@ -133,11 +135,12 @@ const App: React.FC = () => {
     setIsMenuOpen(false);
   };
 
-  const projects    = getProjects(lang);
-  const experience  = getExperience(lang);
-  const education   = getEducation(lang);
-  const research    = getResearch(lang);
-  const certs       = getCertifications(lang);
+  const projects      = getProjects(lang);
+  const experience    = getExperience(lang);
+  const education     = getEducation(lang);
+  const research      = getResearch(lang);
+  const certs         = getCertifications(lang);
+  const publications  = getPublications(lang);
 
   const socials = [
     { icon: Github,   href: "https://github.com/oseiasdfarias/",         label: "GitHub"   },
@@ -432,6 +435,43 @@ const App: React.FC = () => {
                   </div>
                 </FadeIn>
               ))}
+            </div>
+
+            {/* Publications sub-section */}
+            <div className={`mt-4 pt-8 border-t ${border}`}>
+              <div className="flex items-center gap-3 mb-6">
+                <FileText size={15} className="text-accent2 flex-shrink-0" />
+                <h3 className={`text-base font-bold font-display ${textPri} whitespace-nowrap`}>
+                  {lang === 'pt' ? 'Publicações' : 'Publications'}
+                </h3>
+                <div className={`flex-1 h-px bg-slate-200 dark:bg-navyBorder`} />
+              </div>
+              <div className="flex flex-col gap-3">
+                {publications.map((pub, i) => (
+                  <FadeIn key={i} delay={i * 0.08}>
+                    <div className={`group p-5 rounded-lg border ${border} ${bgCard} hover:border-accent2/40 ${bgHover} transition-all duration-300`}>
+                      <div className="flex items-start justify-between gap-3 mb-1">
+                        <h4 className={`font-display font-bold text-sm ${textPri} group-hover:text-accent2 transition-colors leading-snug`}>
+                          {pub.title}
+                        </h4>
+                        {pub.link && pub.link !== '#' && (
+                          <a href={pub.link} target="_blank" rel="noreferrer"
+                             className="flex-shrink-0 text-accent2 hover:text-accent2/70 transition-colors mt-0.5">
+                            <ExternalLink size={13} />
+                          </a>
+                        )}
+                      </div>
+                      <p className="font-mono text-xs text-accent2/70 mb-2">
+                        {pub.venue} · {pub.date}
+                      </p>
+                      {pub.authors && (
+                        <p className={`font-mono text-xs ${textMut} mb-2`}>{pub.authors}</p>
+                      )}
+                      <p className={`text-[13px] ${textMut} leading-relaxed`}>{pub.description}</p>
+                    </div>
+                  </FadeIn>
+                ))}
+              </div>
             </div>
           </section>
 

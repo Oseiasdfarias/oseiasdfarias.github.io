@@ -74,8 +74,17 @@ export interface ExperienceData {
   company: string;
   period: string;
   description: string;
-  type: 'industry' | 'research';
+  type: 'industry' | 'research' | 'volunteer';
   tags: string[];
+}
+
+export interface PublicationData {
+  title: string;
+  venue: string;
+  date: string;
+  description: string;
+  link?: string;
+  authors?: string;
 }
 
 export interface EducationData {

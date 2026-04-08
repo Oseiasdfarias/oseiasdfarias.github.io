@@ -1,4 +1,4 @@
-import { Content, ProjectData, ExperienceData, EducationData, CertificationData, Language, ResearchData } from './types';
+import { Content, ProjectData, ExperienceData, EducationData, CertificationData, Language, ResearchData, PublicationData } from './types';
 
 export const translations: Record<Language, Content> = {
   pt: {
@@ -274,6 +274,26 @@ export const getExperience = (lang: Language): ExperienceData[] => [
     type: "research",
     tags: ["Pesquisa", "Hardware", "Radioastronomia", "Python"],
   },
+  {
+    title:   lang === 'pt' ? "Membro do Comitê AlumniONE BR" : "AlumniONE BR Committee Member",
+    company: "Oracle Next Education (ONE)",
+    period:  lang === 'pt' ? "ago 2024 – mai 2025" : "Aug 2024 – May 2025",
+    description: lang === 'pt'
+      ? "Desenvolvimento da série \"Alumni One: Fundamentos da Ciência de Dados\" — playlist sobre estatística, programação, análise de dados e machine learning para a comunidade de graduados do programa ONE."
+      : "Developed the \"Alumni One: Data Science Fundamentals\" series — a playlist on statistics, programming, data analysis and machine learning for the ONE program graduate community.",
+    type: "volunteer",
+    tags: ["Comunidade", "Data Science", "Educação", "YouTube"],
+  },
+  {
+    title:   lang === 'pt' ? "Aluno Pesquisador — LabVirtual" : "Research Student — LabVirtual",
+    company: "Universidade Federal do Pará",
+    period:  lang === 'pt' ? "mar 2022 – mar 2023" : "Mar 2022 – Mar 2023",
+    description: lang === 'pt'
+      ? "Desenvolvimento de simuladores interativos open-source em Python/VPython para auxiliar estudantes no estudo prático de sistemas de controle, democratizando o acesso a ferramentas de simulação."
+      : "Development of open-source interactive simulators in Python/VPython to help students practice control systems concepts, democratizing access to simulation tools.",
+    type: "volunteer",
+    tags: ["Python", "VPython", "Open-Source", "Educação"],
+  },
 ];
 
 // ─── Education ─────────────────────────────────────────────────────────────
@@ -314,6 +334,32 @@ export const getEducation = (lang: Language): EducationData[] => [
     period:      "Nov 2023 – Jun 2024",
     description: "Java · Spring Boot · MySQL · API REST",
     logo:        "https://camo.githubusercontent.com/578d87d661d23e62d9acd12fe9505d95a88aac5f0f6a4073b2fcb5c3c2f7057a/68747470733a2f2f692e696d6775722e636f6d2f77304e76616c4f2e706e67",
+  },
+];
+
+// ─── Publications ──────────────────────────────────────────────────────────
+export const getPublications = (_lang: Language): PublicationData[] => [
+  {
+    title: "Desenvolvimento de Protótipo e Gêmeo Digital como Ferramenta para um Laboratório Virtual com Foco em Modelagem e Controle de Sistemas Dinâmicos",
+    venue: "BDM · Universidade Federal do Pará",
+    date:  "Dez 2023",
+    description: "Laboratório virtual que combina protótipo físico do Aeropêndulo, simulador 3D e interface gráfica interativa. Validado com identificação de sistema por função de transferência e controlador PID em malha fechada.",
+    link:  "https://bdm.ufpa.br",
+  },
+  {
+    title: "Explorando o potencial do Laboratório Virtual de Controle de Sistemas com VPython no ensino de Engenharia: Análise e perspectivas para o futuro",
+    venue: "ABENGE — Associação Brasileira de Educação em Engenharia",
+    date:  "Set 2023",
+    description: "Artigo sobre o desenvolvimento de simulações de controle de sistemas com VPython e PyPi. Demonstra a efetividade das simulações de MAGLEV e Aeropêndulo no ensino de engenharia.",
+    link:  "#",
+    authors: "Oséias Farias et al.",
+  },
+  {
+    title: "SMART HOUSE — Automação Residencial com Arduino",
+    venue: "XIII Encontro Nacional dos Estudantes de Engenharia Elétrica / Even3",
+    date:  "Nov 2018",
+    description: "Projeto de automação residencial com Arduino Uno, aplicativo Android (MIT App Inventor), comunicação via Ethernet Shield W5000 e sensores de luminosidade, temperatura e gás.",
+    link:  "#",
   },
 ];
 
