@@ -19,23 +19,23 @@
               pixel:   ['"VT323"', 'monospace'],
             },
             colors: {
-              /* ── Dark theme (research lab / academic night) ─── */
-              navy:          '#0c1020',   /* deep academic dark       */
-              navyCard:      '#131828',   /* card surface             */
-              navyHover:     '#192036',   /* hover state              */
-              navyBorder:    '#1e2c46',   /* dividers / borders       */
-              accent:        '#6b9fd4',   /* steel blue — primary     */
-              accent2:       '#4da898',   /* teal — ML / AI           */
-              green:         '#5a9e72',   /* muted forest green       */
-              slate:         '#5a6b85',   /* muted body text          */
-              lightSlate:    '#8faec8',   /* secondary text           */
-              lightestSlate: '#d4e4f5',   /* headings                 */
+              /* ── Dark theme (warm graphite / academic library) ─ */
+              navy:          '#111009',   /* near-black, warm tint    */
+              navyCard:      '#1c1912',   /* card surface             */
+              navyHover:     '#25201a',   /* hover state              */
+              navyBorder:    '#352d20',   /* warm brown border        */
+              accent:        '#c9a45a',   /* muted gold — scholarly   */
+              accent2:       '#6fa88c',   /* sage green — ML / AI     */
+              green:         '#6a9e6a',   /* forest green             */
+              slate:         '#7a6b58',   /* warm muted body          */
+              lightSlate:    '#b5a48c',   /* secondary text           */
+              lightestSlate: '#e8d9c0',   /* headings — warm cream    */
               /* ── Light theme (academic journal / parchment) ─── */
               paper:         '#f5f2eb',   /* parchment background     */
               paperCard:     '#ffffff',   /* card surface             */
               paperHover:    '#ece7da',   /* hover state              */
               paperBorder:   '#c6bba6',   /* dividers / borders       */
-              amberDark:     '#1a4b8a',   /* deep blue (pixel shadow) */
+              amberDark:     '#7a5a1e',   /* dark gold (pixel shadow) */
             },
           }
         }
@@ -69,20 +69,20 @@
         transition: box-shadow 0.15s steps(2), border-color 0.15s steps(2), transform 0.15s steps(2);
       }
       .pixel-card:hover {
-        box-shadow: 4px 4px 0px 0px #6b9fd4;
+        box-shadow: 4px 4px 0px 0px #c9a45a;
         transform: translate(-2px, -2px);
       }
       .pixel-card-indigo:hover {
-        box-shadow: 4px 4px 0px 0px #4da898;
+        box-shadow: 4px 4px 0px 0px #6fa88c;
         transform: translate(-2px, -2px);
       }
       .light .pixel-card:hover,
       :not(.dark) .pixel-card:hover {
-        box-shadow: 4px 4px 0px 0px #1a4b8a;
+        box-shadow: 4px 4px 0px 0px #7a5a1e;
       }
       .light .pixel-card-indigo:hover,
       :not(.dark) .pixel-card-indigo:hover {
-        box-shadow: 4px 4px 0px 0px #1a7a6e;
+        box-shadow: 4px 4px 0px 0px #2e7a62;
       }
 
       /* ── Blinking block cursor ──────────────────────────────── */
@@ -93,7 +93,7 @@
       .pixel-cursor::after {
         content: '█';
         font-family: 'VT323', monospace;
-        color: #6b9fd4;
+        color: #c9a45a;
         margin-left: 4px;
         animation: pixel-blink 1s step-end infinite;
         font-size: 0.9em;
