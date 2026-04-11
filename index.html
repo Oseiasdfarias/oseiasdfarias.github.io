@@ -121,6 +121,73 @@
         z-index: 3;
       }
 
+      /* ── Custom scrollbar ───────────────────────────────────── */
+      ::-webkit-scrollbar {
+        width: 5px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(200,168,112,0.25);
+        border-radius: 0px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(200,168,112,0.55);
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: rgba(200,168,112,0.20);
+      }
+      .dark ::-webkit-scrollbar-thumb:hover {
+        background: rgba(200,168,112,0.50);
+      }
+      /* Firefox */
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(200,168,112,0.25) transparent;
+      }
+
+      /* ── Profile photo frame ─────────────────────────────────── */
+      .photo-frame {
+        position: relative;
+      }
+      .photo-frame::before {
+        content: '';
+        position: absolute;
+        inset: -4px;
+        border: 1px solid rgba(200,168,112,0.30);
+        clip-path: polygon(
+          0 8px, 8px 8px, 8px 0,
+          calc(100% - 8px) 0, calc(100% - 8px) 8px, 100% 8px,
+          100% calc(100% - 8px), calc(100% - 8px) calc(100% - 8px),
+          calc(100% - 8px) 100%, 8px 100%, 8px calc(100% - 8px),
+          0 calc(100% - 8px)
+        );
+        z-index: 1;
+        transition: border-color 0.3s;
+      }
+      .photo-frame:hover::before {
+        border-color: rgba(200,168,112,0.70);
+      }
+      .photo-frame::after {
+        content: '';
+        position: absolute;
+        inset: -8px;
+        border: 1px solid rgba(200,168,112,0.10);
+        clip-path: polygon(
+          0 14px, 14px 14px, 14px 0,
+          calc(100% - 14px) 0, calc(100% - 14px) 14px, 100% 14px,
+          100% calc(100% - 14px), calc(100% - 14px) calc(100% - 14px),
+          calc(100% - 14px) 100%, 14px 100%, 14px calc(100% - 14px),
+          0 calc(100% - 14px)
+        );
+        z-index: 1;
+        transition: border-color 0.3s;
+      }
+      .photo-frame:hover::after {
+        border-color: rgba(200,168,112,0.25);
+      }
+
       /* ── Pixel tag borders ───────────────────────────────────── */
       .tag-pixel {
         image-rendering: pixelated;
@@ -147,7 +214,7 @@
   }
 }
 </script>
-    <script type="module" crossorigin src="/assets/index-B5dBh7D2.js"></script>
+    <script type="module" crossorigin src="/assets/index-DfLgHy8p.js"></script>
   </head>
   <body class="bg-paper text-slate-800 dark:bg-navy dark:text-lightSlate font-sans transition-colors duration-300">
     <div id="root"></div>
