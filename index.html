@@ -122,30 +122,20 @@
       }
 
       /* ── Custom scrollbar ───────────────────────────────────── */
-      ::-webkit-scrollbar {
-        width: 5px;
-      }
-      ::-webkit-scrollbar-track {
-        background: transparent;
-      }
+      ::-webkit-scrollbar { width: 4px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      /* Light mode */
       ::-webkit-scrollbar-thumb {
-        background: rgba(200,168,112,0.25);
+        background: rgba(100,80,20,0.20);
         border-radius: 0px;
       }
-      ::-webkit-scrollbar-thumb:hover {
-        background: rgba(200,168,112,0.55);
-      }
-      .dark ::-webkit-scrollbar-thumb {
-        background: rgba(200,168,112,0.20);
-      }
-      .dark ::-webkit-scrollbar-thumb:hover {
-        background: rgba(200,168,112,0.50);
-      }
+      ::-webkit-scrollbar-thumb:hover { background: rgba(100,80,20,0.45); }
+      /* Dark mode */
+      .dark ::-webkit-scrollbar-thumb { background: rgba(200,168,112,0.22); }
+      .dark ::-webkit-scrollbar-thumb:hover { background: rgba(200,168,112,0.52); }
       /* Firefox */
-      * {
-        scrollbar-width: thin;
-        scrollbar-color: rgba(200,168,112,0.25) transparent;
-      }
+      html { scrollbar-width: thin; scrollbar-color: rgba(100,80,20,0.20) transparent; }
+      html.dark { scrollbar-color: rgba(200,168,112,0.22) transparent; }
 
       /* ── Profile photo frame ─────────────────────────────────── */
       .photo-frame {
@@ -214,7 +204,7 @@
   }
 }
 </script>
-    <script type="module" crossorigin src="/assets/index-DfLgHy8p.js"></script>
+    <script type="module" crossorigin src="/assets/index-m_ESw9hB.js"></script>
   </head>
   <body class="bg-paper text-slate-800 dark:bg-navy dark:text-lightSlate font-sans transition-colors duration-300">
     <div id="root"></div>
