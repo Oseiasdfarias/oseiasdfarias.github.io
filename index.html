@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br" class="scroll-smooth">
+<html lang="pt-br" class="scroll-smooth dark">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="https://lucide.dev/favicon.svg" />
@@ -13,57 +13,199 @@
         theme: {
           extend: {
             fontFamily: {
-              sans: ['Inter', 'sans-serif'],
+              sans:    ['Inter', 'sans-serif'],
               display: ['Space Grotesk', 'sans-serif'],
-              mono: ['JetBrains Mono', 'monospace'],
+              mono:    ['JetBrains Mono', 'monospace'],
+              pixel:   ['"VT323"', 'monospace'],
             },
             colors: {
-              navy:        '#0a0f1e',
-              navyCard:    '#0f1728',
-              navyHover:   '#172035',
-              navyBorder:  '#1e2d4a',
-              accent:      '#38bdf8',
-              accent2:     '#818cf8',
-              green:       '#4ade80',
-              slate:       '#8892b0',
-              lightSlate:  '#a8b2d8',
-              lightestSlate: '#ccd6f6',
+              /* ── Dark theme (minimal / charcoal) ─────────────── */
+              navy:          '#111111',   /* near-black               */
+              navyCard:      '#1a1a1a',   /* card surface             */
+              navyHover:     '#222222',   /* hover state              */
+              navyBorder:    '#2e2e2e',   /* subtle border            */
+              accent:        '#c8a870',   /* gold discreto — único    */
+              accent2:       '#a89070',   /* gold escuro — secundário */
+              green:         '#7a9e7a',   /* verde muted (status)     */
+              slate:         '#666666',   /* muted text               */
+              lightSlate:    '#999999',   /* secondary text           */
+              lightestSlate: '#e8e8e8',   /* headings                 */
+              /* ── Light theme (minimal / paper) ──────────────── */
+              paper:         '#fafaf8',   /* branco levemente quente  */
+              paperCard:     '#ffffff',   /* card surface             */
+              paperHover:    '#f0eeea',   /* hover state              */
+              paperBorder:   '#d8d4cc',   /* dividers                 */
+              amberDark:     '#8a6e30',   /* pixel shadow light mode  */
             },
-            backgroundImage: {
-              'gradient-accent': 'linear-gradient(135deg, #38bdf8, #818cf8)',
-            },
-            animation: {
-              'fade-in': 'fadeIn 0.6s ease-out forwards',
-            },
-            keyframes: {
-              fadeIn: {
-                '0%': { opacity: '0', transform: 'translateY(16px)' },
-                '100%': { opacity: '1', transform: 'translateY(0)' },
-              }
-            }
           }
         }
       }
     </script>
-    <!-- Google Fonts -->
+
+    <!-- Google Fonts: Inter + Space Grotesk + JetBrains Mono + VT323 (pixel) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <script type="importmap">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=VT323&display=swap" rel="stylesheet">
+
+    <style>
+      /* ── Scanlines overlay (dark mode only) ─────────────────── */
+      .dark .scanlines::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 3px,
+          rgba(0, 0, 0, 0.06) 3px,
+          rgba(0, 0, 0, 0.06) 4px
+        );
+        pointer-events: none;
+        z-index: 4;
+      }
+
+      /* ── Pixel offset shadow on card hover ──────────────────── */
+      .pixel-card {
+        transition: box-shadow 0.15s steps(2), border-color 0.15s steps(2), transform 0.15s steps(2);
+      }
+      .pixel-card:hover {
+        box-shadow: 4px 4px 0px 0px #c8a870;
+        transform: translate(-2px, -2px);
+      }
+      .pixel-card-indigo:hover {
+        box-shadow: 4px 4px 0px 0px #a89070;
+        transform: translate(-2px, -2px);
+      }
+      .light .pixel-card:hover,
+      :not(.dark) .pixel-card:hover {
+        box-shadow: 4px 4px 0px 0px #5a3a20;
+      }
+      .light .pixel-card-indigo:hover,
+      :not(.dark) .pixel-card-indigo:hover {
+        box-shadow: 4px 4px 0px 0px #2e7a62;
+      }
+
+      /* ── Blinking block cursor ──────────────────────────────── */
+      @keyframes pixel-blink {
+        0%, 49%  { opacity: 1; }
+        50%, 100% { opacity: 0; }
+      }
+      .pixel-cursor::after {
+        content: '█';
+        font-family: 'VT323', monospace;
+        color: #c8a870;
+        margin-left: 4px;
+        animation: pixel-blink 1s step-end infinite;
+        font-size: 0.9em;
+      }
+
+      /* ── Pixel dot pulse (nav active) ───────────────────────── */
+      @keyframes pixel-pulse {
+        0%, 100% { opacity: 1; }
+        50%       { opacity: 0.3; }
+      }
+      .pixel-dot {
+        animation: pixel-pulse 1.5s step-start infinite;
+      }
+
+      /* ── CRT vignette (dark mode only) ──────────────────────── */
+      .dark .crt-vignette::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(ellipse at center,
+          transparent 60%,
+          rgba(0, 0, 0, 0.35) 100%
+        );
+        pointer-events: none;
+        z-index: 3;
+      }
+
+      /* ── Custom scrollbar ───────────────────────────────────── */
+      ::-webkit-scrollbar { width: 4px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      /* Light mode */
+      ::-webkit-scrollbar-thumb {
+        background: rgba(100,80,20,0.20);
+        border-radius: 0px;
+      }
+      ::-webkit-scrollbar-thumb:hover { background: rgba(100,80,20,0.45); }
+      /* Dark mode */
+      .dark ::-webkit-scrollbar-thumb { background: rgba(200,168,112,0.22); }
+      .dark ::-webkit-scrollbar-thumb:hover { background: rgba(200,168,112,0.52); }
+      /* Firefox */
+      html { scrollbar-width: thin; scrollbar-color: rgba(100,80,20,0.20) transparent; }
+      html.dark { scrollbar-color: rgba(200,168,112,0.22) transparent; }
+
+      /* ── Profile photo frame ─────────────────────────────────── */
+      .photo-frame {
+        position: relative;
+      }
+      .photo-frame::before {
+        content: '';
+        position: absolute;
+        inset: -4px;
+        border: 1px solid rgba(200,168,112,0.30);
+        clip-path: polygon(
+          0 8px, 8px 8px, 8px 0,
+          calc(100% - 8px) 0, calc(100% - 8px) 8px, 100% 8px,
+          100% calc(100% - 8px), calc(100% - 8px) calc(100% - 8px),
+          calc(100% - 8px) 100%, 8px 100%, 8px calc(100% - 8px),
+          0 calc(100% - 8px)
+        );
+        z-index: 1;
+        transition: border-color 0.3s;
+      }
+      .photo-frame:hover::before {
+        border-color: rgba(200,168,112,0.70);
+      }
+      .photo-frame::after {
+        content: '';
+        position: absolute;
+        inset: -8px;
+        border: 1px solid rgba(200,168,112,0.10);
+        clip-path: polygon(
+          0 14px, 14px 14px, 14px 0,
+          calc(100% - 14px) 0, calc(100% - 14px) 14px, 100% 14px,
+          100% calc(100% - 14px), calc(100% - 14px) calc(100% - 14px),
+          calc(100% - 14px) 100%, 14px 100%, 14px calc(100% - 14px),
+          0 calc(100% - 14px)
+        );
+        z-index: 1;
+        transition: border-color 0.3s;
+      }
+      .photo-frame:hover::after {
+        border-color: rgba(200,168,112,0.25);
+      }
+
+      /* ── Pixel tag borders ───────────────────────────────────── */
+      .tag-pixel {
+        image-rendering: pixelated;
+        clip-path: polygon(
+          0 2px, 2px 2px, 2px 0,
+          calc(100% - 2px) 0, calc(100% - 2px) 2px, 100% 2px,
+          100% calc(100% - 2px), calc(100% - 2px) calc(100% - 2px),
+          calc(100% - 2px) 100%, 2px 100%, 2px calc(100% - 2px),
+          0 calc(100% - 2px)
+        );
+      }
+    </style>
+
+    <script type="importmap">
 {
   "imports": {
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/":        "https://aistudiocdn.com/react@^19.2.0/",
+    "react":         "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/":    "https://aistudiocdn.com/react-dom@^19.2.0/",
     "framer-motion": "https://aistudiocdn.com/framer-motion@^12.23.24",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0"
+    "lucide-react":  "https://aistudiocdn.com/lucide-react@^0.554.0"
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
-</head>
-  <body class="bg-slate-50 text-slate-700 dark:bg-navy dark:text-lightSlate font-sans transition-colors duration-300">
+    <link rel="stylesheet" href="/index.css">
+  </head>
+  <body class="bg-paper text-slate-800 dark:bg-navy dark:text-lightSlate font-sans transition-colors duration-300">
     <div id="root"></div>
-  <script type="module" src="/index.tsx"></script>
-</body>
+    <script type="module" src="/index.tsx"></script>
+  </body>
 </html>

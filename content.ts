@@ -1,4 +1,4 @@
-import { Content, ProjectData, ExperienceData, EducationData, CertificationData, Language, ResearchData, PublicationData } from './types';
+import { Content, ProjectData, ExperienceData, EducationData, CertificationData, Language, ResearchData, PublicationData, OpenSourceData } from './types';
 
 export const translations: Record<Language, Content> = {
   pt: {
@@ -7,6 +7,7 @@ export const translations: Record<Language, Content> = {
       research:   "Pesquisa",
       experience: "Experiência",
       projects:   "Projetos",
+      opensource: "Open Source",
       education:  "Formação",
       contact:    "Contato",
     },
@@ -42,6 +43,10 @@ export const translations: Record<Language, Content> = {
       subtitle: "Soluções Desenvolvidas",
       viewAll:  "Ver no GitHub",
     },
+    opensource: {
+      title:    "Open Source",
+      subtitle: "Biblioteca de Código Aberto",
+    },
     education: {
       title: "Formação Acadêmica",
     },
@@ -71,6 +76,7 @@ export const translations: Record<Language, Content> = {
       research:   "Research",
       experience: "Experience",
       projects:   "Projects",
+      opensource: "Open Source",
       education:  "Education",
       contact:    "Contact",
     },
@@ -106,6 +112,10 @@ export const translations: Record<Language, Content> = {
       subtitle: "Developed Solutions",
       viewAll:  "View on GitHub",
     },
+    opensource: {
+      title:    "Open Source",
+      subtitle: "Open Source Library",
+    },
     education: {
       title: "Education",
     },
@@ -129,6 +139,78 @@ export const translations: Record<Language, Content> = {
     },
   },
 };
+
+// ─── Open Source ───────────────────────────────────────────────────────────
+export const getOpenSource = (lang: Language): OpenSourceData => ({
+  name: "Synapsys",
+  version: "v0.2.1",
+  tagline: lang === 'pt'
+    ? "Framework Python de Código Aberto para Sistemas de Controle"
+    : "Open Source Python Framework for Control Systems",
+  description: lang === 'pt'
+    ? "Synapsys é um framework moderno de sistemas de controle com API compatível com MATLAB, simulação multi-agente distribuída e suporte a MIMO. Projetado para escalar de MIL até HIL real com troca transparente de camada de transporte."
+    : "Synapsys is a modern control systems framework with a MATLAB-compatible API, distributed multi-agent simulation, and MIMO support. Designed to scale from MIL to real HIL with transparent transport layer switching.",
+  features: [
+    {
+      title: lang === 'pt' ? "Matemática LTI" : "LTI Math",
+      description: lang === 'pt'
+        ? "Funções de transferência, espaço de estados e MIMO. API compatível com MATLAB: tf(), ss(), c2d(), bode(), feedback()."
+        : "Transfer functions, state-space and MIMO. MATLAB-compatible API: tf(), ss(), c2d(), bode(), feedback().",
+      docLink: "https://synapsys-lab.github.io/synapsys/docs/api/core",
+    },
+    {
+      title: lang === 'pt' ? "Algoritmos de Controle" : "Control Algorithms",
+      description: lang === 'pt'
+        ? "PID discreto com anti-windup e LQR via equação de Riccati algébrica. Suporte a múltiplas entradas e saídas."
+        : "Discrete PID with anti-windup and LQR via algebraic Riccati equation. Multiple-input multiple-output support.",
+      docLink: "https://synapsys-lab.github.io/synapsys/docs/api/algorithms",
+    },
+    {
+      title: lang === 'pt' ? "Simulação Multi-Agente" : "Multi-Agent Simulation",
+      description: lang === 'pt'
+        ? "PlantAgent e ControllerAgent com sincronização lock-step ou wall-clock. Abstração MIL → SIL → HIL."
+        : "PlantAgent and ControllerAgent with lock-step or wall-clock sync. MIL → SIL → HIL abstraction.",
+      docLink: "https://synapsys-lab.github.io/synapsys/docs/api/agents",
+    },
+    {
+      title: lang === 'pt' ? "Transporte Plugável" : "Pluggable Transport",
+      description: lang === 'pt'
+        ? "SharedMemoryTransport (zero-copy, single-host) e ZMQTransport (distribuído, cross-machine)."
+        : "SharedMemoryTransport (zero-copy, single-host) and ZMQTransport (distributed, cross-machine).",
+      docLink: "https://synapsys-lab.github.io/synapsys/docs/api/transport",
+    },
+  ],
+  demo: {
+    title: lang === 'pt' ? "Demo: Quadricóptero 3D com Neural-LQR" : "Demo: 3D Quadcopter with Neural-LQR",
+    description: lang === 'pt'
+      ? "Simulação em tempo real de um quadricóptero com modelo de hover linearizado de 12 estados (posição, ângulos de Euler e velocidades). Controle MIMO LQR com 4 entradas e arquitetura Neural-LQR residual (δu = −K·e + MLP(e)). Visualização 3D interativa via PyVista a 50 Hz com trajetória em figura-8."
+      : "Real-time simulation of a quadcopter with a 12-state linearized hover model (position, Euler angles and velocities). MIMO LQR control with 4 inputs and residual Neural-LQR architecture (δu = −K·e + MLP(e)). Interactive 3D visualization via PyVista at 50 Hz with figure-8 trajectory.",
+    tags: ["Python", "PyVista", "LQR", "Neural-LQR", "MIMO", "12-state", "Real-Time 3D"],
+    media: [
+      {
+        src: "/gifs/06_quadcopter_3d.gif",
+        caption: lang === 'pt' ? "Visualização 3D do quadricóptero com trajetória em figura-8" : "3D quadcopter visualization with figure-8 trajectory",
+      },
+      {
+        src: "/gifs/06_quadcopter_telemetry.gif",
+        caption: lang === 'pt' ? "Telemetria em tempo real: posição, ângulos de Euler e entradas de controle" : "Real-time telemetry: position, Euler angles and control inputs",
+      },
+      {
+        src: "/gifs/03_sil_ai_controller.gif",
+        caption: lang === 'pt' ? "Controlador Neural-LQR em SIL: sistema massa-mola-amortecedor com rastreamento de setpoint" : "Neural-LQR controller in SIL: mass-spring-damper with setpoint tracking",
+      },
+    ],
+  },
+  github: "https://github.com/synapsys-lab/synapsys",
+  pypi: "https://pypi.org/project/synapsys/",
+  tags: ["Python", "SciPy", "PyTorch", "NumPy", "ZeroMQ", "Control Theory"],
+  stats: [
+    { label: lang === 'pt' ? "Testes" : "Tests", value: "184" },
+    { label: lang === 'pt' ? "Cobertura" : "Coverage", value: "90%" },
+    { label: "Python", value: "3.10–3.12" },
+    { label: "Version", value: "v0.2.1" },
+  ],
+});
 
 // ─── Research ──────────────────────────────────────────────────────────────
 export const getResearch = (lang: Language): ResearchData[] => [
@@ -311,6 +393,7 @@ export const getEducation = (lang: Language): EducationData[] => [
     period:      "Mar 2025 – Mar 2027",
     description: "Artificial Intelligence · Deep Learning · Neural Networks",
     logo:        "https://ufpa.br/wp-content/uploads/2023/12/Brasao-UFPA_Sigla-300x281.png",
+    logoScale:   1.6,
   },
   {
     title:       lang === 'pt' ? "Especialização – Sistemas Embarcados IoT" : "Specialization – Embedded IoT Systems",
@@ -327,6 +410,7 @@ export const getEducation = (lang: Language): EducationData[] => [
       ? "TCC: Gêmeo Digital para Lab. Virtual de Controle · Artigo publicado · Monitor de Instalações Elétricas"
       : "Thesis: Digital Twin for Virtual Control Lab · Published paper · Electrical Installations teaching assistant",
     logo:        "https://ufpa.br/wp-content/uploads/2023/12/Brasao-UFPA_Sigla-300x281.png",
+    logoScale:   1.6,
   },
   {
     title:       lang === 'pt' ? "Desenvolvedor Backend Java" : "Java Backend Developer",

@@ -3,13 +3,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Github, Linkedin, Youtube, BookOpen, Mail,
   ExternalLink, ArrowUpRight, Menu, X,
-  FlaskConical, Briefcase, Award, Globe, Sun, Moon, Heart, FileText,
+  FlaskConical, Briefcase, Award, Globe, Sun, Moon, Heart, FileText, Package,
 } from 'lucide-react';
 import {
   translations, getProjects, getExperience,
-  getEducation, getCertifications, getResearch, getPublications,
+  getEducation, getCertifications, getResearch, getPublications, getOpenSource,
 } from './content';
 import { Language } from './types';
+import NeuralNetBackground from './components/NeuralNetBackground';
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -39,7 +40,7 @@ const typeLabel: Record<string, Record<Language, string>> = {
   volunteer: { pt: 'Voluntariado',  en: 'Volunteer'  },
 };
 
-const NAV_SECTIONS = ['about', 'research', 'experience', 'projects', 'education', 'contact'] as const;
+const NAV_SECTIONS = ['about', 'research', 'experience', 'projects', 'opensource', 'education', 'contact'] as const;
 
 // ─── Fade-in wrapper ─────────────────────────────────────────────────────────
 const FadeIn: React.FC<{ children: React.ReactNode; delay?: number }> = ({ children, delay = 0 }) => (
@@ -54,14 +55,106 @@ const FadeIn: React.FC<{ children: React.ReactNode; delay?: number }> = ({ child
 );
 
 // ─── Section heading ─────────────────────────────────────────────────────────
-const SectionTitle: React.FC<{ label: string }> = ({ label }) => (
-  <div className="flex items-center gap-4 mb-12">
+const SectionTitle: React.FC<{ label: string; num: string }> = ({ label, num }) => (
+  <div className="flex items-center gap-3 mb-12">
+    <span className="font-pixel text-accent/40 text-sm select-none tracking-widest">{num}</span>
+    <span className="font-pixel text-accent text-lg select-none">▸</span>
     <h2 className="text-xl font-bold font-display text-slate-900 dark:text-lightestSlate whitespace-nowrap tracking-wide">
       {label}
     </h2>
-    <div className="flex-1 h-px bg-slate-200 dark:bg-navyBorder" />
+    <div className="flex-1 h-px bg-paperBorder dark:bg-navyBorder" />
   </div>
 );
+
+// ─── Media Modal ─────────────────────────────────────────────────────────────
+interface ModalState { src: string; caption: string; index: number; total: number }
+
+const MediaModal: React.FC<{
+  modal: ModalState;
+  onClose: () => void;
+  onPrev: () => void;
+  onNext: () => void;
+}> = ({ modal, onClose, onPrev, onNext }) => {
+  React.useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowLeft')  onPrev();
+      if (e.key === 'ArrowRight') onNext();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose, onPrev, onNext]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/85 backdrop-blur-sm" />
+
+      {/* Modal content */}
+      <motion.div
+        initial={{ scale: 0.92, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.92, opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        className="relative z-10 flex flex-col items-center max-w-4xl w-full"
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Top bar */}
+        <div className="w-full flex items-center justify-between mb-3 px-1">
+          <span className="font-mono text-xs text-slate-400 tracking-widest">
+            {modal.index + 1} / {modal.total}
+          </span>
+          <button
+            onClick={onClose}
+            className="flex items-center gap-1.5 font-mono text-xs text-slate-400 hover:text-white transition-colors"
+            aria-label="Fechar"
+          >
+            <X size={14} /> ESC
+          </button>
+        </div>
+
+        {/* Image */}
+        <div className="w-full border border-white/10 rounded-lg overflow-hidden bg-black">
+          <img
+            src={modal.src}
+            alt={modal.caption}
+            className="w-full h-auto max-h-[70vh] object-contain"
+          />
+        </div>
+
+        {/* Caption */}
+        <p className="mt-3 font-mono text-xs text-slate-400 text-center leading-relaxed max-w-lg px-2">
+          {modal.caption}
+        </p>
+
+        {/* Prev / Next */}
+        {modal.total > 1 && (
+          <div className="flex items-center gap-6 mt-4">
+            <button
+              onClick={onPrev}
+              className="font-pixel text-sm text-slate-400 hover:text-white transition-colors px-3 py-1 border border-white/10 hover:border-white/30"
+            >
+              ◀ prev
+            </button>
+            <button
+              onClick={onNext}
+              className="font-pixel text-sm text-slate-400 hover:text-white transition-colors px-3 py-1 border border-white/10 hover:border-white/30"
+            >
+              next ▶
+            </button>
+          </div>
+        )}
+      </motion.div>
+    </motion.div>
+  );
+};
 
 // ─── App ─────────────────────────────────────────────────────────────────────
 const App: React.FC = () => {
@@ -71,6 +164,16 @@ const App: React.FC = () => {
   const [isMenuOpen,    setIsMenuOpen]    = useState(false);
   const [formStatus,    setFormStatus]    = useState<'idle'|'sending'|'success'|'error'>('idle');
   const [hoveredCard,   setHoveredCard]   = useState<number | null>(null);
+  const [showTopBtn,    setShowTopBtn]    = useState(false);
+  const [modal,         setModal]         = useState<ModalState | null>(null);
+
+  const openModal  = (media: { src: string; caption: string }[], index: number) =>
+    setModal({ ...media[index], index, total: media.length });
+  const closeModal = () => setModal(null);
+  const prevMedia  = (media: { src: string; caption: string }[]) =>
+    setModal((m: ModalState | null) => m ? { ...media[(m.index - 1 + m.total) % m.total], index: (m.index - 1 + m.total) % m.total, total: m.total } : null);
+  const nextMedia  = (media: { src: string; caption: string }[]) =>
+    setModal((m: ModalState | null) => m ? { ...media[(m.index + 1) % m.total], index: (m.index + 1) % m.total, total: m.total } : null);
 
   const content = translations[lang];
 
@@ -96,6 +199,13 @@ const App: React.FC = () => {
     setLang(next);
     localStorage.setItem('lang', next);
   };
+
+  // ── Show "back to top" after scrolling down ──────────────────────────
+  useEffect(() => {
+    const onScroll = () => setShowTopBtn(window.scrollY > 400);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   // ── Active section via IntersectionObserver ──────────────────────────────
   useEffect(() => {
@@ -141,6 +251,7 @@ const App: React.FC = () => {
   const research      = getResearch(lang);
   const certs         = getCertifications(lang);
   const publications  = getPublications(lang);
+  const openSource    = getOpenSource(lang);
 
   const socials = [
     { icon: Github,   href: "https://github.com/oseiasdfarias/",         label: "GitHub"   },
@@ -151,33 +262,23 @@ const App: React.FC = () => {
   ];
 
   // ── Shared class shorthands ──────────────────────────────────────────────
-  const bg       = 'bg-slate-50  dark:bg-navy';
-  const bgCard   = 'bg-white     dark:bg-navyCard';
-  const bgHover  = 'hover:bg-slate-100 dark:hover:bg-navyHover';
-  const border   = 'border-slate-200  dark:border-navyBorder';
+  const bg       = 'bg-paper       dark:bg-navy';
+  const bgCard   = 'bg-paperCard   dark:bg-navyCard';
+  const bgHover  = 'hover:bg-paperHover dark:hover:bg-navyHover';
+  const border   = 'border-paperBorder dark:border-navyBorder';
   const textPri  = 'text-slate-900  dark:text-lightestSlate';
-  const textSec  = 'text-slate-600  dark:text-lightSlate';
+  const textSec  = 'text-slate-800  dark:text-lightSlate';
   const textMut  = 'text-slate-500  dark:text-slate';
 
   // ─────────────────────────────────────────────────────────────────────────
   return (
-    <div className={`relative min-h-screen ${bg} ${textSec} selection:bg-accent/20 selection:text-accent transition-colors duration-300`}>
+    <div className={`relative min-h-screen scanlines crt-vignette ${bg} ${textSec} selection:bg-accent/20 selection:text-accent transition-colors duration-300`}>
 
-      {/* ── Full-screen background image ─────────────────────────────────── */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <img
-          src="https://news.mit.edu/sites/default/files/styles/news_article__image_gallery/public/images/202507/MIT_Learning-Symmetric-01_0.jpg"
-          alt=""
-          className="w-full h-full object-cover opacity-[0.25] dark:opacity-[0.25]"
-        />
-        {/* Light: overlay claro deixa fundo mais pálido, textos escuros legíveis */}
-        <div className="absolute inset-0 bg-white/70 dark:hidden" />
-        {/* Dark: overlay navy preserva profundidade */}
-        <div className="absolute inset-0 hidden dark:block bg-navy/70" />
-      </div>
+      {/* ── Neural network animated background ──────────────────────────── */}
+      <NeuralNetBackground darkMode={darkMode} />
 
       {/* ── Mobile top bar ───────────────────────────────────────────────── */}
-      <header className={`lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 h-14 backdrop-blur border-b ${border} bg-slate-50/80 dark:bg-navy/80`}>
+      <header className={`lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 h-14 backdrop-blur border-b ${border} bg-paper/80 dark:bg-navy/80`}>
         <span className={`font-display font-bold ${textPri} text-lg`}>Oséias Farias</span>
         <div className="flex items-center gap-3">
           <button
@@ -212,7 +313,7 @@ const App: React.FC = () => {
               <button
                 key={s}
                 onClick={() => scrollTo(s)}
-                className={`text-left text-sm font-bold uppercase tracking-widest ${textMut} hover:text-accent transition-colors`}
+                className={`text-left font-pixel text-base tracking-widest ${textMut} hover:text-accent transition-colors`}
               >
                 {content.nav[s as keyof typeof content.nav]}
               </button>
@@ -231,21 +332,23 @@ const App: React.FC = () => {
           {/* Top block */}
           <div>
             {/* Profile photo */}
-            {/* Profile photo — menor em lg, maior em xl */}
-            <div className="mb-3">
-              <div className={`relative w-16 h-16 xl:w-24 xl:h-24 rounded-full overflow-hidden ring-2 ${border} ring-offset-2 ${darkMode ? 'ring-offset-navy' : 'ring-offset-slate-50'}`}>
-                <img
-                  src="https://github.com/oseiasdfarias.png"
-                  alt="Oséias Farias"
-                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-                />
+            <div className="mb-6 mt-2">
+              <div className="photo-frame inline-block w-20 h-20 xl:w-28 xl:h-28">
+                <div className={`w-full h-full overflow-hidden border ${border}`}
+                  style={{ clipPath: 'polygon(0 6px,6px 6px,6px 0,calc(100% - 6px) 0,calc(100% - 6px) 6px,100% 6px,100% calc(100% - 6px),calc(100% - 6px) calc(100% - 6px),calc(100% - 6px) 100%,6px 100%,6px calc(100% - 6px),0 calc(100% - 6px))' }}>
+                  <img
+                    src="https://github.com/oseiasdfarias.png"
+                    alt="Oséias Farias"
+                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                  />
+                </div>
               </div>
             </div>
 
             {/* Name + title */}
             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
               <p className="font-mono text-xs text-accent mb-1 tracking-wider">{content.hero.greeting}</p>
-              <h1 className={`text-3xl xl:text-4xl font-bold font-display ${textPri} leading-tight mb-1`}>
+              <h1 className={`text-3xl xl:text-4xl font-bold font-display ${textPri} leading-tight mb-1 pixel-cursor`}>
                 Oséias Farias.
               </h1>
               <h2 className={`text-sm xl:text-base font-semibold font-display ${textSec} mb-2 leading-snug`}>
@@ -253,8 +356,12 @@ const App: React.FC = () => {
               </h2>
 
               {/* Affiliation badge */}
-              <div className="inline-flex items-center gap-2 mb-2">
-                <span className={`font-mono text-xs ${textMut} tracking-wide`}>
+              <div className="inline-flex items-center gap-2 mb-3">
+                <span className="inline-flex items-center gap-1.5 font-mono text-[11px] font-bold tracking-widest text-accent border border-accent/30 bg-accent/5 px-2.5 py-1">
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-60" />
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-accent" />
+                  </span>
                   {content.hero.availability}
                 </span>
               </div>
@@ -274,20 +381,23 @@ const App: React.FC = () => {
                   <button
                     key={s}
                     onClick={() => scrollTo(s)}
-                    className="group flex items-center gap-4 py-1 text-left transition-all duration-200"
+                    className="group flex items-center gap-3 py-1 text-left transition-all duration-200"
                   >
+                    {/* Pixel indicator */}
+                    <div className="w-5 flex-shrink-0 flex flex-col items-center gap-[3px]">
+                      {isActive ? (
+                        <>
+                          <span className="block w-2 h-2 bg-accent pixel-dot" />
+                          <span className="block w-2 h-2 bg-accent opacity-50" />
+                          <span className="block w-2 h-2 bg-accent opacity-20" />
+                        </>
+                      ) : (
+                        <span className={`block h-px w-4 ${darkMode ? 'bg-slate' : 'bg-slate-400'} group-hover:w-5 transition-all`} />
+                      )}
+                    </div>
                     <span
-                      className={`h-px transition-all duration-200 ${
-                        isActive
-                          ? `w-12 ${darkMode ? 'bg-lightestSlate' : 'bg-slate-900'}`
-                          : `w-6 ${darkMode ? 'bg-slate' : 'bg-slate-400'} group-hover:w-10 ${darkMode ? 'group-hover:bg-lightSlate' : 'group-hover:bg-slate-600'}`
-                      }`}
-                    />
-                    <span
-                      className={`font-mono text-xs font-bold uppercase tracking-widest transition-colors duration-200 ${
-                        isActive
-                          ? textPri
-                          : `${textMut} group-hover:${textSec}`
+                      className={`font-pixel text-base tracking-wider transition-colors duration-200 ${
+                        isActive ? 'text-accent' : `${textMut} group-hover:text-accent/70`
                       }`}
                     >
                       {content.nav[s as keyof typeof content.nav]}
@@ -310,14 +420,14 @@ const App: React.FC = () => {
               href="https://drive.google.com/file/d/1-oMiFFC3QAbU6JhIeo6svznmm1pWMtzW/view"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 text-xs font-mono font-bold text-accent border border-accent/30 rounded px-3 py-1.5 w-fit hover:bg-accent/10 transition-colors group"
+              className="pixel-card inline-flex items-center gap-2 text-xs font-mono font-bold text-accent border border-accent/30 px-3 py-1.5 w-fit hover:bg-accent/10 transition-colors group"
             >
               {content.hero.btnOutline}
               <ArrowUpRight size={13} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </a>
 
             {/* Social icons */}
-            <div className="flex items-center gap-5">
+            <div className="flex items-center gap-4">
               {socials.map(s => (
                 <a
                   key={s.label}
@@ -325,9 +435,10 @@ const App: React.FC = () => {
                   target="_blank"
                   rel="noreferrer"
                   aria-label={s.label}
-                  className={`${textMut} hover:text-accent hover:-translate-y-0.5 transition-all duration-200`}
+                  title={s.label}
+                  className={`group relative ${textMut} hover:text-accent transition-all duration-200`}
                 >
-                  <s.icon size={19} />
+                  <s.icon size={18} className="group-hover:-translate-y-0.5 transition-transform duration-200" />
                 </a>
               ))}
             </div>
@@ -358,9 +469,28 @@ const App: React.FC = () => {
         {/* ════════════════════ MAIN CONTENT ════════════════════ */}
         <main className="lg:w-[58%] pt-20 lg:pt-24 pb-24">
 
+          {/* ── Mobile profile photo (acima do Sobre) ─────────── */}
+          <div className="lg:hidden flex items-center gap-4 mb-8">
+            <div className="photo-frame flex-shrink-0 w-14 h-14">
+              <div className={`w-full h-full overflow-hidden border ${border}`}
+                style={{ clipPath: 'polygon(0 5px,5px 5px,5px 0,calc(100% - 5px) 0,calc(100% - 5px) 5px,100% 5px,100% calc(100% - 5px),calc(100% - 5px) calc(100% - 5px),calc(100% - 5px) 100%,5px 100%,5px calc(100% - 5px),0 calc(100% - 5px))' }}>
+                <img
+                  src="https://github.com/oseiasdfarias.png"
+                  alt="Oséias Farias"
+                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                />
+              </div>
+            </div>
+            <div>
+              <p className="font-mono text-xs text-accent tracking-wider mb-0.5">{content.hero.greeting}</p>
+              <h1 className={`text-xl font-bold font-display ${textPri} leading-tight`}>Oséias Farias.</h1>
+              <p className={`text-xs font-display ${textMut} leading-snug`}>{content.hero.title}</p>
+            </div>
+          </div>
+
           {/* ── ABOUT ──────────────────────────────────────────── */}
           <section id="about" className="mb-24 scroll-mt-24">
-            <SectionTitle label={content.about.title} />
+            <SectionTitle label={content.about.title} num="01" />
             <div className="space-y-5">
               {content.about.description.map((para, i) => (
                 <FadeIn key={i} delay={i * 0.08}>
@@ -391,7 +521,7 @@ const App: React.FC = () => {
                   <p className={`font-mono text-xs ${textMut} uppercase tracking-widest mb-3`}>Stack principal</p>
                   <div className="flex flex-wrap gap-2">
                     {["Java", "Python", "Spring Boot", "FastAPI", "Quarkus", "AWS", "Docker", "PostgreSQL", "FPGA", "TensorFlow"].map(skill => (
-                      <span key={skill} className={`font-mono text-xs ${textMut} hover:text-accent px-2 py-1 rounded border ${border} ${bgCard} hover:border-accent/30 transition-colors cursor-default`}>
+                      <span key={skill} className={`tag-pixel font-mono text-xs ${textMut} hover:text-accent px-2 py-1 border ${border} ${bgCard} hover:border-accent/30 transition-colors cursor-default`}>
                         {skill}
                       </span>
                     ))}
@@ -403,11 +533,11 @@ const App: React.FC = () => {
 
           {/* ── RESEARCH ───────────────────────────────────────── */}
           <section id="research" className="mb-24 scroll-mt-24">
-            <SectionTitle label={content.research.title} />
+            <SectionTitle label={content.research.title} num="02" />
             <div className="flex flex-col gap-4">
               {research.map((item, i) => (
                 <FadeIn key={i} delay={i * 0.1}>
-                  <div className={`group relative p-6 rounded-lg border ${border} ${bgCard} hover:border-accent2/40 ${bgHover} transition-all duration-300`}>
+                  <div className={`pixel-card pixel-card-indigo group relative p-6 rounded-lg border ${border} ${bgCard} hover:border-accent2/40 ${bgHover} transition-all duration-300`}>
                     <div className="flex items-center justify-between mb-3">
                       <span className={`font-mono text-xs ${textMut}`}>{item.period}</span>
                       {item.status === 'ongoing' && (
@@ -444,12 +574,12 @@ const App: React.FC = () => {
                 <h3 className={`text-base font-bold font-display ${textPri} whitespace-nowrap`}>
                   {lang === 'pt' ? 'Publicações' : 'Publications'}
                 </h3>
-                <div className={`flex-1 h-px bg-slate-200 dark:bg-navyBorder`} />
+                <div className={`flex-1 h-px bg-paperBorder dark:bg-navyBorder`} />
               </div>
               <div className="flex flex-col gap-3">
                 {publications.map((pub, i) => (
                   <FadeIn key={i} delay={i * 0.08}>
-                    <div className={`group p-5 rounded-lg border ${border} ${bgCard} hover:border-accent2/40 ${bgHover} transition-all duration-300`}>
+                    <div className={`pixel-card pixel-card-indigo group p-5 rounded-lg border ${border} ${bgCard} hover:border-accent2/40 ${bgHover} transition-all duration-300`}>
                       <div className="flex items-start justify-between gap-3 mb-1">
                         <h4 className={`font-display font-bold text-sm ${textPri} group-hover:text-accent2 transition-colors leading-snug`}>
                           {pub.title}
@@ -477,11 +607,11 @@ const App: React.FC = () => {
 
           {/* ── EXPERIENCE ─────────────────────────────────────── */}
           <section id="experience" className="mb-24 scroll-mt-24">
-            <SectionTitle label={content.experience.title} />
+            <SectionTitle label={content.experience.title} num="03" />
             <div className="flex flex-col gap-1">
               {experience.map((exp, i) => (
                 <FadeIn key={i} delay={i * 0.08}>
-                  <div className={`group relative grid sm:grid-cols-[130px_1fr] gap-3 p-5 rounded-lg border border-transparent ${bgHover} hover:border-slate-200 dark:hover:border-navyBorder transition-all duration-300`}>
+                  <div className={`group relative grid sm:grid-cols-[130px_1fr] gap-3 p-5 rounded-lg border border-transparent ${bgHover} hover:border-paperBorder dark:hover:border-navyBorder transition-all duration-300`}>
                     <div className="pt-0.5">
                       <span className={`font-mono text-xs ${textMut} leading-relaxed`}>
                         {exp.period}
@@ -514,7 +644,7 @@ const App: React.FC = () => {
 
           {/* ── PROJECTS ───────────────────────────────────────── */}
           <section id="projects" className="mb-24 scroll-mt-24">
-            <SectionTitle label={content.projects.title} />
+            <SectionTitle label={content.projects.title} num="04" />
             <div
               className="flex flex-col gap-1"
               onMouseLeave={() => setHoveredCard(null)}
@@ -525,7 +655,7 @@ const App: React.FC = () => {
                     className={`group relative p-5 rounded-lg border transition-all duration-300 ${
                       hoveredCard !== null && hoveredCard !== i
                         ? 'opacity-40 border-transparent'
-                        : `border-transparent ${bgHover} hover:border-slate-200 dark:hover:border-navyBorder opacity-100`
+                        : `border-transparent ${bgHover} hover:border-paperBorder dark:hover:border-navyBorder opacity-100`
                     }`}
                     onMouseEnter={() => setHoveredCard(i)}
                   >
@@ -585,16 +715,156 @@ const App: React.FC = () => {
             </FadeIn>
           </section>
 
+          {/* ── OPEN SOURCE ────────────────────────────────────── */}
+          <section id="opensource" className="mb-24 scroll-mt-24">
+            <SectionTitle label={content.opensource.title} num="05" />
+
+            {/* Main library card */}
+            <FadeIn>
+              <div className={`pixel-card relative p-6 rounded-lg border ${border} ${bgCard} hover:border-green/40 transition-all duration-300 mb-4`}>
+                <div className="flex items-start justify-between gap-4 mb-4 flex-wrap">
+                  <div className="flex items-center gap-3">
+                    <Package size={22} className="text-green flex-shrink-0" />
+                    <div>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <h3 className={`font-display font-bold text-xl ${textPri}`}>{openSource.name}</h3>
+                        <span className="font-mono text-xs font-bold px-2 py-0.5 border border-green/30 text-green bg-green/5">{openSource.version}</span>
+                        <span className="font-mono text-xs px-2 py-0.5 border border-accent2/30 text-accent2 bg-accent2/5">MIT</span>
+                      </div>
+                      <p className="font-mono text-xs text-green/70 mt-0.5">{openSource.tagline}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <a href={openSource.github} target="_blank" rel="noreferrer"
+                       className={`flex items-center gap-1.5 text-xs font-mono font-bold px-2.5 py-1 border ${border} ${bgCard} ${textMut} hover:text-accent hover:border-accent/40 transition-colors`}>
+                      <Github size={12} /> GitHub
+                    </a>
+                    <a href={openSource.pypi} target="_blank" rel="noreferrer"
+                       className="flex items-center gap-1.5 text-xs font-mono font-bold px-2.5 py-1 border border-green/30 bg-green/5 text-green hover:bg-green/10 transition-colors">
+                      PyPI <ExternalLink size={11} />
+                    </a>
+                  </div>
+                </div>
+
+                <p className={`text-[15px] ${textSec} leading-relaxed mb-5`}>{openSource.description}</p>
+
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2 mb-5">
+                  {openSource.tags.map(tag => (
+                    <span key={tag} className={`font-mono text-xs ${textMut} px-1.5 py-0.5 border ${border} ${bgCard}`}>{tag}</span>
+                  ))}
+                </div>
+
+                {/* Stats row */}
+                <div className={`flex flex-wrap gap-6 pt-4 border-t ${border}`}>
+                  {openSource.stats.map(s => (
+                    <div key={s.label} className="flex flex-col">
+                      <span className={`font-mono text-[10px] ${textMut} uppercase tracking-widest`}>{s.label}</span>
+                      <span className="font-mono text-sm font-bold text-green">{s.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </FadeIn>
+
+            {/* Features grid */}
+            <div className="grid sm:grid-cols-2 gap-3 mb-4">
+              {openSource.features.map((feat, i) => (
+                <FadeIn key={i} delay={i * 0.08}>
+                  <motion.a
+                    href={feat.docLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    whileHover={{ y: -4, scale: 1.01 }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                    className={`group flex flex-col p-4 rounded-lg border ${border} ${bgCard} hover:border-green/50 hover:bg-green/[0.04] transition-colors duration-200 h-full cursor-pointer`}
+                  >
+                    <div className="flex items-start justify-between gap-2 mb-1">
+                      <h4 className={`font-display font-bold text-sm ${textPri} group-hover:text-green transition-colors duration-200`}>
+                        {feat.title}
+                      </h4>
+                      <ArrowUpRight
+                        size={13}
+                        className="flex-shrink-0 mt-0.5 text-green opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200"
+                      />
+                    </div>
+                    <p className={`text-[13px] ${textMut} leading-relaxed`}>{feat.description}</p>
+                    <span className="mt-2 font-mono text-[10px] text-green/50 group-hover:text-green/80 transition-colors duration-200 uppercase tracking-widest">
+                      {lang === 'pt' ? 'ver docs →' : 'view docs →'}
+                    </span>
+                  </motion.a>
+                </FadeIn>
+              ))}
+            </div>
+
+            {/* Drone demo highlight */}
+            <FadeIn delay={0.2}>
+              <div className={`pixel-card p-6 rounded-lg border border-green/30 bg-green/[0.03]`}>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green opacity-60" />
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green" />
+                  </span>
+                  <span className="font-mono text-xs text-green/70 uppercase tracking-widest">
+                    {lang === 'pt' ? 'destaque' : 'highlight'}
+                  </span>
+                </div>
+                <h3 className={`font-display font-bold ${textPri} text-[17px] mb-2`}>
+                  {openSource.demo.title}
+                </h3>
+                <p className={`text-[14px] ${textMut} leading-relaxed mb-4`}>{openSource.demo.description}</p>
+
+                {/* GIF gallery */}
+                <div className="grid grid-cols-3 gap-2 mb-4">
+                  {openSource.demo.media.map((item, i) => (
+                    <button
+                      key={i}
+                      onClick={() => openModal(openSource.demo.media, i)}
+                      className={`group/thumb relative aspect-video rounded border ${border} overflow-hidden hover:border-green/50 transition-all duration-200 focus:outline-none focus:border-green/70`}
+                      aria-label={item.caption}
+                    >
+                      <img
+                        src={item.src}
+                        alt={item.caption}
+                        className="w-full h-full object-cover opacity-70 group-hover/thumb:opacity-100 transition-opacity duration-200"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/thumb:opacity-100 transition-opacity duration-200 bg-black/30">
+                        <span className="font-pixel text-white text-xs border border-white/40 px-2 py-0.5 bg-black/50">
+                          {lang === 'pt' ? 'expandir' : 'expand'}
+                        </span>
+                      </div>
+                      <div className="absolute bottom-1 right-1">
+                        <span className="font-mono text-[9px] text-white/60 bg-black/50 px-1">{i + 1}/{openSource.demo.media.length}</span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  {openSource.demo.tags.map(tag => (
+                    <span key={tag} className="font-mono text-xs text-green px-2 py-0.5 border border-green/20 bg-green/5">{tag}</span>
+                  ))}
+                </div>
+              </div>
+            </FadeIn>
+          </section>
+
           {/* ── EDUCATION & CERTS ──────────────────────────────── */}
           <section id="education" className="mb-24 scroll-mt-24">
-            <SectionTitle label={content.education.title} />
+            <SectionTitle label={content.education.title} num="06" />
 
             <div className="flex flex-col gap-3 mb-12">
               {education.map((edu, i) => (
                 <FadeIn key={i} delay={i * 0.07}>
-                  <div className={`group flex items-start gap-4 p-4 rounded-lg border border-transparent ${bgHover} hover:border-slate-200 dark:hover:border-navyBorder transition-all duration-300`}>
-                    <div className={`w-11 h-11 flex-shrink-0 rounded border ${border} ${bgCard} p-1 overflow-hidden`}>
-                      <img src={edu.logo} alt={edu.institution} className="w-full h-full object-contain opacity-80 group-hover:opacity-100 transition-opacity" />
+                  <div className={`group flex items-start gap-4 p-4 rounded-lg border border-transparent ${bgHover} hover:border-paperBorder dark:hover:border-navyBorder transition-all duration-300`}>
+                    <div className={`w-28 h-28 flex-shrink-0 rounded border ${border} bg-white overflow-hidden`}>
+                      <img
+                        src={edu.logo}
+                        alt={edu.institution}
+                        className="w-full h-full object-contain opacity-90 group-hover:opacity-100 transition-opacity"
+                        style={{ transform: `scale(${edu.logoScale ?? 1})`, padding: edu.logoScale ? 0 : '6px' }}
+                      />
                     </div>
                     <div>
                       <h4 className={`font-display font-bold ${textPri} text-[15px] group-hover:text-accent transition-colors`}>
@@ -614,12 +884,12 @@ const App: React.FC = () => {
                 <Award size={16} className="text-accent2" />
                 {content.certifications.title}
               </h3>
-              <div className={`flex-1 h-px bg-slate-200 dark:bg-navyBorder`} />
+              <div className={`flex-1 h-px bg-paperBorder dark:bg-navyBorder`} />
             </div>
             <div className="flex flex-col gap-2">
               {certs.map((cert, i) => (
                 <FadeIn key={i} delay={i * 0.04}>
-                  <div className={`group flex items-center justify-between p-3 rounded border ${border} ${bgCard} hover:border-accent2/30 ${bgHover} transition-all duration-200`}>
+                  <div className={`pixel-card pixel-card-indigo group flex items-center justify-between p-3 rounded border ${border} ${bgCard} hover:border-accent2/30 ${bgHover} transition-all duration-200`}>
                     <div className="min-w-0 flex-1">
                       <h4 className={`font-display font-semibold text-sm ${textPri} truncate group-hover:text-accent2 transition-colors`}>
                         {cert.title}
@@ -635,7 +905,7 @@ const App: React.FC = () => {
 
           {/* ── CONTACT ────────────────────────────────────────── */}
           <section id="contact" className="scroll-mt-24">
-            <SectionTitle label={content.contact.title} />
+            <SectionTitle label={content.contact.title} num="07" />
             <FadeIn>
               <p className={`text-[15px] ${textMut} leading-relaxed mb-8 max-w-md`}>
                 {content.contact.subtitle}
@@ -685,6 +955,35 @@ const App: React.FC = () => {
           </footer>
         </main>
       </div>
+
+      {/* ── Media modal ──────────────────────────────────────────────────── */}
+      <AnimatePresence>
+        {modal && (
+          <MediaModal
+            modal={modal}
+            onClose={closeModal}
+            onPrev={() => prevMedia(openSource.demo.media)}
+            onNext={() => nextMedia(openSource.demo.media)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* ── Back to top ──────────────────────────────────────────────────── */}
+      <AnimatePresence>
+        {showTopBtn && (
+          <motion.button
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 12 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className={`fixed bottom-6 right-6 z-50 flex items-center justify-center w-10 h-10 rounded border ${border} ${bgCard} ${textMut} hover:text-accent hover:border-accent/40 transition-colors shadow-lg font-pixel text-lg`}
+            aria-label="Voltar ao topo"
+          >
+            ▲
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
