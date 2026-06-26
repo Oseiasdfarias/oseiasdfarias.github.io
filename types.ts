@@ -1,61 +1,63 @@
 export type Language = 'pt' | 'en';
 
-export interface OpenSourceFeature {
-  title: string;
-  description: string;
-  docLink: string;
+export interface FocusPillar {
+  k: string;
+  t: string;
+  d: string;
+  tags: string[];
 }
 
 export interface OpenSourceData {
   name: string;
   version: string;
+  license: string;
   tagline: string;
   description: string;
-  features: OpenSourceFeature[];
+  tags: string[];
+  stats: { label: string; value: string }[];
   demo: {
     title: string;
     description: string;
-    tags: string[];
     media: { src: string; caption: string }[];
   };
   github: string;
   pypi: string;
-  tags: string[];
-  stats: { label: string; value: string }[];
 }
 
 export interface Content {
   nav: {
     about: string;
-    research: string;
+    focus: string;
     experience: string;
     projects: string;
     opensource: string;
+    research: string;
     education: string;
     contact: string;
   };
-  opensource: {
-    title: string;
-    subtitle: string;
-  };
   hero: {
-    greeting: string;
+    kicker: string;
     name: string;
-    title: string;
-    description: string;
-    btnPrimary: string;
-    btnOutline: string;
-    availability: string;
+    role: string;
+    lede: string;
+    ctaPrimary: string;
+    ctaSecondary: string;
+    location: string;
   };
   about: {
     title: string;
-    description: string[];
-    industryLabel: string;
-    academiaLabel: string;
+    lede: string;
+    paras: string[];
+  };
+  focus: {
+    title: string;
+    subtitle: string;
+    pillars: FocusPillar[];
   };
   research: {
     title: string;
     subtitle: string;
+    publications: string;
   };
   experience: {
     title: string;
@@ -65,37 +67,45 @@ export interface Content {
     title: string;
     subtitle: string;
     viewAll: string;
+    labels: { problem: string; solution: string; impact: string };
+  };
+  opensource: {
+    title: string;
+    subtitle: string;
   };
   education: {
     title: string;
-  };
-  certifications: {
-    title: string;
+    certifications: string;
   };
   contact: {
     title: string;
     subtitle: string;
-    formName: string;
-    formEmail: string;
-    formMessage: string;
-    btnSend: string;
+    name: string;
+    email: string;
+    message: string;
+    send: string;
     sending: string;
     success: string;
     error: string;
   };
   footer: {
     rights: string;
-    builtWith: string;
+    built: string;
+  };
+  status: {
+    ongoing: string;
   };
 }
 
 export interface ProjectData {
   title: string;
-  description: string;
+  year: string;
+  category: string;
+  problem: string;
+  solution: string;
+  impact: string;
   tags: string[];
-  image: string;
   link: string;
-  category: 'backend' | 'ai' | 'research' | 'embedded';
 }
 
 export interface ExperienceData {
@@ -104,6 +114,7 @@ export interface ExperienceData {
   period: string;
   description: string;
   type: 'industry' | 'research' | 'volunteer';
+  current?: boolean;
   tags: string[];
 }
 
@@ -121,17 +132,13 @@ export interface EducationData {
   institution: string;
   period: string;
   description: string;
-  logo: string;
-  logoScale?: number;
 }
 
 export interface CertificationData {
   title: string;
   issuer: string;
   date: string;
-  credentialId?: string;
   link?: string;
-  skills: string[];
 }
 
 export interface ResearchData {
@@ -140,6 +147,5 @@ export interface ResearchData {
   period: string;
   description: string;
   tags: string[];
-  link?: string;
-  status: 'ongoing' | 'completed';
+  ongoing: boolean;
 }
