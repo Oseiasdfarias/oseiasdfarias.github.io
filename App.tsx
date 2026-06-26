@@ -546,31 +546,37 @@ const App: React.FC = () => {
 
           {/* Desktop nav */}
           {(() => {
-            const navLabels: Record<string, string> = {
-              capabilities: content.nav.focus,
-              projects:     content.nav.projects,
-              experience:   content.nav.experience,
-              research:     content.nav.research,
-            };
+            const navItems = [
+              { id: 'top',          num: '§00', label: pt ? 'Início'    : 'Home',       top: true },
+              { id: 'capabilities', num: '§01', label: content.nav.focus },
+              { id: 'projects',     num: '§02', label: content.nav.projects },
+              { id: 'experience',   num: '§03', label: content.nav.experience },
+              { id: 'research',     num: '§04', label: content.nav.research },
+              { id: 'education',    num: '§06', label: content.nav.education },
+              { id: 'contact',      num: '§08', label: content.nav.contact },
+            ];
             return (
-              <nav className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                {NAV_SECTIONS.map((s, i) => {
-                  const isActive = activeSection === s;
+              <nav className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                {navItems.map(({ id, num, label, top: isTop }) => {
+                  const isActive = !isTop && activeSection === id;
                   return (
-                    <a key={s} href={`#${s}`}
-                      onClick={e => { e.preventDefault(); scrollTo(s); }}
+                    <a key={id} href={isTop ? '#top' : `#${id}`}
+                      onClick={e => {
+                        e.preventDefault();
+                        isTop ? window.scrollTo({ top: 0, behavior: 'smooth' }) : scrollTo(id);
+                      }}
                       style={{
                         textDecoration: 'none', display: 'flex', flexDirection: 'column',
-                        alignItems: 'flex-start', gap: 1, padding: '6px 12px',
+                        alignItems: 'flex-start', gap: 1, padding: '6px 10px',
                         borderBottom: `2px solid ${isActive ? 'var(--accent)' : 'transparent'}`,
                         transition: 'border-color .25s, background .25s',
                         background: isActive ? 'var(--bg2)' : 'transparent',
                       }}
                       onMouseEnter={e => { if (!isActive) (e.currentTarget as HTMLElement).style.background = 'var(--bg2)'; }}
                       onMouseLeave={e => { if (!isActive) (e.currentTarget as HTMLElement).style.background = 'transparent'; }}>
-                      <span style={mono(9, { color: 'var(--accent)', letterSpacing: '.06em' })}>§0{i + 1}</span>
+                      <span style={mono(9, { color: 'var(--accent)', letterSpacing: '.06em' })}>{num}</span>
                       <span style={mono(11, { color: isActive ? 'var(--fg)' : 'var(--fg-muted)', letterSpacing: '.02em' })}>
-                        {navLabels[s]}
+                        {label}
                       </span>
                     </a>
                   );
