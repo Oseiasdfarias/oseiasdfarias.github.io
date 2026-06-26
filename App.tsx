@@ -683,17 +683,61 @@ const App: React.FC = () => {
               transition={{ duration: 0.18 }}
               style={{ borderTop: '1px solid var(--line)', overflow: 'hidden' }}
             >
-              <div style={{ padding: '12px clamp(20px,4vw,40px)', display: 'flex', flexDirection: 'column', gap: 4 }}>
-                {(['about', 'capabilities', 'projects', 'experience', 'opensource', 'research', 'education', 'contact'] as const).map(s => (
-                  <button key={s} onClick={() => scrollTo(s)} className="btnk"
-                    style={{
-                      background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left',
-                      color: activeSection === s ? 'var(--accent)' : 'var(--fg-muted)',
-                      ...mono(13), padding: '6px 0',
-                    }}>
-                    {content.nav[s as keyof typeof content.nav]}
-                  </button>
+              <div style={{ padding: '10px clamp(20px,4vw,40px) 14px', display: 'flex', flexDirection: 'column', gap: 0 }}>
+                {/* Início */}
+                <button onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setMobileMenuOpen(false); }} className="btnk"
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', ...mono(12), color: 'var(--fg-muted)', padding: '7px 0', borderBottom: '1px solid var(--line)' }}>
+                  {pt ? 'Início' : 'Home'}
+                </button>
+
+                {/* Groups */}
+                {[
+                  { label: pt ? 'Trabalho' : 'Work', items: [
+                    { id: 'capabilities', num: '§01', label: content.nav.focus },
+                    { id: 'projects',     num: '§02', label: content.nav.projects },
+                    { id: 'opensource',   num: '§03', label: content.nav.opensource },
+                  ]},
+                  { label: pt ? 'Perfil' : 'Profile', items: [
+                    { id: 'about',      num: '§00', label: content.nav.about },
+                    { id: 'experience', num: '§04', label: content.nav.experience },
+                    { id: 'education',  num: '§06', label: content.nav.education },
+                  ]},
+                  { label: pt ? 'Pesquisa' : 'Science', items: [
+                    { id: 'research',  num: '§05', label: content.nav.research },
+                    { id: 'community', num: '§07', label: content.nav.community },
+                  ]},
+                ].map(group => (
+                  <div key={group.label} style={{ borderBottom: '1px solid var(--line)', paddingBottom: 4, marginBottom: 0 }}>
+                    <div style={{ ...mono(9, { color: 'var(--accent)', letterSpacing: '.08em' }), padding: '8px 0 4px' }}>
+                      {group.label.toUpperCase()}
+                    </div>
+                    {group.items.map(item => {
+                      const isActive = activeSection === item.id;
+                      return (
+                        <button key={item.id}
+                          onClick={() => { scrollTo(item.id); setMobileMenuOpen(false); }}
+                          className="btnk"
+                          style={{
+                            background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left',
+                            display: 'flex', alignItems: 'center', gap: 10, width: '100%',
+                            padding: '5px 0',
+                            borderLeft: `2px solid ${isActive ? 'var(--accent)' : 'transparent'}`,
+                            paddingLeft: isActive ? 8 : 0,
+                            transition: 'padding-left .2s, border-color .2s',
+                          }}>
+                          <span style={mono(9, { color: 'var(--accent)', minWidth: 22 })}>{item.num}</span>
+                          <span style={mono(12, { color: isActive ? 'var(--fg)' : 'var(--fg-muted)' })}>{item.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
                 ))}
+
+                {/* Contato */}
+                <button onClick={() => { scrollTo('contact'); setMobileMenuOpen(false); }} className="btnk"
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', ...mono(12), color: activeSection === 'contact' ? 'var(--accent)' : 'var(--fg-muted)', padding: '7px 0' }}>
+                  {content.nav.contact}
+                </button>
               </div>
             </motion.nav>
           )}
