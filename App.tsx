@@ -729,7 +729,7 @@ const App: React.FC = () => {
           padding: 'clamp(24px,5vw,40px) 0',
           borderBottom: '1px solid var(--line)',
         }}>
-          <HeroPipelineDAG lang={lang} />
+          <HeroPipelineDAG lang={lang} vertical />
         </div>
 
         {/* ── METRICS ─────────────────────────────────────────── */}
