@@ -545,19 +545,39 @@ const App: React.FC = () => {
           </a>
 
           {/* Desktop nav */}
-          <nav className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: 22 }}>
-            {NAV_SECTIONS.map((s, i) => (
-              <a key={s} href={`#${s}`}
-                onClick={e => { e.preventDefault(); scrollTo(s); }}
-                className="navlink"
-                style={mono(12, {
-                  letterSpacing: '.02em',
-                  color: activeSection === s ? 'var(--accent)' : undefined,
-                })}>
-                §0{i + 1}
-              </a>
-            ))}
-          </nav>
+          {(() => {
+            const navLabels: Record<string, string> = {
+              capabilities: content.nav.focus,
+              projects:     content.nav.projects,
+              experience:   content.nav.experience,
+              research:     content.nav.research,
+            };
+            return (
+              <nav className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                {NAV_SECTIONS.map((s, i) => {
+                  const isActive = activeSection === s;
+                  return (
+                    <a key={s} href={`#${s}`}
+                      onClick={e => { e.preventDefault(); scrollTo(s); }}
+                      style={{
+                        textDecoration: 'none', display: 'flex', flexDirection: 'column',
+                        alignItems: 'flex-start', gap: 1, padding: '6px 12px',
+                        borderBottom: `2px solid ${isActive ? 'var(--accent)' : 'transparent'}`,
+                        transition: 'border-color .25s, background .25s',
+                        background: isActive ? 'var(--bg2)' : 'transparent',
+                      }}
+                      onMouseEnter={e => { if (!isActive) (e.currentTarget as HTMLElement).style.background = 'var(--bg2)'; }}
+                      onMouseLeave={e => { if (!isActive) (e.currentTarget as HTMLElement).style.background = 'transparent'; }}>
+                      <span style={mono(9, { color: 'var(--accent)', letterSpacing: '.06em' })}>§0{i + 1}</span>
+                      <span style={mono(11, { color: isActive ? 'var(--fg)' : 'var(--fg-muted)', letterSpacing: '.02em' })}>
+                        {navLabels[s]}
+                      </span>
+                    </a>
+                  );
+                })}
+              </nav>
+            );
+          })()}
 
           {/* Actions */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
