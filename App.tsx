@@ -662,12 +662,19 @@ const App: React.FC = () => {
             subtitle={`[ 04 ${pt ? 'MÓDULOS' : 'MODULES'} ]`}
           />
           <div className="capabilities-grid"
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(252px,1fr))' }}>
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(252px,1fr))', alignItems: 'stretch' }}>
             {content.focus.pillars.map((p, i) => (
-              <FadeIn key={i} delay={i * 0.07}>
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.6, delay: i * 0.07, ease: [0.2, 0.7, 0.2, 1] }}
+                style={{ display: 'flex', flexDirection: 'column' }}
+              >
                 <div className="mod" style={{
                   border: '1px solid var(--line)', margin: '-0.5px',
                   background: 'var(--panel)', padding: '24px 22px',
+                  display: 'flex', flexDirection: 'column', flex: 1,
                 }}>
                   <span className="modbar" />
                   <div style={{
@@ -688,7 +695,7 @@ const App: React.FC = () => {
                     ))}
                   </div>
                 </div>
-              </FadeIn>
+              </motion.div>
             ))}
           </div>
         </section>
