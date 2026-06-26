@@ -81,6 +81,14 @@ const LiveDot: React.FC<{ color?: string }> = ({ color = 'var(--accent)' }) => (
 const HeroPipelineDAG: React.FC<{ lang: Language; vertical?: boolean }> = ({ lang, vertical }) => {
   const pt = lang === 'pt';
 
+  const [cascade, setCascade] = useState(false);
+  useEffect(() => {
+    const check = () => setCascade(window.innerWidth >= 768 && window.innerWidth < 1280);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
   const header = (
     <div style={{
       display: 'flex', alignItems: 'center', justifyContent: 'space-between',
@@ -107,26 +115,40 @@ const HeroPipelineDAG: React.FC<{ lang: Language; vertical?: boolean }> = ({ lan
 
   /* ── Vertical SVG (desktop) ── */
   if (vertical) {
-    // nodes with sub-label → NH=32, step=46 (32px node + 14px gap)
-    const NW = 138, NH = 32, NX = 26, cx = NX + NW / 2; // cx ≈ 95
+    const NH = 32, NX = 26;
     const ys  = [8, 54, 100, 146, 192, 238];
     const cy  = (i: number) => ys[i] + NH / 2;
     const bot = (i: number) => ys[i] + NH;
     const top = (i: number) => ys[i];
-    const arcX = NX + NW + 14; // retrain arc x ≈ 178
-    const vbW  = arcX + 22;    // ≈ 200
-    const vbH  = ys[5] + NH + 10; // ≈ 280
+    const vbH = ys[5] + NH + 10;
+
+    // cascade: each node shifts right by xStep
+    const xStep = cascade ? 17 : 0;
+    const NW    = cascade ? 116 : 138;
+    const nxOf  = (i: number) => NX + i * xStep;
+    const ncx   = (i: number) => nxOf(i) + NW / 2;
+    const cx    = ncx(0); // alias for non-cascade (all same x)
+
+    const arcX  = nxOf(5) + NW + 14;
+    const vbW   = arcX + (cascade ? 26 : 22);
 
     const nodes = [
-      { label: pt ? 'dados'    : 'data',     sub: 'SQS → Lambda',   fg: 'var(--fg-muted)', stroke: 'var(--line-2)', fill: 'var(--bg2)' },
-      { label: pt ? 'treino'   : 'train',    sub: 'PyTorch · NLP',  fg: 'var(--fg)',       stroke: 'var(--accent)', fill: 'var(--bg2)' },
-      { label: pt ? 'registro' : 'registry', sub: 'MLflow',         fg: 'var(--fg-muted)', stroke: 'var(--line-2)', fill: 'var(--bg2)' },
-      { label: 'deploy',                     sub: 'AWS Lambda',      fg: 'var(--fg-muted)', stroke: 'var(--line-2)', fill: 'var(--bg2)' },
-      { label: 'monitor',                    sub: 'drift · p99',    fg: 'var(--fg)',       stroke: 'var(--accent)', fill: 'var(--bg2)', pulse: true },
-      { label: 'api serving',                sub: 'FastAPI · REST',  fg: 'var(--fg-muted)', stroke: 'var(--line-2)', fill: 'var(--bg2)' },
+      { label: pt ? 'dados'    : 'data',     sub: 'SQS → Lambda',  fg: 'var(--fg-muted)', stroke: 'var(--line-2)', fill: 'var(--bg2)' },
+      { label: pt ? 'treino'   : 'train',    sub: 'PyTorch · NLP', fg: 'var(--fg)',       stroke: 'var(--accent)', fill: 'var(--bg2)' },
+      { label: pt ? 'registro' : 'registry', sub: 'MLflow',        fg: 'var(--fg-muted)', stroke: 'var(--line-2)', fill: 'var(--bg2)' },
+      { label: 'deploy',                     sub: 'AWS Lambda',     fg: 'var(--fg-muted)', stroke: 'var(--line-2)', fill: 'var(--bg2)' },
+      { label: 'monitor',                    sub: 'drift · p99',   fg: 'var(--fg)',       stroke: 'var(--accent)', fill: 'var(--bg2)', pulse: true },
+      { label: 'api serving',                sub: 'FastAPI · REST', fg: 'var(--fg-muted)', stroke: 'var(--line-2)', fill: 'var(--bg2)' },
     ];
 
-    const flowPath = `M${cx},${ys[0]} L${cx},${ys[5]+NH}`;
+    // edge path: diagonal in cascade, vertical otherwise
+    const edgePath = (i: number) =>
+      `M${ncx(i)} ${bot(i)} L${ncx(i+1)} ${top(i+1)}`;
+
+    // traveling dot follows all diagonal edges
+    const dotPath = [0,1,2,3,4,5].map(i =>
+      `${i === 0 ? 'M' : 'L'}${ncx(i)},${ys[i]} L${ncx(i)},${ys[i]+NH}`
+    ).join(' ');
 
     return (
       <motion.div
@@ -147,39 +169,36 @@ const HeroPipelineDAG: React.FC<{ lang: Language; vertical?: boolean }> = ({ lan
           {/* Static edges */}
           <g fill="none" stroke="var(--line-2)" strokeWidth="1.3" strokeLinecap="square">
             {[0,1,2,3,4].map(i => (
-              <path key={i} d={`M${cx} ${bot(i)} L${cx} ${top(i+1)}`} markerEnd="url(#av)" />
+              <path key={i} d={edgePath(i)} markerEnd="url(#av)" />
             ))}
-            <path d={`M${NX+NW} ${cy(5)} L${arcX} ${cy(5)} L${arcX} ${cy(1)} L${NX+NW} ${cy(1)}`} markerEnd="url(#av)" />
+            {/* retrain arc */}
+            <path d={`M${nxOf(5)+NW} ${cy(5)} L${arcX} ${cy(5)} L${arcX} ${cy(1)} L${nxOf(1)+NW} ${cy(1)}`} markerEnd="url(#av)" />
           </g>
 
-          {/* Animated accent dashes — forward flow (dados → monitor) */}
+          {/* Animated forward dashes */}
           <g fill="none" stroke="var(--accent)" strokeWidth="1.6" strokeLinecap="square"
             strokeDasharray="4 8" style={{ animation: 'dashflow .9s linear infinite' }}>
-            {[0,1,2,3].map(i => (
-              <path key={i} d={`M${cx} ${bot(i)} L${cx} ${top(i+1)}`} />
+            {[0,1,2,3,4].map(i => (
+              <path key={i} d={edgePath(i)} />
             ))}
           </g>
-          {/* monitor → api serving */}
-          <path d={`M${cx} ${bot(4)} L${cx} ${top(5)}`}
-            fill="none" stroke="var(--accent)" strokeWidth="1.6" strokeLinecap="square"
-            strokeDasharray="4 8" style={{ animation: 'dashflow .9s linear infinite' }} />
           {/* Retrain arc animated — api serving → treino */}
-          <path d={`M${NX+NW} ${cy(5)} L${arcX} ${cy(5)} L${arcX} ${cy(1)} L${NX+NW} ${cy(1)}`}
+          <path d={`M${nxOf(5)+NW} ${cy(5)} L${arcX} ${cy(5)} L${arcX} ${cy(1)} L${nxOf(1)+NW} ${cy(1)}`}
             fill="none" stroke="var(--accent)" strokeWidth="1.4" strokeLinecap="square"
             strokeDasharray="2 5" style={{ animation: 'dashflow 1.1s linear infinite' }} />
 
-          {/* Traveling data-packet dots — dados → api serving */}
+          {/* Traveling data-packet dots */}
           <circle r="2.8" fill="var(--accent)" opacity="0.9">
-            <animateMotion dur="2.6s" repeatCount="indefinite" path={flowPath} />
+            <animateMotion dur="2.6s" repeatCount="indefinite" path={dotPath} />
           </circle>
           <circle r="2.8" fill="var(--accent)" opacity="0.45">
-            <animateMotion dur="2.6s" begin="1.3s" repeatCount="indefinite" path={flowPath} />
+            <animateMotion dur="2.6s" begin="1.3s" repeatCount="indefinite" path={dotPath} />
           </circle>
 
           {/* Step numbers */}
           <g fontFamily="IBM Plex Mono" fontSize="8.5" fill="var(--fg-soft)" textAnchor="end">
             {nodes.map((_, i) => (
-              <text key={i} x={NX - 5} y={cy(i) + 3}>0{i+1}</text>
+              <text key={i} x={nxOf(i) - 5} y={cy(i) + 3}>0{i+1}</text>
             ))}
           </g>
 
@@ -187,18 +206,16 @@ const HeroPipelineDAG: React.FC<{ lang: Language; vertical?: boolean }> = ({ lan
           <g fontFamily="IBM Plex Mono" textAnchor="middle">
             {nodes.map((n, i) => (
               <g key={i}>
-                <rect x={NX} y={ys[i]} width={NW} height={NH} fill={n.fill} stroke={n.stroke} />
-                {/* left accent bar for active nodes */}
+                <rect x={nxOf(i)} y={ys[i]} width={NW} height={NH} fill={n.fill} stroke={n.stroke} />
                 {(i === 1 || i === 4) && (
-                  <rect x={NX} y={ys[i]} width={2} height={NH} fill="var(--accent)" />
+                  <rect x={nxOf(i)} y={ys[i]} width={2} height={NH} fill="var(--accent)" />
                 )}
-                {/* pulse dot on monitor */}
                 {n.pulse && (
-                  <circle cx={NX + 10} cy={cy(i)} r="2.5" fill="var(--accent)"
-                    style={{ animation: 'nodepulse 1.8s ease-in-out infinite', transformOrigin: `${NX+10}px ${cy(i)}px` }} />
+                  <circle cx={nxOf(i) + 10} cy={cy(i)} r="2.5" fill="var(--accent)"
+                    style={{ animation: 'nodepulse 1.8s ease-in-out infinite', transformOrigin: `${nxOf(i)+10}px ${cy(i)}px` }} />
                 )}
-                <text x={cx} y={cy(i) - 2} fontSize="10.5" fill={n.fg}>{n.label}</text>
-                <text x={cx} y={cy(i) + 10} fontSize="7.5" fill="var(--fg-soft)" opacity="0.75">{n.sub}</text>
+                <text x={ncx(i)} y={cy(i) - 2} fontSize="10.5" fill={n.fg}>{n.label}</text>
+                <text x={ncx(i)} y={cy(i) + 10} fontSize="7.5" fill="var(--fg-soft)" opacity="0.75">{n.sub}</text>
               </g>
             ))}
           </g>
