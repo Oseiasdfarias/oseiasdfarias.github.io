@@ -437,22 +437,22 @@ const App: React.FC = () => {
           {/* Actions */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
             <button onClick={toggleLang} className="btnk invbtn"
-              style={{ cursor: 'pointer', background: 'none', border: '1px solid var(--line)', color: 'var(--fg-muted)', ...mono(11), padding: '6px 9px' }}>
+              style={{ cursor: 'pointer', background: 'var(--panel)', border: '1px solid var(--line-2)', color: 'var(--fg-muted)', ...mono(11), padding: '6px 9px' }}>
               {pt ? 'EN' : 'PT'}
             </button>
             <button onClick={toggleTheme} aria-label="theme" className="btnk invbtn"
-              style={{ cursor: 'pointer', background: 'none', border: '1px solid var(--line)', color: 'var(--fg-muted)', fontSize: 12, padding: '6px 9px' }}>
+              style={{ cursor: 'pointer', background: 'var(--panel)', border: '1px solid var(--line-2)', color: 'var(--fg-muted)', fontSize: 12, padding: '6px 9px' }}>
               {darkMode ? '☀' : '☾'}
             </button>
             <a className="btnk invbtn" href={CV_URL} target="_blank" rel="noreferrer"
-              style={{ textDecoration: 'none', border: '1px solid var(--line-2)', color: 'var(--fg)', ...mono(11), padding: '6px 12px' }}>
+              style={{ textDecoration: 'none', background: 'var(--panel)', border: '1px solid var(--line-2)', color: 'var(--fg)', ...mono(11), padding: '6px 12px' }}>
               {content.hero.ctaSecondary} ↗
             </a>
             {/* Hamburger */}
             <button className="mobile-menu-btn btnk"
               onClick={() => setMobileMenuOpen(o => !o)}
               style={{
-                display: 'none', background: 'none', border: '1px solid var(--line)',
+                display: 'none', background: 'var(--panel)', border: '1px solid var(--line-2)',
                 color: 'var(--fg)', ...mono(14), padding: '4px 9px', cursor: 'pointer',
               }}>
               {mobileMenuOpen ? '✕' : '☰'}
