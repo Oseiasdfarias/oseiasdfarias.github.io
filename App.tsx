@@ -610,18 +610,23 @@ const App: React.FC = () => {
       }}>
 
         {/* ── HERO ────────────────────────────────────────────── */}
-        <section style={{
-          display: 'grid',
-          gridTemplateColumns: 'minmax(0,1fr) minmax(0,1.04fr)',
-          gap: 'clamp(20px,3vw,48px)',
-          alignItems: 'stretch',
+        <section className="hero-section" style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
           height: 'calc(100svh - 60px)',
           padding: 'clamp(14px,4vh,56px) 0 clamp(12px,3vh,40px)',
           borderBottom: '1px solid var(--line)',
-        }} className="hero-grid">
+        }}>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'minmax(0,1fr) minmax(0,1.04fr)',
+            gap: 'clamp(20px,3vw,48px)',
+            alignItems: 'stretch',
+          }} className="hero-grid">
 
           {/* Left — text */}
-          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <div>
             {/* Avatar + kicker */}
             <motion.div
               initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
@@ -712,6 +717,7 @@ const App: React.FC = () => {
 
           {/* Right — SVG DAG */}
           <HeroPipelineDAG lang={lang} vertical />
+          </div>
         </section>
 
         {/* ── DAG mobile-only (acima das métricas) ───────────── */}
