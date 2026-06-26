@@ -1093,7 +1093,93 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        {/* ── CONTACT §07 ────────────────────────────────────── */}
+        {/* ── COMMUNITY §07 ─────────────────────────────────── */}
+        <section id="community" data-section="community" style={{
+          scrollMarginTop: 70,
+          padding: 'clamp(40px,6vw,72px) 0',
+          borderBottom: '1px solid var(--line)',
+        }}>
+          <SectionHeader
+            num="§07"
+            title={pt ? 'Onde estou online' : 'Find me online'}
+            subtitle={pt ? '[ 03 CANAIS ]' : '[ 03 CHANNELS ]'}
+          />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))' }}>
+            {([
+              {
+                platform: 'YouTube',
+                handle:   '@otensor',
+                href:     'https://www.youtube.com/@otensor',
+                tag:      'VIDEO',
+                desc: pt
+                  ? 'Vídeos sobre machine learning, controle inteligente e engenharia de software — do conceito ao código.'
+                  : 'Videos on machine learning, intelligent control and software engineering — from concept to code.',
+                cta: pt ? 'Assistir' : 'Watch',
+              },
+              {
+                platform: 'Medium',
+                handle:   '@oseiasfarias',
+                href:     'https://oseiasfarias.medium.com',
+                tag:      'BLOG',
+                desc: pt
+                  ? 'Artigos técnicos sobre MLOps, APIs, arquitetura de sistemas e experiências de pesquisa acadêmica.'
+                  : 'Technical articles on MLOps, APIs, system architecture and academic research experiences.',
+                cta: pt ? 'Ler artigos' : 'Read articles',
+              },
+              {
+                platform: 'GitHub',
+                handle:   '@oseiasdfarias',
+                href:     'https://github.com/oseiasdfarias',
+                tag:      'CODE',
+                desc: pt
+                  ? 'Repositórios de projetos open source, experimentos de pesquisa e código dos vídeos e artigos.'
+                  : 'Open source project repos, research experiments and code from videos and articles.',
+                cta: pt ? 'Ver projetos' : 'View projects',
+              },
+            ]).map(({ platform, handle, href, tag, desc, cta }) => (
+              <FadeIn key={platform}>
+                <div className="mod" style={{
+                  border: '1px solid var(--line)', margin: '-0.5px',
+                  background: 'var(--panel)', padding: '28px 24px',
+                  display: 'flex', flexDirection: 'column', minHeight: 220,
+                }}>
+                  <span className="modbar" />
+                  <div style={{
+                    display: 'flex', alignItems: 'center',
+                    justifyContent: 'space-between', marginBottom: 20,
+                  }}>
+                    <span style={mono(10, {
+                      color: 'var(--accent)', border: '1px solid var(--line)',
+                      padding: '2px 7px', letterSpacing: '.06em',
+                    })}>
+                      {tag}
+                    </span>
+                    <span style={mono(11, { color: 'var(--fg-soft)' })}>{handle}</span>
+                  </div>
+                  <h3 style={serif(32, 500, { margin: '0 0 12px', letterSpacing: '-.02em', lineHeight: 1 })}>
+                    {platform}
+                  </h3>
+                  <p style={{ margin: '0 0 24px', fontSize: 14, lineHeight: 1.65, color: 'var(--fg-muted)', flex: 1 }}>
+                    {desc}
+                  </p>
+                  <a
+                    href={href} target="_blank" rel="noreferrer"
+                    className="btnk invbtn"
+                    style={{
+                      textDecoration: 'none', alignSelf: 'flex-start',
+                      border: '1px solid var(--line-2)',
+                      ...mono(12, { color: 'var(--fg-muted)', padding: '8px 14px' }),
+                    }}
+                  >
+                    {cta} ↗
+                  </a>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </section>
+
+        {/* ── CONTACT §08 ────────────────────────────────────── */}
         <section id="contact" data-section="contact" style={{
           scrollMarginTop: 70,
           padding: 'clamp(40px,6vw,72px) 0 clamp(48px,7vw,80px)',
@@ -1107,7 +1193,7 @@ const App: React.FC = () => {
             <FadeIn>
               <div>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 20 }}>
-                  <span style={mono(14, { color: 'var(--accent)' })}>§07</span>
+                  <span style={mono(14, { color: 'var(--accent)' })}>§08</span>
                   <h2 style={serif('clamp(30px,4.4vw,52px)' as unknown as number, 500, {
                     margin: 0, letterSpacing: '-.025em',
                   })}>
