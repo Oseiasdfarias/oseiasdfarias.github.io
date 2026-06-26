@@ -132,12 +132,13 @@ const HeroPipelineDAG: React.FC<{ lang: Language; vertical?: boolean }> = ({ lan
       <motion.div
         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.9, delay: 0.16, ease: [0.2, 0.7, 0.2, 1] }}
-        style={{ position: 'relative', border: '1px solid var(--line)', background: 'var(--panel)', padding: '16px 16px 12px' }}
+        style={{ position: 'relative', border: '1px solid var(--line)', background: 'var(--panel)', padding: '16px 16px 12px', display: 'flex', flexDirection: 'column', height: '100%' }}
       >
         {corners}
         {header}
-        <svg viewBox={`0 0 ${vbW} ${vbH}`} width="100%"
-          style={{ display: 'block', overflow: 'visible', maxHeight: 'clamp(160px,38vh,300px)' }}>
+        <svg viewBox={`0 0 ${vbW} ${vbH}`} width="100%" height="100%"
+          preserveAspectRatio="xMidYMid meet"
+          style={{ display: 'block', flex: 1, minHeight: 0, overflow: 'visible' }}>
           <defs>
             <marker id="av" markerWidth="7" markerHeight="7" refX="4" refY="3" orient="auto">
               <path d="M0 0 L 4 3 L 0 6" fill="none" stroke="var(--fg-soft)" strokeWidth="1.1" />
@@ -613,7 +614,7 @@ const App: React.FC = () => {
           display: 'grid',
           gridTemplateColumns: 'minmax(0,1fr) minmax(0,1.04fr)',
           gap: 'clamp(20px,3vw,48px)',
-          alignItems: 'center',
+          alignItems: 'stretch',
           minHeight: 'calc(100svh - 60px)',
           padding: 'clamp(14px,4vh,56px) 0 clamp(12px,3vh,40px)',
           borderBottom: '1px solid var(--line)',
