@@ -126,7 +126,7 @@ const HeroPipelineDAG: React.FC<{ lang: Language; vertical?: boolean }> = ({ lan
       { label: 'api serving',                sub: 'FastAPI · REST',  fg: 'var(--fg-muted)', stroke: 'var(--line-2)', fill: 'var(--bg2)' },
     ];
 
-    const flowPath = `M${cx},${ys[0]} L${cx},${ys[5]+NH}`;
+    const flowPath = `M${cx},${ys[0]} L${cx},${ys[4]+NH}`; // dot para nos 01–05
 
     return (
       <motion.div
@@ -152,28 +152,35 @@ const HeroPipelineDAG: React.FC<{ lang: Language; vertical?: boolean }> = ({ lan
             <path d={`M${NX+NW} ${cy(5)} L${arcX} ${cy(5)} L${arcX} ${cy(1)} L${NX+NW} ${cy(1)}`} markerEnd="url(#av)" />
           </g>
 
-          {/* Animated accent dashes (forward flow) */}
+          {/* Animated accent dashes — forward flow (dados → monitor) */}
           <g fill="none" stroke="var(--accent)" strokeWidth="1.6" strokeLinecap="square"
             strokeDasharray="4 8" style={{ animation: 'dashflow .9s linear infinite' }}>
             {[0,1,2,3].map(i => (
               <path key={i} d={`M${cx} ${bot(i)} L${cx} ${top(i+1)}`} />
             ))}
           </g>
+          {/* monitor → api serving — sentido reverso (feedback) */}
+          <path d={`M${cx} ${bot(4)} L${cx} ${top(5)}`}
+            fill="none" stroke="var(--accent)" strokeWidth="1.6" strokeLinecap="square"
+            strokeDasharray="4 8" style={{ animation: 'dashflow .9s linear infinite reverse' }} />
           {/* Retrain arc animated */}
           <path d={`M${NX+NW} ${cy(5)} L${arcX} ${cy(5)} L${arcX} ${cy(1)} L${NX+NW} ${cy(1)}`}
             fill="none" stroke="var(--accent)" strokeWidth="1.4" strokeLinecap="square"
             strokeDasharray="2 5" style={{ animation: 'dashflow 1.1s linear infinite reverse' }} />
-          {/* monitor → api serving feedback */}
-          <path d={`M${cx} ${bot(4)} L${cx} ${top(5)}`}
-            fill="none" stroke="var(--accent)" strokeWidth="1.4" strokeLinecap="square"
-            strokeDasharray="2 5" style={{ animation: 'dashflow 1.1s linear infinite reverse' }} />
 
-          {/* Traveling data-packet dots */}
+          {/* Traveling dots — param apenas até o monitor (etapas 01–05) */}
           <circle r="2.8" fill="var(--accent)" opacity="0.9">
-            <animateMotion dur="2.6s" repeatCount="indefinite" path={flowPath} />
+            <animateMotion dur="2.6s" repeatCount="indefinite"
+              path={`M${cx},${ys[0]} L${cx},${ys[4]+NH}`} />
           </circle>
           <circle r="2.8" fill="var(--accent)" opacity="0.45">
-            <animateMotion dur="2.6s" begin="1.3s" repeatCount="indefinite" path={flowPath} />
+            <animateMotion dur="2.6s" begin="1.3s" repeatCount="indefinite"
+              path={`M${cx},${ys[0]} L${cx},${ys[4]+NH}`} />
+          </circle>
+          {/* Dot reverso — api serving → monitor */}
+          <circle r="2.5" fill="var(--fg-soft)" opacity="0.6">
+            <animateMotion dur="1.6s" repeatCount="indefinite"
+              path={`M${cx},${ys[5]+NH} L${cx},${ys[4]}`} />
           </circle>
 
           {/* Step numbers */}
