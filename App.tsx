@@ -636,7 +636,7 @@ const App: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.2, 0.7, 0.2, 1] }}
-              style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 'clamp(12px,2.5vh,24px)' }}>
+              style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 'clamp(24px,2.5vh,24px)' }}>
               <div style={{
                 width: 52, height: 52, flexShrink: 0, overflow: 'hidden',
                 border: '1px solid var(--line-2)',
