@@ -1052,23 +1052,30 @@ const App: React.FC = () => {
           </FadeIn>
 
           {/* Degree cards */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(262px,1fr))', marginBottom: 30 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(262px,1fr))', marginBottom: 30, alignItems: 'stretch' }}>
             {education.map((edu, i) => (
-              <FadeIn key={i} delay={i * 0.06}>
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.6, delay: i * 0.06, ease: [0.2, 0.7, 0.2, 1] }}
+                style={{ display: 'flex', flexDirection: 'column' }}
+              >
                 <div className="mod" style={{
                   border: '1px solid var(--line)', margin: '-0.5px',
                   background: 'var(--panel)', padding: 20,
+                  display: 'flex', flexDirection: 'column', flex: 1,
                 }}>
                   <span className="modbar" />
                   <div style={mono(11, { color: 'var(--accent)', marginBottom: 6 })}>
                     {edu.period} · {edu.institution}
                   </div>
                   <h3 style={serif(18, 500, { margin: '0 0 6px', lineHeight: 1.18 })}>{edu.title}</h3>
-                  <p style={{ margin: 0, fontSize: 13, lineHeight: 1.5, color: 'var(--fg-muted)' }}>
+                  <p style={{ margin: 0, fontSize: 13, lineHeight: 1.5, color: 'var(--fg-muted)', flex: 1 }}>
                     {edu.description}
                   </p>
                 </div>
-              </FadeIn>
+              </motion.div>
             ))}
           </div>
 
