@@ -1104,7 +1104,7 @@ const App: React.FC = () => {
             title={pt ? 'Onde estou online' : 'Find me online'}
             subtitle={pt ? '[ 03 CANAIS ]' : '[ 03 CHANNELS ]'}
           />
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))', alignItems: 'stretch' }}>
             {([
               {
                 platform: 'YouTube',
@@ -1136,12 +1136,18 @@ const App: React.FC = () => {
                   : 'Open source project repos, research experiments and code from videos and articles.',
                 cta: pt ? 'Ver projetos' : 'View projects',
               },
-            ]).map(({ platform, handle, href, tag, desc, cta }) => (
-              <FadeIn key={platform}>
+            ]).map(({ platform, handle, href, tag, desc, cta }, i) => (
+              <motion.div
+                key={platform}
+                initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-30px' }}
+                transition={{ duration: 0.6, delay: i * 0.08, ease: [0.2, 0.7, 0.2, 1] }}
+                style={{ display: 'flex', flexDirection: 'column' }}
+              >
                 <div className="mod" style={{
                   border: '1px solid var(--line)', margin: '-0.5px',
                   background: 'var(--panel)', padding: '28px 24px',
-                  display: 'flex', flexDirection: 'column', minHeight: 220,
+                  display: 'flex', flexDirection: 'column', flex: 1,
                 }}>
                   <span className="modbar" />
                   <div style={{
@@ -1174,7 +1180,7 @@ const App: React.FC = () => {
                     {cta} ↗
                   </a>
                 </div>
-              </FadeIn>
+              </motion.div>
             ))}
           </div>
         </section>
