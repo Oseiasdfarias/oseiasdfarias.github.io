@@ -105,74 +105,71 @@ const HeroPipelineDAG: React.FC<{ lang: Language; vertical?: boolean }> = ({ lan
     ))
   );
 
-  /* ── Vertical SVG (mobile) ── */
+  /* ── Vertical SVG (desktop + mobile) ── */
   if (vertical) {
-    // 6 nodes stacked, retrain arc on the right side
-    // ViewBox 220×500, nodes centered at x=100, width=160, height=34
-    const NW = 160, NH = 34, NX = 30, cx = NX + NW / 2;
-    const ys = [20, 100, 180, 260, 340, 420]; // top-y of each rect
+    const NW = 152, NH = 28, NX = 8, cx = NX + NW / 2;
+    // tight spacing: 28px node + 26px gap = 54px step
+    const ys = [10, 64, 118, 172, 226, 280];
     const cy = (i: number) => ys[i] + NH / 2;
     const bot = (i: number) => ys[i] + NH;
     const top = (i: number) => ys[i];
+    const arcX = NX + NW + 18; // retrain arc x
+    const vbH = ys[5] + NH + 10;
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.9, delay: 0.16, ease: [0.2, 0.7, 0.2, 1] }}
-        style={{ position: 'relative', border: '1px solid var(--line)', background: 'var(--panel)', padding: '24px 22px 18px' }}
+        style={{ position: 'relative', border: '1px solid var(--line)', background: 'var(--panel)', padding: '22px 18px 16px' }}
       >
         {corners}
         {header}
-        <svg viewBox="0 0 220 472" width="100%" style={{ display: 'block', overflow: 'visible' }}>
+        <svg viewBox={`0 0 ${NX + NW + 38} ${vbH}`} width="100%" style={{ display: 'block', overflow: 'visible' }}>
           <defs>
-            <marker id="av" markerWidth="8" markerHeight="8" refX="4" refY="3" orient="auto">
-              <path d="M0 0 L 4 3 L 0 6" fill="none" stroke="var(--fg-soft)" strokeWidth="1.2" />
-            </marker>
-            <marker id="av2" markerWidth="8" markerHeight="8" refX="4" refY="3" orient="auto">
-              <path d="M0 0 L 4 3 L 0 6" fill="none" stroke="var(--accent)" strokeWidth="1.2" />
+            <marker id="av" markerWidth="7" markerHeight="7" refX="4" refY="3" orient="auto">
+              <path d="M0 0 L 4 3 L 0 6" fill="none" stroke="var(--fg-soft)" strokeWidth="1.1" />
             </marker>
           </defs>
 
-          {/* Static edges (down arrows between nodes) */}
-          <g fill="none" stroke="var(--line-2)" strokeWidth="1.4" strokeLinecap="square">
+          {/* Static edges */}
+          <g fill="none" stroke="var(--line-2)" strokeWidth="1.3" strokeLinecap="square">
             {[0,1,2,3,4].map(i => (
               <path key={i} d={`M${cx} ${bot(i)} L${cx} ${top(i+1)}`} markerEnd="url(#av)" />
             ))}
-            {/* Retrain arc: right side, api serving → treino */}
-            <path d={`M${NX+NW} ${cy(5)} L200 ${cy(5)} L200 ${cy(1)} L${NX+NW} ${cy(1)}`} markerEnd="url(#av)" />
+            <path d={`M${NX+NW} ${cy(5)} L${arcX} ${cy(5)} L${arcX} ${cy(1)} L${NX+NW} ${cy(1)}`} markerEnd="url(#av)" />
           </g>
 
           {/* Animated accent edges */}
-          <g fill="none" stroke="var(--accent)" strokeWidth="1.8" strokeLinecap="square"
+          <g fill="none" stroke="var(--accent)" strokeWidth="1.7" strokeLinecap="square"
             strokeDasharray="4 7" style={{ animation: 'dashflow .9s linear infinite' }}>
             {[0,1,2,3].map(i => (
               <path key={i} d={`M${cx} ${bot(i)} L${cx} ${top(i+1)}`} />
             ))}
           </g>
-          {/* Retrain animated arc */}
-          <path d={`M${NX+NW} ${cy(5)} L200 ${cy(5)} L200 ${cy(1)} L${NX+NW} ${cy(1)}`}
-            fill="none" stroke="var(--accent)" strokeWidth="1.6" strokeLinecap="square"
-            strokeDasharray="2 6" style={{ animation: 'dashflow 1.1s linear infinite reverse' }} />
-          {/* monitor → api serving (reverse feedback dash) */}
+          <path d={`M${NX+NW} ${cy(5)} L${arcX} ${cy(5)} L${arcX} ${cy(1)} L${NX+NW} ${cy(1)}`}
+            fill="none" stroke="var(--accent)" strokeWidth="1.5" strokeLinecap="square"
+            strokeDasharray="2 5" style={{ animation: 'dashflow 1.1s linear infinite reverse' }} />
           <path d={`M${cx} ${bot(4)} L${cx} ${top(5)}`}
-            fill="none" stroke="var(--accent)" strokeWidth="1.6" strokeLinecap="square"
-            strokeDasharray="2 6" style={{ animation: 'dashflow 1.1s linear infinite reverse' }} />
+            fill="none" stroke="var(--accent)" strokeWidth="1.5" strokeLinecap="square"
+            strokeDasharray="2 5" style={{ animation: 'dashflow 1.1s linear infinite reverse' }} />
 
           {/* Nodes */}
-          <g fontFamily="IBM Plex Mono" fontSize="12" textAnchor="middle">
+          <g fontFamily="IBM Plex Mono" fontSize="11" textAnchor="middle">
             <g><rect x={NX} y={ys[0]} width={NW} height={NH} fill="var(--bg2)" stroke="var(--line-2)" /><text x={cx} y={cy(0)+4} fill="var(--fg-muted)">{pt ? 'dados' : 'data'}</text></g>
             <g><rect x={NX} y={ys[1]} width={NW} height={NH} fill="var(--accent)" stroke="var(--accent)" /><text x={cx} y={cy(1)+4} fill="var(--bg)">{pt ? 'treino' : 'train'}</text></g>
             <g><rect x={NX} y={ys[2]} width={NW} height={NH} fill="var(--bg2)" stroke="var(--line-2)" /><text x={cx} y={cy(2)+4} fill="var(--fg-muted)">{pt ? 'registro' : 'registry'}</text></g>
             <g><rect x={NX} y={ys[3]} width={NW} height={NH} fill="var(--bg2)" stroke="var(--line-2)" /><text x={cx} y={cy(3)+4} fill="var(--fg-muted)">deploy</text></g>
             <g>
               <rect x={NX} y={ys[4]} width={NW} height={NH} fill="var(--bg2)" stroke="var(--accent)" />
-              <circle cx={NX+14} cy={cy(4)} r="3" fill="var(--accent)"
-                style={{ animation: 'nodepulse 1.8s ease-in-out infinite', transformOrigin: `${NX+14}px ${cy(4)}px` }} />
-              <text x={cx+6} y={cy(4)+4} fill="var(--fg)">monitor</text>
+              <circle cx={NX+12} cy={cy(4)} r="3" fill="var(--accent)"
+                style={{ animation: 'nodepulse 1.8s ease-in-out infinite', transformOrigin: `${NX+12}px ${cy(4)}px` }} />
+              <text x={cx+5} y={cy(4)+4} fill="var(--fg)">monitor</text>
             </g>
             <g><rect x={NX} y={ys[5]} width={NW} height={NH} fill="var(--bg2)" stroke="var(--line-2)" /><text x={cx} y={cy(5)+4} fill="var(--fg-muted)">api serving</text></g>
           </g>
-          <text x="210" y={(cy(1)+cy(5))/2} fontFamily="IBM Plex Mono" fontSize="9"
-            fill="var(--accent)" textAnchor="middle" transform={`rotate(-90,210,${(cy(1)+cy(5))/2})`}>retrain ↺</text>
+
+          <text x={arcX + 2} y={(cy(1)+cy(5))/2} fontFamily="IBM Plex Mono" fontSize="8.5"
+            fill="var(--accent)" textAnchor="middle"
+            transform={`rotate(-90,${arcX+2},${(cy(1)+cy(5))/2})`}>retrain ↺</text>
         </svg>
       </motion.div>
     );
@@ -675,7 +672,7 @@ const App: React.FC = () => {
           </div>
 
           {/* Right — SVG DAG */}
-          <HeroPipelineDAG lang={lang} />
+          <HeroPipelineDAG lang={lang} vertical />
         </section>
 
         {/* ── DAG mobile-only (acima das métricas) ───────────── */}
