@@ -204,9 +204,9 @@ const HeroPipelineDAG: React.FC<{ lang: Language; vertical?: boolean }> = ({ lan
           </g>
 
           {/* Retrain label */}
-          <text x={arcX + 3} y={(cy(1)+cy(5))/2} fontFamily="IBM Plex Mono" fontSize="8"
+          <text x={arcX + 10} y={(cy(1)+cy(5))/2} fontFamily="IBM Plex Mono" fontSize="8"
             fill="var(--accent)" textAnchor="middle"
-            transform={`rotate(-90,${arcX+3},${(cy(1)+cy(5))/2})`}>retrain ↺</text>
+            transform={`rotate(-90,${arcX+10},${(cy(1)+cy(5))/2})`}>retrain ↺</text>
         </svg>
       </motion.div>
     );
