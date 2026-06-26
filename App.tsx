@@ -575,9 +575,10 @@ const App: React.FC = () => {
         <section style={{
           display: 'grid',
           gridTemplateColumns: 'minmax(0,1fr) minmax(0,1.04fr)',
-          gap: 'clamp(24px,4vw,56px)',
+          gap: 'clamp(20px,3vw,48px)',
           alignItems: 'center',
-          padding: 'clamp(40px,7vw,86px) 0 clamp(36px,5vw,60px)',
+          minHeight: 'calc(100svh - 60px)',
+          padding: 'clamp(14px,4vh,56px) 0 clamp(12px,3vh,40px)',
           borderBottom: '1px solid var(--line)',
         }} className="hero-grid">
 
@@ -587,7 +588,7 @@ const App: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.2, 0.7, 0.2, 1] }}
-              style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 26 }}>
+              style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 'clamp(12px,2.5vh,24px)' }}>
               <div style={{
                 width: 52, height: 52, flexShrink: 0, overflow: 'hidden',
                 border: '1px solid var(--line-2)',
@@ -611,8 +612,8 @@ const App: React.FC = () => {
             <motion.h1
               initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.07, ease: [0.2, 0.7, 0.2, 1] }}
-              style={serif('clamp(44px,6.4vw,80px)' as unknown as number, 500, {
-                lineHeight: 0.96, letterSpacing: '-.025em', margin: '0 0 22px',
+              style={serif('clamp(32px,min(5.8vw,6vh),68px)' as unknown as number, 500, {
+                lineHeight: 0.96, letterSpacing: '-.025em', margin: '0 0 clamp(10px,2vh,20px)',
               })}>
               {content.hero.role.split(' & ')[0]}<br />
               <span style={{ fontStyle: 'italic', color: 'var(--accent)' }}>
@@ -624,8 +625,8 @@ const App: React.FC = () => {
               initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.15, ease: [0.2, 0.7, 0.2, 1] }}
               style={{
-                fontSize: 'clamp(17px,2vw,20px)', lineHeight: 1.6,
-                color: 'var(--fg-muted)', maxWidth: 500, margin: '0 0 30px',
+                fontSize: 'clamp(14px,min(1.7vw,1.9vh),18px)', lineHeight: 1.55,
+                color: 'var(--fg-muted)', maxWidth: 500, margin: '0 0 clamp(12px,2.5vh,26px)',
               }}>
               {content.hero.lede}
             </motion.p>
@@ -636,7 +637,7 @@ const App: React.FC = () => {
               transition={{ duration: 0.8, delay: 0.21, ease: [0.2, 0.7, 0.2, 1] }}
               style={{
                 display: 'grid', gridTemplateColumns: 'repeat(2,auto)',
-                gap: '6px 30px', marginBottom: 30,
+                gap: '4px 24px', marginBottom: 'clamp(12px,2.5vh,26px)',
                 ...mono(12, { color: 'var(--fg-soft)' }),
               }}>
               <div><span>ROLE / </span><span style={{ color: 'var(--fg-muted)' }}>BACKEND · MLOPS</span></div>
@@ -655,7 +656,7 @@ const App: React.FC = () => {
                 className="btnk"
                 style={{
                   textDecoration: 'none', background: 'var(--accent)',
-                  color: 'var(--bg)', ...mono(13, { fontWeight: 500, padding: '12px 20px', letterSpacing: '.02em' }),
+                  color: 'var(--bg)', ...mono(13, { fontWeight: 500, padding: 'clamp(8px,1.4vh,12px) 18px', letterSpacing: '.02em' }),
                 }}>
                 {content.hero.ctaPrimary} <ArrowRight size={14} style={{ display: 'inline', verticalAlign: 'middle' }} />
               </a>
@@ -664,7 +665,7 @@ const App: React.FC = () => {
                 className="navlink"
                 style={{
                   textDecoration: 'none',
-                  ...mono(13, { padding: '12px 20px', borderBottom: '1px solid var(--line)' }),
+                  ...mono(13, { padding: 'clamp(8px,1.4vh,12px) 18px', borderBottom: '1px solid var(--line)' }),
                 }}>
                 {content.nav.contact}
               </a>
