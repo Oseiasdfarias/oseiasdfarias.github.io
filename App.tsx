@@ -78,8 +78,107 @@ const LiveDot: React.FC<{ color?: string }> = ({ color = 'var(--accent)' }) => (
 
 // ─── Hero SVG Pipeline DAG ────────────────────────────────────────────────────
 
-const HeroPipelineDAG: React.FC<{ lang: Language }> = ({ lang }) => {
+const HeroPipelineDAG: React.FC<{ lang: Language; vertical?: boolean }> = ({ lang, vertical }) => {
   const pt = lang === 'pt';
+
+  const header = (
+    <div style={{
+      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      marginBottom: 16, ...mono(11, { color: 'var(--fg-soft)', letterSpacing: '.04em' }),
+    }}>
+      <span>FIG.01 — {pt ? 'CICLO DE VIDA ML' : 'ML LIFECYCLE'}</span>
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--accent)' }}>
+        <LiveDot />
+        {pt ? 'ativo' : 'live'}
+      </span>
+    </div>
+  );
+
+  const corners = (
+    ([
+      { top: -1, left: -1, borderTop: '2px solid var(--accent)', borderLeft: '2px solid var(--accent)' },
+      { top: -1, right: -1, borderTop: '2px solid var(--accent)', borderRight: '2px solid var(--accent)' },
+      { bottom: -1, left: -1, borderBottom: '2px solid var(--accent)', borderLeft: '2px solid var(--accent)' },
+      { bottom: -1, right: -1, borderBottom: '2px solid var(--accent)', borderRight: '2px solid var(--accent)' },
+    ] as CSSProperties[]).map((s, i) => (
+      <div key={i} style={{ position: 'absolute', width: 14, height: 14, ...s }} />
+    ))
+  );
+
+  /* ── Vertical SVG (mobile) ── */
+  if (vertical) {
+    // 6 nodes stacked, retrain arc on the right side
+    // ViewBox 220×500, nodes centered at x=100, width=160, height=34
+    const NW = 160, NH = 34, NX = 30, cx = NX + NW / 2;
+    const ys = [20, 100, 180, 260, 340, 420]; // top-y of each rect
+    const cy = (i: number) => ys[i] + NH / 2;
+    const bot = (i: number) => ys[i] + NH;
+    const top = (i: number) => ys[i];
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, delay: 0.16, ease: [0.2, 0.7, 0.2, 1] }}
+        style={{ position: 'relative', border: '1px solid var(--line)', background: 'var(--panel)', padding: '24px 22px 18px' }}
+      >
+        {corners}
+        {header}
+        <svg viewBox="0 0 220 472" width="100%" style={{ display: 'block', overflow: 'visible' }}>
+          <defs>
+            <marker id="av" markerWidth="8" markerHeight="8" refX="4" refY="3" orient="auto">
+              <path d="M0 0 L 4 3 L 0 6" fill="none" stroke="var(--fg-soft)" strokeWidth="1.2" />
+            </marker>
+            <marker id="av2" markerWidth="8" markerHeight="8" refX="4" refY="3" orient="auto">
+              <path d="M0 0 L 4 3 L 0 6" fill="none" stroke="var(--accent)" strokeWidth="1.2" />
+            </marker>
+          </defs>
+
+          {/* Static edges (down arrows between nodes) */}
+          <g fill="none" stroke="var(--line-2)" strokeWidth="1.4" strokeLinecap="square">
+            {[0,1,2,3,4].map(i => (
+              <path key={i} d={`M${cx} ${bot(i)} L${cx} ${top(i+1)}`} markerEnd="url(#av)" />
+            ))}
+            {/* Retrain arc: right side, api serving → treino */}
+            <path d={`M${NX+NW} ${cy(5)} L200 ${cy(5)} L200 ${cy(1)} L${NX+NW} ${cy(1)}`} markerEnd="url(#av)" />
+          </g>
+
+          {/* Animated accent edges */}
+          <g fill="none" stroke="var(--accent)" strokeWidth="1.8" strokeLinecap="square"
+            strokeDasharray="4 7" style={{ animation: 'dashflow .9s linear infinite' }}>
+            {[0,1,2,3].map(i => (
+              <path key={i} d={`M${cx} ${bot(i)} L${cx} ${top(i+1)}`} />
+            ))}
+          </g>
+          {/* Retrain animated arc */}
+          <path d={`M${NX+NW} ${cy(5)} L200 ${cy(5)} L200 ${cy(1)} L${NX+NW} ${cy(1)}`}
+            fill="none" stroke="var(--accent)" strokeWidth="1.6" strokeLinecap="square"
+            strokeDasharray="2 6" style={{ animation: 'dashflow 1.1s linear infinite reverse' }} />
+          {/* monitor → api serving (reverse feedback dash) */}
+          <path d={`M${cx} ${bot(4)} L${cx} ${top(5)}`}
+            fill="none" stroke="var(--accent)" strokeWidth="1.6" strokeLinecap="square"
+            strokeDasharray="2 6" style={{ animation: 'dashflow 1.1s linear infinite reverse' }} />
+
+          {/* Nodes */}
+          <g fontFamily="IBM Plex Mono" fontSize="12" textAnchor="middle">
+            <g><rect x={NX} y={ys[0]} width={NW} height={NH} fill="var(--bg2)" stroke="var(--line-2)" /><text x={cx} y={cy(0)+4} fill="var(--fg-muted)">{pt ? 'dados' : 'data'}</text></g>
+            <g><rect x={NX} y={ys[1]} width={NW} height={NH} fill="var(--accent)" stroke="var(--accent)" /><text x={cx} y={cy(1)+4} fill="var(--bg)">{pt ? 'treino' : 'train'}</text></g>
+            <g><rect x={NX} y={ys[2]} width={NW} height={NH} fill="var(--bg2)" stroke="var(--line-2)" /><text x={cx} y={cy(2)+4} fill="var(--fg-muted)">{pt ? 'registro' : 'registry'}</text></g>
+            <g><rect x={NX} y={ys[3]} width={NW} height={NH} fill="var(--bg2)" stroke="var(--line-2)" /><text x={cx} y={cy(3)+4} fill="var(--fg-muted)">deploy</text></g>
+            <g>
+              <rect x={NX} y={ys[4]} width={NW} height={NH} fill="var(--bg2)" stroke="var(--accent)" />
+              <circle cx={NX+14} cy={cy(4)} r="3" fill="var(--accent)"
+                style={{ animation: 'nodepulse 1.8s ease-in-out infinite', transformOrigin: `${NX+14}px ${cy(4)}px` }} />
+              <text x={cx+6} y={cy(4)+4} fill="var(--fg)">monitor</text>
+            </g>
+            <g><rect x={NX} y={ys[5]} width={NW} height={NH} fill="var(--bg2)" stroke="var(--line-2)" /><text x={cx} y={cy(5)+4} fill="var(--fg-muted)">api serving</text></g>
+          </g>
+          <text x="210" y={(cy(1)+cy(5))/2} fontFamily="IBM Plex Mono" fontSize="9"
+            fill="var(--accent)" textAnchor="middle" transform={`rotate(-90,210,${(cy(1)+cy(5))/2})`}>retrain ↺</text>
+        </svg>
+      </motion.div>
+    );
+  }
+
+  /* ── Horizontal SVG (desktop) ── */
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
@@ -89,27 +188,8 @@ const HeroPipelineDAG: React.FC<{ lang: Language }> = ({ lang }) => {
         background: 'var(--panel)', padding: '24px 22px 18px',
       }}
     >
-      {/* Corner brackets */}
-      {([
-        { top: -1, left: -1, borderTop: '2px solid var(--accent)', borderLeft: '2px solid var(--accent)' },
-        { top: -1, right: -1, borderTop: '2px solid var(--accent)', borderRight: '2px solid var(--accent)' },
-        { bottom: -1, left: -1, borderBottom: '2px solid var(--accent)', borderLeft: '2px solid var(--accent)' },
-        { bottom: -1, right: -1, borderBottom: '2px solid var(--accent)', borderRight: '2px solid var(--accent)' },
-      ] as CSSProperties[]).map((s, i) => (
-        <div key={i} style={{ position: 'absolute', width: 14, height: 14, ...s }} />
-      ))}
-
-      <div style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        marginBottom: 16, ...mono(11, { color: 'var(--fg-soft)', letterSpacing: '.04em' }),
-      }}>
-        <span>FIG.01 — {pt ? 'CICLO DE VIDA ML' : 'ML LIFECYCLE'}</span>
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--accent)' }}>
-          <LiveDot />
-          {pt ? 'ativo' : 'live'}
-        </span>
-      </div>
-
+      {corners}
+      {header}
       <svg viewBox="0 0 480 250" width="100%" style={{ display: 'block', overflow: 'visible' }}>
         {/* Static edges */}
         <g fill="none" stroke="var(--line-2)" strokeWidth="1.4" strokeLinecap="square">
@@ -603,7 +683,7 @@ const App: React.FC = () => {
           padding: 'clamp(24px,5vw,40px) 0',
           borderBottom: '1px solid var(--line)',
         }}>
-          <HeroPipelineDAG lang={lang} />
+          <HeroPipelineDAG lang={lang} vertical />
         </div>
 
         {/* ── METRICS ─────────────────────────────────────────── */}
