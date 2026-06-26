@@ -309,7 +309,7 @@ const App: React.FC = () => {
   const socials = [
     { label: 'GitHub',   href: 'https://github.com/oseiasdfarias/' },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/oseiasfarias/' },
-    { label: 'YouTube',  href: 'https://youtube.com/@oseiasdfarias' },
+    { label: 'YouTube',  href: 'https://www.youtube.com/@otensor' },
     { label: 'Medium',   href: 'https://oseiasfarias.medium.com' },
   ];
   const CV_URL = 'https://drive.google.com/file/d/1-oMiFFC3QAbU6JhIeo6svznmm1pWMtzW/view';
