@@ -615,13 +615,13 @@ const App: React.FC = () => {
           gridTemplateColumns: 'minmax(0,1fr) minmax(0,1.04fr)',
           gap: 'clamp(20px,3vw,48px)',
           alignItems: 'stretch',
-          minHeight: 'calc(100svh - 60px)',
+          height: 'calc(100svh - 60px)',
           padding: 'clamp(14px,4vh,56px) 0 clamp(12px,3vh,40px)',
           borderBottom: '1px solid var(--line)',
         }} className="hero-grid">
 
           {/* Left — text */}
-          <div>
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             {/* Avatar + kicker */}
             <motion.div
               initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
