@@ -163,10 +163,10 @@ const HeroPipelineDAG: React.FC<{ lang: Language; vertical?: boolean }> = ({ lan
           <path d={`M${cx} ${bot(4)} L${cx} ${top(5)}`}
             fill="none" stroke="var(--accent)" strokeWidth="1.6" strokeLinecap="square"
             strokeDasharray="4 8" style={{ animation: 'dashflow .9s linear infinite reverse' }} />
-          {/* Retrain arc animated */}
+          {/* Retrain arc animated — api serving → treino */}
           <path d={`M${NX+NW} ${cy(5)} L${arcX} ${cy(5)} L${arcX} ${cy(1)} L${NX+NW} ${cy(1)}`}
             fill="none" stroke="var(--accent)" strokeWidth="1.4" strokeLinecap="square"
-            strokeDasharray="2 5" style={{ animation: 'dashflow 1.1s linear infinite reverse' }} />
+            strokeDasharray="2 5" style={{ animation: 'dashflow 1.1s linear infinite' }} />
 
           {/* Traveling dots — param apenas até o monitor (etapas 01–05) */}
           <circle r="2.8" fill="var(--accent)" opacity="0.9">
