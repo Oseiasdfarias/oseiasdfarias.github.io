@@ -15,7 +15,7 @@ export const translations: Record<Language, Content> = {
     hero: {
       kicker:       "Disponível para novas oportunidades",
       name:         "Oséias Farias",
-      role:         "Engenheiro de Machine Learning | MLOps & IA na Nuvem",
+      role:         "ML Engineer · MLOps & Cloud AI (AWS)",
       lede:         "Construo e opero pipelines de ML/NLP e arquiteturas serverless orientadas a eventos em produção na AWS. Dois mestrados em andamento em IA aplicada a sistemas de controle. Autor do Synapsys (PyPI) e criador de conteúdo técnico.",
       ctaPrimary:   "Ver projetos",
       ctaSecondary: "Baixar currículo",
@@ -117,7 +117,7 @@ export const translations: Record<Language, Content> = {
     hero: {
       kicker:       "Open to new opportunities",
       name:         "Oséias Farias",
-      role:         "Machine Learning Engineer | MLOps & Cloud AI (AWS)",
+      role:         "ML Engineer · MLOps & Cloud AI (AWS)",
       lede:         "I build and operate ML/NLP pipelines and event-driven serverless architectures in production on AWS. Pursuing two master's degrees in AI applied to control systems. Author of Synapsys (PyPI) and technical content creator.",
       ctaPrimary:   "View projects",
       ctaSecondary: "Download CV",
