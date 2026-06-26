@@ -506,16 +506,28 @@ const App: React.FC = () => {
 
           {/* Left — text */}
           <div>
+            {/* Avatar + kicker */}
             <motion.div
               initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.2, 0.7, 0.2, 1] }}
-              style={{
-                display: 'flex', alignItems: 'center', gap: 10,
-                ...mono(12, { color: 'var(--fg-soft)', letterSpacing: '.06em', marginBottom: 26 }),
+              style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 26 }}>
+              <div style={{
+                width: 52, height: 52, flexShrink: 0, overflow: 'hidden',
+                border: '1px solid var(--line-2)',
+                outline: '2px solid var(--accent)',
+                outlineOffset: 2,
               }}>
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7, color: 'var(--accent)' }}>
-                <LiveDot />
-                {content.hero.kicker}
+                <img
+                  src="https://github.com/oseiasdfarias.png"
+                  alt="Oséias Farias"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', filter: 'grayscale(1)' }}
+                />
+              </div>
+              <span style={mono(12, { color: 'var(--fg-soft)', letterSpacing: '.06em' })}>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7, color: 'var(--accent)' }}>
+                  <LiveDot />
+                  {content.hero.kicker}
+                </span>
               </span>
             </motion.div>
 
