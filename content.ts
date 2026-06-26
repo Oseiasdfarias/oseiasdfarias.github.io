@@ -10,6 +10,7 @@ export const translations: Record<Language, Content> = {
       opensource: "Open Source",
       research:   "Pesquisa",
       education:  "Formação",
+      community:  "Comunidade",
       contact:    "Contato",
     },
     hero: {
@@ -112,6 +113,7 @@ export const translations: Record<Language, Content> = {
       opensource: "Open Source",
       research:   "Research",
       education:  "Education",
+      community:  "Community",
       contact:    "Contact",
     },
     hero: {

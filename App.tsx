@@ -547,16 +547,19 @@ const App: React.FC = () => {
           {/* Desktop nav */}
           {(() => {
             const navItems = [
-              { id: 'top',          num: '§00', label: pt ? 'Início'    : 'Home',       top: true },
+              { id: 'top',          num: '—',   label: pt ? 'Início'         : 'Home',        top: true },
+              { id: 'about',        num: '§00', label: content.nav.about },
               { id: 'capabilities', num: '§01', label: content.nav.focus },
               { id: 'projects',     num: '§02', label: content.nav.projects },
-              { id: 'experience',   num: '§03', label: content.nav.experience },
-              { id: 'research',     num: '§04', label: content.nav.research },
+              { id: 'opensource',   num: '§03', label: content.nav.opensource },
+              { id: 'experience',   num: '§04', label: content.nav.experience },
+              { id: 'research',     num: '§05', label: content.nav.research },
               { id: 'education',    num: '§06', label: content.nav.education },
+              { id: 'community',    num: '§07', label: content.nav.community },
               { id: 'contact',      num: '§08', label: content.nav.contact },
             ];
             return (
-              <nav className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <nav className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: 0 }}>
                 {navItems.map(({ id, num, label, top: isTop }) => {
                   const isActive = !isTop && activeSection === id;
                   return (
@@ -567,7 +570,7 @@ const App: React.FC = () => {
                       }}
                       style={{
                         textDecoration: 'none', display: 'flex', flexDirection: 'column',
-                        alignItems: 'flex-start', gap: 1, padding: '6px 10px',
+                        alignItems: 'flex-start', gap: 1, padding: '5px 8px',
                         borderBottom: `2px solid ${isActive ? 'var(--accent)' : 'transparent'}`,
                         transition: 'border-color .25s, background .25s',
                         background: isActive ? 'var(--bg2)' : 'transparent',
