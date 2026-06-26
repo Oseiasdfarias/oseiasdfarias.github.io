@@ -438,7 +438,7 @@ const App: React.FC = () => {
     { label: 'YouTube',  href: 'https://www.youtube.com/@otensor' },
     { label: 'Medium',   href: 'https://oseiasfarias.medium.com' },
   ];
-  const CV_URL = 'https://drive.google.com/file/d/1-oMiFFC3QAbU6JhIeo6svznmm1pWMtzW/view';
+  const CV_URL = '/cv_ml_mlops_ats.pdf';
 
   const NAV_SECTIONS = ['capabilities', 'projects', 'experience', 'research'] as const;
 
@@ -658,7 +658,7 @@ const App: React.FC = () => {
               style={{ cursor: 'pointer', background: 'var(--panel)', border: '1px solid var(--line-2)', color: 'var(--fg-muted)', fontSize: 12, height: 32, padding: '0 9px', lineHeight: 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
               {darkMode ? <Sun size={14} /> : <Moon size={14} />}
             </button>
-            <a className="btnk invbtn" href={CV_URL} target="_blank" rel="noreferrer"
+            <a className="btnk invbtn" href={CV_URL} download="cv_ml_mlops_ats.pdf" target="_blank" rel="noreferrer"
               style={{ textDecoration: 'none', background: 'var(--panel)', border: '1px solid var(--line-2)', color: 'var(--fg)', ...mono(11), height: 32, padding: '0 12px', lineHeight: 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
               {content.hero.ctaSecondary} <ArrowUpRight size={13} style={{ display: 'inline', verticalAlign: 'middle' }} />
             </a>
