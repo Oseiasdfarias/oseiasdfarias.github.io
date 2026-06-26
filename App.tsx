@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, CSSProperties } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X } from 'lucide-react';
+import { X, Sun, Moon, Menu, ArrowUpRight, ArrowRight, ArrowUp, ChevronLeft, ChevronRight } from 'lucide-react';
 import {
   translations, getProjects, getExperience,
   getEducation, getCertifications, getResearch, getPublications, getOpenSource,
@@ -256,12 +256,12 @@ const MediaModal: React.FC<{
         {modal.total > 1 && (
           <div style={{ display: 'flex', gap: 24, marginTop: 16 }}>
             <button onClick={onPrev}
-              style={{ ...mono(12, { color: '#999', background: 'none', border: '1px solid rgba(255,255,255,.15)', padding: '6px 12px', cursor: 'pointer' }) }}>
-              ◀ prev
+              style={{ ...mono(12, { color: '#999', background: 'none', border: '1px solid rgba(255,255,255,.15)', padding: '6px 12px', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 5 }) }}>
+              <ChevronLeft size={13} /> prev
             </button>
             <button onClick={onNext}
-              style={{ ...mono(12, { color: '#999', background: 'none', border: '1px solid rgba(255,255,255,.15)', padding: '6px 12px', cursor: 'pointer' }) }}>
-              next ▶
+              style={{ ...mono(12, { color: '#999', background: 'none', border: '1px solid rgba(255,255,255,.15)', padding: '6px 12px', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 5 }) }}>
+              next <ChevronRight size={13} />
             </button>
           </div>
         )}
@@ -442,11 +442,11 @@ const App: React.FC = () => {
             </button>
             <button onClick={toggleTheme} aria-label="theme" className="btnk invbtn"
               style={{ cursor: 'pointer', background: 'var(--panel)', border: '1px solid var(--line-2)', color: 'var(--fg-muted)', fontSize: 12, height: 32, padding: '0 9px', lineHeight: 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
-              {darkMode ? '☀' : '☾'}
+              {darkMode ? <Sun size={14} /> : <Moon size={14} />}
             </button>
             <a className="btnk invbtn" href={CV_URL} target="_blank" rel="noreferrer"
               style={{ textDecoration: 'none', background: 'var(--panel)', border: '1px solid var(--line-2)', color: 'var(--fg)', ...mono(11), height: 32, padding: '0 12px', lineHeight: 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
-              {content.hero.ctaSecondary} ↗
+              {content.hero.ctaSecondary} <ArrowUpRight size={13} style={{ display: 'inline', verticalAlign: 'middle' }} />
             </a>
             {/* Hamburger */}
             <button className="mobile-menu-btn btnk"
@@ -455,7 +455,7 @@ const App: React.FC = () => {
                 display: 'none', background: 'var(--panel)', border: '1px solid var(--line-2)',
                 color: 'var(--fg)', ...mono(14), padding: '4px 9px', cursor: 'pointer',
               }}>
-              {mobileMenuOpen ? '✕' : '☰'}
+              {mobileMenuOpen ? <X size={16} /> : <Menu size={16} />}
             </button>
           </div>
         </div>
@@ -580,7 +580,7 @@ const App: React.FC = () => {
                   textDecoration: 'none', background: 'var(--accent)',
                   color: 'var(--bg)', ...mono(13, { fontWeight: 500, padding: '12px 20px', letterSpacing: '.02em' }),
                 }}>
-                {content.hero.ctaPrimary} →
+                {content.hero.ctaPrimary} <ArrowRight size={14} style={{ display: 'inline', verticalAlign: 'middle' }} />
               </a>
               <a href="#contact"
                 onClick={e => { e.preventDefault(); scrollTo('contact'); }}
@@ -770,7 +770,7 @@ const App: React.FC = () => {
                   {proj.link && (
                     <a className="reglink" href={proj.link} target="_blank" rel="noreferrer"
                       style={mono(12, { marginTop: 16, alignSelf: 'flex-start', display: 'inline-block' })}>
-                      {pt ? 'abrir repositório' : 'open repository'} ↗
+                      {pt ? 'abrir repositório' : 'open repository'} <ArrowUpRight size={13} style={{ display: 'inline', verticalAlign: 'middle' }} />
                     </a>
                   )}
                 </motion.article>
@@ -782,7 +782,7 @@ const App: React.FC = () => {
             <div style={{ marginTop: 24 }}>
               <a href="https://github.com/oseiasdfarias" target="_blank" rel="noreferrer"
                 className="navlink" style={mono(13)}>
-                {content.projects.viewAll} →
+                {content.projects.viewAll} <ArrowRight size={14} style={{ display: 'inline', verticalAlign: 'middle' }} />
               </a>
             </div>
           </FadeIn>
@@ -835,7 +835,7 @@ const App: React.FC = () => {
                         color: 'var(--fg-muted)', border: '1px solid var(--line-2)', padding: '8px 14px',
                       }),
                     }}>
-                    GitHub ↗
+                    GitHub <ArrowUpRight size={13} style={{ display: 'inline', verticalAlign: 'middle' }} />
                   </a>
                   <a className="btnk" href={openSource.pypi} target="_blank" rel="noreferrer"
                     style={{
@@ -843,7 +843,7 @@ const App: React.FC = () => {
                         color: 'var(--bg)', background: 'var(--accent)', padding: '8px 14px',
                       }),
                     }}>
-                    PyPI ↗
+                    PyPI <ArrowUpRight size={13} style={{ display: 'inline', verticalAlign: 'middle' }} />
                   </a>
                 </div>
               </div>
@@ -1198,7 +1198,7 @@ const App: React.FC = () => {
                       ...mono(12, { color: 'var(--fg-muted)', padding: '8px 14px' }),
                     }}
                   >
-                    {cta} ↗
+                    {cta} <ArrowUpRight size={13} style={{ display: 'inline', verticalAlign: 'middle' }} />
                   </a>
                 </div>
               </motion.div>
@@ -1236,7 +1236,7 @@ const App: React.FC = () => {
                       <span style={{ color: 'var(--fg-soft)' }}>{s.label.slice(0, 2).toUpperCase()}</span>
                       <a className="reglink" href={s.href} target="_blank" rel="noreferrer"
                         style={{ justifySelf: 'start' }}>
-                        {s.label} ↗
+                        {s.label} <ArrowUpRight size={12} style={{ display: 'inline', verticalAlign: 'middle' }} />
                       </a>
                     </React.Fragment>
                   ))}
@@ -1275,7 +1275,7 @@ const App: React.FC = () => {
                     ...mono(14, { fontWeight: 500, letterSpacing: '.02em' }),
                     opacity: formStatus === 'sending' ? 0.6 : 1,
                   }}>
-                  {formStatus === 'sending' ? content.contact.sending : content.contact.send} →
+                  {formStatus === 'sending' ? content.contact.sending : content.contact.send} <ArrowRight size={14} style={{ display: 'inline', verticalAlign: 'middle' }} />
                 </button>
                 {formStatus === 'success' && (
                   <p style={{ margin: 0, padding: '12px 16px', ...mono(12, { color: 'var(--accent)' }) }}>
@@ -1333,7 +1333,7 @@ const App: React.FC = () => {
             }}
             aria-label="Voltar ao topo"
           >
-            ↑
+            <ArrowUp size={16} />
           </motion.button>
         )}
       </AnimatePresence>
