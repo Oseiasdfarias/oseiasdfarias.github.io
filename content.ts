@@ -484,13 +484,34 @@ export const getPublications = (_lang: Language): PublicationData[] => [
 
 // ─── Certifications ────────────────────────────────────────────────────────
 export const getCertifications = (_lang: Language): CertificationData[] => [
-  { title: "REST APIs com Python e Flask",               issuer: "Udemy",              date: "2025", link: "https://udemy.com/certificate/UC-563dd22a-5969-472b-903f-810314964a90" },
-  { title: "AWS Lambda com Python e Serverless",         issuer: "Udemy",              date: "2024", link: "https://udemy.com/certificate/UC-e9b6a86d-443f-47a8-81b9-9f4f46a20ef8" },
-  { title: "Estatística do Básico ao Avançado",          issuer: "EBA",                date: "2025" },
-  { title: "Formação SQL com MySQL Server",              issuer: "Alura · Oracle ONE", date: "2024" },
-  { title: "Oracle Cloud Infrastructure",                issuer: "Alura · Oracle ONE", date: "2024" },
-  { title: "Backend Java — Oracle Next Education",       issuer: "Alura · Oracle ONE", date: "2024" },
-  { title: "Sistemas Embarcados — IoT",                  issuer: "IFMA · SOFTEX",      date: "2024" },
-  { title: "AWS Machine Learning Foundations",           issuer: "Udacity",            date: "2021" },
-  { title: "Machine Learning e Data Science com Python", issuer: "Udemy",              date: "2021", link: "https://udemy.com/certificate/UC-e38f3500-7c76-40d9-aa3d-414dfc3a9d9c" },
+  // ML / IA / Cloud — mais recentes e relevantes primeiro
+  { title: "REST APIs com Python e Flask",                              issuer: "Udemy",              date: "out 2025",  link: "https://udemy.com/certificate/UC-563dd22a-5969-472b-903f-810314964a90" },
+  { title: "EBA — Estatística do Básico ao Avançado",                  issuer: "EBA",                date: "abr 2025" },
+  { title: "AWS Lambda com Python e Serverless Framework",              issuer: "Udemy",              date: "abr 2024",  link: "https://udemy.com/certificate/UC-e9b6a86d-443f-47a8-81b9-9f4f46a20ef8" },
+  { title: "AWS Machine Learning Foundations",                          issuer: "Udacity",            date: "out 2021" },
+  { title: "Aprendizagem por Reforço com Deep Learning, PyTorch e Python", issuer: "Udemy",          date: "2021",      link: "https://udemy.com/certificate/UC-0e7a0cc8-54f6-4720-bd15-740088404273" },
+  { title: "Machine Learning e Data Science com Python de A a Z",      issuer: "Udemy",              date: "2021",      link: "https://udemy.com/certificate/UC-e38f3500-7c76-40d9-aa3d-414dfc3a9d9c" },
+  { title: "Deep Learning com Python de A a Z — O Curso Completo",     issuer: "Udemy",              date: "2021",      link: "https://udemy.com/certificate/UC-63c2f666-44e2-4525-a0f3-a6a05df483b6" },
+  { title: "Manual Prático do Deep Learning — Redes Neurais Profundas",issuer: "Udemy",              date: "2021",      link: "https://udemy.com/certificate/UC-c7e188bb-d877-401e-b7de-b2d7e21ba584" },
+  { title: "Redes Neurais Artificiais em Python",                       issuer: "Udemy",              date: "2021",      link: "https://udemy.com/certificate/UC-26899d66-2d96-474d-8194-dccdee108035" },
+  { title: "Machine Learning com Spark e PySpark: o Curso Completo",   issuer: "Udemy",              date: "2021",      link: "https://udemy.com/certificate/UC-d57f72b3-2a1f-480b-8294-5c6fcbdca523" },
+  { title: "Detecção de Objetos com YOLO, Darknet, OpenCV e Python",   issuer: "Udemy",              date: "2021",      link: "https://udemy.com/certificate/UC-328f4454-77d0-44de-b032-8d1e5a4cc923" },
+  { title: "Capacitação em Inteligência Artificial",                    issuer: "IFAL",               date: "jan 2021" },
+  // Cloud / Backend
+  { title: "Certificação Amazon AWS para Iniciantes",                   issuer: "Udemy",              date: "dez 2023",  link: "https://udemy.com/certificate/UC-e5431d02-ba73-4cde-ab87-ce987e558d55" },
+  { title: "Formação Oracle Cloud Infrastructure — ONE",                issuer: "Alura · Oracle ONE", date: "nov 2024",  link: "https://cursos.alura.com.br/certificate/72a32952-7dba-444c-bc8b-844b66bbd79f" },
+  { title: "Programa Oracle Next Education — Back-end",                 issuer: "Alura · Oracle ONE", date: "jul 2024",  link: "https://cursos.alura.com.br/certificate/deb0e367-c4ec-486d-9572-9eeb41e2bb63" },
+  { title: "Formação Java Web: Spring Boot",                            issuer: "Alura",              date: "jun 2024",  link: "https://cursos.alura.com.br/certificate/55e5774e-576a-4bf4-859e-db5ee59c35da" },
+  { title: "Formação Java e Orientação a Objetos — ONE",                issuer: "Alura · Oracle ONE", date: "abr 2024",  link: "https://cursos.alura.com.br/certificate/ad767b4a-af1d-4cd8-829b-90ec96db2e83" },
+  { title: "Formação SQL com MySQL Server da Oracle",                   issuer: "Alura · Oracle ONE", date: "nov 2024",  link: "https://cursos.alura.com.br/certificate/509b46f9-e68c-4e9b-b41f-06f3889f1f8b" },
+  // Sistemas Embarcados
+  { title: "Capacitação Profissional em Sistemas Embarcados (160h)",    issuer: "IFMA · SOFTEX",      date: "nov 2024" },
+  // Fundamentos de programação
+  { title: "Python 3 do Básico ao Avançado (com projetos reais)",       issuer: "Udemy",              date: "jan 2021",  link: "https://udemy.com/certificate/UC-a3b4a8cd-1d0d-4238-ba05-b92c0558d1e8" },
+  { title: "Curso de Shell Script do Iniciante ao Avançado",            issuer: "Udemy",              date: "2021",      link: "https://udemy.com/certificate/UC-f7ab28e8-928a-4b9f-a672-bf722c0c5493" },
+  { title: "Aprendendo C++ — Básico ao Avançado",                       issuer: "Udemy",              date: "2021",      link: "https://udemy.com/certificate/UC-54fbb592-d496-45ef-879f-55530fa29b96" },
+  { title: "Programação Orientada a Objetos em C++",                    issuer: "Udemy",              date: "2021",      link: "https://udemy.com/certificate/UC-a926438a-7437-4633-8339-75bb7d7c7f0b" },
+  { title: "Introdução à Ciência da Computação com Python — Parte 2",   issuer: "Coursera · IME USP", date: "nov 2020",  link: "https://coursera.org/verify/H6MVL62HNL2M" },
+  { title: "Introdução à Ciência da Computação com Python — Parte 1",   issuer: "Coursera · IME USP", date: "abr 2020",  link: "https://coursera.org/verify/HYE73UXFY7G4" },
+  { title: "Git e GitHub: compartilhando e colaborando em projetos",    issuer: "Alura",              date: "jan 2024",  link: "https://cursos.alura.com.br/certificate/95e10d93-4b98-4e9a-8d99-6e8b524c91f4" },
 ];
