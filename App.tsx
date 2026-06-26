@@ -81,13 +81,7 @@ const LiveDot: React.FC<{ color?: string }> = ({ color = 'var(--accent)' }) => (
 const HeroPipelineDAG: React.FC<{ lang: Language; vertical?: boolean }> = ({ lang, vertical }) => {
   const pt = lang === 'pt';
 
-  const [cascade, setCascade] = useState(false);
-  useEffect(() => {
-    const check = () => setCascade(window.innerWidth < 1500);
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
-  }, []);
+  const cascade = !!vertical;
 
   const header = (
     <div style={{
