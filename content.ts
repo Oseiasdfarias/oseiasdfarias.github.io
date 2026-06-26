@@ -337,6 +337,22 @@ export const getProjects = (lang: Language): ProjectData[] => {
       link:  "https://github.com/Oseiasdfarias/forum_hub_challenge",
     },
     {
+      title:    pt ? "API de Reserva de Hotéis" : "Hotel Booking REST API",
+      year:     "2025",
+      category: "Backend · Python",
+      problem:  pt
+        ? "Reservas de hotel exigem regras de negócio claras, acesso autenticado e persistência confiável."
+        : "Hotel bookings require clear business rules, authenticated access and reliable persistence.",
+      solution: pt
+        ? "API REST completa em Flask com autenticação JWT, SQLAlchemy e PostgreSQL — do modelo de dados até o deploy."
+        : "Complete REST API in Flask with JWT auth, SQLAlchemy and PostgreSQL — from data model to deployment.",
+      impact: pt
+        ? "Serviço funcional ponta a ponta consolidando padrões REST, segurança de API e boas práticas de deploy."
+        : "A working end-to-end service consolidating REST patterns, API security and deployment best practices.",
+      tags:  ["Python", "Flask", "JWT", "SQLAlchemy", "PostgreSQL", "REST API"],
+      link:  "https://github.com/Oseiasdfarias/reserva-hoteis-api",
+    },
+    {
       title:    "LabVirtual",
       year:     "2023",
       category: pt ? "Open Source · Educação" : "Open Source · Education",
