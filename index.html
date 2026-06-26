@@ -1,193 +1,138 @@
 <!DOCTYPE html>
-<html lang="pt-br" class="scroll-smooth dark">
+<html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="https://lucide.dev/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Oséias Farias | Engineer & AI Researcher</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        darkMode: 'class',
-        theme: {
-          extend: {
-            fontFamily: {
-              sans:    ['Inter', 'sans-serif'],
-              display: ['Space Grotesk', 'sans-serif'],
-              mono:    ['JetBrains Mono', 'monospace'],
-              pixel:   ['"VT323"', 'monospace'],
-            },
-            colors: {
-              /* ── Dark theme (minimal / charcoal) ─────────────── */
-              navy:          '#111111',   /* near-black               */
-              navyCard:      '#1a1a1a',   /* card surface             */
-              navyHover:     '#222222',   /* hover state              */
-              navyBorder:    '#2e2e2e',   /* subtle border            */
-              accent:        '#c8a870',   /* gold discreto — único    */
-              accent2:       '#a89070',   /* gold escuro — secundário */
-              green:         '#7a9e7a',   /* verde muted (status)     */
-              slate:         '#666666',   /* muted text               */
-              lightSlate:    '#999999',   /* secondary text           */
-              lightestSlate: '#e8e8e8',   /* headings                 */
-              /* ── Light theme (minimal / paper) ──────────────── */
-              paper:         '#fafaf8',   /* branco levemente quente  */
-              paperCard:     '#ffffff',   /* card surface             */
-              paperHover:    '#f0eeea',   /* hover state              */
-              paperBorder:   '#d8d4cc',   /* dividers                 */
-              amberDark:     '#8a6e30',   /* pixel shadow light mode  */
-            },
-          }
-        }
-      }
-    </script>
+    <title>Oséias Farias — Backend & MLOps Engineer</title>
 
-    <!-- Google Fonts: Inter + Space Grotesk + JetBrains Mono + VT323 (pixel) -->
+    <!-- Google Fonts: Newsreader + IBM Plex Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
-      /* ── Scanlines overlay (dark mode only) ─────────────────── */
-      .dark .scanlines::after {
-        content: '';
-        position: fixed;
-        inset: 0;
-        background: repeating-linear-gradient(
-          0deg,
-          transparent 0px,
-          transparent 3px,
-          rgba(0, 0, 0, 0.06) 3px,
-          rgba(0, 0, 0, 0.06) 4px
-        );
-        pointer-events: none;
-        z-index: 4;
+      html { scroll-behavior: smooth; }
+      body { margin: 0; }
+      * { box-sizing: border-box; }
+      ::selection { background: var(--accent); color: var(--bg); }
+
+      ::-webkit-scrollbar { width: 10px; }
+      ::-webkit-scrollbar-track { background: var(--bg); }
+      ::-webkit-scrollbar-thumb { background: var(--line-2); border: 3px solid var(--bg); }
+
+      /* Animations */
+      @keyframes dashflow { to { stroke-dashoffset: -26; } }
+      @keyframes nodepulse {
+        0%,100% { opacity: .3; transform: scale(1); }
+        50%      { opacity: .95; transform: scale(1.6); }
+      }
+      @keyframes livedot {
+        0%,100% { box-shadow: 0 0 0 0 var(--accent); }
+        50%      { box-shadow: 0 0 0 4px transparent; }
+      }
+      @keyframes ofpulse {
+        0%,100% { opacity: 1; transform: scale(1); }
+        50%      { opacity: .35; transform: scale(.7); }
       }
 
-      /* ── Pixel offset shadow on card hover ──────────────────── */
-      .pixel-card {
-        transition: box-shadow 0.15s steps(2), border-color 0.15s steps(2), transform 0.15s steps(2);
+      /* Mod card hover pattern */
+      .mod { position: relative; transition: border-color .4s, background .4s; }
+      .mod:hover { border-color: var(--line-2) !important; }
+      .mod .modbar {
+        position: absolute; top: -1px; left: -1px;
+        height: 2px; width: 34px; background: var(--accent);
+        transition: width .45s cubic-bezier(.2,.7,.2,1);
       }
-      .pixel-card:hover {
-        box-shadow: 4px 4px 0px 0px #c8a870;
-        transform: translate(-2px, -2px);
-      }
-      .pixel-card-indigo:hover {
-        box-shadow: 4px 4px 0px 0px #a89070;
-        transform: translate(-2px, -2px);
-      }
-      .light .pixel-card:hover,
-      :not(.dark) .pixel-card:hover {
-        box-shadow: 4px 4px 0px 0px #5a3a20;
-      }
-      .light .pixel-card-indigo:hover,
-      :not(.dark) .pixel-card-indigo:hover {
-        box-shadow: 4px 4px 0px 0px #2e7a62;
+      .mod:hover .modbar { width: calc(100% + 2px); }
+
+      /* Tag hover in mod cards */
+      .tagk { transition: border-color .3s, color .3s; }
+      .mod:hover .tagk { border-color: var(--line-2) !important; }
+
+      /* Nav link */
+      .navlink { color: var(--fg-muted); text-decoration: none; transition: color .25s; }
+      .navlink:hover { color: var(--accent); }
+
+      /* Reg link (inline text links) */
+      .reglink { color: var(--accent); text-decoration: none; transition: opacity .2s; }
+      .reglink:hover { opacity: .7; }
+
+      /* Button base */
+      .btnk { transition: background .25s, color .25s, transform .2s; cursor: pointer; }
+      .btnk:hover { transform: translateY(-1px); }
+      .invbtn:hover { background: var(--accent) !important; color: var(--bg) !important; border-color: var(--accent) !important; }
+
+      /* Progress bar */
+      #progress-bar {
+        position: fixed; top: 0; left: 0; height: 2px;
+        width: 0; background: var(--accent); z-index: 80;
+        transition: width .1s linear;
       }
 
-      /* ── Blinking block cursor ──────────────────────────────── */
-      @keyframes pixel-blink {
-        0%, 49%  { opacity: 1; }
-        50%, 100% { opacity: 0; }
+      /* ── Responsive: Header nav collapse ────────────────── */
+      @media (max-width: 767px) {
+        .nav-links { display: none !important; }
+        .mobile-menu-btn { display: flex !important; }
       }
-      .pixel-cursor::after {
-        content: '█';
-        font-family: 'VT323', monospace;
-        color: #c8a870;
-        margin-left: 4px;
-        animation: pixel-blink 1s step-end infinite;
-        font-size: 0.9em;
+      @media (min-width: 768px) {
+        .mobile-menu-btn { display: none !important; }
+        .mobile-nav-drawer { display: none !important; }
       }
 
-      /* ── Pixel dot pulse (nav active) ───────────────────────── */
-      @keyframes pixel-pulse {
-        0%, 100% { opacity: 1; }
-        50%       { opacity: 0.3; }
-      }
-      .pixel-dot {
-        animation: pixel-pulse 1.5s step-start infinite;
+      /* ── Hero: empilhar colunas no mobile ───────────────── */
+      @media (max-width: 767px) {
+        .hero-grid { grid-template-columns: 1fr !important; min-height: unset !important; }
+        .hero-grid > *:last-child { display: none; }
       }
 
-      /* ── CRT vignette (dark mode only) ──────────────────────── */
-      .dark .crt-vignette::before {
-        content: '';
-        position: fixed;
-        inset: 0;
-        background: radial-gradient(ellipse at center,
-          transparent 60%,
-          rgba(0, 0, 0, 0.35) 100%
-        );
-        pointer-events: none;
-        z-index: 3;
+      /* ── DAG mobile: oculto no desktop, visível após métricas */
+      .mobile-dag { display: none; }
+      @media (max-width: 767px) {
+        .mobile-dag { display: block; }
       }
 
-      /* ── Custom scrollbar ───────────────────────────────────── */
-      ::-webkit-scrollbar { width: 4px; }
-      ::-webkit-scrollbar-track { background: transparent; }
-      /* Light mode */
-      ::-webkit-scrollbar-thumb {
-        background: rgba(100,80,20,0.20);
-        border-radius: 0px;
-      }
-      ::-webkit-scrollbar-thumb:hover { background: rgba(100,80,20,0.45); }
-      /* Dark mode */
-      .dark ::-webkit-scrollbar-thumb { background: rgba(200,168,112,0.22); }
-      .dark ::-webkit-scrollbar-thumb:hover { background: rgba(200,168,112,0.52); }
-      /* Firefox */
-      html { scrollbar-width: thin; scrollbar-color: rgba(100,80,20,0.20) transparent; }
-      html.dark { scrollbar-color: rgba(200,168,112,0.22) transparent; }
-
-      /* ── Profile photo frame ─────────────────────────────────── */
-      .photo-frame {
-        position: relative;
-      }
-      .photo-frame::before {
-        content: '';
-        position: absolute;
-        inset: -4px;
-        border: 1px solid rgba(200,168,112,0.30);
-        clip-path: polygon(
-          0 8px, 8px 8px, 8px 0,
-          calc(100% - 8px) 0, calc(100% - 8px) 8px, 100% 8px,
-          100% calc(100% - 8px), calc(100% - 8px) calc(100% - 8px),
-          calc(100% - 8px) 100%, 8px 100%, 8px calc(100% - 8px),
-          0 calc(100% - 8px)
-        );
-        z-index: 1;
-        transition: border-color 0.3s;
-      }
-      .photo-frame:hover::before {
-        border-color: rgba(200,168,112,0.70);
-      }
-      .photo-frame::after {
-        content: '';
-        position: absolute;
-        inset: -8px;
-        border: 1px solid rgba(200,168,112,0.10);
-        clip-path: polygon(
-          0 14px, 14px 14px, 14px 0,
-          calc(100% - 14px) 0, calc(100% - 14px) 14px, 100% 14px,
-          100% calc(100% - 14px), calc(100% - 14px) calc(100% - 14px),
-          calc(100% - 14px) 100%, 14px 100%, 14px calc(100% - 14px),
-          0 calc(100% - 14px)
-        );
-        z-index: 1;
-        transition: border-color 0.3s;
-      }
-      .photo-frame:hover::after {
-        border-color: rgba(200,168,112,0.25);
+      /* ── About: colapsar coluna label ───────────────────── */
+      @media (max-width: 640px) {
+        .about-grid { grid-template-columns: 1fr !important; }
       }
 
-      /* ── Pixel tag borders ───────────────────────────────────── */
-      .tag-pixel {
-        image-rendering: pixelated;
-        clip-path: polygon(
-          0 2px, 2px 2px, 2px 0,
-          calc(100% - 2px) 0, calc(100% - 2px) 2px, 100% 2px,
-          100% calc(100% - 2px), calc(100% - 2px) calc(100% - 2px),
-          calc(100% - 2px) 100%, 2px 100%, 2px calc(100% - 2px),
-          0 calc(100% - 2px)
-        );
+      /* ── Capabilities: 1 coluna em telas muito estreitas ── */
+      @media (max-width: 480px) {
+        .capabilities-grid { grid-template-columns: 1fr !important; }
+      }
+
+      /* ── Metrics: 2x2 no mobile ─────────────────────────── */
+      @media (max-width: 480px) {
+        .metrics-strip { grid-template-columns: 1fr 1fr !important; }
+      }
+
+      /* ── Projects: 1 coluna no mobile ──────────────────── */
+      @media (max-width: 720px) {
+        .projects-grid { grid-template-columns: 1fr !important; }
+      }
+
+      /* ── Open Source: empilhar no mobile ────────────────── */
+      @media (max-width: 767px) {
+        .opensource-grid { grid-template-columns: 1fr !important; }
+        .opensource-grid > *:first-child { border-right: none !important; border-bottom: 1px solid var(--line); }
+      }
+
+      /* ── Experience: colapsar coluna de período ─────────── */
+      @media (max-width: 640px) {
+        .experience-row { grid-template-columns: 1fr !important; }
+        .experience-period { display: block; margin-bottom: 4px; }
+      }
+
+      /* ── Contact: empilhar no mobile ────────────────────── */
+      @media (max-width: 767px) {
+        .contact-grid { grid-template-columns: 1fr !important; }
+      }
+
+      /* ── Publications: empilhar no mobile ───────────────── */
+      @media (max-width: 640px) {
+        .pub-row { grid-template-columns: 1fr !important; }
+        .pub-meta { white-space: normal !important; }
       }
     </style>
 
@@ -204,9 +149,9 @@
   }
 }
 </script>
-    <script type="module" crossorigin src="/assets/index-DJdvzi82.js"></script>
+    <script type="module" crossorigin src="/assets/index-rcCh9UBU.js"></script>
   </head>
-  <body class="bg-paper text-slate-800 dark:bg-navy dark:text-lightSlate font-sans transition-colors duration-300">
+  <body>
     <div id="root"></div>
   </body>
 </html>
