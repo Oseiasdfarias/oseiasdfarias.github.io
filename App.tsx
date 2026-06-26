@@ -411,6 +411,7 @@ const App: React.FC = () => {
   const [formStatus,     setFormStatus]     = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [modal,          setModal]          = useState<ModalState | null>(null);
   const [showTopBtn,     setShowTopBtn]     = useState(false);
+  const [openNavGroup,   setOpenNavGroup]   = useState<string | null>(null);
 
   const progressRef = useRef<HTMLDivElement>(null);
 
@@ -545,43 +546,102 @@ const App: React.FC = () => {
           </a>
 
           {/* Desktop nav */}
+          {/* Desktop nav with dropdowns */}
           {(() => {
-            const navItems = [
-              { id: 'top',          num: '—',   label: pt ? 'Início'         : 'Home',        top: true },
-              { id: 'about',        num: '§00', label: content.nav.about },
-              { id: 'capabilities', num: '§01', label: content.nav.focus },
-              { id: 'projects',     num: '§02', label: content.nav.projects },
-              { id: 'opensource',   num: '§03', label: content.nav.opensource },
-              { id: 'experience',   num: '§04', label: content.nav.experience },
-              { id: 'research',     num: '§05', label: content.nav.research },
-              { id: 'education',    num: '§06', label: content.nav.education },
-              { id: 'community',    num: '§07', label: content.nav.community },
-              { id: 'contact',      num: '§08', label: content.nav.contact },
+            type NavItem = { id: string; num: string; label: string };
+            type NavGroup = { key: string; label: string; solo?: true; items?: NavItem[]; id?: string; top?: true };
+            const groups: NavGroup[] = [
+              { key: 'top',     label: pt ? 'Início' : 'Home',     solo: true, id: 'top', top: true },
+              { key: 'work',    label: pt ? 'Trabalho' : 'Work',   items: [
+                  { id: 'capabilities', num: '§01', label: content.nav.focus },
+                  { id: 'projects',     num: '§02', label: content.nav.projects },
+                  { id: 'opensource',   num: '§03', label: content.nav.opensource },
+              ]},
+              { key: 'profile', label: pt ? 'Perfil' : 'Profile',  items: [
+                  { id: 'about',      num: '§00', label: content.nav.about },
+                  { id: 'experience', num: '§04', label: content.nav.experience },
+                  { id: 'education',  num: '§06', label: content.nav.education },
+              ]},
+              { key: 'science', label: pt ? 'Pesquisa' : 'Science', items: [
+                  { id: 'research',   num: '§05', label: content.nav.research },
+                  { id: 'community',  num: '§07', label: content.nav.community },
+              ]},
+              { key: 'contact', label: content.nav.contact,         solo: true, id: 'contact' },
             ];
+
+            const dropdownStyle: CSSProperties = {
+              position: 'absolute', top: '100%', left: 0, zIndex: 200,
+              background: 'var(--panel)', border: '1px solid var(--line)',
+              borderTop: '2px solid var(--accent)', minWidth: 148,
+              boxShadow: '0 8px 24px rgba(0,0,0,.18)',
+            };
+
             return (
-              <nav className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: 0 }}>
-                {navItems.map(({ id, num, label, top: isTop }) => {
-                  const isActive = !isTop && activeSection === id;
+              <nav className="nav-links" style={{ display: 'flex', alignItems: 'stretch', gap: 0, height: '100%' }}>
+                {groups.map(g => {
+                  const isGroupActive = !g.solo && (g.items ?? []).some(it => activeSection === it.id);
+                  const isOpen = openNavGroup === g.key;
+
+                  if (g.solo) {
+                    const isSoloActive = !g.top && activeSection === g.id;
+                    return (
+                      <a key={g.key}
+                        href={g.top ? '#top' : `#${g.id}`}
+                        onClick={e => { e.preventDefault(); g.top ? window.scrollTo({ top: 0, behavior: 'smooth' }) : scrollTo(g.id!); }}
+                        style={{
+                          textDecoration: 'none', display: 'flex', alignItems: 'center',
+                          padding: '0 14px', cursor: 'pointer',
+                          borderBottom: `2px solid ${isSoloActive ? 'var(--accent)' : 'transparent'}`,
+                          background: isSoloActive ? 'var(--bg2)' : 'transparent',
+                          transition: 'background .2s, border-color .2s',
+                          ...mono(12, { color: isSoloActive ? 'var(--fg)' : 'var(--fg-muted)', letterSpacing: '.03em' }),
+                        }}
+                        onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--bg2)'; }}
+                        onMouseLeave={e => { if (!isSoloActive) (e.currentTarget as HTMLElement).style.background = 'transparent'; }}>
+                        {g.label}
+                      </a>
+                    );
+                  }
+
                   return (
-                    <a key={id} href={isTop ? '#top' : `#${id}`}
-                      onClick={e => {
-                        e.preventDefault();
-                        isTop ? window.scrollTo({ top: 0, behavior: 'smooth' }) : scrollTo(id);
-                      }}
-                      style={{
-                        textDecoration: 'none', display: 'flex', flexDirection: 'column',
-                        alignItems: 'flex-start', gap: 1, padding: '5px 8px',
-                        borderBottom: `2px solid ${isActive ? 'var(--accent)' : 'transparent'}`,
-                        transition: 'border-color .25s, background .25s',
-                        background: isActive ? 'var(--bg2)' : 'transparent',
-                      }}
-                      onMouseEnter={e => { if (!isActive) (e.currentTarget as HTMLElement).style.background = 'var(--bg2)'; }}
-                      onMouseLeave={e => { if (!isActive) (e.currentTarget as HTMLElement).style.background = 'transparent'; }}>
-                      <span style={mono(9, { color: 'var(--accent)', letterSpacing: '.06em' })}>{num}</span>
-                      <span style={mono(11, { color: isActive ? 'var(--fg)' : 'var(--fg-muted)', letterSpacing: '.02em' })}>
-                        {label}
-                      </span>
-                    </a>
+                    <div key={g.key} style={{ position: 'relative', display: 'flex', alignItems: 'stretch' }}
+                      onMouseEnter={() => setOpenNavGroup(g.key)}
+                      onMouseLeave={() => setOpenNavGroup(null)}>
+                      <button style={{
+                        background: isGroupActive ? 'var(--bg2)' : isOpen ? 'var(--bg2)' : 'transparent',
+                        border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 5,
+                        padding: '0 14px',
+                        borderBottom: `2px solid ${isGroupActive ? 'var(--accent)' : 'transparent'}`,
+                        transition: 'background .2s, border-color .2s',
+                        ...mono(12, { color: isGroupActive ? 'var(--fg)' : 'var(--fg-muted)', letterSpacing: '.03em' }),
+                      }}>
+                        {g.label}
+                        <span style={{ fontSize: 8, opacity: .7, marginTop: 1 }}>▾</span>
+                      </button>
+                      {isOpen && (
+                        <div style={dropdownStyle}>
+                          {(g.items ?? []).map(item => {
+                            const isActive = activeSection === item.id;
+                            return (
+                              <button key={item.id}
+                                onClick={() => { scrollTo(item.id); setOpenNavGroup(null); }}
+                                style={{
+                                  display: 'flex', alignItems: 'center', gap: 10, width: '100%',
+                                  padding: '9px 14px', border: 'none', cursor: 'pointer', textAlign: 'left',
+                                  background: isActive ? 'var(--bg2)' : 'transparent',
+                                  borderLeft: `2px solid ${isActive ? 'var(--accent)' : 'transparent'}`,
+                                  transition: 'background .15s, border-color .15s',
+                                }}
+                                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--bg2)'; }}
+                                onMouseLeave={e => { if (!isActive) (e.currentTarget as HTMLElement).style.background = 'transparent'; }}>
+                                <span style={mono(9, { color: 'var(--accent)', minWidth: 24 })}>{item.num}</span>
+                                <span style={mono(11, { color: isActive ? 'var(--fg)' : 'var(--fg-muted)' })}>{item.label}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
                   );
                 })}
               </nav>
