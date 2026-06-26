@@ -437,15 +437,15 @@ const App: React.FC = () => {
           {/* Actions */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
             <button onClick={toggleLang} className="btnk invbtn"
-              style={{ cursor: 'pointer', background: 'var(--panel)', border: '1px solid var(--line-2)', color: 'var(--fg-muted)', ...mono(11), padding: '6px 9px' }}>
+              style={{ cursor: 'pointer', background: 'var(--panel)', border: '1px solid var(--line-2)', color: 'var(--fg-muted)', ...mono(11), height: 32, padding: '0 9px', lineHeight: 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
               {pt ? 'EN' : 'PT'}
             </button>
             <button onClick={toggleTheme} aria-label="theme" className="btnk invbtn"
-              style={{ cursor: 'pointer', background: 'var(--panel)', border: '1px solid var(--line-2)', color: 'var(--fg-muted)', fontSize: 12, padding: '6px 9px', lineHeight: 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+              style={{ cursor: 'pointer', background: 'var(--panel)', border: '1px solid var(--line-2)', color: 'var(--fg-muted)', fontSize: 12, height: 32, padding: '0 9px', lineHeight: 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
               {darkMode ? '☀' : '☾'}
             </button>
             <a className="btnk invbtn" href={CV_URL} target="_blank" rel="noreferrer"
-              style={{ textDecoration: 'none', background: 'var(--panel)', border: '1px solid var(--line-2)', color: 'var(--fg)', ...mono(11), padding: '6px 12px' }}>
+              style={{ textDecoration: 'none', background: 'var(--panel)', border: '1px solid var(--line-2)', color: 'var(--fg)', ...mono(11), height: 32, padding: '0 12px', lineHeight: 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
               {content.hero.ctaSecondary} ↗
             </a>
             {/* Hamburger */}
