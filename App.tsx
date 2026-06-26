@@ -117,7 +117,7 @@ const HeroPipelineDAG: React.FC<{ lang: Language; vertical?: boolean }> = ({ lan
     const vbH = ys[5] + NH + 10;
 
     // cascade: each node shifts right by xStep
-    const xStep = cascade ? 17 : 0;
+    const xStep = cascade ? 28 : 0;
     const NW    = cascade ? 116 : 138;
     const nxOf  = (i: number) => NX + i * xStep;
     const ncx   = (i: number) => nxOf(i) + NW / 2;
