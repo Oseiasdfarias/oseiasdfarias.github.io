@@ -107,9 +107,9 @@ const HeroPipelineDAG: React.FC<{ lang: Language; vertical?: boolean }> = ({ lan
 
   /* ── Vertical SVG (desktop + mobile) ── */
   if (vertical) {
-    const NW = 152, NH = 28, NX = 8, cx = NX + NW / 2;
-    // tight spacing: 28px node + 26px gap = 54px step
-    const ys = [10, 64, 118, 172, 226, 280];
+    const NW = 152, NH = 22, NX = 8, cx = NX + NW / 2;
+    // ultra-compact: 22px node + 14px gap = 36px step
+    const ys = [8, 44, 80, 116, 152, 188];
     const cy = (i: number) => ys[i] + NH / 2;
     const bot = (i: number) => ys[i] + NH;
     const top = (i: number) => ys[i];
@@ -119,7 +119,7 @@ const HeroPipelineDAG: React.FC<{ lang: Language; vertical?: boolean }> = ({ lan
       <motion.div
         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.9, delay: 0.16, ease: [0.2, 0.7, 0.2, 1] }}
-        style={{ position: 'relative', border: '1px solid var(--line)', background: 'var(--panel)', padding: '22px 18px 16px' }}
+        style={{ position: 'relative', border: '1px solid var(--line)', background: 'var(--panel)', padding: '16px 16px 12px' }}
       >
         {corners}
         {header}
@@ -153,7 +153,7 @@ const HeroPipelineDAG: React.FC<{ lang: Language; vertical?: boolean }> = ({ lan
             strokeDasharray="2 5" style={{ animation: 'dashflow 1.1s linear infinite reverse' }} />
 
           {/* Nodes */}
-          <g fontFamily="IBM Plex Mono" fontSize="11" textAnchor="middle">
+          <g fontFamily="IBM Plex Mono" fontSize="10.5" textAnchor="middle">
             <g><rect x={NX} y={ys[0]} width={NW} height={NH} fill="var(--bg2)" stroke="var(--line-2)" /><text x={cx} y={cy(0)+4} fill="var(--fg-muted)">{pt ? 'dados' : 'data'}</text></g>
             <g><rect x={NX} y={ys[1]} width={NW} height={NH} fill="var(--accent)" stroke="var(--accent)" /><text x={cx} y={cy(1)+4} fill="var(--bg)">{pt ? 'treino' : 'train'}</text></g>
             <g><rect x={NX} y={ys[2]} width={NW} height={NH} fill="var(--bg2)" stroke="var(--line-2)" /><text x={cx} y={cy(2)+4} fill="var(--fg-muted)">{pt ? 'registro' : 'registry'}</text></g>
