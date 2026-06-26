@@ -963,12 +963,19 @@ const App: React.FC = () => {
         }}>
           <SectionHeader num="§05" title={content.research.title} subtitle={content.research.subtitle} />
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(290px,1fr))' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(290px,1fr))', alignItems: 'stretch' }}>
             {research.map((r, i) => (
-              <FadeIn key={i} delay={i * 0.08}>
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.6, delay: i * 0.08, ease: [0.2, 0.7, 0.2, 1] }}
+                style={{ display: 'flex', flexDirection: 'column' }}
+              >
                 <div className="mod" style={{
                   border: '1px solid var(--line)', margin: '-0.5px',
                   background: 'var(--panel)', padding: '24px 22px',
+                  display: 'flex', flexDirection: 'column', flex: 1,
                 }}>
                   <span className="modbar" />
                   <div style={{
@@ -985,7 +992,7 @@ const App: React.FC = () => {
                   </div>
                   <h3 style={serif(19, 500, { margin: '0 0 6px', lineHeight: 1.2 })}>{r.title}</h3>
                   <p style={mono(11.5, { color: 'var(--accent)', margin: '0 0 12px' })}>{r.institution}</p>
-                  <p style={{ margin: '0 0 14px', fontSize: 13.5, lineHeight: 1.6, color: 'var(--fg-muted)' }}>
+                  <p style={{ margin: '0 0 14px', fontSize: 13.5, lineHeight: 1.6, color: 'var(--fg-muted)', flex: 1 }}>
                     {r.description}
                   </p>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
@@ -997,7 +1004,7 @@ const App: React.FC = () => {
                     ))}
                   </div>
                 </div>
-              </FadeIn>
+              </motion.div>
             ))}
           </div>
 
