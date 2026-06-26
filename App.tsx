@@ -596,6 +596,14 @@ const App: React.FC = () => {
           <MetricItem value={certs.length} suffix="" label={pt ? 'certificações' : 'certifications'} />
         </section>
 
+        {/* ── DAG mobile-only (após métricas) ────────────────── */}
+        <div className="mobile-dag" style={{
+          padding: 'clamp(24px,5vw,40px) 0',
+          borderBottom: '1px solid var(--line)',
+        }}>
+          <HeroPipelineDAG lang={lang} />
+        </div>
+
         {/* ── ABOUT §00 ──────────────────────────────────────── */}
         <section id="about" data-section="about" style={{ scrollMarginTop: 70 }}>
           <div className="about-grid" style={{

@@ -86,6 +86,12 @@
         .hero-grid > *:last-child { display: none; }
       }
 
+      /* ── DAG mobile: oculto no desktop, visível após métricas */
+      .mobile-dag { display: none; }
+      @media (max-width: 767px) {
+        .mobile-dag { display: block; }
+      }
+
       /* ── About: colapsar coluna label ───────────────────── */
       @media (max-width: 640px) {
         .about-grid { grid-template-columns: 1fr !important; }
