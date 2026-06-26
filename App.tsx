@@ -16,6 +16,7 @@ const DARK: CSSProperties = {
   '--panel':    '#121110',
   '--line':     'rgba(236,233,225,.13)',
   '--line-2':   'rgba(236,233,225,.32)',
+  '--grid':     'rgba(236,233,225,.04)',
   '--fg':       '#ece9e1',
   '--fg-muted': '#a39d90',
   '--fg-soft':  '#6f695c',
@@ -28,6 +29,7 @@ const LIGHT: CSSProperties = {
   '--panel':    '#f8f5ee',
   '--line':     'rgba(20,17,13,.14)',
   '--line-2':   'rgba(20,17,13,.34)',
+  '--grid':     'rgba(20,17,13,.045)',
   '--fg':       '#17130d',
   '--fg-muted': '#5b5446',
   '--fg-soft':  '#8a8273',
@@ -488,7 +490,7 @@ const App: React.FC = () => {
       <div id="top" style={{
         maxWidth: 1240, margin: '0 auto',
         padding: '0 clamp(20px,4vw,40px)',
-        backgroundImage: 'linear-gradient(90deg,var(--line) 1px,transparent 1px), linear-gradient(90deg,transparent calc(50% - 1px),var(--line) 50%,transparent calc(50% + 1px))',
+        backgroundImage: 'linear-gradient(90deg,var(--grid) 1px,transparent 1px), linear-gradient(90deg,transparent calc(50% - 1px),var(--grid) 50%,transparent calc(50% + 1px))',
         backgroundSize: '25% 100%, 100% 100%',
       }}>
 
