@@ -123,7 +123,8 @@ const HeroPipelineDAG: React.FC<{ lang: Language; vertical?: boolean }> = ({ lan
       >
         {corners}
         {header}
-        <svg viewBox={`0 0 ${NX + NW + 38} ${vbH}`} width="100%" style={{ display: 'block', overflow: 'visible' }}>
+        <svg viewBox={`0 0 ${NX + NW + 38} ${vbH}`} width="100%"
+          style={{ display: 'block', overflow: 'visible', maxHeight: 'clamp(160px,36vh,280px)' }}>
           <defs>
             <marker id="av" markerWidth="7" markerHeight="7" refX="4" refY="3" orient="auto">
               <path d="M0 0 L 4 3 L 0 6" fill="none" stroke="var(--fg-soft)" strokeWidth="1.1" />
