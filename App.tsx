@@ -83,7 +83,7 @@ const HeroPipelineDAG: React.FC<{ lang: Language; vertical?: boolean }> = ({ lan
 
   const [cascade, setCascade] = useState(false);
   useEffect(() => {
-    const check = () => setCascade(window.innerWidth >= 768 && window.innerWidth < 1280);
+    const check = () => setCascade(window.innerWidth < 1500);
     check();
     window.addEventListener('resize', check);
     return () => window.removeEventListener('resize', check);
