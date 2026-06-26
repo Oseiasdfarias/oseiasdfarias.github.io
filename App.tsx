@@ -441,7 +441,7 @@ const App: React.FC = () => {
               {pt ? 'EN' : 'PT'}
             </button>
             <button onClick={toggleTheme} aria-label="theme" className="btnk invbtn"
-              style={{ cursor: 'pointer', background: 'var(--panel)', border: '1px solid var(--line-2)', color: 'var(--fg-muted)', fontSize: 12, padding: '6px 9px' }}>
+              style={{ cursor: 'pointer', background: 'var(--panel)', border: '1px solid var(--line-2)', color: 'var(--fg-muted)', fontSize: 12, padding: '6px 9px', lineHeight: 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
               {darkMode ? '☀' : '☾'}
             </button>
             <a className="btnk invbtn" href={CV_URL} target="_blank" rel="noreferrer"
