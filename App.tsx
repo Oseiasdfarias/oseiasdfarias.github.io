@@ -1,152 +1,264 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, CSSProperties } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  Github, Linkedin, Youtube, BookOpen, Mail,
-  ExternalLink, ArrowUpRight, Menu, X,
-  FlaskConical, Briefcase, Award, Globe, Sun, Moon, Heart, FileText, Package,
-} from 'lucide-react';
+import { X } from 'lucide-react';
 import {
   translations, getProjects, getExperience,
   getEducation, getCertifications, getResearch, getPublications, getOpenSource,
 } from './content';
 import { Language } from './types';
-import NeuralNetBackground from './components/NeuralNetBackground';
+import { useCounter } from './hooks/useAnimations';
 
-// ─── Helpers ────────────────────────────────────────────────────────────────
+// ─── Theme tokens ─────────────────────────────────────────────────────────────
 
-const categoryColor: Record<string, string> = {
-  backend:  'text-accent  border-accent/30  bg-accent/5',
-  ai:       'text-accent2 border-accent2/30 bg-accent2/5',
-  research: 'text-green   border-green/30   bg-green/5',
-  embedded: 'text-orange-400 border-orange-400/30 bg-orange-400/5',
-};
+const DARK: CSSProperties = {
+  '--bg':       '#0d0c0b',
+  '--bg2':      '#131210',
+  '--panel':    '#121110',
+  '--line':     'rgba(236,233,225,.13)',
+  '--line-2':   'rgba(236,233,225,.32)',
+  '--fg':       '#ece9e1',
+  '--fg-muted': '#a39d90',
+  '--fg-soft':  '#6f695c',
+  '--accent':   '#e8513a',
+} as CSSProperties;
 
-const categoryLabel: Record<string, Record<Language, string>> = {
-  backend:  { pt: 'Backend',   en: 'Backend'  },
-  ai:       { pt: 'IA',        en: 'AI'       },
-  research: { pt: 'Pesquisa',  en: 'Research' },
-  embedded: { pt: 'Embarcado', en: 'Embedded' },
-};
+const LIGHT: CSSProperties = {
+  '--bg':       '#f3efe6',
+  '--bg2':      '#ebe6d9',
+  '--panel':    '#f8f5ee',
+  '--line':     'rgba(20,17,13,.14)',
+  '--line-2':   'rgba(20,17,13,.34)',
+  '--fg':       '#17130d',
+  '--fg-muted': '#5b5446',
+  '--fg-soft':  '#8a8273',
+  '--accent':   '#e8513a',
+} as CSSProperties;
 
-const typeColor: Record<string, string> = {
-  industry:  'text-accent  border-accent/20  bg-accent/5',
-  research:  'text-accent2 border-accent2/20 bg-accent2/5',
-  volunteer: 'text-green   border-green/20   bg-green/5',
-};
+// ─── Typography helpers ───────────────────────────────────────────────────────
 
-const typeLabel: Record<string, Record<Language, string>> = {
-  industry:  { pt: 'Mercado',       en: 'Industry'   },
-  research:  { pt: 'Pesquisa',      en: 'Research'   },
-  volunteer: { pt: 'Voluntariado',  en: 'Volunteer'  },
-};
+const mono = (size: number | string = 12, extra?: CSSProperties): CSSProperties => ({
+  fontFamily: "'IBM Plex Mono', monospace",
+  fontSize: size as number,
+  ...extra,
+});
 
-const NAV_SECTIONS = ['about', 'research', 'experience', 'projects', 'opensource', 'education', 'contact'] as const;
+const serif = (size: number | string = 16, weight = 400, extra?: CSSProperties): CSSProperties => ({
+  fontFamily: "'Newsreader', Georgia, serif",
+  fontSize: size as number,
+  fontWeight: weight,
+  ...extra,
+});
 
-// ─── Fade-in wrapper ─────────────────────────────────────────────────────────
-const FadeIn: React.FC<{ children: React.ReactNode; delay?: number }> = ({ children, delay = 0 }) => (
+// ─── FadeIn wrapper ───────────────────────────────────────────────────────────
+
+const FadeIn: React.FC<{ children: React.ReactNode; delay?: number; x?: number }> = ({
+  children, delay = 0, x = 0,
+}) => (
   <motion.div
-    initial={{ opacity: 0, y: 24 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: '-60px' }}
-    transition={{ duration: 0.5, delay }}
+    initial={{ opacity: 0, y: x ? 0 : 16, x: x || 0 }}
+    whileInView={{ opacity: 1, y: 0, x: 0 }}
+    viewport={{ once: true, margin: '-50px' }}
+    transition={{ duration: 0.65, delay, ease: [0.2, 0.7, 0.2, 1] }}
   >
     {children}
   </motion.div>
 );
 
-// ─── Section heading ─────────────────────────────────────────────────────────
-const SectionTitle: React.FC<{ label: string; num: string }> = ({ label, num }) => (
-  <div className="flex items-center gap-3 mb-12">
-    <span className="font-pixel text-accent/40 text-sm select-none tracking-widest">{num}</span>
-    <span className="font-pixel text-accent text-lg select-none">▸</span>
-    <h2 className="text-xl font-bold font-display text-slate-900 dark:text-lightestSlate whitespace-nowrap tracking-wide">
-      {label}
-    </h2>
-    <div className="flex-1 h-px bg-paperBorder dark:bg-navyBorder" />
-  </div>
+// ─── Live dot ─────────────────────────────────────────────────────────────────
+
+const LiveDot: React.FC<{ color?: string }> = ({ color = 'var(--accent)' }) => (
+  <span style={{
+    width: 7, height: 7, borderRadius: 999,
+    background: color, display: 'inline-block',
+    animation: 'livedot 2s ease-out infinite',
+  }} />
 );
 
-// ─── Media Modal ─────────────────────────────────────────────────────────────
+// ─── Hero SVG Pipeline DAG ────────────────────────────────────────────────────
+
+const HeroPipelineDAG: React.FC<{ lang: Language }> = ({ lang }) => {
+  const pt = lang === 'pt';
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.9, delay: 0.16, ease: [0.2, 0.7, 0.2, 1] }}
+      style={{
+        position: 'relative', border: '1px solid var(--line)',
+        background: 'var(--panel)', padding: '24px 22px 18px',
+      }}
+    >
+      {/* Corner brackets */}
+      {([
+        { top: -1, left: -1, borderTop: '2px solid var(--accent)', borderLeft: '2px solid var(--accent)' },
+        { top: -1, right: -1, borderTop: '2px solid var(--accent)', borderRight: '2px solid var(--accent)' },
+        { bottom: -1, left: -1, borderBottom: '2px solid var(--accent)', borderLeft: '2px solid var(--accent)' },
+        { bottom: -1, right: -1, borderBottom: '2px solid var(--accent)', borderRight: '2px solid var(--accent)' },
+      ] as CSSProperties[]).map((s, i) => (
+        <div key={i} style={{ position: 'absolute', width: 14, height: 14, ...s }} />
+      ))}
+
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        marginBottom: 16, ...mono(11, { color: 'var(--fg-soft)', letterSpacing: '.04em' }),
+      }}>
+        <span>FIG.01 — {pt ? 'CICLO DE VIDA ML' : 'ML LIFECYCLE'}</span>
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--accent)' }}>
+          <LiveDot />
+          {pt ? 'ativo' : 'live'}
+        </span>
+      </div>
+
+      <svg viewBox="0 0 480 250" width="100%" style={{ display: 'block', overflow: 'visible' }}>
+        {/* Static edges */}
+        <g fill="none" stroke="var(--line-2)" strokeWidth="1.4" strokeLinecap="square">
+          <path d="M70 56 L 122 56" markerEnd="url(#ah)" />
+          <path d="M192 56 L 244 56" markerEnd="url(#ah)" />
+          <path d="M314 56 L 366 56" markerEnd="url(#ah)" />
+          <path d="M410 78 L 410 130 L 314 152" markerEnd="url(#ah)" />
+          <path d="M244 158 L 192 158" markerEnd="url(#ah)" />
+          <path d="M148 136 L 148 78" markerEnd="url(#ah)" />
+        </g>
+        {/* Animated accent edges */}
+        <g fill="none" stroke="var(--accent)" strokeWidth="1.8" strokeLinecap="square"
+          strokeDasharray="4 7" style={{ animation: 'dashflow .9s linear infinite' }}>
+          <path d="M70 56 L 122 56" />
+          <path d="M192 56 L 244 56" />
+          <path d="M314 56 L 366 56" />
+          <path d="M410 78 L 410 130 L 314 152" />
+          <path d="M244 158 L 192 158" />
+        </g>
+        <path d="M148 136 L 148 78" fill="none" stroke="var(--accent)" strokeWidth="1.6"
+          strokeLinecap="square" strokeDasharray="2 6"
+          style={{ animation: 'dashflow 1.1s linear infinite reverse' }} />
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0 0 L 6 3 L 0 6" fill="none" stroke="var(--fg-soft)" strokeWidth="1.2" />
+          </marker>
+        </defs>
+        {/* Nodes */}
+        <g fontFamily="IBM Plex Mono" fontSize="11.5" textAnchor="middle">
+          <g><rect x="8" y="40" width="62" height="32" fill="var(--bg2)" stroke="var(--line-2)" /><text x="39" y="60" fill="var(--fg-muted)">{pt ? 'dados' : 'data'}</text></g>
+          <g><rect x="122" y="40" width="70" height="32" fill="var(--accent)" stroke="var(--accent)" /><text x="157" y="60" fill="var(--bg)">{pt ? 'treino' : 'train'}</text></g>
+          <g><rect x="244" y="40" width="70" height="32" fill="var(--bg2)" stroke="var(--line-2)" /><text x="279" y="60" fill="var(--fg-muted)">{pt ? 'registro' : 'registry'}</text></g>
+          <g><rect x="366" y="40" width="78" height="32" fill="var(--bg2)" stroke="var(--line-2)" /><text x="405" y="60" fill="var(--fg-muted)">deploy</text></g>
+          <g>
+            <rect x="244" y="142" width="70" height="32" fill="var(--bg2)" stroke="var(--accent)" />
+            <circle cx="256" cy="158" r="3" fill="var(--accent)"
+              style={{ animation: 'nodepulse 1.8s ease-in-out infinite', transformOrigin: '256px 158px' }} />
+            <text x="285" y="162" fill="var(--fg)">monitor</text>
+          </g>
+          <g><rect x="100" y="142" width="92" height="32" fill="var(--bg2)" stroke="var(--line-2)" /><text x="146" y="162" fill="var(--fg-muted)">api serving</text></g>
+        </g>
+        <text x="120" y="112" fontFamily="IBM Plex Mono" fontSize="10" fill="var(--accent)" textAnchor="middle">retrain ↺</text>
+      </svg>
+    </motion.div>
+  );
+};
+
+// ─── Metric item ──────────────────────────────────────────────────────────────
+
+const MetricItem: React.FC<{ value: number; suffix: string; label: string }> = ({ value, suffix, label }) => {
+  const { ref, count } = useCounter(value, 1300);
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }} transition={{ duration: 0.6, ease: [0.2, 0.7, 0.2, 1] }}
+      style={{ padding: '26px 22px', borderLeft: '1px solid var(--line)' }}
+    >
+      <div style={serif('clamp(38px,5vw,56px)' as unknown as number, 500, { lineHeight: 0.9, letterSpacing: '-.02em' })}>
+        <span ref={ref}>{count}</span>{suffix}
+      </div>
+      <div style={mono(11, {
+        color: 'var(--fg-soft)', marginTop: 10,
+        textTransform: 'uppercase', letterSpacing: '.06em',
+      })}>
+        {label}
+      </div>
+    </motion.div>
+  );
+};
+
+// ─── Section header ───────────────────────────────────────────────────────────
+
+const SectionHeader: React.FC<{
+  num: string; title: string; subtitle?: string;
+}> = ({ num, title, subtitle }) => (
+  <FadeIn>
+    <div style={{
+      display: 'flex', alignItems: 'flex-end',
+      justifyContent: subtitle ? 'space-between' : 'flex-start',
+      gap: 16, marginBottom: 30,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 16 }}>
+        <span style={mono(14, { color: 'var(--accent)' })}>{num}</span>
+        <h2 style={serif('clamp(28px,3.6vw,42px)' as unknown as number, 500, {
+          margin: 0, letterSpacing: '-.02em',
+        })}>
+          {title}
+        </h2>
+      </div>
+      {subtitle && (
+        <span style={mono(11, { color: 'var(--fg-soft)', whiteSpace: 'nowrap' })}>{subtitle}</span>
+      )}
+    </div>
+  </FadeIn>
+);
+
+// ─── Media Modal ──────────────────────────────────────────────────────────────
+
 interface ModalState { src: string; caption: string; index: number; total: number }
 
 const MediaModal: React.FC<{
-  modal: ModalState;
-  onClose: () => void;
-  onPrev: () => void;
-  onNext: () => void;
+  modal: ModalState; onClose: () => void; onPrev: () => void; onNext: () => void;
 }> = ({ modal, onClose, onPrev, onNext }) => {
-  React.useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
+  useEffect(() => {
+    const fn = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
-      if (e.key === 'ArrowLeft')  onPrev();
+      if (e.key === 'ArrowLeft') onPrev();
       if (e.key === 'ArrowRight') onNext();
     };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    window.addEventListener('keydown', fn);
+    return () => window.removeEventListener('keydown', fn);
   }, [onClose, onPrev, onNext]);
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+      style={{
+        position: 'fixed', inset: 0, zIndex: 100,
+        display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16,
+        cursor: 'pointer',
+      }}
       onClick={onClose}
     >
-      {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/85 backdrop-blur-sm" />
-
-      {/* Modal content */}
+      <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(4px)' }} />
       <motion.div
-        initial={{ scale: 0.92, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.92, opacity: 0 }}
-        transition={{ duration: 0.2 }}
-        className="relative z-10 flex flex-col items-center max-w-4xl w-full"
+        initial={{ scale: 0.94, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.94, opacity: 0 }} transition={{ duration: 0.2 }}
+        style={{ position: 'relative', zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: 900, width: '100%' }}
         onClick={e => e.stopPropagation()}
       >
-        {/* Top bar */}
-        <div className="w-full flex items-center justify-between mb-3 px-1">
-          <span className="font-mono text-xs text-slate-400 tracking-widest">
-            {modal.index + 1} / {modal.total}
-          </span>
-          <button
-            onClick={onClose}
-            className="flex items-center gap-1.5 font-mono text-xs text-slate-400 hover:text-white transition-colors"
-            aria-label="Fechar"
-          >
-            <X size={14} /> ESC
+        <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12, padding: '0 4px' }}>
+          <span style={mono(11, { color: '#888' })}>{modal.index + 1} / {modal.total}</span>
+          <button onClick={onClose}
+            style={{ display: 'flex', alignItems: 'center', gap: 6, ...mono(11, { color: '#999', background: 'none', border: 'none', cursor: 'pointer' }) }}>
+            <X size={13} /> ESC
           </button>
         </div>
-
-        {/* Image */}
-        <div className="w-full border border-white/10 rounded-lg overflow-hidden bg-black">
-          <img
-            src={modal.src}
-            alt={modal.caption}
-            className="w-full h-auto max-h-[70vh] object-contain"
-          />
+        <div style={{ width: '100%', border: '1px solid rgba(255,255,255,.1)', overflow: 'hidden', background: '#000' }}>
+          <img src={modal.src} alt={modal.caption}
+            style={{ width: '100%', height: 'auto', maxHeight: '72vh', objectFit: 'contain', display: 'block' }} />
         </div>
-
-        {/* Caption */}
-        <p className="mt-3 font-mono text-xs text-slate-400 text-center leading-relaxed max-w-lg px-2">
-          {modal.caption}
-        </p>
-
-        {/* Prev / Next */}
+        <p style={{ ...mono(11, { color: '#888', lineHeight: 1.6, maxWidth: 480, margin: '12px auto 0', textAlign: 'center' }) }}>{modal.caption}</p>
         {modal.total > 1 && (
-          <div className="flex items-center gap-6 mt-4">
-            <button
-              onClick={onPrev}
-              className="font-pixel text-sm text-slate-400 hover:text-white transition-colors px-3 py-1 border border-white/10 hover:border-white/30"
-            >
+          <div style={{ display: 'flex', gap: 24, marginTop: 16 }}>
+            <button onClick={onPrev}
+              style={{ ...mono(12, { color: '#999', background: 'none', border: '1px solid rgba(255,255,255,.15)', padding: '6px 12px', cursor: 'pointer' }) }}>
               ◀ prev
             </button>
-            <button
-              onClick={onNext}
-              className="font-pixel text-sm text-slate-400 hover:text-white transition-colors px-3 py-1 border border-white/10 hover:border-white/30"
-            >
+            <button onClick={onNext}
+              style={{ ...mono(12, { color: '#999', background: 'none', border: '1px solid rgba(255,255,255,.15)', padding: '6px 12px', cursor: 'pointer' }) }}>
               next ▶
             </button>
           </div>
@@ -156,74 +268,94 @@ const MediaModal: React.FC<{
   );
 };
 
-// ─── App ─────────────────────────────────────────────────────────────────────
-const App: React.FC = () => {
-  const [lang,          setLang]          = useState<Language>('pt');
-  const [darkMode,      setDarkMode]      = useState(true);
-  const [activeSection, setActiveSection] = useState<string>('about');
-  const [isMenuOpen,    setIsMenuOpen]    = useState(false);
-  const [formStatus,    setFormStatus]    = useState<'idle'|'sending'|'success'|'error'>('idle');
-  const [hoveredCard,   setHoveredCard]   = useState<number | null>(null);
-  const [showTopBtn,    setShowTopBtn]    = useState(false);
-  const [modal,         setModal]         = useState<ModalState | null>(null);
+// ─── Status helpers ───────────────────────────────────────────────────────────
 
-  const openModal  = (media: { src: string; caption: string }[], index: number) =>
-    setModal({ ...media[index], index, total: media.length });
+const STATUS_LABELS_PT = ['em produção', 'open source', 'concluído', 'concluído', 'open source'];
+const STATUS_LABELS_EN = ['in production', 'open source', 'shipped', 'shipped', 'open source'];
+const STATUS_COLORS    = ['var(--accent)', 'var(--fg-muted)', 'var(--fg-soft)', 'var(--fg-soft)', 'var(--fg-muted)'];
+
+// ─── App ──────────────────────────────────────────────────────────────────────
+
+const App: React.FC = () => {
+  const [lang,           setLang]           = useState<Language>('pt');
+  const [darkMode,       setDarkMode]       = useState(true);
+  const [activeSection,  setActiveSection]  = useState('');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [formStatus,     setFormStatus]     = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [modal,          setModal]          = useState<ModalState | null>(null);
+  const [showTopBtn,     setShowTopBtn]     = useState(false);
+
+  const progressRef = useRef<HTMLDivElement>(null);
+
+  const openModal  = (media: { src: string; caption: string }[], i: number) =>
+    setModal({ ...media[i], index: i, total: media.length });
   const closeModal = () => setModal(null);
   const prevMedia  = (media: { src: string; caption: string }[]) =>
-    setModal((m: ModalState | null) => m ? { ...media[(m.index - 1 + m.total) % m.total], index: (m.index - 1 + m.total) % m.total, total: m.total } : null);
+    setModal(m => m ? { ...media[(m.index - 1 + m.total) % m.total], index: (m.index - 1 + m.total) % m.total, total: m.total } : null);
   const nextMedia  = (media: { src: string; caption: string }[]) =>
-    setModal((m: ModalState | null) => m ? { ...media[(m.index + 1) % m.total], index: (m.index + 1) % m.total, total: m.total } : null);
+    setModal(m => m ? { ...media[(m.index + 1) % m.total], index: (m.index + 1) % m.total, total: m.total } : null);
 
-  const content = translations[lang];
+  const content    = translations[lang];
+  const projects   = getProjects(lang);
+  const experience = getExperience(lang);
+  const education  = getEducation(lang);
+  const research   = getResearch(lang);
+  const certs      = getCertifications(lang);
+  const pubs       = getPublications(lang);
+  const openSource = getOpenSource(lang);
 
-  // ── Init theme from localStorage ─────────────────────────────────────────
+  const socials = [
+    { label: 'GitHub',   href: 'https://github.com/oseiasdfarias/' },
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/oseiasfarias/' },
+    { label: 'YouTube',  href: 'https://youtube.com/@oseiasdfarias' },
+    { label: 'Medium',   href: 'https://oseiasfarias.medium.com' },
+  ];
+  const CV_URL = 'https://drive.google.com/file/d/1-oMiFFC3QAbU6JhIeo6svznmm1pWMtzW/view';
+
+  const NAV_SECTIONS = ['capabilities', 'projects', 'experience', 'research'] as const;
+
   useEffect(() => {
-    const saved = localStorage.getItem('theme');
-    const savedLang = localStorage.getItem('lang') as Language | null;
-    const isDark = saved ? saved === 'dark' : true;
-    setDarkMode(isDark);
-    document.documentElement.classList.toggle('dark', isDark);
+    const saved     = localStorage.getItem('of_theme2');
+    const savedLang = localStorage.getItem('of_lang') as Language | null;
+    setDarkMode(saved ? saved === 'dark' : true);
     if (savedLang) setLang(savedLang);
   }, []);
 
   const toggleTheme = () => {
     const next = !darkMode;
     setDarkMode(next);
-    document.documentElement.classList.toggle('dark', next);
-    localStorage.setItem('theme', next ? 'dark' : 'light');
+    localStorage.setItem('of_theme2', next ? 'dark' : 'light');
   };
 
   const toggleLang = () => {
     const next = lang === 'pt' ? 'en' : 'pt';
     setLang(next);
-    localStorage.setItem('lang', next);
+    localStorage.setItem('of_lang', next);
   };
 
-  // ── Show "back to top" after scrolling down ──────────────────────────
   useEffect(() => {
-    const onScroll = () => setShowTopBtn(window.scrollY > 400);
+    const onScroll = () => {
+      setShowTopBtn(window.scrollY > 500);
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      if (progressRef.current) {
+        progressRef.current.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+      }
+    };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // ── Active section via IntersectionObserver ──────────────────────────────
   useEffect(() => {
     const sections = document.querySelectorAll<HTMLElement>('section[id]');
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) setActiveSection(entry.target.id);
-        });
-      },
-      { rootMargin: '-20% 0px -75% 0px' },
+    const obs = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) setActiveSection(e.target.id); }),
+      { rootMargin: '-20% 0px -70% 0px' },
     );
-    sections.forEach(s => observer.observe(s));
-    return () => observer.disconnect();
+    sections.forEach(s => obs.observe(s));
+    return () => obs.disconnect();
   }, []);
 
-  // ── Form submit ──────────────────────────────────────────────────────────
-  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFormStatus('sending');
     const form = e.currentTarget;
@@ -242,721 +374,802 @@ const App: React.FC = () => {
 
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-    setIsMenuOpen(false);
+    setMobileMenuOpen(false);
   };
 
-  const projects      = getProjects(lang);
-  const experience    = getExperience(lang);
-  const education     = getEducation(lang);
-  const research      = getResearch(lang);
-  const certs         = getCertifications(lang);
-  const publications  = getPublications(lang);
-  const openSource    = getOpenSource(lang);
-
-  const socials = [
-    { icon: Github,   href: "https://github.com/oseiasdfarias/",         label: "GitHub"   },
-    { icon: Linkedin, href: "https://www.linkedin.com/in/oseiasfarias/", label: "LinkedIn" },
-    { icon: Youtube,  href: "https://youtube.com/@oseiasdfarias",        label: "YouTube"  },
-    { icon: BookOpen, href: "https://oseiasfarias.medium.com",           label: "Medium"   },
-    { icon: Mail,     href: "mailto:oseias@example.com",                 label: "Email"    },
-  ];
-
-  // ── Shared class shorthands ──────────────────────────────────────────────
-  const bg       = 'bg-paper       dark:bg-navy';
-  const bgCard   = 'bg-paperCard   dark:bg-navyCard';
-  const bgHover  = 'hover:bg-paperHover dark:hover:bg-navyHover';
-  const border   = 'border-paperBorder dark:border-navyBorder';
-  const textPri  = 'text-slate-900  dark:text-lightestSlate';
-  const textSec  = 'text-slate-800  dark:text-lightSlate';
-  const textMut  = 'text-slate-500  dark:text-slate';
+  const theme = darkMode ? DARK : LIGHT;
+  const pt    = lang === 'pt';
 
   // ─────────────────────────────────────────────────────────────────────────
   return (
-    <div className={`relative min-h-screen scanlines crt-vignette ${bg} ${textSec} selection:bg-accent/20 selection:text-accent transition-colors duration-300`}>
+    <div style={{
+      ...theme,
+      background: 'var(--bg)',
+      color: 'var(--fg)',
+      minHeight: '100vh',
+      fontFamily: "'Newsreader', Georgia, serif",
+      WebkitFontSmoothing: 'antialiased',
+    }}>
 
-      {/* ── Neural network animated background ──────────────────────────── */}
-      <NeuralNetBackground darkMode={darkMode} />
+      {/* Progress bar */}
+      <div ref={progressRef} id="progress-bar" />
 
-      {/* ── Mobile top bar ───────────────────────────────────────────────── */}
-      <header className={`lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 h-14 backdrop-blur border-b ${border} bg-paper/80 dark:bg-navy/80`}>
-        <span className={`font-display font-bold ${textPri} text-lg`}>Oséias Farias</span>
-        <div className="flex items-center gap-3">
-          <button
-            onClick={toggleTheme}
-            className={`p-1.5 rounded ${textMut} hover:text-accent transition-colors`}
-            aria-label="Toggle theme"
-          >
-            {darkMode ? <Sun size={16} /> : <Moon size={16} />}
-          </button>
-          <button
-            onClick={toggleLang}
-            className={`font-mono text-[11px] font-bold px-2 py-1 rounded border ${border} ${textMut} hover:text-accent hover:border-accent/40 transition-colors`}
-          >
-            {lang.toUpperCase()}
-          </button>
-          <button onClick={() => setIsMenuOpen(o => !o)} className={textSec}>
-            {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
+      {/* ── HEADER ──────────────────────────────────────────── */}
+      <header style={{
+        position: 'sticky', top: 0, zIndex: 70,
+        background: darkMode
+          ? 'rgba(13,12,11,0.88)'
+          : 'rgba(243,239,230,0.88)',
+        backdropFilter: 'blur(8px)',
+        borderBottom: '1px solid var(--line)',
+      }}>
+        <div style={{
+          maxWidth: 1240, margin: '0 auto',
+          padding: '0 clamp(20px,4vw,40px)',
+          height: 58, display: 'flex', alignItems: 'center',
+          justifyContent: 'space-between', gap: 18,
+        }}>
+          {/* Logo */}
+          <a href="#top"
+            onClick={e => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+            style={{ textDecoration: 'none', display: 'flex', alignItems: 'baseline', gap: 11, color: 'var(--fg)' }}>
+            <span style={mono(13, { fontWeight: 600, letterSpacing: '.04em', color: 'var(--accent)' })}>OF</span>
+            <span style={serif(17, 500, { letterSpacing: '-.01em' })}>Oséias Farias</span>
+          </a>
+
+          {/* Desktop nav */}
+          <nav className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: 22 }}>
+            {NAV_SECTIONS.map((s, i) => (
+              <a key={s} href={`#${s}`}
+                onClick={e => { e.preventDefault(); scrollTo(s); }}
+                className="navlink"
+                style={mono(12, {
+                  letterSpacing: '.02em',
+                  color: activeSection === s ? 'var(--accent)' : undefined,
+                })}>
+                §0{i + 1}
+              </a>
+            ))}
+          </nav>
+
+          {/* Actions */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+            <button onClick={toggleLang} className="btnk invbtn"
+              style={{ cursor: 'pointer', background: 'none', border: '1px solid var(--line)', color: 'var(--fg-muted)', ...mono(11), padding: '6px 9px' }}>
+              {pt ? 'EN' : 'PT'}
+            </button>
+            <button onClick={toggleTheme} aria-label="theme" className="btnk invbtn"
+              style={{ cursor: 'pointer', background: 'none', border: '1px solid var(--line)', color: 'var(--fg-muted)', fontSize: 12, padding: '6px 9px' }}>
+              {darkMode ? '☀' : '☾'}
+            </button>
+            <a className="btnk invbtn" href={CV_URL} target="_blank" rel="noreferrer"
+              style={{ textDecoration: 'none', border: '1px solid var(--line-2)', color: 'var(--fg)', ...mono(11), padding: '6px 12px' }}>
+              {content.hero.ctaSecondary} ↗
+            </a>
+            {/* Hamburger */}
+            <button className="mobile-menu-btn btnk"
+              onClick={() => setMobileMenuOpen(o => !o)}
+              style={{
+                display: 'none', background: 'none', border: '1px solid var(--line)',
+                color: 'var(--fg)', ...mono(14), padding: '4px 9px', cursor: 'pointer',
+              }}>
+              {mobileMenuOpen ? '✕' : '☰'}
+            </button>
+          </div>
         </div>
+
+        {/* Mobile nav drawer */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.nav
+              className="mobile-nav-drawer"
+              initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.18 }}
+              style={{ borderTop: '1px solid var(--line)', overflow: 'hidden' }}
+            >
+              <div style={{ padding: '12px clamp(20px,4vw,40px)', display: 'flex', flexDirection: 'column', gap: 4 }}>
+                {(['about', 'capabilities', 'projects', 'experience', 'opensource', 'research', 'education', 'contact'] as const).map(s => (
+                  <button key={s} onClick={() => scrollTo(s)} className="btnk"
+                    style={{
+                      background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left',
+                      color: activeSection === s ? 'var(--accent)' : 'var(--fg-muted)',
+                      ...mono(13), padding: '6px 0',
+                    }}>
+                    {content.nav[s as keyof typeof content.nav]}
+                  </button>
+                ))}
+              </div>
+            </motion.nav>
+          )}
+        </AnimatePresence>
       </header>
 
-      {/* ── Mobile overlay menu ──────────────────────────────────────────── */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            className={`lg:hidden fixed top-14 left-0 right-0 z-40 ${bgCard} border-b ${border} px-6 py-6 flex flex-col gap-4`}
-          >
-            {NAV_SECTIONS.map(s => (
-              <button
-                key={s}
-                onClick={() => scrollTo(s)}
-                className={`text-left font-pixel text-base tracking-widest ${textMut} hover:text-accent transition-colors`}
-              >
-                {content.nav[s as keyof typeof content.nav]}
-              </button>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* ── MAIN CONTAINER ──────────────────────────────────── */}
+      <div id="top" style={{
+        maxWidth: 1240, margin: '0 auto',
+        padding: '0 clamp(20px,4vw,40px)',
+        backgroundImage: 'linear-gradient(90deg,var(--line) 1px,transparent 1px), linear-gradient(90deg,transparent calc(50% - 1px),var(--line) 50%,transparent calc(50% + 1px))',
+        backgroundSize: '25% 100%, 100% 100%',
+      }}>
 
-      {/* ── Main layout ──────────────────────────────────────────────────── */}
-      <div className="relative z-10 mx-auto min-h-screen max-w-screen-xl px-6 md:px-12 lg:px-24 lg:flex">
+        {/* ── HERO ────────────────────────────────────────────── */}
+        <section style={{
+          display: 'grid',
+          gridTemplateColumns: 'minmax(0,1fr) minmax(0,1.04fr)',
+          gap: 'clamp(24px,4vw,56px)',
+          alignItems: 'center',
+          padding: 'clamp(40px,7vw,86px) 0 clamp(36px,5vw,60px)',
+          borderBottom: '1px solid var(--line)',
+        }} className="hero-grid">
 
-        {/* ════════════════════ SIDEBAR ════════════════════ */}
-        <header className="hidden lg:flex lg:sticky lg:top-0 lg:h-screen lg:w-[42%] lg:flex-col lg:justify-between lg:py-10 xl:py-24 lg:pr-12">
-          <div className="flex flex-col justify-between h-full">
-
-          {/* Top block */}
+          {/* Left — text */}
           <div>
-            {/* Profile photo */}
-            <div className="mb-6 mt-2">
-              <div className="photo-frame inline-block w-20 h-20 xl:w-28 xl:h-28">
-                <div className={`w-full h-full overflow-hidden border ${border}`}
-                  style={{ clipPath: 'polygon(0 6px,6px 6px,6px 0,calc(100% - 6px) 0,calc(100% - 6px) 6px,100% 6px,100% calc(100% - 6px),calc(100% - 6px) calc(100% - 6px),calc(100% - 6px) 100%,6px 100%,6px calc(100% - 6px),0 calc(100% - 6px))' }}>
-                  <img
-                    src="https://github.com/oseiasdfarias.png"
-                    alt="Oséias Farias"
-                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Name + title */}
-            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-              <p className="font-mono text-xs text-accent mb-1 tracking-wider">{content.hero.greeting}</p>
-              <h1 className={`text-3xl xl:text-4xl font-bold font-display ${textPri} leading-tight mb-1 pixel-cursor`}>
-                Oséias Farias.
-              </h1>
-              <h2 className={`text-sm xl:text-base font-semibold font-display ${textSec} mb-2 leading-snug`}>
-                {content.hero.title}
-              </h2>
-
-              {/* Affiliation badge */}
-              <div className="inline-flex items-center gap-2 mb-3">
-                <span className="inline-flex items-center gap-1.5 font-mono text-[11px] font-bold tracking-widest text-accent border border-accent/30 bg-accent/5 px-2.5 py-1">
-                  <span className="relative flex h-1.5 w-1.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-60" />
-                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-accent" />
-                  </span>
-                  {content.hero.availability}
-                </span>
-              </div>
-
+            <motion.div
+              initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: [0.2, 0.7, 0.2, 1] }}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 10,
+                ...mono(12, { color: 'var(--fg-soft)', letterSpacing: '.06em', marginBottom: 26 }),
+              }}>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7, color: 'var(--accent)' }}>
+                <LiveDot />
+                {content.hero.kicker}
+              </span>
             </motion.div>
 
-            {/* Nav links */}
-            <motion.nav
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="mt-4 flex flex-col gap-0"
-            >
-              {NAV_SECTIONS.map(s => {
-                const isActive = activeSection === s;
-                return (
-                  <button
-                    key={s}
-                    onClick={() => scrollTo(s)}
-                    className="group flex items-center gap-3 py-1 text-left transition-all duration-200"
-                  >
-                    {/* Pixel indicator */}
-                    <div className="w-5 flex-shrink-0 flex flex-col items-center gap-[3px]">
-                      {isActive ? (
-                        <>
-                          <span className="block w-2 h-2 bg-accent pixel-dot" />
-                          <span className="block w-2 h-2 bg-accent opacity-50" />
-                          <span className="block w-2 h-2 bg-accent opacity-20" />
-                        </>
-                      ) : (
-                        <span className={`block h-px w-4 ${darkMode ? 'bg-slate' : 'bg-slate-400'} group-hover:w-5 transition-all`} />
-                      )}
-                    </div>
-                    <span
-                      className={`font-pixel text-base tracking-wider transition-colors duration-200 ${
-                        isActive ? 'text-accent' : `${textMut} group-hover:text-accent/70`
-                      }`}
-                    >
-                      {content.nav[s as keyof typeof content.nav]}
-                    </span>
-                  </button>
-                );
-              })}
-            </motion.nav>
+            <motion.h1
+              initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.07, ease: [0.2, 0.7, 0.2, 1] }}
+              style={serif('clamp(44px,6.4vw,80px)' as unknown as number, 500, {
+                lineHeight: 0.96, letterSpacing: '-.025em', margin: '0 0 22px',
+              })}>
+              {content.hero.role.split(' & ')[0]}<br />
+              <span style={{ fontStyle: 'italic', color: 'var(--accent)' }}>
+                {content.hero.role.includes(' & ') ? '& ' + content.hero.role.split(' & ')[1] : ''}
+              </span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.15, ease: [0.2, 0.7, 0.2, 1] }}
+              style={{
+                fontSize: 'clamp(17px,2vw,20px)', lineHeight: 1.6,
+                color: 'var(--fg-muted)', maxWidth: 500, margin: '0 0 30px',
+              }}>
+              {content.hero.lede}
+            </motion.p>
+
+            {/* Manifest grid */}
+            <motion.div
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.21, ease: [0.2, 0.7, 0.2, 1] }}
+              style={{
+                display: 'grid', gridTemplateColumns: 'repeat(2,auto)',
+                gap: '6px 30px', marginBottom: 30,
+                ...mono(12, { color: 'var(--fg-soft)' }),
+              }}>
+              <div><span>ROLE / </span><span style={{ color: 'var(--fg-muted)' }}>BACKEND · MLOPS</span></div>
+              <div><span>LOC&nbsp;&nbsp;/ </span><span style={{ color: 'var(--fg-muted)' }}>{content.hero.location}</span></div>
+              <div><span>STACK/ </span><span style={{ color: 'var(--fg-muted)' }}>PY · JAVA · AWS</span></div>
+              <div><span>STAT&nbsp;/ </span><span style={{ color: 'var(--accent)' }}>{pt ? 'DISPONÍVEL' : 'AVAILABLE'}</span></div>
+            </motion.div>
+
+            {/* CTAs */}
+            <motion.div
+              initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.27, ease: [0.2, 0.7, 0.2, 1] }}
+              style={{ display: 'flex', gap: 0, flexWrap: 'wrap', alignItems: 'center' }}>
+              <a href="#projects"
+                onClick={e => { e.preventDefault(); scrollTo('projects'); }}
+                className="btnk"
+                style={{
+                  textDecoration: 'none', background: 'var(--accent)',
+                  color: 'var(--bg)', ...mono(13, { fontWeight: 500, padding: '12px 20px', letterSpacing: '.02em' }),
+                }}>
+                {content.hero.ctaPrimary} →
+              </a>
+              <a href="#contact"
+                onClick={e => { e.preventDefault(); scrollTo('contact'); }}
+                className="navlink"
+                style={{
+                  textDecoration: 'none',
+                  ...mono(13, { padding: '12px 20px', borderBottom: '1px solid var(--line)' }),
+                }}>
+                {content.nav.contact}
+              </a>
+            </motion.div>
           </div>
 
-          {/* Bottom block */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="flex flex-col gap-2"
-          >
-            {/* CV button */}
-            <a
-              href="https://drive.google.com/file/d/1-oMiFFC3QAbU6JhIeo6svznmm1pWMtzW/view"
-              target="_blank"
-              rel="noreferrer"
-              className="pixel-card inline-flex items-center gap-2 text-xs font-mono font-bold text-accent border border-accent/30 px-3 py-1.5 w-fit hover:bg-accent/10 transition-colors group"
-            >
-              {content.hero.btnOutline}
-              <ArrowUpRight size={13} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            </a>
+          {/* Right — SVG DAG */}
+          <HeroPipelineDAG lang={lang} />
+        </section>
 
-            {/* Social icons */}
-            <div className="flex items-center gap-4">
-              {socials.map(s => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={s.label}
-                  title={s.label}
-                  className={`group relative ${textMut} hover:text-accent transition-all duration-200`}
-                >
-                  <s.icon size={18} className="group-hover:-translate-y-0.5 transition-transform duration-200" />
-                </a>
-              ))}
-            </div>
+        {/* ── METRICS ─────────────────────────────────────────── */}
+        <section className="metrics-strip" style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit,minmax(150px,1fr))',
+          borderBottom: '1px solid var(--line)',
+        }}>
+          <MetricItem value={184} suffix="" label={pt ? 'testes · synapsys' : 'tests · synapsys'} />
+          <MetricItem value={90}  suffix="%" label={pt ? 'cobertura' : 'coverage'} />
+          <MetricItem value={2}   suffix=""  label={pt ? 'mestrados' : "master's"} />
+          <MetricItem value={certs.length} suffix="" label={pt ? 'certificações' : 'certifications'} />
+        </section>
 
-            {/* Lang + Theme toggles */}
-            <div className="flex items-center gap-4">
-              <button
-                onClick={toggleLang}
-                className={`flex items-center gap-2 text-xs font-mono font-bold ${textMut} hover:text-accent transition-colors group`}
-              >
-                <Globe size={13} className="group-hover:rotate-12 transition-transform" />
-                {lang === 'pt' ? 'EN' : 'PT'}
-              </button>
-
-              <button
-                onClick={toggleTheme}
-                className={`flex items-center gap-2 text-xs font-mono font-bold ${textMut} hover:text-accent transition-colors`}
-                aria-label="Toggle theme"
-              >
-                {darkMode ? <Sun size={14} /> : <Moon size={14} />}
-                {darkMode ? 'Light' : 'Dark'}
-              </button>
-            </div>
-          </motion.div>
-          </div>{/* end z-10 wrapper */}
-        </header>
-
-        {/* ════════════════════ MAIN CONTENT ════════════════════ */}
-        <main className="lg:w-[58%] pt-20 lg:pt-24 pb-24">
-
-          {/* ── Mobile profile photo (acima do Sobre) ─────────── */}
-          <div className="lg:hidden flex items-center gap-4 mb-8">
-            <div className="photo-frame flex-shrink-0 w-14 h-14">
-              <div className={`w-full h-full overflow-hidden border ${border}`}
-                style={{ clipPath: 'polygon(0 5px,5px 5px,5px 0,calc(100% - 5px) 0,calc(100% - 5px) 5px,100% 5px,100% calc(100% - 5px),calc(100% - 5px) calc(100% - 5px),calc(100% - 5px) 100%,5px 100%,5px calc(100% - 5px),0 calc(100% - 5px))' }}>
-                <img
-                  src="https://github.com/oseiasdfarias.png"
-                  alt="Oséias Farias"
-                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-                />
+        {/* ── ABOUT §00 ──────────────────────────────────────── */}
+        <section id="about" data-section="about" style={{ scrollMarginTop: 70 }}>
+          <div className="about-grid" style={{
+            display: 'grid', gridTemplateColumns: '120px minmax(0,1fr)',
+            gap: 'clamp(16px,3vw,40px)',
+            padding: 'clamp(40px,6vw,72px) 0',
+            borderBottom: '1px solid var(--line)',
+          }}>
+            <FadeIn>
+              <div style={mono(12, { color: 'var(--fg-soft)', letterSpacing: '.04em' })}>
+                §00<br /><span style={{ color: 'var(--fg-muted)' }}>{content.about.title}</span>
+              </div>
+            </FadeIn>
+            <div style={{ maxWidth: 760 }}>
+              <FadeIn>
+                <p style={serif('clamp(24px,3.4vw,38px)' as unknown as number, 400, {
+                  lineHeight: 1.28, letterSpacing: '-.015em', margin: '0 0 30px',
+                })}>
+                  {content.about.lede}
+                </p>
+              </FadeIn>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(230px,1fr))', gap: 22 }}>
+                {content.about.paras.map((para, i) => (
+                  <FadeIn key={i} delay={i * 0.08}>
+                    <p style={{ fontSize: 15.5, lineHeight: 1.72, color: 'var(--fg-muted)', margin: 0 }}
+                      dangerouslySetInnerHTML={{ __html: para }} />
+                  </FadeIn>
+                ))}
               </div>
             </div>
-            <div>
-              <p className="font-mono text-xs text-accent tracking-wider mb-0.5">{content.hero.greeting}</p>
-              <h1 className={`text-xl font-bold font-display ${textPri} leading-tight`}>Oséias Farias.</h1>
-              <p className={`text-xs font-display ${textMut} leading-snug`}>{content.hero.title}</p>
-            </div>
           </div>
+        </section>
 
-          {/* ── ABOUT ──────────────────────────────────────────── */}
-          <section id="about" className="mb-24 scroll-mt-24">
-            <SectionTitle label={content.about.title} num="01" />
-            <div className="space-y-5">
-              {content.about.description.map((para, i) => (
-                <FadeIn key={i} delay={i * 0.08}>
-                  <p
-                    className={`text-[15px] leading-relaxed ${textSec}`}
-                    dangerouslySetInnerHTML={{ __html: para }}
-                  />
-                </FadeIn>
-              ))}
-
-              {/* Dual identity pills */}
-              <FadeIn delay={0.3}>
-                <div className="flex gap-3 pt-2 flex-wrap">
-                  <span className="inline-flex items-center gap-2 text-xs font-mono font-bold px-3 py-1.5 rounded-full border border-accent/30 text-accent bg-accent/5">
-                    <Briefcase size={12} />
-                    {content.about.industryLabel}
-                  </span>
-                  <span className="inline-flex items-center gap-2 text-xs font-mono font-bold px-3 py-1.5 rounded-full border border-accent2/30 text-accent2 bg-accent2/5">
-                    <FlaskConical size={12} />
-                    {content.about.academiaLabel}
-                  </span>
-                </div>
-              </FadeIn>
-
-              {/* Skills */}
-              <FadeIn delay={0.35}>
-                <div className={`mt-4 pt-4 border-t ${border}`}>
-                  <p className={`font-mono text-xs ${textMut} uppercase tracking-widest mb-3`}>Stack principal</p>
-                  <div className="flex flex-wrap gap-2">
-                    {["Java", "Python", "Spring Boot", "FastAPI", "Quarkus", "AWS", "Docker", "PostgreSQL", "FPGA", "TensorFlow"].map(skill => (
-                      <span key={skill} className={`tag-pixel font-mono text-xs ${textMut} hover:text-accent px-2 py-1 border ${border} ${bgCard} hover:border-accent/30 transition-colors cursor-default`}>
-                        {skill}
+        {/* ── CAPABILITIES §01 ───────────────────────────────── */}
+        <section id="capabilities" data-section="capabilities" style={{
+          scrollMarginTop: 70,
+          padding: 'clamp(40px,6vw,72px) 0',
+          borderBottom: '1px solid var(--line)',
+        }}>
+          <SectionHeader
+            num="§01" title={content.focus.title}
+            subtitle={`[ 04 ${pt ? 'MÓDULOS' : 'MODULES'} ]`}
+          />
+          <div className="capabilities-grid"
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(252px,1fr))' }}>
+            {content.focus.pillars.map((p, i) => (
+              <FadeIn key={i} delay={i * 0.07}>
+                <div className="mod" style={{
+                  border: '1px solid var(--line)', margin: '-0.5px',
+                  background: 'var(--panel)', padding: '24px 22px',
+                }}>
+                  <span className="modbar" />
+                  <div style={{
+                    display: 'flex', alignItems: 'center',
+                    justifyContent: 'space-between', marginBottom: 18, ...mono(11),
+                  }}>
+                    <span style={{ color: 'var(--accent)' }}>[{p.k}]</span>
+                    <span style={{ color: 'var(--fg-soft)' }}>M.0{i + 1}</span>
+                  </div>
+                  <h3 style={serif(21, 500, { margin: '0 0 9px', letterSpacing: '-.01em' })}>{p.t}</h3>
+                  <p style={{ margin: '0 0 16px', fontSize: 14, lineHeight: 1.6, color: 'var(--fg-muted)' }}>{p.d}</p>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
+                    {p.tags.map(tag => (
+                      <span key={tag} className="tagk"
+                        style={mono(10.5, { color: 'var(--fg-soft)', border: '1px solid var(--line)', padding: '2px 7px' })}>
+                        {tag}
                       </span>
                     ))}
                   </div>
                 </div>
               </FadeIn>
-            </div>
-          </section>
+            ))}
+          </div>
+        </section>
 
-          {/* ── RESEARCH ───────────────────────────────────────── */}
-          <section id="research" className="mb-24 scroll-mt-24">
-            <SectionTitle label={content.research.title} num="02" />
-            <div className="flex flex-col gap-4">
-              {research.map((item, i) => (
-                <FadeIn key={i} delay={i * 0.1}>
-                  <div className={`pixel-card pixel-card-indigo group relative p-6 rounded-lg border ${border} ${bgCard} hover:border-accent2/40 ${bgHover} transition-all duration-300`}>
-                    <div className="flex items-center justify-between mb-3">
-                      <span className={`font-mono text-xs ${textMut}`}>{item.period}</span>
-                      {item.status === 'ongoing' && (
-                        <span className="flex items-center gap-1.5 font-mono text-xs text-accent2">
-                          <span className="relative flex h-1.5 w-1.5">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent2 opacity-75" />
-                            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-accent2" />
-                          </span>
-                          Em andamento
-                        </span>
-                      )}
-                    </div>
-                    <h3 className={`font-display font-bold ${textPri} group-hover:text-accent2 transition-colors mb-1 text-[17px]`}>
-                      {item.title}
-                    </h3>
-                    <p className="font-mono text-xs text-accent2/70 mb-3">{item.institution}</p>
-                    <p className={`text-[15px] ${textMut} leading-relaxed mb-4`}>{item.description}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {item.tags.map(tag => (
-                        <span key={tag} className="font-mono text-xs text-accent2/80 px-2 py-0.5 rounded border border-accent2/20 bg-accent2/5">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </FadeIn>
-              ))}
-            </div>
+        {/* ── PROJECTS §02 ───────────────────────────────────── */}
+        <section id="projects" data-section="projects" style={{
+          scrollMarginTop: 70,
+          padding: 'clamp(40px,6vw,72px) 0',
+          borderBottom: '1px solid var(--line)',
+        }}>
+          <SectionHeader num="§02" title={content.projects.title} subtitle={content.projects.subtitle} />
 
-            {/* Publications sub-section */}
-            <div className={`mt-4 pt-8 border-t ${border}`}>
-              <div className="flex items-center gap-3 mb-6">
-                <FileText size={15} className="text-accent2 flex-shrink-0" />
-                <h3 className={`text-base font-bold font-display ${textPri} whitespace-nowrap`}>
-                  {lang === 'pt' ? 'Publicações' : 'Publications'}
-                </h3>
-                <div className={`flex-1 h-px bg-paperBorder dark:bg-navyBorder`} />
-              </div>
-              <div className="flex flex-col gap-3">
-                {publications.map((pub, i) => (
-                  <FadeIn key={i} delay={i * 0.08}>
-                    <div className={`pixel-card pixel-card-indigo group p-5 rounded-lg border ${border} ${bgCard} hover:border-accent2/40 ${bgHover} transition-all duration-300`}>
-                      <div className="flex items-start justify-between gap-3 mb-1">
-                        <h4 className={`font-display font-bold text-sm ${textPri} group-hover:text-accent2 transition-colors leading-snug`}>
-                          {pub.title}
-                        </h4>
-                        {pub.link && pub.link !== '#' && (
-                          <a href={pub.link} target="_blank" rel="noreferrer"
-                             className="flex-shrink-0 text-accent2 hover:text-accent2/70 transition-colors mt-0.5">
-                            <ExternalLink size={13} />
-                          </a>
-                        )}
-                      </div>
-                      <p className="font-mono text-xs text-accent2/70 mb-2">
-                        {pub.venue} · {pub.date}
-                      </p>
-                      {pub.authors && (
-                        <p className={`font-mono text-xs ${textMut} mb-2`}>{pub.authors}</p>
-                      )}
-                      <p className={`text-[13px] ${textMut} leading-relaxed`}>{pub.description}</p>
-                    </div>
-                  </FadeIn>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* ── EXPERIENCE ─────────────────────────────────────── */}
-          <section id="experience" className="mb-24 scroll-mt-24">
-            <SectionTitle label={content.experience.title} num="03" />
-            <div className="flex flex-col gap-1">
-              {experience.map((exp, i) => (
-                <FadeIn key={i} delay={i * 0.08}>
-                  <div className={`group relative grid sm:grid-cols-[130px_1fr] gap-3 p-5 rounded-lg border border-transparent ${bgHover} hover:border-paperBorder dark:hover:border-navyBorder transition-all duration-300`}>
-                    <div className="pt-0.5">
-                      <span className={`font-mono text-xs ${textMut} leading-relaxed`}>
-                        {exp.period}
-                      </span>
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2 mb-0.5 flex-wrap">
-                        <h3 className={`font-display font-bold ${textPri} group-hover:text-accent transition-colors text-[15px]`}>
-                          {exp.title}
-                        </h3>
-                        <span className={`font-mono text-[10px] font-bold px-1.5 py-0.5 rounded border ${typeColor[exp.type]}`}>
-                          {typeLabel[exp.type][lang]}
-                        </span>
-                      </div>
-                      <p className="font-mono text-xs text-accent/70 mb-2">{exp.company}</p>
-                      <p className={`text-[14px] ${textMut} leading-relaxed mb-3`}>{exp.description}</p>
-                      <div className="flex flex-wrap gap-1.5">
-                        {exp.tags.map(tag => (
-                          <span key={tag} className="font-mono text-xs text-accent px-1.5 py-0.5 rounded border border-accent/20 bg-accent/5">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </FadeIn>
-              ))}
-            </div>
-          </section>
-
-          {/* ── PROJECTS ───────────────────────────────────────── */}
-          <section id="projects" className="mb-24 scroll-mt-24">
-            <SectionTitle label={content.projects.title} num="04" />
-            <div
-              className="flex flex-col gap-1"
-              onMouseLeave={() => setHoveredCard(null)}
-            >
-              {projects.map((proj, i) => (
-                <FadeIn key={i} delay={i * 0.06}>
-                  <div
-                    className={`group relative p-5 rounded-lg border transition-all duration-300 ${
-                      hoveredCard !== null && hoveredCard !== i
-                        ? 'opacity-40 border-transparent'
-                        : `border-transparent ${bgHover} hover:border-paperBorder dark:hover:border-navyBorder opacity-100`
-                    }`}
-                    onMouseEnter={() => setHoveredCard(i)}
-                  >
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1 flex-wrap">
-                          <h3 className={`font-display font-bold ${textPri} group-hover:text-accent transition-colors text-[15px]`}>
-                            {proj.title}
-                          </h3>
-                          <span className={`font-mono text-[10px] font-bold px-1.5 py-0.5 rounded border ${categoryColor[proj.category]}`}>
-                            {categoryLabel[proj.category][lang]}
-                          </span>
-                        </div>
-                        <p className={`text-[14px] ${textMut} leading-relaxed mb-3`}>{proj.description}</p>
-                        <div className="flex flex-wrap gap-1.5">
-                          {proj.tags.map(tag => (
-                            <span key={tag} className={`font-mono text-xs ${textMut} px-1.5 py-0.5 rounded border ${border} ${bgCard}`}>
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                      {/* Thumbnail */}
-                      <div className={`hidden sm:block w-20 h-16 rounded overflow-hidden border ${border} flex-shrink-0 opacity-60 group-hover:opacity-100 transition-opacity`}>
-                        <img src={proj.image} alt={proj.title} className="w-full h-full object-cover" />
-                      </div>
-                    </div>
-                    {proj.link && (
-                      <a
-                        href={proj.link}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="absolute inset-0 rounded-lg"
-                        aria-label={`Ver ${proj.title}`}
-                      />
-                    )}
-                    {proj.link && (
-                      <div className="mt-3 flex items-center gap-1 text-accent text-xs font-mono font-bold opacity-0 group-hover:opacity-100 transition-opacity">
-                        GitHub <ExternalLink size={11} />
-                      </div>
-                    )}
-                  </div>
-                </FadeIn>
-              ))}
-            </div>
-
-            <FadeIn delay={0.3}>
-              <a
-                href="https://github.com/oseiasdfarias"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 mt-6 text-sm font-bold text-accent hover:gap-3 transition-all group"
-              >
-                {content.projects.viewAll}
-                <ArrowUpRight size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </a>
-            </FadeIn>
-          </section>
-
-          {/* ── OPEN SOURCE ────────────────────────────────────── */}
-          <section id="opensource" className="mb-24 scroll-mt-24">
-            <SectionTitle label={content.opensource.title} num="05" />
-
-            {/* Main library card */}
-            <FadeIn>
-              <div className={`pixel-card relative p-6 rounded-lg border ${border} ${bgCard} hover:border-green/40 transition-all duration-300 mb-4`}>
-                <div className="flex items-start justify-between gap-4 mb-4 flex-wrap">
-                  <div className="flex items-center gap-3">
-                    <Package size={22} className="text-green flex-shrink-0" />
-                    <div>
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <h3 className={`font-display font-bold text-xl ${textPri}`}>{openSource.name}</h3>
-                        <span className="font-mono text-xs font-bold px-2 py-0.5 border border-green/30 text-green bg-green/5">{openSource.version}</span>
-                        <span className="font-mono text-xs px-2 py-0.5 border border-accent2/30 text-accent2 bg-accent2/5">MIT</span>
-                      </div>
-                      <p className="font-mono text-xs text-green/70 mt-0.5">{openSource.tagline}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <a href={openSource.github} target="_blank" rel="noreferrer"
-                       className={`flex items-center gap-1.5 text-xs font-mono font-bold px-2.5 py-1 border ${border} ${bgCard} ${textMut} hover:text-accent hover:border-accent/40 transition-colors`}>
-                      <Github size={12} /> GitHub
-                    </a>
-                    <a href={openSource.pypi} target="_blank" rel="noreferrer"
-                       className="flex items-center gap-1.5 text-xs font-mono font-bold px-2.5 py-1 border border-green/30 bg-green/5 text-green hover:bg-green/10 transition-colors">
-                      PyPI <ExternalLink size={11} />
-                    </a>
-                  </div>
-                </div>
-
-                <p className={`text-[15px] ${textSec} leading-relaxed mb-5`}>{openSource.description}</p>
-
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2 mb-5">
-                  {openSource.tags.map(tag => (
-                    <span key={tag} className={`font-mono text-xs ${textMut} px-1.5 py-0.5 border ${border} ${bgCard}`}>{tag}</span>
-                  ))}
-                </div>
-
-                {/* Stats row */}
-                <div className={`flex flex-wrap gap-6 pt-4 border-t ${border}`}>
-                  {openSource.stats.map(s => (
-                    <div key={s.label} className="flex flex-col">
-                      <span className={`font-mono text-[10px] ${textMut} uppercase tracking-widest`}>{s.label}</span>
-                      <span className="font-mono text-sm font-bold text-green">{s.value}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </FadeIn>
-
-            {/* Features grid */}
-            <div className="grid sm:grid-cols-2 gap-3 mb-4">
-              {openSource.features.map((feat, i) => (
-                <FadeIn key={i} delay={i * 0.08}>
-                  <motion.a
-                    href={feat.docLink}
-                    target="_blank"
-                    rel="noreferrer"
-                    whileHover={{ y: -4, scale: 1.01 }}
-                    whileTap={{ scale: 0.98 }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                    className={`group flex flex-col p-4 rounded-lg border ${border} ${bgCard} hover:border-green/50 hover:bg-green/[0.04] transition-colors duration-200 h-full cursor-pointer`}
-                  >
-                    <div className="flex items-start justify-between gap-2 mb-1">
-                      <h4 className={`font-display font-bold text-sm ${textPri} group-hover:text-green transition-colors duration-200`}>
-                        {feat.title}
-                      </h4>
-                      <ArrowUpRight
-                        size={13}
-                        className="flex-shrink-0 mt-0.5 text-green opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200"
-                      />
-                    </div>
-                    <p className={`text-[13px] ${textMut} leading-relaxed`}>{feat.description}</p>
-                    <span className="mt-2 font-mono text-[10px] text-green/50 group-hover:text-green/80 transition-colors duration-200 uppercase tracking-widest">
-                      {lang === 'pt' ? 'ver docs →' : 'view docs →'}
+          <div className="projects-grid"
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(340px,1fr))' }}>
+            {projects.map((proj, i) => {
+              const statusLabel = (pt ? STATUS_LABELS_PT : STATUS_LABELS_EN)[i] ?? 'concluído';
+              const statusColor = STATUS_COLORS[i] ?? 'var(--fg-soft)';
+              return (
+                <motion.article key={i} className="mod"
+                  initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-30px' }}
+                  transition={{ duration: 0.6, ease: [0.2, 0.7, 0.2, 1] }}
+                  style={{
+                    border: '1px solid var(--line)', margin: '-0.5px',
+                    background: 'var(--panel)', padding: '26px 24px',
+                    display: 'flex', flexDirection: 'column',
+                  }}
+                >
+                  <span className="modbar" />
+                  <div style={{
+                    display: 'flex', alignItems: 'center',
+                    justifyContent: 'space-between', marginBottom: 14,
+                    ...mono(11, { color: 'var(--fg-soft)' }),
+                  }}>
+                    <span>REC.0{i + 1}</span>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: statusColor }}>
+                      <span style={{ width: 6, height: 6, borderRadius: 999, background: statusColor }} />
+                      {statusLabel}
                     </span>
-                  </motion.a>
-                </FadeIn>
-              ))}
+                  </div>
+                  <h3 style={serif(24, 500, { margin: '0 0 5px', letterSpacing: '-.015em', lineHeight: 1.05 })}>
+                    {proj.title}
+                  </h3>
+                  <div style={mono(11, { color: 'var(--fg-soft)', marginBottom: 18 })}>
+                    {proj.category} · {proj.year}
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 12, flex: 1 }}>
+                    {([
+                      { k: 'P', text: proj.problem,  accent: false },
+                      { k: 'S', text: proj.solution,  accent: false },
+                      { k: 'I', text: proj.impact,    accent: true  },
+                    ]).map(({ k, text, accent }) => (
+                      <div key={k} style={{ display: 'grid', gridTemplateColumns: '14px 1fr', gap: 10 }}>
+                        <span style={mono(11, { color: 'var(--accent)' })}>{k}</span>
+                        <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.55, color: accent ? 'var(--fg)' : 'var(--fg-muted)' }}>
+                          {text}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{
+                    display: 'flex', flexWrap: 'wrap', gap: 5,
+                    margin: '18px 0 0', paddingTop: 16, borderTop: '1px solid var(--line)',
+                  }}>
+                    {proj.tags.map(tag => (
+                      <span key={tag} className="tagk"
+                        style={mono(10.5, { color: 'var(--fg-soft)', border: '1px solid var(--line)', padding: '2px 7px' })}>
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  {proj.link && (
+                    <a className="reglink" href={proj.link} target="_blank" rel="noreferrer"
+                      style={mono(12, { marginTop: 16, alignSelf: 'flex-start', display: 'inline-block' })}>
+                      {pt ? 'abrir repositório' : 'open repository'} ↗
+                    </a>
+                  )}
+                </motion.article>
+              );
+            })}
+          </div>
+
+          <FadeIn>
+            <div style={{ marginTop: 24 }}>
+              <a href="https://github.com/oseiasdfarias" target="_blank" rel="noreferrer"
+                className="navlink" style={mono(13)}>
+                {content.projects.viewAll} →
+              </a>
             </div>
+          </FadeIn>
+        </section>
 
-            {/* Drone demo highlight */}
-            <FadeIn delay={0.2}>
-              <div className={`pixel-card p-6 rounded-lg border border-green/30 bg-green/[0.03]`}>
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="relative flex h-1.5 w-1.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green opacity-60" />
-                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green" />
-                  </span>
-                  <span className="font-mono text-xs text-green/70 uppercase tracking-widest">
-                    {lang === 'pt' ? 'destaque' : 'highlight'}
-                  </span>
+        {/* ── OPEN SOURCE §03 ────────────────────────────────── */}
+        <section id="opensource" data-section="opensource" style={{
+          scrollMarginTop: 70,
+          padding: 'clamp(40px,6vw,72px) 0',
+          borderBottom: '1px solid var(--line)',
+        }}>
+          <SectionHeader num="§03" title={content.opensource.title} subtitle={content.opensource.subtitle} />
+
+          <FadeIn delay={0.08}>
+            <div className="opensource-grid" style={{
+              display: 'grid', gridTemplateColumns: 'minmax(0,1.05fr) minmax(0,1fr)',
+              border: '1px solid var(--line)', background: 'var(--panel)',
+            }}>
+              {/* Left — info + stats */}
+              <div style={{ padding: 'clamp(22px,3vw,32px)', borderRight: '1px solid var(--line)' }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 11, flexWrap: 'wrap', marginBottom: 16 }}>
+                  <h3 style={serif(30, 500, { margin: 0, letterSpacing: '-.02em' })}>{openSource.name}</h3>
+                  <span style={mono(11, { color: 'var(--accent)', border: '1px solid var(--line)', padding: '2px 7px' })}>{openSource.version}</span>
+                  <span style={mono(11, { color: 'var(--fg-soft)', border: '1px solid var(--line)', padding: '2px 7px' })}>{openSource.license}</span>
                 </div>
-                <h3 className={`font-display font-bold ${textPri} text-[17px] mb-2`}>
-                  {openSource.demo.title}
-                </h3>
-                <p className={`text-[14px] ${textMut} leading-relaxed mb-4`}>{openSource.demo.description}</p>
+                <p style={{ margin: '0 0 22px', fontSize: 15, lineHeight: 1.66, color: 'var(--fg-muted)' }}>
+                  {openSource.description}
+                </p>
 
-                {/* GIF gallery */}
-                <div className="grid grid-cols-3 gap-2 mb-4">
-                  {openSource.demo.media.map((item, i) => (
-                    <button
-                      key={i}
-                      onClick={() => openModal(openSource.demo.media, i)}
-                      className={`group/thumb relative aspect-video rounded border ${border} overflow-hidden hover:border-green/50 transition-all duration-200 focus:outline-none focus:border-green/70`}
-                      aria-label={item.caption}
-                    >
-                      <img
-                        src={item.src}
-                        alt={item.caption}
-                        className="w-full h-full object-cover opacity-70 group-hover/thumb:opacity-100 transition-opacity duration-200"
-                      />
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/thumb:opacity-100 transition-opacity duration-200 bg-black/30">
-                        <span className="font-pixel text-white text-xs border border-white/40 px-2 py-0.5 bg-black/50">
-                          {lang === 'pt' ? 'expandir' : 'expand'}
-                        </span>
+                {/* Stats */}
+                <div style={{ display: 'flex', gap: 0, borderTop: '1px solid var(--line)', marginBottom: 22 }}>
+                  {openSource.stats.map(s => (
+                    <div key={s.label} style={{ flex: 1, padding: '16px 12px 4px', borderRight: '1px solid var(--line)' }}>
+                      <div style={serif(28, 500, { lineHeight: 0.9 })}>{s.value}</div>
+                      <div style={mono(10, {
+                        color: 'var(--fg-soft)', marginTop: 8,
+                        textTransform: 'uppercase', letterSpacing: '.06em',
+                      })}>
+                        {s.label}
                       </div>
-                      <div className="absolute bottom-1 right-1">
-                        <span className="font-mono text-[9px] text-white/60 bg-black/50 px-1">{i + 1}/{openSource.demo.media.length}</span>
-                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Links */}
+                <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                  <a className="btnk invbtn" href={openSource.github} target="_blank" rel="noreferrer"
+                    style={{
+                      textDecoration: 'none', ...mono(12, {
+                        color: 'var(--fg-muted)', border: '1px solid var(--line-2)', padding: '8px 14px',
+                      }),
+                    }}>
+                    GitHub ↗
+                  </a>
+                  <a className="btnk" href={openSource.pypi} target="_blank" rel="noreferrer"
+                    style={{
+                      textDecoration: 'none', ...mono(12, {
+                        color: 'var(--bg)', background: 'var(--accent)', padding: '8px 14px',
+                      }),
+                    }}>
+                    PyPI ↗
+                  </a>
+                </div>
+              </div>
+
+              {/* Right — demo GIFs */}
+              <div style={{ padding: 'clamp(22px,3vw,32px)' }}>
+                <div style={mono(11, { color: 'var(--fg-soft)', marginBottom: 10 })}>
+                  FIG.02 — {openSource.demo.title}
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  {openSource.demo.media.slice(0, 1).map((item, i) => (
+                    <button key={i} onClick={() => openModal(openSource.demo.media, i)}
+                      style={{
+                        aspectRatio: '16/9', border: '1px solid var(--line)',
+                        overflow: 'hidden', background: 'var(--bg2)', padding: 0, cursor: 'pointer',
+                        display: 'block', width: '100%',
+                      }}>
+                      <img src={item.src} alt={item.caption} loading="lazy"
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                     </button>
                   ))}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+                    {openSource.demo.media.slice(1, 3).map((item, i) => (
+                      <button key={i + 1} onClick={() => openModal(openSource.demo.media, i + 1)}
+                        style={{
+                          aspectRatio: '16/10', border: '1px solid var(--line)',
+                          overflow: 'hidden', background: 'var(--bg2)', padding: 0, cursor: 'pointer',
+                          display: 'block', width: '100%',
+                        }}>
+                        <img src={item.src} alt={item.caption} loading="lazy"
+                          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                      </button>
+                    ))}
+                  </div>
                 </div>
+              </div>
+            </div>
+          </FadeIn>
+        </section>
 
-                <div className="flex flex-wrap gap-2">
-                  {openSource.demo.tags.map(tag => (
-                    <span key={tag} className="font-mono text-xs text-green px-2 py-0.5 border border-green/20 bg-green/5">{tag}</span>
+        {/* ── EXPERIENCE §04 ─────────────────────────────────── */}
+        <section id="experience" data-section="experience" style={{
+          scrollMarginTop: 70,
+          padding: 'clamp(40px,6vw,72px) 0',
+          borderBottom: '1px solid var(--line)',
+        }}>
+          <FadeIn>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 14 }}>
+              <span style={mono(14, { color: 'var(--accent)' })}>§04</span>
+              <h2 style={serif('clamp(28px,3.6vw,42px)' as unknown as number, 500, { margin: 0, letterSpacing: '-.02em' })}>
+                {content.experience.title}
+              </h2>
+            </div>
+          </FadeIn>
+
+          <div style={{ maxWidth: 900 }}>
+            {experience.map((exp, i) => (
+              <motion.div key={i}
+                className="experience-row"
+                initial={{ opacity: 0, x: 14 }} whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: '-5%' }}
+                transition={{ duration: 0.65, delay: i * 0.07, ease: [0.2, 0.7, 0.2, 1] }}
+                style={{
+                  display: 'grid', gridTemplateColumns: '170px 1fr',
+                  gap: 24, padding: '22px 0', borderTop: '1px solid var(--line)',
+                }}>
+                <div className="experience-period"
+                  style={mono(12, { color: 'var(--fg-soft)', paddingTop: 4 })}>
+                  {exp.period}
+                </div>
+                <div>
+                  <div style={{
+                    display: 'flex', alignItems: 'baseline', gap: 11,
+                    flexWrap: 'wrap', marginBottom: 4,
+                  }}>
+                    <h3 style={serif(19, 500, { margin: 0 })}>{exp.title}</h3>
+                    <span style={mono(9.5, {
+                      textTransform: 'uppercase', letterSpacing: '.08em',
+                      color: 'var(--accent)', border: '1px solid var(--line)', padding: '1px 6px',
+                    })}>
+                      {exp.type === 'industry'
+                        ? (pt ? 'Mercado' : 'Industry')
+                        : exp.type === 'volunteer'
+                          ? (pt ? 'Voluntário' : 'Volunteer')
+                          : (pt ? 'Pesquisa' : 'Research')}
+                    </span>
+                    {exp.current && (
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                        <LiveDot />
+                        <span style={mono(10, { color: 'var(--accent)' })}>{pt ? 'atual' : 'current'}</span>
+                      </span>
+                    )}
+                  </div>
+                  <p style={{ margin: '0 0 10px', ...mono(12, { color: 'var(--fg-muted)' }) }}>{exp.company}</p>
+                  <p style={{ margin: '0 0 12px', fontSize: 14.5, lineHeight: 1.62, color: 'var(--fg-muted)' }}>
+                    {exp.description}
+                  </p>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
+                    {exp.tags.map(tag => (
+                      <span key={tag}
+                        style={mono(10.5, { color: 'var(--fg-soft)', border: '1px solid var(--line)', padding: '2px 7px' })}>
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── RESEARCH §05 ───────────────────────────────────── */}
+        <section id="research" data-section="research" style={{
+          scrollMarginTop: 70,
+          padding: 'clamp(40px,6vw,72px) 0',
+          borderBottom: '1px solid var(--line)',
+        }}>
+          <SectionHeader num="§05" title={content.research.title} subtitle={content.research.subtitle} />
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(290px,1fr))' }}>
+            {research.map((r, i) => (
+              <FadeIn key={i} delay={i * 0.08}>
+                <div className="mod" style={{
+                  border: '1px solid var(--line)', margin: '-0.5px',
+                  background: 'var(--panel)', padding: '24px 22px',
+                }}>
+                  <span className="modbar" />
+                  <div style={{
+                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                    marginBottom: 12, ...mono(11, { color: 'var(--fg-soft)' }),
+                  }}>
+                    <span>{r.period}</span>
+                    {r.ongoing && (
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--accent)' }}>
+                        <LiveDot />
+                        {content.status.ongoing}
+                      </span>
+                    )}
+                  </div>
+                  <h3 style={serif(19, 500, { margin: '0 0 6px', lineHeight: 1.2 })}>{r.title}</h3>
+                  <p style={mono(11.5, { color: 'var(--accent)', margin: '0 0 12px' })}>{r.institution}</p>
+                  <p style={{ margin: '0 0 14px', fontSize: 13.5, lineHeight: 1.6, color: 'var(--fg-muted)' }}>
+                    {r.description}
+                  </p>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
+                    {r.tags.map(tag => (
+                      <span key={tag} className="tagk"
+                        style={mono(10, { color: 'var(--fg-soft)', border: '1px solid var(--line)', padding: '2px 6px' })}>
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+
+          {/* Publications */}
+          <FadeIn>
+            <div style={mono(11, {
+              textTransform: 'uppercase', letterSpacing: '.1em',
+              color: 'var(--fg-soft)', margin: '28px 0 4px',
+            })}>
+              {content.research.publications}
+            </div>
+          </FadeIn>
+          <div>
+            {pubs.map((pub, i) => (
+              <FadeIn key={i} delay={i * 0.07}>
+                <div className="pub-row" style={{
+                  display: 'grid', gridTemplateColumns: '1fr auto',
+                  gap: 14, alignItems: 'baseline',
+                  padding: '14px 0', borderTop: '1px solid var(--line)',
+                }}>
+                  <h4 style={serif(16, 500, { margin: 0, lineHeight: 1.3 })}>{pub.title}</h4>
+                  <p className="pub-meta"
+                    style={mono(11, { margin: 0, color: 'var(--fg-soft)', whiteSpace: 'nowrap' })}>
+                    {pub.venue} · {pub.date}
+                  </p>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </section>
+
+        {/* ── EDUCATION §06 ──────────────────────────────────── */}
+        <section id="education" data-section="education" style={{
+          scrollMarginTop: 70,
+          padding: 'clamp(40px,6vw,72px) 0',
+          borderBottom: '1px solid var(--line)',
+        }}>
+          <FadeIn>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 26 }}>
+              <span style={mono(14, { color: 'var(--accent)' })}>§06</span>
+              <h2 style={serif('clamp(28px,3.6vw,42px)' as unknown as number, 500, { margin: 0, letterSpacing: '-.02em' })}>
+                {content.education.title}
+              </h2>
+            </div>
+          </FadeIn>
+
+          {/* Degree cards */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(262px,1fr))', marginBottom: 30 }}>
+            {education.map((edu, i) => (
+              <FadeIn key={i} delay={i * 0.06}>
+                <div className="mod" style={{
+                  border: '1px solid var(--line)', margin: '-0.5px',
+                  background: 'var(--panel)', padding: 20,
+                }}>
+                  <span className="modbar" />
+                  <div style={mono(11, { color: 'var(--accent)', marginBottom: 6 })}>
+                    {edu.period} · {edu.institution}
+                  </div>
+                  <h3 style={serif(18, 500, { margin: '0 0 6px', lineHeight: 1.18 })}>{edu.title}</h3>
+                  <p style={{ margin: 0, fontSize: 13, lineHeight: 1.5, color: 'var(--fg-muted)' }}>
+                    {edu.description}
+                  </p>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+
+          {/* Certifications */}
+          <FadeIn>
+            <div style={mono(11, {
+              textTransform: 'uppercase', letterSpacing: '.1em',
+              color: 'var(--fg-soft)', marginBottom: 8,
+            })}>
+              {content.education.certifications}
+            </div>
+          </FadeIn>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(252px,1fr))' }}>
+            {certs.map((cert, i) => (
+              <FadeIn key={i} delay={i * 0.03}>
+                <div style={{
+                  display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10,
+                  padding: '13px 14px', border: '1px solid var(--line)', margin: '-0.5px',
+                  background: 'var(--panel)',
+                }}>
+                  <div style={{ minWidth: 0 }}>
+                    <div style={serif(14.5, 500, {
+                      whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                    })}>
+                      {cert.link
+                        ? <a href={cert.link} target="_blank" rel="noreferrer"
+                          style={{ textDecoration: 'none', color: 'inherit' }}>{cert.title}</a>
+                        : cert.title}
+                    </div>
+                    <div style={mono(10, { color: 'var(--fg-soft)', marginTop: 2 })}>{cert.issuer}</div>
+                  </div>
+                  <span style={mono(10.5, { color: 'var(--fg-soft)', whiteSpace: 'nowrap' })}>{cert.date}</span>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </section>
+
+        {/* ── CONTACT §07 ────────────────────────────────────── */}
+        <section id="contact" data-section="contact" style={{
+          scrollMarginTop: 70,
+          padding: 'clamp(40px,6vw,72px) 0 clamp(48px,7vw,80px)',
+        }}>
+          <div className="contact-grid" style={{
+            display: 'grid',
+            gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr)',
+            gap: 'clamp(24px,5vw,56px)', alignItems: 'start',
+          }}>
+            {/* Left — info + socials */}
+            <FadeIn>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 20 }}>
+                  <span style={mono(14, { color: 'var(--accent)' })}>§07</span>
+                  <h2 style={serif('clamp(30px,4.4vw,52px)' as unknown as number, 500, {
+                    margin: 0, letterSpacing: '-.025em',
+                  })}>
+                    {content.contact.title}
+                  </h2>
+                </div>
+                <p style={{ margin: '0 0 26px', fontSize: 16.5, lineHeight: 1.6, color: 'var(--fg-muted)', maxWidth: 420 }}>
+                  {content.contact.subtitle}
+                </p>
+                <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '10px 16px', ...mono(13) }}>
+                  {socials.map(s => (
+                    <React.Fragment key={s.label}>
+                      <span style={{ color: 'var(--fg-soft)' }}>{s.label.slice(0, 2).toUpperCase()}</span>
+                      <a className="reglink" href={s.href} target="_blank" rel="noreferrer"
+                        style={{ justifySelf: 'start' }}>
+                        {s.label} ↗
+                      </a>
+                    </React.Fragment>
                   ))}
                 </div>
               </div>
             </FadeIn>
-          </section>
 
-          {/* ── EDUCATION & CERTS ──────────────────────────────── */}
-          <section id="education" className="mb-24 scroll-mt-24">
-            <SectionTitle label={content.education.title} num="06" />
-
-            <div className="flex flex-col gap-3 mb-12">
-              {education.map((edu, i) => (
-                <FadeIn key={i} delay={i * 0.07}>
-                  <div className={`group flex items-start gap-4 p-4 rounded-lg border border-transparent ${bgHover} hover:border-paperBorder dark:hover:border-navyBorder transition-all duration-300`}>
-                    <div className={`w-28 h-28 flex-shrink-0 rounded border ${border} bg-white overflow-hidden`}>
-                      <img
-                        src={edu.logo}
-                        alt={edu.institution}
-                        className="w-full h-full object-contain opacity-90 group-hover:opacity-100 transition-opacity"
-                        style={{ transform: `scale(${edu.logoScale ?? 1})`, padding: edu.logoScale ? 0 : '6px' }}
-                      />
-                    </div>
-                    <div>
-                      <h4 className={`font-display font-bold ${textPri} text-[15px] group-hover:text-accent transition-colors`}>
-                        {edu.title}
-                      </h4>
-                      <p className="font-mono text-xs text-accent/70">{edu.institution} · {edu.period}</p>
-                      <p className={`text-[13px] ${textMut} mt-0.5`}>{edu.description}</p>
-                    </div>
-                  </div>
-                </FadeIn>
-              ))}
-            </div>
-
-            {/* Certifications */}
-            <div className={`flex items-center gap-4 mb-6`}>
-              <h3 className={`text-base font-bold font-display ${textPri} flex items-center gap-2 whitespace-nowrap`}>
-                <Award size={16} className="text-accent2" />
-                {content.certifications.title}
-              </h3>
-              <div className={`flex-1 h-px bg-paperBorder dark:bg-navyBorder`} />
-            </div>
-            <div className="flex flex-col gap-2">
-              {certs.map((cert, i) => (
-                <FadeIn key={i} delay={i * 0.04}>
-                  <div className={`pixel-card pixel-card-indigo group flex items-center justify-between p-3 rounded border ${border} ${bgCard} hover:border-accent2/30 ${bgHover} transition-all duration-200`}>
-                    <div className="min-w-0 flex-1">
-                      <h4 className={`font-display font-semibold text-sm ${textPri} truncate group-hover:text-accent2 transition-colors`}>
-                        {cert.title}
-                      </h4>
-                      <p className={`font-mono text-xs uppercase tracking-wider ${textMut}`}>{cert.issuer}</p>
-                    </div>
-                    <span className={`font-mono text-xs ${textMut} whitespace-nowrap ml-4`}>{cert.date}</span>
-                  </div>
-                </FadeIn>
-              ))}
-            </div>
-          </section>
-
-          {/* ── CONTACT ────────────────────────────────────────── */}
-          <section id="contact" className="scroll-mt-24">
-            <SectionTitle label={content.contact.title} num="07" />
-            <FadeIn>
-              <p className={`text-[15px] ${textMut} leading-relaxed mb-8 max-w-md`}>
-                {content.contact.subtitle}
-              </p>
-
-              <form onSubmit={handleFormSubmit} className="space-y-4 max-w-md">
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <input
-                    type="text" name="name" required
-                    placeholder={content.contact.formName}
-                    className={`w-full ${bgCard} border ${border} rounded-lg px-4 py-3 text-[15px] ${textPri} placeholder:${textMut} focus:outline-none focus:border-accent/50 transition-colors font-sans`}
-                  />
-                  <input
-                    type="email" name="email" required
-                    placeholder={content.contact.formEmail}
-                    className={`w-full ${bgCard} border ${border} rounded-lg px-4 py-3 text-[15px] ${textPri} placeholder:${textMut} focus:outline-none focus:border-accent/50 transition-colors font-sans`}
-                  />
-                </div>
-                <textarea
-                  name="message" rows={4} required
-                  placeholder={content.contact.formMessage}
-                  className={`w-full ${bgCard} border ${border} rounded-lg px-4 py-3 text-[15px] ${textPri} placeholder:${textMut} focus:outline-none focus:border-accent/50 transition-colors resize-none font-sans`}
-                />
-                <button
-                  type="submit"
-                  disabled={formStatus === 'sending'}
-                  className="inline-flex items-center gap-2 font-mono font-bold text-sm text-accent border border-accent/40 rounded-lg px-6 py-2.5 hover:bg-accent/10 transition-colors disabled:opacity-50"
-                >
-                  {formStatus === 'sending' ? content.contact.sending : content.contact.btnSend}
-                  {formStatus !== 'sending' && <ArrowUpRight size={14} />}
+            {/* Right — form */}
+            <FadeIn delay={0.1}>
+              <form onSubmit={handleSubmit} style={{
+                display: 'flex', flexDirection: 'column', gap: 0,
+                border: '1px solid var(--line)',
+              }}>
+                <input type="text" name="name" required placeholder={content.contact.name}
+                  style={{
+                    background: 'var(--panel)', border: 'none',
+                    borderBottom: '1px solid var(--line)', padding: '15px 16px',
+                    color: 'var(--fg)', ...mono(14.5), outline: 'none',
+                  }} />
+                <input type="email" name="email" required placeholder={content.contact.email}
+                  style={{
+                    background: 'var(--panel)', border: 'none',
+                    borderBottom: '1px solid var(--line)', padding: '15px 16px',
+                    color: 'var(--fg)', ...mono(14.5), outline: 'none',
+                  }} />
+                <textarea name="message" rows={4} required placeholder={content.contact.message}
+                  style={{
+                    background: 'var(--panel)', border: 'none',
+                    borderBottom: '1px solid var(--line)', padding: '15px 16px',
+                    color: 'var(--fg)', ...mono(14.5), outline: 'none', resize: 'vertical',
+                  }} />
+                <button type="submit" disabled={formStatus === 'sending'} className="btnk"
+                  style={{
+                    cursor: 'pointer', background: 'var(--accent)', color: 'var(--bg)',
+                    border: 'none', padding: 15,
+                    ...mono(14, { fontWeight: 500, letterSpacing: '.02em' }),
+                    opacity: formStatus === 'sending' ? 0.6 : 1,
+                  }}>
+                  {formStatus === 'sending' ? content.contact.sending : content.contact.send} →
                 </button>
                 {formStatus === 'success' && (
-                  <p className="text-green text-sm font-mono">{content.contact.success}</p>
+                  <p style={{ margin: 0, padding: '12px 16px', ...mono(12, { color: 'var(--accent)' }) }}>
+                    {content.contact.success}
+                  </p>
                 )}
                 {formStatus === 'error' && (
-                  <p className="text-red-400 text-sm font-mono">{content.contact.error}</p>
+                  <p style={{ margin: 0, padding: '12px 16px', ...mono(12, { color: 'var(--accent)' }) }}>
+                    {content.contact.error}
+                  </p>
                 )}
               </form>
             </FadeIn>
-          </section>
+          </div>
 
-          {/* ── FOOTER ─────────────────────────────────────────── */}
-          <footer className={`mt-24 pt-8 border-t ${border}`}>
-            <p className={`font-mono text-xs ${textMut}`}>
-              {content.footer.rights} · {content.footer.builtWith}
-            </p>
-          </footer>
-        </main>
-      </div>
+          {/* Footer */}
+          <div style={{
+            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+            flexWrap: 'wrap', gap: 10, marginTop: 48, paddingTop: 18,
+            borderTop: '1px solid var(--line)', ...mono(11, { color: 'var(--fg-soft)' }),
+          }}>
+            <span>{content.footer.rights}</span>
+            <span>{content.footer.built} · OF—2026</span>
+          </div>
+        </section>
 
-      {/* ── Media modal ──────────────────────────────────────────────────── */}
+      </div>{/* end main container */}
+
+      {/* ── Media modal ──────────────────────────────────────── */}
       <AnimatePresence>
         {modal && (
           <MediaModal
@@ -968,22 +1181,28 @@ const App: React.FC = () => {
         )}
       </AnimatePresence>
 
-      {/* ── Back to top ──────────────────────────────────────────────────── */}
+      {/* ── Back to top ──────────────────────────────────────── */}
       <AnimatePresence>
         {showTopBtn && (
           <motion.button
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 12 }}
             transition={{ duration: 0.2 }}
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className={`fixed bottom-6 right-6 z-50 flex items-center justify-center w-10 h-10 rounded border ${border} ${bgCard} ${textMut} hover:text-accent hover:border-accent/40 transition-colors shadow-lg font-pixel text-lg`}
+            className="btnk"
+            style={{
+              position: 'fixed', bottom: 24, right: 24, zIndex: 50,
+              background: 'var(--panel)', border: '1px solid var(--line-2)',
+              color: 'var(--fg-muted)', width: 40, height: 40,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              cursor: 'pointer', ...mono(14),
+            }}
             aria-label="Voltar ao topo"
           >
-            ▲
+            ↑
           </motion.button>
         )}
       </AnimatePresence>
+
     </div>
   );
 };
