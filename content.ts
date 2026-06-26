@@ -4,212 +4,240 @@ export const translations: Record<Language, Content> = {
   pt: {
     nav: {
       about:      "Sobre",
-      research:   "Pesquisa",
-      experience: "Experiência",
+      focus:      "Foco",
+      experience: "Trajetória",
       projects:   "Projetos",
       opensource: "Open Source",
+      research:   "Pesquisa",
       education:  "Formação",
       contact:    "Contato",
     },
     hero: {
-      greeting:     "Olá, meu nome é",
-      name:         "Oséias Farias.",
-      title:        "Desenvolvedor Backend Júnior & Pesquisador.",
-      description:  "Backend, IA e pesquisa acadêmica. Mestrando duplo (UFABC / UFPA).",
-      btnPrimary:   "Ver Projetos",
-      btnOutline:   "Baixar Currículo",
-      availability: "UFABC · UFPA · Verzel",
+      kicker:       "Disponível para novas oportunidades",
+      name:         "Oséias Farias",
+      role:         "Engenheiro de Machine Learning | MLOps & IA na Nuvem",
+      lede:         "Construo e opero pipelines de ML/NLP e arquiteturas serverless orientadas a eventos em produção na AWS. Dois mestrados em andamento em IA aplicada a sistemas de controle. Autor do Synapsys (PyPI) e criador de conteúdo técnico.",
+      ctaPrimary:   "Ver projetos",
+      ctaSecondary: "Baixar currículo",
+      location:     "Brasil · Remoto",
     },
     about: {
-      title: "Sobre Mim",
-      description: [
-        "Sou Trainee Dev IA na <strong>Verzel</strong>, atuando no desenvolvimento da plataforma <strong>Lunella</strong> — solução de automação de atendimento com IA. Trabalho com backend em Python e Java (Quarkus), integração de serviços AWS (SQS, SNS, EventBridge, Lambda), Vue.js e bancos de dados PostgreSQL, DynamoDB e Redis.",
-        "No lado acadêmico, sou pesquisador bolsista no mestrado em <strong>Engenharia Elétrica na UFABC</strong> (Reconfiguração Artificial / Antifragilidade), com desenvolvimento de agentes em Java e simulações em Matlab/HIL. Curso também o mestrado em <strong>Computação Aplicada na UFPA</strong>, com foco em IA e Deep Learning.",
-        "Minha trajetória combina engenharia elétrica, ciência de dados e desenvolvimento de software. Busco aliar rigor acadêmico à prática para construir soluções tecnológicas com foco em IA generativa e microsserviços.",
+      title: "Sobre",
+      lede:  "Engenheiro eletricista que migrou para software. Hoje meu trabalho vive na interseção entre ML em produção, arquiteturas serverless na AWS e pesquisa em IA aplicada a sistemas de controle.",
+      paras: [
+        "Atuei como <strong>Desenvolvedor de IA na Verzel</strong>, na plataforma <strong>Lunella/RosanaDesk</strong> — SaaS multi-tenant com 9+ microsserviços em produção. Arquitetei pipelines de ML/NLP em Python na AWS Lambda para extração e classificação de tópicos conversacionais, integrei agentes LLM (TaskingAI) e assistente de voz (VAPI, pipeline STT→LLM→TTS), e construí backend Java reativo (Quarkus, PostgreSQL, Redis, Keycloak).",
+        "Em paralelo, sou pesquisador de mestrado em <strong>Engenharia Elétrica (UFABC)</strong> — antifragilidade artificial com controle adaptativo (PI, LQR, H∞), detecção de falhas (FDI/EKF/UKF/CUSUM) e agentes LLM (CrewAI) integrados via ZeroMQ em Hardware-in-the-Loop. Também pesquisador na <strong>UFPA</strong> em controle preditivo model-free e Deep RL/DQN para conversores de potência.",
+        "Busco uma posição de <strong>ML Engineer</strong> ou <strong>MLOps</strong> em um time estruturado, onde eu possa aprofundar engenharia de sistemas de ML em produção.",
       ],
-      industryLabel: "Mercado",
-      academiaLabel: "Academia",
+    },
+    focus: {
+      title:    "No que sou forte",
+      subtitle: "Quatro frentes que se reforçam",
+      pillars: [
+        {
+          k: "ML/NLP",
+          t: "Modelos em produção",
+          d: "Pipelines de ML/NLP em Python na AWS Lambda — extração de tópicos, classificação de conversas, consolidação multi-tenant e relatórios automatizados. MLflow, FastAPI, drift monitoring e model serving.",
+          tags: ["Python", "NLP", "MLflow", "FastAPI", "Scikit-Learn", "AWS Lambda"],
+        },
+        {
+          k: "MLOps",
+          t: "Infraestrutura de ML",
+          d: "Containerização com Docker, CI/CD com GitHub Actions, funções serverless na AWS, Pytest e cobertura de testes. Deploy confiável de modelos com rastreabilidade e monitoramento de qualidade.",
+          tags: ["Docker", "CI/CD", "Serverless", "Pytest", "MLflow"],
+        },
+        {
+          k: "Cloud",
+          t: "Arquitetura AWS event-driven",
+          d: "Sistemas desacoplados: API Gateway → SNS → SQS FIFO → Lambda → EventBridge. Bancos relacionais, NoSQL e vetoriais — PostgreSQL, DynamoDB, Redis, pgvector, Qdrant.",
+          tags: ["AWS", "SQS", "SNS", "EventBridge", "pgvector", "Redis"],
+        },
+        {
+          k: "LLMs & IA",
+          t: "Agentes e GenAI",
+          d: "RAG, agentes (LangGraph, CrewAI), engenharia de prompts, MCP e observabilidade (Langfuse). Integração de LLMs com ferramentas customizadas e pipelines de voz (STT→LLM→TTS).",
+          tags: ["LangGraph", "CrewAI", "RAG", "LangFuse", "VAPI"],
+        },
+      ],
     },
     research: {
-      title:    "Pesquisa",
-      subtitle: "Projetos de Pesquisa Acadêmica",
+      title:        "Pesquisa",
+      subtitle:     "Onde aprofundo método e teoria",
+      publications: "Publicações",
     },
     experience: {
-      title:    "Experiência",
-      subtitle: "Trajetória Profissional",
+      title:    "Trajetória",
+      subtitle: "Da bancada de engenharia ao ML em produção",
     },
     projects: {
       title:    "Projetos",
-      subtitle: "Soluções Desenvolvidas",
-      viewAll:  "Ver no GitHub",
+      subtitle: "Problema → solução → impacto",
+      viewAll:  "Ver tudo no GitHub",
+      labels:   { problem: "Problema", solution: "Solução", impact: "Impacto" },
     },
     opensource: {
       title:    "Open Source",
-      subtitle: "Biblioteca de Código Aberto",
+      subtitle: "Biblioteca mantida por mim",
     },
     education: {
-      title: "Formação Acadêmica",
-    },
-    certifications: {
-      title: "Certificações",
+      title:          "Formação",
+      certifications: "Certificações",
     },
     contact: {
-      title:       "Vamos Conversar",
-      subtitle:    "Estou aberto a novas oportunidades, colaborações em pesquisa ou apenas uma boa conversa sobre tecnologia. Minha caixa de entrada está sempre aberta.",
-      formName:    "Nome",
-      formEmail:   "Email",
-      formMessage: "Mensagem",
-      btnSend:     "Enviar Mensagem",
-      sending:     "Enviando...",
-      success:     "Mensagem recebida! Retorno em breve.",
-      error:       "Algo deu errado. Tente novamente.",
+      title:    "Vamos conversar",
+      subtitle: "Estou aberto a oportunidades de ML Engineer ou MLOps, colaborações e boas conversas sobre engenharia. Minha caixa de entrada está sempre aberta.",
+      name:     "Nome",
+      email:    "Email",
+      message:  "Mensagem",
+      send:     "Enviar mensagem",
+      sending:  "Enviando…",
+      success:  "Mensagem recebida! Retorno em breve.",
+      error:    "Algo deu errado. Tente novamente.",
     },
     footer: {
-      rights:    "© 2026 Oséias Farias",
-      builtWith: "Desenvolvido com React & TypeScript",
+      rights: "© 2026 Oséias Farias",
+      built:  "ML Engineer & MLOps",
+    },
+    status: {
+      ongoing: "Em andamento",
     },
   },
 
   en: {
     nav: {
       about:      "About",
-      research:   "Research",
-      experience: "Experience",
+      focus:      "Focus",
+      experience: "Path",
       projects:   "Projects",
       opensource: "Open Source",
+      research:   "Research",
       education:  "Education",
       contact:    "Contact",
     },
     hero: {
-      greeting:     "Hi, my name is",
-      name:         "Oséias Farias.",
-      title:        "Junior Backend Developer & Researcher.",
-      description:  "Backend, AI and academic research. Dual Master's candidate (UFABC / UFPA).",
-      btnPrimary:   "View Projects",
-      btnOutline:   "Download CV",
-      availability: "UFABC · UFPA · Verzel",
+      kicker:       "Open to new opportunities",
+      name:         "Oséias Farias",
+      role:         "Machine Learning Engineer | MLOps & Cloud AI (AWS)",
+      lede:         "I build and operate ML/NLP pipelines and event-driven serverless architectures in production on AWS. Pursuing two master's degrees in AI applied to control systems. Author of Synapsys (PyPI) and technical content creator.",
+      ctaPrimary:   "View projects",
+      ctaSecondary: "Download CV",
+      location:     "Brazil · Remote",
     },
     about: {
-      title: "About Me",
-      description: [
-        "I'm an AI Dev Trainee at <strong>Verzel</strong>, working on <strong>Lunella</strong> — an AI-powered customer service automation platform. My work covers backend development in Python and Java (Quarkus), AWS integration (SQS, SNS, EventBridge, Lambda), Vue.js support, and databases including PostgreSQL, DynamoDB, and Redis.",
-        "On the academic side, I'm a research scholar in the <strong>Electrical Engineering Master's at UFABC</strong> (Artificial Reconfiguration / Antifragility), developing Java agents and Matlab/HIL simulations. I'm also enrolled in the <strong>Applied Computing Master's at UFPA</strong>, focused on AI and Deep Learning.",
-        "My background bridges electrical engineering, data science, and software development. I aim to combine academic rigor with practical delivery — building solutions focused on generative AI and microservices architecture.",
+      title: "About",
+      lede:  "An electrical engineer who moved into software. My work today sits at the intersection of ML in production, serverless AWS architectures, and research in AI applied to control systems.",
+      paras: [
+        "I worked as an <strong>AI Developer at Verzel</strong>, on the <strong>Lunella/RosanaDesk</strong> platform — a multi-tenant SaaS with 9+ microservices in production. I architected ML/NLP pipelines in Python on AWS Lambda for topic extraction and classification from conversational data, integrated LLM agents (TaskingAI) and a voice assistant (VAPI, STT→LLM→TTS pipeline), and built a reactive Java backend (Quarkus, PostgreSQL, Redis, Keycloak).",
+        "In parallel I'm a Master's researcher in <strong>Electrical Engineering (UFABC)</strong> — artificial antifragility with adaptive control (PI, LQR, H∞), fault detection and isolation (FDI/EKF/UKF/CUSUM) and LLM agents (CrewAI) integrated via ZeroMQ in Hardware-in-the-Loop. Also a researcher at <strong>UFPA</strong> in model-free predictive control and Deep RL/DQN for power converters.",
+        "I'm looking for an <strong>ML Engineer</strong> or <strong>MLOps</strong> role in a structured team where I can go deep on production ML systems engineering.",
       ],
-      industryLabel: "Industry",
-      academiaLabel: "Academia",
+    },
+    focus: {
+      title:    "What I'm strong at",
+      subtitle: "Four reinforcing fronts",
+      pillars: [
+        {
+          k: "ML/NLP",
+          t: "Models in production",
+          d: "ML/NLP pipelines in Python on AWS Lambda — topic extraction, conversation classification, multi-tenant consolidation and automated reporting. MLflow, FastAPI, drift monitoring and model serving.",
+          tags: ["Python", "NLP", "MLflow", "FastAPI", "Scikit-Learn", "AWS Lambda"],
+        },
+        {
+          k: "MLOps",
+          t: "ML infrastructure",
+          d: "Docker containerization, CI/CD with GitHub Actions, serverless functions on AWS, Pytest and test coverage. Reliable model deployment with traceability and quality monitoring.",
+          tags: ["Docker", "CI/CD", "Serverless", "Pytest", "MLflow"],
+        },
+        {
+          k: "Cloud",
+          t: "AWS event-driven architecture",
+          d: "Decoupled systems: API Gateway → SNS → SQS FIFO → Lambda → EventBridge. Relational, NoSQL and vector databases — PostgreSQL, DynamoDB, Redis, pgvector, Qdrant.",
+          tags: ["AWS", "SQS", "SNS", "EventBridge", "pgvector", "Redis"],
+        },
+        {
+          k: "LLMs & AI",
+          t: "Agents and GenAI",
+          d: "RAG, agents (LangGraph, CrewAI), prompt engineering, MCP and observability (Langfuse). LLM integration with custom tools and voice pipelines (STT→LLM→TTS).",
+          tags: ["LangGraph", "CrewAI", "RAG", "LangFuse", "VAPI"],
+        },
+      ],
     },
     research: {
-      title:    "Research",
-      subtitle: "Academic Research Projects",
+      title:        "Research",
+      subtitle:     "Where I deepen method and theory",
+      publications: "Publications",
     },
     experience: {
-      title:    "Experience",
-      subtitle: "Career Trajectory",
+      title:    "Path",
+      subtitle: "From the engineering bench to ML in production",
     },
     projects: {
       title:    "Projects",
-      subtitle: "Developed Solutions",
-      viewAll:  "View on GitHub",
+      subtitle: "Problem → solution → impact",
+      viewAll:  "See all on GitHub",
+      labels:   { problem: "Problem", solution: "Solution", impact: "Impact" },
     },
     opensource: {
       title:    "Open Source",
-      subtitle: "Open Source Library",
+      subtitle: "A library I maintain",
     },
     education: {
-      title: "Education",
-    },
-    certifications: {
-      title: "Certifications",
+      title:          "Education",
+      certifications: "Certifications",
     },
     contact: {
-      title:       "Get In Touch",
-      subtitle:    "I'm open to new opportunities, research collaborations, or just a good conversation about technology. My inbox is always open.",
-      formName:    "Name",
-      formEmail:   "Email",
-      formMessage: "Message",
-      btnSend:     "Send Message",
-      sending:     "Sending...",
-      success:     "Message received! I'll get back to you soon.",
-      error:       "Something went wrong. Please try again.",
+      title:    "Let's talk",
+      subtitle: "I'm open to ML Engineer or MLOps opportunities, collaborations and good conversations about engineering. My inbox is always open.",
+      name:     "Name",
+      email:    "Email",
+      message:  "Message",
+      send:     "Send message",
+      sending:  "Sending…",
+      success:  "Message received! I'll get back to you soon.",
+      error:    "Something went wrong. Please try again.",
     },
     footer: {
-      rights:    "© 2026 Oséias Farias",
-      builtWith: "Built with React & TypeScript",
+      rights: "© 2026 Oséias Farias",
+      built:  "ML Engineer & MLOps",
+    },
+    status: {
+      ongoing: "Ongoing",
     },
   },
 };
 
 // ─── Open Source ───────────────────────────────────────────────────────────
 export const getOpenSource = (lang: Language): OpenSourceData => ({
-  name: "Synapsys",
-  version: "v0.2.1",
-  tagline: lang === 'pt'
-    ? "Framework Python de Código Aberto para Sistemas de Controle"
-    : "Open Source Python Framework for Control Systems",
+  name:        "Synapsys",
+  version:     "v0.2.1",
+  license:     "MIT",
+  tagline:     lang === 'pt'
+    ? "Framework Python para sistemas de controle + ML"
+    : "Python framework for control systems + ML",
   description: lang === 'pt'
-    ? "Synapsys é um framework moderno de sistemas de controle com API compatível com MATLAB, simulação multi-agente distribuída e suporte a MIMO. Projetado para escalar de MIL até HIL real com troca transparente de camada de transporte."
-    : "Synapsys is a modern control systems framework with a MATLAB-compatible API, distributed multi-agent simulation, and MIMO support. Designed to scale from MIL to real HIL with transparent transport layer switching.",
-  features: [
-    {
-      title: lang === 'pt' ? "Matemática LTI" : "LTI Math",
-      description: lang === 'pt'
-        ? "Funções de transferência, espaço de estados e MIMO. API compatível com MATLAB: tf(), ss(), c2d(), bode(), feedback()."
-        : "Transfer functions, state-space and MIMO. MATLAB-compatible API: tf(), ss(), c2d(), bode(), feedback().",
-      docLink: "https://synapsys-lab.github.io/synapsys/docs/api/core",
-    },
-    {
-      title: lang === 'pt' ? "Algoritmos de Controle" : "Control Algorithms",
-      description: lang === 'pt'
-        ? "PID discreto com anti-windup e LQR via equação de Riccati algébrica. Suporte a múltiplas entradas e saídas."
-        : "Discrete PID with anti-windup and LQR via algebraic Riccati equation. Multiple-input multiple-output support.",
-      docLink: "https://synapsys-lab.github.io/synapsys/docs/api/algorithms",
-    },
-    {
-      title: lang === 'pt' ? "Simulação Multi-Agente" : "Multi-Agent Simulation",
-      description: lang === 'pt'
-        ? "PlantAgent e ControllerAgent com sincronização lock-step ou wall-clock. Abstração MIL → SIL → HIL."
-        : "PlantAgent and ControllerAgent with lock-step or wall-clock sync. MIL → SIL → HIL abstraction.",
-      docLink: "https://synapsys-lab.github.io/synapsys/docs/api/agents",
-    },
-    {
-      title: lang === 'pt' ? "Transporte Plugável" : "Pluggable Transport",
-      description: lang === 'pt'
-        ? "SharedMemoryTransport (zero-copy, single-host) e ZMQTransport (distribuído, cross-machine)."
-        : "SharedMemoryTransport (zero-copy, single-host) and ZMQTransport (distributed, cross-machine).",
-      docLink: "https://synapsys-lab.github.io/synapsys/docs/api/transport",
-    },
+    ? "Une controle clássico e ML — modelos PyTorch/Keras/JAX como controladores, simulação distribuída multi-agente (memória compartilhada + ZeroMQ), algoritmos de controle (PID com anti-windup, LQR via Riccati), API compatível com MATLAB (tf, ss, bode), simuladores físicos com visualização 3D (PyVista) e fluxos MIL/SIL/HIL."
+    : "Bridges classical control and ML — PyTorch/Keras/JAX models as controllers, distributed multi-agent simulation (shared memory + ZeroMQ), control algorithms (PID with anti-windup, LQR via Riccati), MATLAB-compatible API (tf, ss, bode), physical simulators with 3D visualization (PyVista), and MIL/SIL/HIL workflows.",
+  tags:  ["Python", "PyTorch", "ZeroMQ", "SciPy", "NumPy", "PyVista"],
+  stats: [
+    { label: lang === 'pt' ? "Testes"    : "Tests",    value: "501"       },
+    { label: lang === 'pt' ? "Cobertura" : "Coverage", value: "100%"      },
+    { label: "Python",                                  value: "3.10–3.12" },
   ],
   demo: {
-    title: lang === 'pt' ? "Demo: Quadricóptero 3D com Neural-LQR" : "Demo: 3D Quadcopter with Neural-LQR",
+    title: lang === 'pt'
+      ? "Quadricóptero 3D com Neural-LQR"
+      : "3D Quadcopter with Neural-LQR",
     description: lang === 'pt'
-      ? "Simulação em tempo real de um quadricóptero com modelo de hover linearizado de 12 estados (posição, ângulos de Euler e velocidades). Controle MIMO LQR com 4 entradas e arquitetura Neural-LQR residual (δu = −K·e + MLP(e)). Visualização 3D interativa via PyVista a 50 Hz com trajetória em figura-8."
-      : "Real-time simulation of a quadcopter with a 12-state linearized hover model (position, Euler angles and velocities). MIMO LQR control with 4 inputs and residual Neural-LQR architecture (δu = −K·e + MLP(e)). Interactive 3D visualization via PyVista at 50 Hz with figure-8 trajectory.",
-    tags: ["Python", "PyVista", "LQR", "Neural-LQR", "MIMO", "12-state", "Real-Time 3D"],
+      ? "Simulação em tempo real de um quadricóptero com modelo de hover de 12 estados, controle MIMO LQR e arquitetura Neural-LQR residual, visualizado em 3D a 50 Hz."
+      : "Real-time simulation of a quadcopter with a 12-state hover model, MIMO LQR control and residual Neural-LQR architecture, visualized in 3D at 50 Hz.",
     media: [
-      {
-        src: "/gifs/06_quadcopter_3d.gif",
-        caption: lang === 'pt' ? "Visualização 3D do quadricóptero com trajetória em figura-8" : "3D quadcopter visualization with figure-8 trajectory",
-      },
-      {
-        src: "/gifs/06_quadcopter_telemetry.gif",
-        caption: lang === 'pt' ? "Telemetria em tempo real: posição, ângulos de Euler e entradas de controle" : "Real-time telemetry: position, Euler angles and control inputs",
-      },
-      {
-        src: "/gifs/03_sil_ai_controller.gif",
-        caption: lang === 'pt' ? "Controlador Neural-LQR em SIL: sistema massa-mola-amortecedor com rastreamento de setpoint" : "Neural-LQR controller in SIL: mass-spring-damper with setpoint tracking",
-      },
+      { src: "/gifs/06_quadcopter_3d.gif",        caption: lang === 'pt' ? "Visualização 3D com trajetória em figura-8" : "3D visualization with figure-8 trajectory" },
+      { src: "/gifs/06_quadcopter_telemetry.gif", caption: lang === 'pt' ? "Telemetria em tempo real"                   : "Real-time telemetry" },
+      { src: "/gifs/03_sil_ai_controller.gif",    caption: lang === 'pt' ? "Controlador Neural-LQR em SIL"              : "Neural-LQR controller in SIL" },
     ],
   },
   github: "https://github.com/synapsys-lab/synapsys",
-  pypi: "https://pypi.org/project/synapsys/",
-  tags: ["Python", "SciPy", "PyTorch", "NumPy", "ZeroMQ", "Control Theory"],
-  stats: [
-    { label: lang === 'pt' ? "Testes" : "Tests", value: "184" },
-    { label: lang === 'pt' ? "Cobertura" : "Coverage", value: "90%" },
-    { label: "Python", value: "3.10–3.12" },
-    { label: "Version", value: "v0.2.1" },
-  ],
+  pypi:   "https://pypi.org/project/synapsys/",
 });
 
 // ─── Research ──────────────────────────────────────────────────────────────
@@ -218,305 +246,251 @@ export const getResearch = (lang: Language): ResearchData[] => [
     title: lang === 'pt'
       ? "Antifragilidade Artificial em Sistemas de Controle"
       : "Artificial Antifragility in Control Systems",
-    institution: "UFABC / Fundep",
-    period: lang === 'pt' ? "abr 2025 – presente" : "Apr 2025 – Present",
+    institution: "UFABC · FUNDEP",
+    period:      lang === 'pt' ? "abr 2025 — presente" : "Apr 2025 — Present",
+    ongoing:     true,
     description: lang === 'pt'
-      ? "Desenvolvimento de arquiteturas de controle antifrágeis para sistemas dinâmicos usando FPGA e FPAA. O objetivo é criar sistemas que melhorem de desempenho sob estresse, utilizando reconfiguração artificial e agentes inteligentes em Java/Matlab com Hardware-in-the-Loop."
-      : "Development of antifragile control architectures for dynamic systems using FPGA and FPAA. The goal is to create systems that improve under stress by leveraging artificial reconfiguration and intelligent agents in Java/Matlab with Hardware-in-the-Loop.",
-    tags: ["FPAA", "FPGA", "Java", "Matlab", "Control Theory", "HIL", "Antifragility"],
-    status: "ongoing",
+      ? "Controle adaptativo orientado por IA em conversor Buck: algoritmos PI, LQR e H∞ com detecção e isolamento de falhas (FDI) via filtros de Kalman (EKF/UKF) e CUSUM. Supervisor com agentes LLM (CrewAI) e integração planta-controlador via ZeroMQ em Software/Hardware-in-the-Loop (Simulink, FPGA/FPAA)."
+      : "AI-driven adaptive control on a Buck converter: PI, LQR and H∞ algorithms with fault detection and isolation (FDI) via Kalman filters (EKF/UKF) and CUSUM. LLM agent supervisor (CrewAI) with plant-controller integration via ZeroMQ in Software/Hardware-in-the-Loop (Simulink, FPGA/FPAA).",
+    tags: ["Python", "CrewAI", "EKF/UKF", "CUSUM", "ZeroMQ", "FPGA", "HIL"],
   },
   {
     title: lang === 'pt'
-      ? "Deep Learning para Sistemas Inteligentes"
-      : "Deep Learning for Intelligent Systems",
-    institution: "UFPA – PPGCA",
-    period: lang === 'pt' ? "mar 2025 – presente" : "Mar 2025 – Present",
+      ? "Controle Preditivo e Deep RL para Eletrônica de Potência"
+      : "Predictive Control and Deep RL for Power Electronics",
+    institution: "UFPA · PPGCA",
+    period:      lang === 'pt' ? "2025 — presente" : "2025 — Present",
+    ongoing:     true,
     description: lang === 'pt'
-      ? "Pesquisa em redes neurais profundas aplicadas a problemas de controle inteligente e percepção de ambiente. Foco em modelos eficientes para hardware embarcado e integração com sistemas de controle em tempo real."
-      : "Research on deep neural networks applied to intelligent control and environment perception. Focus on efficient models for embedded hardware and real-time control system integration.",
-    tags: ["Python", "TensorFlow", "PyTorch", "Deep Learning", "Embedded AI", "Real-Time"],
-    status: "ongoing",
+      ? "Controle preditivo model-free e Aprendizado por Reforço profundo (DQN) para conversores de eletrônica de potência. Abrange identificação de sistemas, inteligência computacional e visão computacional aplicada a sistemas de controle embarcados."
+      : "Model-free predictive control and deep Reinforcement Learning (DQN) for power-electronics converters. Covers system identification, computational intelligence and computer vision applied to embedded control systems.",
+    tags: ["PyTorch", "Deep RL", "DQN", "TensorFlow", "Embedded AI"],
   },
 ];
 
 // ─── Projects ──────────────────────────────────────────────────────────────
-export const getProjects = (lang: Language): ProjectData[] => [
-  {
-    title: "Lunella AI Platform",
-    description: lang === 'pt'
-      ? "Plataforma de automação de atendimento com IA generativa. Backend Python/Java Quarkus, microserviços AWS (SQS, SNS, EventBridge, Lambda), Vue.js e bancos PostgreSQL, DynamoDB e Redis."
-      : "AI-powered customer service automation platform. Python/Java Quarkus backend, AWS microservices (SQS, SNS, EventBridge, Lambda), Vue.js and PostgreSQL, DynamoDB, Redis.",
-    tags: ["Java", "Quarkus", "Python", "AWS", "Vue.js", "Redis", "DynamoDB"],
-    image: "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?q=80&w=2006&auto=format&fit=crop",
-    link: "",
-    category: "ai",
-  },
-  {
-    title: "Artificial Antifragility System",
-    description: lang === 'pt'
-      ? "Sistema de controle antifrágil com FPGA/FPAA e agentes Java. Pesquisa de mestrado com ambiente simulado em Matlab integrado via Hardware-in-the-Loop (HIL)."
-      : "Antifragile control system with FPGA/FPAA and Java agents. Master's research with Matlab simulation environment integrated via Hardware-in-the-Loop (HIL).",
-    tags: ["FPAA", "FPGA", "Java", "Matlab", "HIL", "Python"],
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop",
-    link: "",
-    category: "research",
-  },
-  {
-    title: "Hotel Booking REST API",
-    description: lang === 'pt'
-      ? "API REST completa para sistema de reserva de hotéis com Flask, autenticação JWT, integração com banco de dados e deploy. Desenvolvida como projeto prático do curso REST APIs com Python."
-      : "Complete REST API for hotel booking system using Flask, JWT auth, database integration and deployment. Built as a practical project for the REST APIs with Python course.",
-    tags: ["Python", "Flask", "JWT", "REST API", "SQLAlchemy"],
-    image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop",
-    link: "https://github.com/Oseiasdfarias/reserva-hoteis-api",
-    category: "backend",
-  },
-  {
-    title: "Full FastAPI REST",
-    description: lang === 'pt'
-      ? "Sistema backend moderno com FastAPI, SQLAlchemy, Alembic e PostgreSQL. CI/CD com GitHub Actions, Pytest para cobertura de testes e containerização com Docker."
-      : "Modern backend with FastAPI, SQLAlchemy, Alembic, and PostgreSQL. CI/CD with GitHub Actions, Pytest coverage, and Docker containerization.",
-    tags: ["Python", "FastAPI", "PostgreSQL", "Docker", "Pytest", "CI/CD"],
-    image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=2070&auto=format&fit=crop",
-    link: "https://github.com/Oseiasdfarias/full_fast_api",
-    category: "backend",
-  },
-  {
-    title: "API Fórum Hub",
-    description: lang === 'pt'
-      ? "API REST com Spring Boot 3, Spring Security, JWT e Flyway. Autenticação stateless, migrações versionadas e testes com JUnit 5. Desafio do programa Oracle ONE."
-      : "REST API with Spring Boot 3, Spring Security, JWT and Flyway. Stateless auth, versioned migrations and JUnit 5 tests. Oracle ONE program challenge.",
-    tags: ["Java", "Spring Boot", "Spring Security", "MySQL", "JWT"],
-    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop",
-    link: "https://github.com/Oseiasdfarias/forum_hub_challenge",
-    category: "backend",
-  },
-  {
-    title: "LabVirtual — Simulador de Controle",
-    description: lang === 'pt'
-      ? "Biblioteca Python com simuladores gráficos 3D (VPython) para estudo de sistemas de controle. Projeto acadêmico UFPA que elimina a necessidade de protótipos físicos no ensino de controle."
-      : "Python library with 3D graphical simulators (VPython) for control systems study. UFPA academic project eliminating the need for physical prototypes in control engineering education.",
-    tags: ["Python", "VPython", "Control Systems", "Simulation", "UFPA"],
-    image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=2070&auto=format&fit=crop",
-    link: "https://github.com/Oseiasdfarias/LabVirtual",
-    category: "research",
-  },
-];
+export const getProjects = (lang: Language): ProjectData[] => {
+  const pt = lang === 'pt';
+  return [
+    {
+      title:    pt ? "Lunella/RosanaDesk — Plataforma de IA" : "Lunella/RosanaDesk — AI Platform",
+      year:     "2025–2026",
+      category: pt ? "ML/NLP · Backend · IA" : "ML/NLP · Backend · AI",
+      problem:  pt
+        ? "Plataforma SaaS multi-tenant de atendimento precisa automatizar análise conversacional com ML, escalar por demanda e gerar relatórios acionáveis."
+        : "Multi-tenant SaaS customer service platform needs to automate conversational ML analysis, scale on demand and generate actionable reports.",
+      solution: pt
+        ? "Arquitetura serverless event-driven na AWS (API Gateway → SNS → SQS FIFO → Lambda → EventBridge) com 9+ microsserviços. Pipelines de ML/NLP em Python para extração de tópicos, agentes LLM (TaskingAI) e assistente de voz (VAPI). Backend Java reativo (Quarkus, PostgreSQL, Redis, Keycloak)."
+        : "Event-driven serverless architecture on AWS (API Gateway → SNS → SQS FIFO → Lambda → EventBridge) with 9+ microservices. Python ML/NLP pipelines for topic extraction, LLM agents (TaskingAI) and voice assistant (VAPI). Reactive Java backend (Quarkus, PostgreSQL, Redis, Keycloak).",
+      impact: pt
+        ? "Pipeline de NLP em produção com consolidação multi-tenant diária/mensal e relatórios automatizados (PDF, Slack). Arquitetura desacoplada que escala por demanda."
+        : "NLP pipeline in production with daily/monthly multi-tenant consolidation and automated reports (PDF, Slack). Decoupled architecture that scales on demand.",
+      tags:  ["Python", "NLP", "AWS Lambda", "SQS", "Java", "Quarkus", "Redis"],
+      link:  "",
+    },
+    {
+      title:    pt ? "Pipeline NLP Serverless — Extração de Tópicos" : "Serverless NLP Pipeline — Topic Extraction",
+      year:     "2026",
+      category: pt ? "ML/NLP · AWS" : "ML/NLP · AWS",
+      problem:  pt
+        ? "Classificar e extrair tópicos de grandes volumes de conversas em tempo real, com consolidação multi-tenant e geração automatizada de relatórios."
+        : "Classify and extract topics from large volumes of conversations in real time, with multi-tenant consolidation and automated report generation.",
+      solution: pt
+        ? "Pipeline de NLP em Python disparado por eventos SQS, rodando em AWS Lambda. Consolida análises diárias e mensais por tenant, gerando relatórios estruturados em PDF e notificações no Slack. Dados persistidos no PostgreSQL."
+        : "Python NLP pipeline triggered by SQS events, running on AWS Lambda. Consolidates daily and monthly analyses per tenant, generating structured PDF reports and Slack notifications. Data persisted in PostgreSQL.",
+      impact: pt
+        ? "Pipeline em produção classificando conversas de múltiplos tenants com entrega automatizada de insights. Zero intervenção manual no fluxo de extração e reporte."
+        : "Pipeline in production classifying conversations across multiple tenants with automated insight delivery. Zero manual intervention in the extraction and reporting flow.",
+      tags:  ["Python", "NLP", "AWS Lambda", "SQS", "PostgreSQL"],
+      link:  "",
+    },
+    {
+      title:    "Full FastAPI REST",
+      year:     "2024",
+      category: pt ? "Backend · MLOps" : "Backend · MLOps",
+      problem:  pt
+        ? "Como entregar uma API de inferência de modelos ML com qualidade de produção: testes, deploy reprodutível e integração contínua."
+        : "How to ship an ML model inference API with production quality: tests, reproducible deploys and continuous integration.",
+      solution: pt
+        ? "API com FastAPI e SQLAlchemy sobre PostgreSQL para serving de modelos Scikit-Learn, containerizada com Docker, testes em Pytest e CI/CD com GitHub Actions."
+        : "API with FastAPI and SQLAlchemy over PostgreSQL for Scikit-Learn model serving, containerized with Docker, Pytest tests and CI/CD with GitHub Actions.",
+      impact: pt
+        ? "Base reutilizável para serving de modelos com migrações versionadas e pipeline automatizado de build e testes."
+        : "Reusable foundation for model serving with versioned migrations and an automated build-and-test pipeline.",
+      tags:  ["Python", "FastAPI", "Scikit-Learn", "PostgreSQL", "Docker", "Pytest"],
+      link:  "https://github.com/Oseiasdfarias/full_fast_api",
+    },
+    {
+      title:    "API Fórum Hub",
+      year:     "2024",
+      category: "Backend",
+      problem:  pt
+        ? "Um fórum precisa de autenticação segura e stateless e de um esquema de banco evolutivo e versionado."
+        : "A forum needs secure stateless auth and an evolving, versioned database schema.",
+      solution: pt
+        ? "API REST em Spring Boot 3 com Spring Security e JWT, migrações com Flyway e testes em JUnit 5."
+        : "REST API in Spring Boot 3 with Spring Security and JWT, Flyway migrations and JUnit 5 tests.",
+      impact: pt
+        ? "Desafio do programa Oracle ONE concluído com autenticação stateless e histórico de schema rastreável."
+        : "Oracle ONE program challenge delivered with stateless auth and a traceable schema history.",
+      tags:  ["Java", "Spring Boot", "Spring Security", "MySQL", "JWT"],
+      link:  "https://github.com/Oseiasdfarias/forum_hub_challenge",
+    },
+    {
+      title:    "LabVirtual",
+      year:     "2023",
+      category: pt ? "Open Source · Educação" : "Open Source · Education",
+      problem:  pt
+        ? "Ensinar sistemas de controle depende de protótipos físicos caros e pouco acessíveis."
+        : "Teaching control systems depends on expensive, hard-to-access physical prototypes.",
+      solution: pt
+        ? "Biblioteca Python com simuladores gráficos 3D em VPython, publicada no PyPI para uso em sala."
+        : "Python library with 3D graphical simulators in VPython, published on PyPI for classroom use.",
+      impact: pt
+        ? "Projeto acadêmico da UFPA que democratiza o acesso a ferramentas de simulação no ensino de engenharia."
+        : "UFPA academic project that democratizes access to simulation tools in engineering education.",
+      tags:  ["Python", "VPython", "Simulation", "PyPI", "UFPA"],
+      link:  "https://github.com/Oseiasdfarias/LabVirtual",
+    },
+  ];
+};
 
 // ─── Experience ────────────────────────────────────────────────────────────
-export const getExperience = (lang: Language): ExperienceData[] => [
-  {
-    title:   lang === 'pt' ? "Trainee Dev IA" : "AI Dev Trainee",
-    company: "Verzel Soluções em Sistemas · Lunella",
-    period:  lang === 'pt' ? "dez 2025 – presente" : "Dec 2025 – Present",
-    description: lang === 'pt'
-      ? "Desenvolvimento backend com Python e Java Quarkus para plataforma de atendimento com IA generativa. Integração de serviços AWS (SQS, SNS, EventBridge, Lambda), Vue.js e bancos PostgreSQL, DynamoDB e Redis."
-      : "Backend development with Python and Java Quarkus for a generative AI customer service platform. AWS integration (SQS, SNS, EventBridge, Lambda), Vue.js, and PostgreSQL, DynamoDB, Redis.",
-    type: "industry",
-    tags: ["Python", "Java", "Quarkus", "AWS", "Redis", "Vue.js"],
-  },
-  {
-    title:   lang === 'pt' ? "Pesquisador Mestrando (Bolsista FUNDEP)" : "Master's Researcher (FUNDEP Scholar)",
-    company: "FUNDEP / UFABC",
-    period:  lang === 'pt' ? "abr 2025 – presente" : "Apr 2025 – Present",
-    description: lang === 'pt'
-      ? "Pesquisa em Antifragilidade Artificial: agentes Java para reconfiguração autônoma de circuitos FPAA, simulação em Matlab integrada via HIL e treinamento de algoritmos de IA para detecção adaptativa de falhas."
-      : "Research in Artificial Antifragility: Java agents for autonomous FPAA reconfiguration, Matlab simulation via HIL, and AI algorithm training for adaptive fault detection.",
-    type: "research",
-    tags: ["Python", "Java", "FPGA", "FPAA", "Matlab", "HIL"],
-  },
-  {
-    title:   lang === 'pt' ? "Oficial de Manutenção" : "Maintenance Officer",
-    company: "Dow · Terceirizado",
-    period:  lang === 'pt' ? "dez 2024 – mar 2025" : "Dec 2024 – Mar 2025",
-    description: lang === 'pt'
-      ? "Acompanhamento de equipes de manutenção mecânica e elétrica, elaboração de procedimentos, validação de riscos, gestão de mudanças (MOC) e treinamento de colaboradores."
-      : "Supervision of mechanical and electrical maintenance teams, procedure writing, risk validation, change management (MOC) and staff training.",
-    type: "industry",
-    tags: ["Manutenção", "MOC", "Excel", "Procedimentos"],
-  },
-  {
-    title:   lang === 'pt' ? "Estagiário em Manutenção UHT" : "UHT Maintenance Intern",
-    company: "Grupo Piracanjuba",
-    period:  lang === 'pt' ? "set 2023 – mar 2024" : "Sep 2023 – Mar 2024",
-    description: lang === 'pt'
-      ? "Projeto de ciência de dados para otimizar eficiência das linhas UHT. Análise de dados históricos com Pandas, Matplotlib e Seaborn para reduzir paradas não planejadas e padronizar viradas de volume."
-      : "Data science project to optimize UHT line efficiency. Analysis of historical data with Pandas, Matplotlib and Seaborn to reduce unplanned downtime and standardize volume changeovers.",
-    type: "industry",
-    tags: ["Python", "Pandas", "Matplotlib", "Seaborn", "Excel"],
-  },
-  {
-    title:   lang === 'pt' ? "Bolsista de Iniciação Científica" : "Undergraduate Research Scholar",
-    company: "LACUT · Universidade Federal do Pará",
-    period:  lang === 'pt' ? "set 2022 – ago 2023" : "Sep 2022 – Aug 2023",
-    description: lang === 'pt'
-      ? "Projeto de construção de um Radiotelescópio Amador no campus de Tucuruí. Levantamento de hardware/software, pesquisa bibliográfica e orçamento de dispositivos. Resultados apresentados no simpósio científico do LACUT."
-      : "Amateur Radio Telescope construction project at the Tucuruí campus. Hardware/software survey, bibliographic research and device budgeting. Results presented at the LACUT scientific symposium.",
-    type: "research",
-    tags: ["Pesquisa", "Hardware", "Radioastronomia", "Python"],
-  },
-  {
-    title:   lang === 'pt' ? "Membro do Comitê AlumniONE BR" : "AlumniONE BR Committee Member",
-    company: "Oracle Next Education (ONE)",
-    period:  lang === 'pt' ? "ago 2024 – mai 2025" : "Aug 2024 – May 2025",
-    description: lang === 'pt'
-      ? "Desenvolvimento da série \"Alumni One: Fundamentos da Ciência de Dados\" — playlist sobre estatística, programação, análise de dados e machine learning para a comunidade de graduados do programa ONE."
-      : "Developed the \"Alumni One: Data Science Fundamentals\" series — a playlist on statistics, programming, data analysis and machine learning for the ONE program graduate community.",
-    type: "volunteer",
-    tags: ["Comunidade", "Data Science", "Educação", "YouTube"],
-  },
-  {
-    title:   lang === 'pt' ? "Aluno Pesquisador — LabVirtual" : "Research Student — LabVirtual",
-    company: "Universidade Federal do Pará",
-    period:  lang === 'pt' ? "mar 2022 – mar 2023" : "Mar 2022 – Mar 2023",
-    description: lang === 'pt'
-      ? "Desenvolvimento de simuladores interativos open-source em Python/VPython para auxiliar estudantes no estudo prático de sistemas de controle, democratizando o acesso a ferramentas de simulação."
-      : "Development of open-source interactive simulators in Python/VPython to help students practice control systems concepts, democratizing access to simulation tools.",
-    type: "volunteer",
-    tags: ["Python", "VPython", "Open-Source", "Educação"],
-  },
-];
+export const getExperience = (lang: Language): ExperienceData[] => {
+  const pt = lang === 'pt';
+  return [
+    {
+      title:       pt ? "Desenvolvedor de IA"                           : "AI Developer",
+      company:     "Verzel · Lunella/RosanaDesk",
+      period:      pt ? "dez 2025 — jun 2026"                          : "Dec 2025 — Jun 2026",
+      type:        "industry",
+      current:     true,
+      description: pt
+        ? "Arquitetei arquitetura serverless event-driven na AWS (API Gateway → SNS → SQS FIFO → Lambda → EventBridge) com 9+ microsserviços em produção. Desenvolvi pipelines de ML/NLP em Python para extração e classificação de tópicos conversacionais com consolidação multi-tenant e relatórios automatizados (PDF, Slack). Integrei agentes LLM (TaskingAI) e assistente de voz (VAPI, STT→LLM→TTS). Backend Java reativo: Quarkus, Hibernate Panache, PostgreSQL, Flyway, Keycloak, Redis."
+        : "Architected an event-driven serverless architecture on AWS (API Gateway → SNS → SQS FIFO → Lambda → EventBridge) with 9+ microservices in production. Developed Python ML/NLP pipelines for topic extraction and classification from conversational data with multi-tenant consolidation and automated reports (PDF, Slack). Integrated LLM agents (TaskingAI) and voice assistant (VAPI, STT→LLM→TTS). Reactive Java backend: Quarkus, Hibernate Panache, PostgreSQL, Flyway, Keycloak, Redis.",
+      tags: ["Python", "NLP", "AWS Lambda", "SQS", "Java", "Quarkus", "Redis", "LLM"],
+    },
+    {
+      title:       pt ? "Pesquisador de Mestrado (Bolsista FUNDEP)"    : "Master's Researcher (FUNDEP Scholar)",
+      company:     "FUNDEP · UFABC",
+      period:      pt ? "abr 2025 — presente"                         : "Apr 2025 — Present",
+      type:        "research",
+      current:     true,
+      description: pt
+        ? "Controle adaptativo (PI, LQR, H∞) e detecção/isolamento de falhas (FDI) com filtros de Kalman (EKF/UKF) e CUSUM para reconfiguração autônoma de conversor Buck antifrágil. Supervisor com agentes LLM (CrewAI; OpenAI/Claude/Gemini) e integração via ZeroMQ em Software/Hardware-in-the-Loop (Simulink, FPGA/FPAA)."
+        : "Adaptive control (PI, LQR, H∞) and fault detection and isolation (FDI) with Kalman filters (EKF/UKF) and CUSUM for autonomous reconfiguration of an antifragile Buck converter. LLM agent supervisor (CrewAI; OpenAI/Claude/Gemini) and ZeroMQ integration in Software/Hardware-in-the-Loop (Simulink, FPGA/FPAA).",
+      tags: ["Python", "CrewAI", "EKF/UKF", "ZeroMQ", "FPGA", "HIL", "Simulink"],
+    },
+    {
+      title:       pt ? "Estagiário — Análise de Dados"               : "Intern — Data Analysis",
+      company:     "Grupo Piracanjuba",
+      period:      pt ? "set 2023 — mar 2024"                         : "Sep 2023 — Mar 2024",
+      type:        "industry",
+      current:     false,
+      description: pt
+        ? "Automatizei extração e geração de relatórios de dados industriais com Python (Pandas), integrando exportações do SAP em pipelines com dashboards de KPIs, reduzindo o esforço manual de reporte."
+        : "Automated extraction and reporting of industrial data with Python (Pandas), integrating SAP exports into pipelines with KPI dashboards, reducing manual reporting effort.",
+      tags: ["Python", "Pandas", "SAP", "Dashboards"],
+    },
+    {
+      title:       pt ? "Bolsista de Iniciação Científica"            : "Undergraduate Research Scholar",
+      company:     "LACUT · UFPA",
+      period:      pt ? "set 2022 — ago 2023"                         : "Sep 2022 — Aug 2023",
+      type:        "research",
+      current:     false,
+      description: pt
+        ? "Construção de um radiotelescópio amador: levantamento de hardware e software, pesquisa bibliográfica e apresentação no simpósio científico do LACUT."
+        : "Building an amateur radio telescope: hardware and software survey, bibliographic research and presentation at the LACUT scientific symposium.",
+      tags: ["Hardware", "Python", "Radioastronomia"],
+    },
+    {
+      title:       pt ? "Aluno Pesquisador — LabVirtual"              : "Research Student — LabVirtual",
+      company:     "UFPA",
+      period:      pt ? "mar 2022 — mar 2023"                         : "Mar 2022 — Mar 2023",
+      type:        "research",
+      current:     false,
+      description: pt
+        ? "Desenvolvimento de simuladores interativos open-source em Python/VPython para o ensino prático de sistemas de controle, publicados no PyPI."
+        : "Development of open-source interactive simulators in Python/VPython for hands-on control systems teaching, published on PyPI.",
+      tags: ["Python", "VPython", "Open-Source", "PyPI"],
+    },
+  ];
+};
 
 // ─── Education ─────────────────────────────────────────────────────────────
-export const getEducation = (lang: Language): EducationData[] => [
-  {
-    title:       lang === 'pt' ? "Mestrado em Engenharia Elétrica" : "M.Sc. Electrical Engineering",
-    institution: "UFABC",
-    period:      "Apr 2025 – Mar 2028",
-    description: "Artificial Anti-fragility · FPGA/FPAA · Control Systems",
-    logo:        "https://upload.wikimedia.org/wikipedia/commons/e/ee/Ufabc_logo.png",
-  },
-  {
-    title:       lang === 'pt' ? "Mestrado em Computação Aplicada" : "M.Sc. Applied Computing",
-    institution: "UFPA",
-    period:      "Mar 2025 – Mar 2027",
-    description: "Artificial Intelligence · Deep Learning · Neural Networks",
-    logo:        "https://ufpa.br/wp-content/uploads/2023/12/Brasao-UFPA_Sigla-300x281.png",
-    logoScale:   1.6,
-  },
-  {
-    title:       lang === 'pt' ? "Especialização – Sistemas Embarcados IoT" : "Specialization – Embedded IoT Systems",
-    institution: "IFMA",
-    period:      "Nov 2024 – Feb 2025",
-    description: "Microcontrollers · C/C++ · IoT · RTOS",
-    logo:        "https://images.seeklogo.com/logo-png/33/1/ifma-logo-png_seeklogo-337312.png",
-  },
-  {
-    title:       lang === 'pt' ? "Bacharelado em Engenharia Elétrica" : "B.Sc. Electrical Engineering",
-    institution: "UFPA",
-    period:      "Jan 2017 – Sep 2024",
-    description: lang === 'pt'
-      ? "TCC: Gêmeo Digital para Lab. Virtual de Controle · Artigo publicado · Monitor de Instalações Elétricas"
-      : "Thesis: Digital Twin for Virtual Control Lab · Published paper · Electrical Installations teaching assistant",
-    logo:        "https://ufpa.br/wp-content/uploads/2023/12/Brasao-UFPA_Sigla-300x281.png",
-    logoScale:   1.6,
-  },
-  {
-    title:       lang === 'pt' ? "Desenvolvedor Backend Java" : "Java Backend Developer",
-    institution: "Oracle Next Education (ONE)",
-    period:      "Nov 2023 – Jun 2024",
-    description: "Java · Spring Boot · MySQL · API REST",
-    logo:        "https://camo.githubusercontent.com/578d87d661d23e62d9acd12fe9505d95a88aac5f0f6a4073b2fcb5c3c2f7057a/68747470733a2f2f692e696d6775722e636f6d2f77304e76616c4f2e706e67",
-  },
-];
+export const getEducation = (lang: Language): EducationData[] => {
+  const pt = lang === 'pt';
+  return [
+    {
+      title:       pt ? "Mestrado em Engenharia Elétrica e de Informação" : "M.Sc. Electrical and Information Engineering",
+      institution: "UFABC",
+      period:      "2025 — 2027",
+      description: pt
+        ? "Antifragilidade artificial · controle adaptativo (LQR, H∞) · FDI/Kalman · agentes LLM (CrewAI) · ZeroMQ · FPGA/FPAA (HIL)"
+        : "Artificial antifragility · adaptive control (LQR, H∞) · FDI/Kalman · LLM agents (CrewAI) · ZeroMQ · FPGA/FPAA (HIL)",
+    },
+    {
+      title:       pt ? "Mestrado em Computação Aplicada"               : "M.Sc. Applied Computing",
+      institution: "UFPA",
+      period:      "2025 — 2027",
+      description: pt
+        ? "Controle preditivo model-free · Deep RL/DQN · eletrônica de potência · identificação de sistemas · visão computacional"
+        : "Model-free predictive control · Deep RL/DQN · power electronics · system identification · computer vision",
+    },
+    {
+      title:       pt ? "Bacharelado em Engenharia Elétrica"            : "B.Sc. Electrical Engineering",
+      institution: "UFPA",
+      period:      "2017 — 2024",
+      description: pt
+        ? "TCC: gêmeo digital para laboratório virtual de controle de sistemas dinâmicos"
+        : "Thesis: digital twin for a virtual control lab for dynamic systems",
+    },
+    {
+      title:       pt ? "Especialização — Sistemas Embarcados IoT"      : "Specialization — Embedded IoT Systems",
+      institution: "IFMA",
+      period:      "2024 — 2025",
+      description: "Microcontrollers · C/C++ · IoT · RTOS",
+    },
+    {
+      title:       pt ? "Desenvolvedor Backend Java"                     : "Java Backend Developer",
+      institution: "Oracle Next Education",
+      period:      "2023 — 2024",
+      description: "Java · Spring Boot · MySQL · REST API",
+    },
+  ];
+};
 
 // ─── Publications ──────────────────────────────────────────────────────────
 export const getPublications = (_lang: Language): PublicationData[] => [
   {
-    title: "Desenvolvimento de Protótipo e Gêmeo Digital como Ferramenta para um Laboratório Virtual com Foco em Modelagem e Controle de Sistemas Dinâmicos",
-    venue: "BDM · Universidade Federal do Pará",
-    date:  "Dez 2023",
-    description: "Laboratório virtual que combina protótipo físico do Aeropêndulo, simulador 3D e interface gráfica interativa. Validado com identificação de sistema por função de transferência e controlador PID em malha fechada.",
-    link:  "https://bdm.ufpa.br",
+    title:       "Gêmeo Digital como ferramenta para um Laboratório Virtual de modelagem e controle de sistemas dinâmicos",
+    venue:       "BDM · UFPA",
+    date:        "2023",
+    description: "Laboratório virtual combinando protótipo físico do Aeropêndulo, simulador 3D e interface interativa, validado com PID em malha fechada.",
   },
   {
-    title: "Explorando o potencial do Laboratório Virtual de Controle de Sistemas com VPython no ensino de Engenharia: Análise e perspectivas para o futuro",
-    venue: "ABENGE — Associação Brasileira de Educação em Engenharia",
-    date:  "Set 2023",
-    description: "Artigo sobre o desenvolvimento de simulações de controle de sistemas com VPython e PyPi. Demonstra a efetividade das simulações de MAGLEV e Aeropêndulo no ensino de engenharia.",
-    link:  "#",
-    authors: "Oséias Farias et al.",
+    title:       "Laboratório Virtual de Controle de Sistemas com VPython no ensino de Engenharia",
+    venue:       "ABENGE",
+    date:        "2023",
+    description: "Simulações de MAGLEV e Aeropêndulo demonstrando a efetividade do VPython no ensino de engenharia.",
   },
   {
-    title: "SMART HOUSE — Automação Residencial com Arduino",
-    venue: "XIII Encontro Nacional dos Estudantes de Engenharia Elétrica / Even3",
-    date:  "Nov 2018",
-    description: "Projeto de automação residencial com Arduino Uno, aplicativo Android (MIT App Inventor), comunicação via Ethernet Shield W5000 e sensores de luminosidade, temperatura e gás.",
-    link:  "#",
+    title:       "SMART HOUSE — Automação Residencial com Arduino",
+    venue:       "ENESEE · Even3",
+    date:        "2018",
+    description: "Automação residencial com Arduino, app Android e sensores de luminosidade, temperatura e gás.",
   },
 ];
 
 // ─── Certifications ────────────────────────────────────────────────────────
 export const getCertifications = (_lang: Language): CertificationData[] => [
-  {
-    title:  "REST APIs com Python e Flask",
-    issuer: "Udemy",
-    date:   "Out 2025",
-    skills: ["Python", "Flask", "REST API"],
-    link:   "https://udemy.com/certificate/UC-563dd22a-5969-472b-903f-810314964a90",
-  },
-  {
-    title:  "EBA — Estatística do Básico ao Avançado",
-    issuer: "EBA",
-    date:   "Abr 2025",
-    skills: ["Python", "Estatística", "Pandas", "Data Science"],
-    link:   "#",
-  },
-  {
-    title:  "Formação SQL com MySQL Server da Oracle",
-    issuer: "Alura / Oracle ONE",
-    date:   "Nov 2024",
-    skills: ["MySQL", "SQL"],
-    link:   "#",
-  },
-  {
-    title:  "Formação Oracle Cloud Infrastructure",
-    issuer: "Alura / Oracle ONE",
-    date:   "Nov 2024",
-    skills: ["OCI", "Cloud Computing"],
-    link:   "#",
-  },
-  {
-    title:  "Programa Oracle Next Education — Backend Java",
-    issuer: "Alura / Oracle ONE",
-    date:   "Jul 2024",
-    skills: ["Java", "Spring Boot", "PostgreSQL"],
-    link:   "#",
-  },
-  {
-    title:  "AWS Lambda com Python e Serverless Framework",
-    issuer: "Udemy",
-    date:   "Abr 2024",
-    skills: ["AWS Lambda", "Serverless", "Python"],
-    link:   "https://udemy.com/certificate/UC-e9b6a86d-443f-47a8-81b9-9f4f46a20ef8",
-  },
-  {
-    title:  "Capacitação em Sistemas Embarcados — IoT",
-    issuer: "IFMA / SOFTEX",
-    date:   "Nov 2024",
-    skills: ["Embedded Systems", "IoT", "Microcontrollers", "C/C++"],
-    link:   "#",
-  },
-  {
-    title:  "Curso de Capacitação em Inteligência Artificial",
-    issuer: "IFAL",
-    date:   "Jan 2021",
-    skills: ["Inteligência Artificial", "Deep Learning", "Python"],
-    link:   "#",
-  },
-  {
-    title:  "AWS Machine Learning Foundations",
-    issuer: "Udacity",
-    date:   "Out 2021",
-    skills: ["AWS", "Machine Learning", "Deep Learning"],
-    link:   "#",
-  },
-  {
-    title:  "Machine Learning e Data Science com Python",
-    issuer: "Udemy",
-    date:   "2021",
-    skills: ["Scikit-Learn", "Pandas", "Data Science"],
-    link:   "https://udemy.com/certificate/UC-e38f3500-7c76-40d9-aa3d-414dfc3a9d9c",
-  },
+  { title: "REST APIs com Python e Flask",               issuer: "Udemy",              date: "2025", link: "https://udemy.com/certificate/UC-563dd22a-5969-472b-903f-810314964a90" },
+  { title: "AWS Lambda com Python e Serverless",         issuer: "Udemy",              date: "2024", link: "https://udemy.com/certificate/UC-e9b6a86d-443f-47a8-81b9-9f4f46a20ef8" },
+  { title: "Estatística do Básico ao Avançado",          issuer: "EBA",                date: "2025" },
+  { title: "Formação SQL com MySQL Server",              issuer: "Alura · Oracle ONE", date: "2024" },
+  { title: "Oracle Cloud Infrastructure",                issuer: "Alura · Oracle ONE", date: "2024" },
+  { title: "Backend Java — Oracle Next Education",       issuer: "Alura · Oracle ONE", date: "2024" },
+  { title: "Sistemas Embarcados — IoT",                  issuer: "IFMA · SOFTEX",      date: "2024" },
+  { title: "AWS Machine Learning Foundations",           issuer: "Udacity",            date: "2021" },
+  { title: "Machine Learning e Data Science com Python", issuer: "Udemy",              date: "2021", link: "https://udemy.com/certificate/UC-e38f3500-7c76-40d9-aa3d-414dfc3a9d9c" },
 ];
