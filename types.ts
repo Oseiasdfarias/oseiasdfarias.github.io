@@ -98,14 +98,20 @@ export interface Content {
 }
 
 export interface ProjectData {
+  id?: string;
   title: string;
   year: string;
   category: string;
+  featured?: boolean;
+  status?: string;
+  image?: string;
+  metrics?: { label: string; value: string }[];
   problem: string;
   solution: string;
   impact: string;
   tags: string[];
   link: string;
+  github?: string;
 }
 
 export interface ExperienceData {
@@ -128,6 +134,7 @@ export interface PublicationData {
 }
 
 export interface EducationData {
+  id?: string;
   title: string;
   institution: string;
   period: string;
@@ -139,9 +146,11 @@ export interface CertificationData {
   issuer: string;
   date: string;
   link?: string;
+  category?: 'ai' | 'cloud' | 'embedded' | 'backend' | 'dev';
 }
 
 export interface ResearchData {
+  id?: string;
   title: string;
   institution: string;
   period: string;

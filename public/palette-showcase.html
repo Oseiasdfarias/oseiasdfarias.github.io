@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Showcase de Paletas & Tipografia — Portfólio Oséias Farias</title>
+  
+  <!-- Fontes Comparativas:
+       1. Serif Atual: Newsreader
+       2. Serif Moderna: Playfair Display / Cormorant
+       3. Sans-serif Minimalista / Tech: Inter / Plus Jakarta Sans / Space Grotesk
+       4. Monospace: IBM Plex Mono / JetBrains Mono
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      --current-bg: #14120f;
+      --current-bg2: #1a1713;
+      --current-panel: #191612;
+      --current-line: rgba(245,241,234,.13);
+      --current-fg: #f5f1ea;
+      --current-fg-muted: #a8a094;
+      --current-accent: #e3a94a;
+      --current-accent-2: #00d4bc;
+    }
+
+    body {
+      background: #0d0e12;
+      color: #e2e8f0;
+      font-family: 'Inter', -apple-system, sans-serif;
+      padding: 32px 20px 80px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 40px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 24px;
+    }
+
+    .badge {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 4px 10px;
+      border-radius: 4px;
+      background: rgba(56, 189, 248, 0.1);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: clamp(28px, 4vw, 38px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #f8fafc;
+      margin-bottom: 10px;
+    }
+
+    p.lead {
+      color: #94a3b8;
+      font-size: 16px;
+      max-width: 780px;
+    }
+
+    /* Diagnosis Section */
+    .diagnosis {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 48px;
+    }
+
+    .diagnosis h3 {
+      font-size: 18px;
+      color: #f1f5f9;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .diag-grid {
+      display: grid;
+      grid-templateColumns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+    }
+
+    .diag-card {
+      background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .diag-card h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-bottom: 6px;
+    }
+
+    .diag-card p {
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    /* Interactive Theme Switcher Bar */
+    .switcher-bar {
+      position: sticky;
+      top: 16px;
+      z-index: 100;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 40px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .palette-btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pal-btn {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #cbd5e1;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: inherit;
+    }
+
+    .pal-btn:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.25);
+      color: #fff;
+    }
+
+    .pal-btn.active {
+      background: #38bdf8;
+      color: #0f172a;
+      border-color: #38bdf8;
+      font-weight: 600;
+    }
+
+    .color-swatch-mini {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    /* Preview Sandbox */
+    .preview-section {
+      margin-bottom: 50px;
+    }
+
+    .preview-box {
+      border-radius: 12px;
+      border: 1px solid var(--t-line);
+      background: var(--t-bg);
+      color: var(--t-fg);
+      padding: 36px clamp(20px, 4vw, 48px);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    /* Comparison Grid of Palettes */
+    .palettes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 28px;
+      margin-top: 24px;
+    }
+
+    .theme-card {
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid rgba(255,255,255,0.08);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 480px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .theme-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 32px rgba(0,0,0,0.5);
+    }
+
+    .swatches {
+      display: flex;
+      gap: 6px;
+      margin: 14px 0;
+    }
+
+    .swatch {
+      flex: 1;
+      height: 32px;
+      border-radius: 4px;
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: #fff;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+    }
+
+    .typography-comparison {
+      margin-top: 60px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 40px;
+    }
+
+    .font-sample-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .font-sample-card h4 {
+      font-size: 13px;
+      color: #38bdf8;
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <span class="badge">Auditoria de Design & UI/UX</span>
+      <h1>Análise de Paleta de Cores e Tipografia</h1>
+      <p class="lead">
+        Identificamos pontos onde o design atual acumula ruído visual (excesso de tons quentes terrosos, contraste que cansa a leitura, mistura de serifa literária com engenharia profunda) e propomos <strong>3 direções minimalistas e ultra-profissionais</strong> para engenharia de IA e Sistemas Embarcados.
+      </p>
+    </header>
+
+    <!-- DIAGNOSIS -->
+    <div class="diagnosis">
+      <h3>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Diagnóstico do Design Atual
+      </h3>
+      <div class="diag-grid">
+        <div class="diag-card">
+          <h4>1. Paleta Quente / Terrosa (`#14120f`)</h4>
+          <p>O fundo com matiz sépia/marrom café e acento âmbar (`#e3a94a`) remete a publicações de literatura ou jornal antigo ("The Economist/NYT"), competindo com a identidade de alta tecnologia (IA, Cloud, IoT e Edge).</p>
+        </div>
+        <div class="diag-card">
+          <h4>2. Dois Acentos em Conflito</h4>
+          <p>O uso simultâneo de Âmbar Dourado (`#e3a94a`) e Verde-Menta (`#00d4bc`) com múltiplos tons de borda (`--line`, `--line-2`) gera sobrecarga visual em cards densos.</p>
+        </div>
+        <div class="diag-card">
+          <h4>3. Serifada Editorial (`Newsreader`)</h4>
+          <p>Embora elegante, a fonte <i>Newsreader</i> tem serifa fina que em telas de alta densidade reduz a legibilidade de tópicos de engenharia pesada como LQR, ZeroMQ e Deep RL.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTERACTIVE PALETTE SWITCHER -->
+    <div class="switcher-bar">
+      <div>
+        <span style="font-size: 12px; color: #94a3b8; text-transform: uppercase; font-weight: 600; letter-spacing: .05em;">Experimentar Tema no Preview:</span>
+      </div>
+      <div class="palette-btn-group">
+        <button class="pal-btn" onclick="applyTheme('current')">
+          <span class="color-swatch-mini" style="background: #e3a94a;"></span>
+          Atual (Editorial Amber)
+        </button>
+        <button class="pal-btn active" onclick="applyTheme('pure-mono-dark')">
+          <span class="color-swatch-mini" style="background: #ffffff; border: 1px solid #666;"></span>
+          ★ Pure Mono DARK (Linear/Vercel)
+        </button>
+        <button class="pal-btn" onclick="applyTheme('pure-mono-light')">
+          <span class="color-swatch-mini" style="background: #09090b; border: 1px solid #e4e4e7;"></span>
+          ★ Pure Mono LIGHT (Clean Minimal)
+        </button>
+        <button class="pal-btn" onclick="applyTheme('deep-tech')">
+          <span class="color-swatch-mini" style="background: #38bdf8;"></span>
+          Deep Tech Dark
+        </button>
+        <button class="pal-btn" onclick="applyTheme('nordic-slate')">
+          <span class="color-swatch-mini" style="background: #10b981;"></span>
+          Nordic Emerald
+        </button>
+      </div>
+    </div>
+
+    <!-- LIVE PREVIEW BOX -->
+    <div class="preview-section">
+      <div id="preview-box" class="preview-box" style="
+        --t-bg: #090a0f;
+        --t-bg2: #11131a;
+        --t-panel: #131620;
+        --t-line: rgba(255,255,255,0.08);
+        --t-fg: #f1f5f9;
+        --t-fg-muted: #94a3b8;
+        --t-accent: #38bdf8;
+        --t-accent-subtle: rgba(56,189,248,0.12);
+        font-family: 'Plus Jakarta Sans', sans-serif;
+      ">
+        <!-- Navigation Header Mockup -->
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--t-line); padding-bottom: 18px; margin-bottom: 30px;">
+          <div style="display: flex; align-items: baseline; gap: 10px;">
+            <span style="font-family: 'JetBrains Mono', monospace; font-weight: 600; color: var(--t-accent); font-size: 14px;">OF</span>
+            <span style="font-weight: 600; font-size: 18px; color: var(--t-fg); letter-spacing: -0.02em;">Oséias Farias</span>
+          </div>
+          <div style="display: flex; gap: 20px; font-size: 13px; font-family: 'JetBrains Mono', monospace; color: var(--t-fg-muted);">
+            <span>§01 FOCO</span>
+            <span style="color: var(--t-fg); font-weight: 600; border-bottom: 2px solid var(--t-accent); padding-bottom: 4px;">§02 PROJETOS</span>
+            <span>§04 TRAJETÓRIA</span>
+            <span>§06 FORMAÇÃO</span>
+          </div>
+        </div>
+
+        <!-- Hero Snippet -->
+        <div style="max-width: 680px; margin-bottom: 36px;">
+          <div style="display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px; background: var(--t-accent-subtle); border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--t-accent); margin-bottom: 16px;">
+            <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--t-accent);"></span>
+            DISPONÍVEL PARA PROJETOS & ENGENHARIA DE IA
+          </div>
+          <h2 style="font-size: clamp(26px, 3.2vw, 36px); font-weight: 600; line-height: 1.25; margin-bottom: 12px; color: var(--t-fg); letter-spacing: -0.02em;">
+            Engenheiro de IA & Sistemas Embarcados
+          </h2>
+          <p style="font-size: 15px; color: var(--t-fg-muted); line-height: 1.6;">
+            Desenvolvo soluções de inteligência computacional aplicadas à indústria e controle: desde modelos adaptativos e gêmeos digitais até pipelines de inferência em nuvem AWS e edge computing com ESP32.
+          </p>
+        </div>
+
+        <!-- Project Mock Card -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+          
+          <div style="background: var(--t-panel); border: 1px solid var(--t-line); border-radius: 8px; padding: 22px; position: relative;">
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--t-accent); margin-bottom: 6px;">
+              2026 · IOT · EDGE · IA · CLOUD
+            </div>
+            <h3 style="font-size: 19px; font-weight: 600; color: var(--t-fg); margin-bottom: 8px;">
+              Otensor — Plataforma IoT com IA
+            </h3>
+            <p style="font-size: 13.5px; color: var(--t-fg-muted); margin-bottom: 16px; line-height: 1.55;">
+              SaaS multi-tenant unindo firmware de borda (ESP32/RPi), broker MQTT, tomada de decisão com agentes LLM e escalabilidade serverless em AWS.
+            </p>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 3px 8px; background: var(--t-bg2); border: 1px solid var(--t-line); border-radius: 4px; color: var(--t-fg-muted);">MQTT</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 3px 8px; background: var(--t-bg2); border: 1px solid var(--t-line); border-radius: 4px; color: var(--t-fg-muted);">AWS Lambda</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 3px 8px; background: var(--t-bg2); border: 1px solid var(--t-line); border-radius: 4px; color: var(--t-accent);">Docker</span>
+            </div>
+          </div>
+
+          <!-- Education Mock Card with Logo -->
+          <div style="background: var(--t-panel); border: 1px solid var(--t-line); border-radius: 8px; padding: 22px; display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <div style="margin-bottom: 14px; padding: 6px 14px; background: var(--t-bg2); border: 1px solid var(--t-line); border-radius: 6px;">
+              <img src="/assets/logos/ufabc.png" alt="UFABC" style="height: 38px; object-fit: contain;">
+            </div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--t-accent); margin-bottom: 4px;">
+              2025 — 2027 · UFABC
+            </div>
+            <h4 style="font-size: 16px; font-weight: 600; color: var(--t-fg); margin-bottom: 8px; line-height: 1.3;">
+              Mestrado em Engenharia Elétrica e de Informação
+            </h4>
+            <p style="font-size: 12.5px; color: var(--t-fg-muted); line-height: 1.5;">
+              Antifragilidade artificial · controle adaptativo (LQR, H∞) · FDI/Kalman · agentes LLM · HIL.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- DETAILED PALETTE COMPARISON CARDS -->
+    <h2 style="font-size: 24px; font-weight: 600; margin-bottom: 8px; color: #f8fafc;">Comparativo das 4 Opções de Paletas</h2>
+    <p style="color: #94a3b8; font-size: 14px; margin-bottom: 24px;">Clique em "Aplicar no Preview" para testar visualmente cada uma no mock interativo acima.</p>
+
+    <div class="palettes-grid">
+
+      <!-- OPÇÃO 1 -->
+      <div class="theme-card" style="background: #14120f; border-color: rgba(245,241,234,0.15);">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <h3 style="font-size: 18px; color: #f5f1ea; font-family: 'Newsreader', serif;">1. Editorial Amber (Atual)</h3>
+            <span style="font-size: 11px; color: #e3a94a; font-family: 'IBM Plex Mono', monospace;">ESTILO ATUAL</span>
+          </div>
+          <p style="font-size: 13px; color: #a8a094; margin-top: 6px;">
+            Inspirado no estilo tipográfico de jornais e periódicos técnicos impressos.
+          </p>
+          <div class="swatches">
+            <div class="swatch" style="background: #14120f;">#14120f</div>
+            <div class="swatch" style="background: #191612;">#191612</div>
+            <div class="swatch" style="background: #e3a94a; color: #000;">#e3a94a</div>
+            <div class="swatch" style="background: #00d4bc; color: #000;">#00d4bc</div>
+            <div class="swatch" style="background: #f5f1ea; color: #000;">#f5f1ea</div>
+          </div>
+          <ul style="font-size: 13px; color: #a8a094; padding-left: 18px; margin-top: 12px; line-height: 1.5;">
+            <li>Fundo: Café escuro quente</li>
+            <li>Acento: Âmbar Dourado</li>
+            <li>Tipografia: Newsreader + IBM Plex Mono</li>
+            <li>Sensação: Revista clássica, encadernado, papel</li>
+          </ul>
+        </div>
+        <button class="pal-btn" style="margin-top: 20px; width: 100%; justify-content: center;" onclick="applyTheme('current')">
+          Testar no Preview
+        </button>
+      </div>
+
+      <!-- OPÇÃO 2 -->
+      <div class="theme-card" style="background: #090a0f; border-color: rgba(56,189,248,0.3); box-shadow: 0 0 20px rgba(56,189,248,0.05);">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <h3 style="font-size: 18px; color: #f1f5f9; font-family: 'Plus Jakarta Sans', sans-serif;">2. Deep Tech Minimal (Recomendado)</h3>
+            <span style="font-size: 11px; color: #38bdf8; font-weight: 700; font-family: 'JetBrains Mono', monospace;">RECOMENDADO</span>
+          </div>
+          <p style="font-size: 13px; color: #94a3b8; margin-top: 6px;">
+            Fundo ultra-dark frio (obsidian blue), acento azul elétrico/ciano aeroespacial e tipografia sans-serif limpa e moderna.
+          </p>
+          <div class="swatches">
+            <div class="swatch" style="background: #090a0f;">#090a0f</div>
+            <div class="swatch" style="background: #131620;">#131620</div>
+            <div class="swatch" style="background: #38bdf8; color: #000;">#38bdf8</div>
+            <div class="swatch" style="background: #60a5fa; color: #000;">#60a5fa</div>
+            <div class="swatch" style="background: #f8fafc; color: #000;">#f8fafc</div>
+          </div>
+          <ul style="font-size: 13px; color: #94a3b8; padding-left: 18px; margin-top: 12px; line-height: 1.5;">
+            <li>Fundo: Obsidian Night (`#090a0f`)</li>
+            <li>Acento Único: Eletric Sky (`#38bdf8`)</li>
+            <li>Tipografia: Plus Jakarta Sans / Inter + JetBrains Mono</li>
+            <li>Sensação: Laboratório de IA de ponta, AWS, engenharia espacial</li>
+          </ul>
+        </div>
+        <button class="pal-btn active" style="margin-top: 20px; width: 100%; justify-content: center;" onclick="applyTheme('deep-tech')">
+          Testar no Preview
+        </button>
+      </div>
+
+      <!-- OPÇÃO 3A: DARK -->
+      <div class="theme-card" style="background: #000000; border-color: rgba(255,255,255,0.22); box-shadow: 0 0 24px rgba(255,255,255,0.06);">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <h3 style="font-size: 18px; color: #ffffff; font-family: 'Plus Jakarta Sans', sans-serif;">3A. Pure Mono (Dark)</h3>
+            <span style="font-size: 11px; color: #ffffff; font-weight: 700; font-family: 'JetBrains Mono', monospace;">LINEAR / VERCEL</span>
+          </div>
+          <p style="font-size: 13px; color: #a1a1aa; margin-top: 6px;">
+            Fundo preto puro, texto branco nítido, superfícies grafite e bordas sutis translúcidas. Zero ruído e máximo contraste.
+          </p>
+          <div class="swatches">
+            <div class="swatch" style="background: #000000;">#000000</div>
+            <div class="swatch" style="background: #111114;">#111114</div>
+            <div class="swatch" style="background: #27272a;">#27272a</div>
+            <div class="swatch" style="background: #a1a1aa; color: #000;">#a1a1aa</div>
+            <div class="swatch" style="background: #ffffff; color: #000;">#ffffff</div>
+          </div>
+          <ul style="font-size: 13px; color: #a1a1aa; padding-left: 18px; margin-top: 12px; line-height: 1.5;">
+            <li>Fundo: `#000000` (Preto OLED)</li>
+            <li>Cards: `#111114` com bordas `rgba(255,255,255,0.12)`</li>
+            <li>Acento: Branco puro `#ffffff`</li>
+            <li>Tipografia: Plus Jakarta Sans + JetBrains Mono</li>
+          </ul>
+        </div>
+        <button class="pal-btn active" style="margin-top: 20px; width: 100%; justify-content: center;" onclick="applyTheme('pure-mono-dark')">
+          Testar Pure Mono DARK
+        </button>
+      </div>
+
+      <!-- OPÇÃO 3B: LIGHT -->
+      <div class="theme-card" style="background: #ffffff; color: #09090b; border-color: rgba(0,0,0,0.14); box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <h3 style="font-size: 18px; color: #09090b; font-family: 'Plus Jakarta Sans', sans-serif;">3B. Pure Mono (Light)</h3>
+            <span style="font-size: 11px; color: #09090b; font-weight: 700; font-family: 'JetBrains Mono', monospace;">CLEAN & CRISP</span>
+          </div>
+          <p style="font-size: 13px; color: #52525b; margin-top: 6px;">
+            Branco cirúrgico sem amarelado, cartões em cinza ultra-claro (`#fafafa`), tipografia preta sólida e bordas refinadas.
+          </p>
+          <div class="swatches">
+            <div class="swatch" style="background: #ffffff; color: #000; border: 1px solid #ddd;">#ffffff</div>
+            <div class="swatch" style="background: #fafafa; color: #000; border: 1px solid #ddd;">#fafafa</div>
+            <div class="swatch" style="background: #e4e4e7; color: #000;">#e4e4e7</div>
+            <div class="swatch" style="background: #71717a; color: #fff;">#71717a</div>
+            <div class="swatch" style="background: #09090b; color: #fff;">#09090b</div>
+          </div>
+          <ul style="font-size: 13px; color: #52525b; padding-left: 18px; margin-top: 12px; line-height: 1.5;">
+            <li>Fundo: `#ffffff` (Branco puro, sem tom sépia)</li>
+            <li>Cards: `#fafafa` com bordas `rgba(0,0,0,0.08)`</li>
+            <li>Acento: Preto sólido `#09090b`</li>
+            <li>Tipografia: Plus Jakarta Sans + JetBrains Mono</li>
+          </ul>
+        </div>
+        <button class="pal-btn" style="margin-top: 20px; width: 100%; justify-content: center; background: #09090b; color: #fff;" onclick="applyTheme('pure-mono-light')">
+          Testar Pure Mono LIGHT
+        </button>
+      </div>
+
+      <!-- OPÇÃO 4 -->
+      <div class="theme-card" style="background: #091210; border-color: rgba(16,185,129,0.25);">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <h3 style="font-size: 18px; color: #ecfdf5; font-family: 'Inter', sans-serif;">4. Nordic Emerald (Biolab & IoT)</h3>
+            <span style="font-size: 11px; color: #10b981; font-family: 'JetBrains Mono', monospace;">EQUILIBRADO</span>
+          </div>
+          <p style="font-size: 13px; color: #6ee7b7; margin-top: 6px;">
+            Tons profundos de ardósia esmeralda, acento verde-menta de controle industrial e máxima clareza em hardware/firmware.
+          </p>
+          <div class="swatches">
+            <div class="swatch" style="background: #091210;">#091210</div>
+            <div class="swatch" style="background: #0f1f1c;">#0f1f1c</div>
+            <div class="swatch" style="background: #10b981; color: #000;">#10b981</div>
+            <div class="swatch" style="background: #34d399; color: #000;">#34d399</div>
+            <div class="swatch" style="background: #ecfdf5; color: #000;">#ecfdf5</div>
+          </div>
+          <ul style="font-size: 13px; color: #a7f3d0; padding-left: 18px; margin-top: 12px; line-height: 1.5;">
+            <li>Fundo: Deep Forest/Slate (`#091210`)</li>
+            <li>Acento: Emerald Mint (`#10b981`)</li>
+            <li>Tipografia: Inter + JetBrains Mono</li>
+            <li>Sensação: Instrumentação, osciloscópio, precisão laboratorial</li>
+          </ul>
+        </div>
+        <button class="pal-btn" style="margin-top: 20px; width: 100%; justify-content: center;" onclick="applyTheme('nordic-slate')">
+          Testar no Preview
+        </button>
+      </div>
+
+    </div>
+
+    <!-- TYPOGRAPHY COMPARISON -->
+    <div class="typography-comparison">
+      <h2 style="font-size: 24px; font-weight: 600; margin-bottom: 8px; color: #f8fafc;">Sugestões de Fontes para Reduzir a Distração</h2>
+      <p style="color: #94a3b8; font-size: 14px; margin-bottom: 24px;">
+        A fonte serifada atual confere ar de ensaio acadêmico clássico, mas fontes sans-serif geométricas modernas aumentam a legibilidade técnica e passam sensação de engenharia de software de alta performance.
+      </p>
+
+      <div class="font-sample-card">
+        <h4>OPÇÃO A: Plus Jakarta Sans + JetBrains Mono (Altamente Recomendada)</h4>
+        <div style="font-family: 'Plus Jakarta Sans', sans-serif;">
+          <p style="font-size: 22px; font-weight: 600; color: #f8fafc; margin-bottom: 6px;">
+            Inteligência Artificial Aplicada a Sistemas Dinâmicos & Edge Computing
+          </p>
+          <p style="font-size: 14px; color: #94a3b8; line-height: 1.6;">
+            Arquitetura escalável com ESP32, Docker, AWS Lambda e modelos adaptativos em tempo real.
+          </p>
+        </div>
+      </div>
+
+      <div class="font-sample-card">
+        <h4>OPÇÃO B: Space Grotesk + IBM Plex Mono (Estilo Vercel / Developer-Centric)</h4>
+        <div style="font-family: 'Space Grotesk', sans-serif;">
+          <p style="font-size: 22px; font-weight: 600; color: #f8fafc; margin-bottom: 6px;">
+            Inteligência Artificial Aplicada a Sistemas Dinâmicos & Edge Computing
+          </p>
+          <p style="font-size: 14px; color: #94a3b8; line-height: 1.6;">
+            Arquitetura escalável com ESP32, Docker, AWS Lambda e modelos adaptativos em tempo real.
+          </p>
+        </div>
+      </div>
+
+      <div class="font-sample-card">
+        <h4>OPÇÃO C: Cormorant Garamond + JetBrains Mono (Serif Moderna & Mais Fina que a Newsreader)</h4>
+        <div style="font-family: 'Cormorant Garamond', serif;">
+          <p style="font-size: 26px; font-weight: 600; color: #f8fafc; margin-bottom: 6px; letter-spacing: -0.01em;">
+            Inteligência Artificial Aplicada a Sistemas Dinâmicos & Edge Computing
+          </p>
+          <p style="font-size: 16px; color: #94a3b8; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            Mantém a herança acadêmica com contraste elegante e corpo de texto legível.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    const themes = {
+      'current': {
+        bg: '#14120f',
+        bg2: '#1a1713',
+        panel: '#191612',
+        line: 'rgba(245,241,234,0.13)',
+        fg: '#f5f1ea',
+        fgMuted: '#a8a094',
+        accent: '#e3a94a',
+        accentSubtle: 'rgba(227,169,74,0.14)',
+        font: "'Newsreader', Georgia, serif"
+      },
+      'deep-tech': {
+        bg: '#090a0f',
+        bg2: '#11131a',
+        panel: '#131620',
+        line: 'rgba(255,255,255,0.08)',
+        fg: '#f1f5f9',
+        fgMuted: '#94a3b8',
+        accent: '#38bdf8',
+        accentSubtle: 'rgba(56,189,248,0.12)',
+        font: "'Plus Jakarta Sans', -apple-system, sans-serif"
+      },
+      'pure-mono-dark': {
+        bg: '#000000',
+        bg2: '#0c0c0e',
+        panel: '#111114',
+        line: 'rgba(255,255,255,0.12)',
+        fg: '#ffffff',
+        fgMuted: '#a1a1aa',
+        accent: '#ffffff',
+        accentSubtle: 'rgba(255,255,255,0.08)',
+        font: "'Plus Jakarta Sans', -apple-system, sans-serif"
+      },
+      'pure-mono-light': {
+        bg: '#ffffff',
+        bg2: '#f4f4f5',
+        panel: '#fafafa',
+        line: 'rgba(0,0,0,0.08)',
+        fg: '#09090b',
+        fgMuted: '#52525b',
+        accent: '#09090b',
+        accentSubtle: 'rgba(0,0,0,0.05)',
+        font: "'Plus Jakarta Sans', -apple-system, sans-serif"
+      },
+      'nordic-slate': {
+        bg: '#091210',
+        bg2: '#0e1c19',
+        panel: '#11221e',
+        line: 'rgba(255,255,255,0.09)',
+        fg: '#ecfdf5',
+        fgMuted: '#6ee7b7',
+        accent: '#10b981',
+        accentSubtle: 'rgba(16,185,129,0.14)',
+        font: "'Inter', -apple-system, sans-serif"
+      }
+    };
+
+    function applyTheme(key) {
+      const t = themes[key];
+      const box = document.getElementById('preview-box');
+      box.style.setProperty('--t-bg', t.bg);
+      box.style.setProperty('--t-bg2', t.bg2);
+      box.style.setProperty('--t-panel', t.panel);
+      box.style.setProperty('--t-line', t.line);
+      box.style.setProperty('--t-fg', t.fg);
+      box.style.setProperty('--t-fg-muted', t.fgMuted);
+      box.style.setProperty('--t-accent', t.accent);
+      box.style.setProperty('--t-accent-subtle', t.accentSubtle);
+      box.style.fontFamily = t.font;
+
+      // update buttons
+      document.querySelectorAll('.pal-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = Array.from(document.querySelectorAll('.pal-btn')).find(b => {
+        if (key === 'current') return b.textContent.includes('Editorial');
+        if (key === 'pure-mono-dark') return b.textContent.includes('DARK');
+        if (key === 'pure-mono-light') return b.textContent.includes('LIGHT');
+        if (key === 'deep-tech') return b.textContent.includes('Deep Tech');
+        if (key === 'nordic-slate') return b.textContent.includes('Nordic');
+        return false;
+      });
+      if (activeBtn) activeBtn.classList.add('active');
+
+      // smooth scroll to preview
+      box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  </script>
+</body>
+</html>
+
