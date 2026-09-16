@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Oséias Farias — AI Engineer & IoT Systems</title>
 
-    <!-- Google Fonts: Newsreader + IBM Plex Mono -->
+    <!-- Google Fonts: Plus Jakarta Sans + JetBrains Mono + IBM Plex Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
       html { scroll-behavior: smooth; }
@@ -37,14 +37,16 @@
       }
 
       /* Mod card hover pattern */
-      .mod { position: relative; transition: border-color .4s, background .4s; }
+      .mod { position: relative; overflow: hidden; transition: border-color .4s, background .4s, transform .25s ease; }
       .mod:hover { border-color: var(--line-2) !important; }
       .mod .modbar {
-        position: absolute; top: -1px; left: -1px;
+        position: absolute; top: 0; left: 0;
         height: 2px; width: 34px; background: var(--accent);
         transition: width .45s cubic-bezier(.2,.7,.2,1);
+        z-index: 2;
+        pointer-events: none;
       }
-      .mod:hover .modbar { width: calc(100% + 2px); }
+      .mod:hover .modbar { width: 100%; }
 
       /* Tag hover in mod cards */
       .tagk { transition: border-color .3s, color .3s; }
@@ -137,7 +139,6 @@
     </style>
 
 
-    <link rel="stylesheet" href="/index.css">
     <script type="importmap">
 {
   "imports": {
@@ -149,7 +150,9 @@
   }
 }
 </script>
-    <script type="module" crossorigin src="/assets/index-Qpu3PQsG.js"></script>
+    <script type="module" crossorigin src="/assets/index-DJ2kJiC8.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/three-CsuulQ62.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-DKwHmWYC.css">
   </head>
   <body>
     <div id="root"></div>
