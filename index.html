@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="https://lucide.dev/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Oséias Farias — AI Engineer & IoT Systems</title>
+    <title>Oséias Farias — Machine Learning Engineer · MLOps & AI Systems</title>
 
     <!-- Google Fonts: Plus Jakarta Sans + JetBrains Mono + IBM Plex Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -94,9 +94,13 @@
         .mobile-dag { display: block; }
       }
 
-      /* ── About: colapsar coluna label ───────────────────── */
+      /* ── About: colapsar coluna label e colunas de parágrafos ── */
+      @media (max-width: 1024px) {
+        .about-paras-grid { grid-template-columns: repeat(2, 1fr) !important; }
+      }
       @media (max-width: 640px) {
         .about-grid { grid-template-columns: 1fr !important; }
+        .about-paras-grid { grid-template-columns: 1fr !important; }
       }
 
       /* ── Capabilities: 1 coluna em telas muito estreitas ── */
@@ -150,7 +154,7 @@
   }
 }
 </script>
-    <script type="module" crossorigin src="/assets/index-DJ2kJiC8.js"></script>
+    <script type="module" crossorigin src="/assets/index-tNepXVXi.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/three-CsuulQ62.js">
     <link rel="stylesheet" crossorigin href="/assets/index-DKwHmWYC.css">
   </head>
