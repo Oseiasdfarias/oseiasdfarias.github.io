@@ -16,49 +16,49 @@ export const translations: Record<Language, Content> = {
     hero: {
       kicker:       "Disponível para novas oportunidades",
       name:         "Oséias Farias",
-      role:         "AI Engineer · IoT Systems & Cloud AI (AWS)",
-      lede:         "Conecto hardware de borda a IA em produção: firmware ESP32 e Raspberry Pi, MQTT e arquiteturas serverless orientadas a eventos na AWS. Construo o Otensor, plataforma SaaS de automação IoT com IA. Dois mestrados em andamento em IA aplicada a sistemas de controle.",
+      role:         "Machine Learning Engineer · MLOps & AI Systems (AWS)",
+      lede:         "Engenheiro de Machine Learning / MLOps e Engenheiro Eletricista. Desenvolvo e coloco em produção pipelines de ML, agentes autônomos e arquiteturas serverless orientadas a eventos na AWS, com foco em resiliência, 100% de testes e integração com o mundo físico.",
       ctaPrimary:   "Ver projetos",
       ctaSecondary: "Baixar currículo",
       location:     "Brasil · Remoto",
     },
     about: {
       title: "Sobre",
-      lede:  "Engenheiro eletricista que migrou para software — e que nunca largou o hardware. Hoje meu trabalho vive na interseção entre sistemas embarcados, IA em produção e arquiteturas serverless na AWS.",
+      lede:  "Engenheiro eletricista que migrou para software — e que nunca largou o hardware. Meu trabalho vive na convergência entre modelos de IA em produção, arquiteturas resilientes em nuvem e sistemas de controle no mundo físico.",
       paras: [
-        "Construo o <strong>Otensor</strong>, plataforma SaaS multi-tenant de automação IoT com IA — o \"Arduino do IoT com IA\". Firmware ESP32 e agente em Raspberry Pi publicando telemetria por MQTT, motor de automação inteligente e integração com LLM/STT/TTS, tudo rodando local em Docker ou na AWS. MVP validado ponta a ponta em hardware físico.",
-        "Atuei como <strong>Desenvolvedor de IA na Verzel</strong>, na plataforma <strong>Lunella/RosanaDesk</strong> — SaaS multi-tenant com 9+ microsserviços em produção. Arquitetei pipelines de ML/NLP em Python na AWS Lambda para extração e classificação de tópicos conversacionais, integrei agentes LLM (TaskingAI) e assistente de voz (VAPI, pipeline STT→LLM→TTS), e construí backend Java reativo (Quarkus, PostgreSQL, Redis, Keycloak).",
-        "Em paralelo, sou pesquisador de mestrado em <strong>Engenharia Elétrica (UFABC)</strong> — antifragilidade artificial com controle adaptativo (PI, LQR, H∞), detecção de falhas (FDI/EKF/UKF/CUSUM) e agentes LLM (CrewAI) integrados via ZeroMQ em Hardware-in-the-Loop. Também pesquisador na <strong>UFPA</strong> em controle preditivo model-free e Deep RL/DQN para conversores de potência.",
-        "Busco uma posição de <strong>AI Engineer</strong> ou <strong>IoT/Edge AI</strong> em um time estruturado, onde eu possa aprofundar engenharia de sistemas inteligentes que conversam com o mundo físico.",
+        "<strong>Engenharia de Software & MLOps:</strong> Uno o rigor analítico da engenharia ao desenvolvimento de software confiável (100% de cobertura de testes, CI/CD e arquiteturas desacopladas). Sou autor e mantenedor da biblioteca científica open source <strong>Synapsys</strong> (PyPI), framework de controle e ML com 501 testes automatizados.",
+        "<strong>Atuação em Produção (Verzel):</strong> Atuei como <strong>Desenvolvedor de Software & IA</strong> na plataforma SaaS multi-tenant <strong>Lunella/RosanaDesk</strong>. Arquitetei pipelines de ML/PLN na AWS Lambda para extração de tópicos conversacionais, agentes LLM (TaskingAI), assistente de voz (VAPI) e microsserviços reativos em Java Quarkus, PostgreSQL e Redis.",
+        "<strong>Inovação IoT & Nuvem (Otensor):</strong> Desenvolvo a plataforma SaaS <strong>Otensor</strong> para automação inteligente com IoT. Integro firmware de borda em C/C++ e Python (ESP32/Raspberry Pi) a telemetria MQTT em tempo real e orquestração serverless na AWS SAM, com MVP validado de ponta a ponta em bancada física.",
+        "<strong>Pesquisa Aplicada & Mestrados:</strong> Curso mestrado na <strong>UFABC (bolsista FUNDEP)</strong> em antifragilidade artificial com agentes LLM supervisores (CrewAI) e parceria internacional com a AFOSR (EUA), além de mestrado na <strong>UFPA</strong> em Deep RL e controle preditivo aplicado a conversores de potência.",
       ],
     },
     focus: {
       title:    "No que sou forte",
-      subtitle: "Quatro frentes que se reforçam",
+      subtitle: "Quatro frentes de engenharia que se conectam",
       pillars: [
         {
-          k: "IoT & Edge",
-          t: "Hardware que fala com a nuvem",
-          d: "Firmware ESP32 e agentes em Raspberry Pi publicando telemetria por MQTT, com reconexão resiliente e automação disparada na borda. Da leitura do sensor ao dashboard em tempo real, validado em hardware físico.",
-          tags: ["ESP32", "Raspberry Pi", "MQTT", "C/C++", "RTOS", "Docker"],
+          k: "MLOps & Prod",
+          t: "Modelos em produção resiliente",
+          d: "Serving de inferência, automação de pipelines de ML/PLN na AWS Lambda, drift monitoring, contratos de dados rigorosos e 100% de cobertura de testes automatizados com Pytest e CI/CD.",
+          tags: ["Python", "FastAPI", "MLflow", "AWS Lambda", "Pytest", "Docker"],
         },
         {
-          k: "ML/NLP",
-          t: "Modelos em produção",
-          d: "Pipelines de ML/NLP em Python na AWS Lambda — extração de tópicos, classificação de conversas, consolidação multi-tenant e relatórios automatizados. MLflow, FastAPI, drift monitoring e model serving.",
-          tags: ["Python", "NLP", "MLflow", "FastAPI", "Scikit-Learn", "AWS Lambda"],
+          k: "AI & Agentes",
+          t: "Sistemas agentic e GenAI",
+          d: "Agentes autônomos (CrewAI, LangGraph, TaskingAI), pipelines RAG, roteamento multimodelo (LiteLLM) e assistentes de voz em tempo real (VAPI, pipeline STT→LLM→TTS).",
+          tags: ["CrewAI", "LangGraph", "RAG", "LiteLLM", "VAPI", "TaskingAI"],
         },
         {
-          k: "Cloud",
-          t: "Arquitetura AWS event-driven",
-          d: "Sistemas desacoplados: API Gateway → SNS → SQS FIFO → Lambda → EventBridge. Bancos relacionais, NoSQL e vetoriais — PostgreSQL, DynamoDB, Redis, pgvector, Qdrant.",
-          tags: ["AWS", "SQS", "SNS", "EventBridge", "pgvector", "Redis"],
+          k: "Cloud & Dist",
+          t: "Arquiteturas event-driven (AWS)",
+          d: "Sistemas distribuídos desacoplados: API Gateway → SNS → SQS FIFO → Lambda → EventBridge. Microsserviços reativos em Java Quarkus, PostgreSQL, Redis e comunicação IPC com ZeroMQ.",
+          tags: ["AWS Serverless", "SQS FIFO", "Java Quarkus", "PostgreSQL", "Redis", "ZeroMQ"],
         },
         {
-          k: "LLMs & IA",
-          t: "Agentes e GenAI",
-          d: "RAG, agentes (LangGraph, CrewAI), engenharia de prompts, MCP e observabilidade (Langfuse). Integração de LLMs com ferramentas customizadas e pipelines de voz (STT→LLM→TTS).",
-          tags: ["LangGraph", "CrewAI", "RAG", "LangFuse", "VAPI"],
+          k: "Edge AI / IoT",
+          t: "Do sensor físico à nuvem (Moat)",
+          d: "Firmware C/C++ e Python em ESP32 e Raspberry Pi, telemetria MQTT em tempo real, validação Hardware-in-the-Loop (HIL) e modelos de controle inteligente integrados a hardware real.",
+          tags: ["ESP32", "Raspberry Pi", "MQTT", "C/C++", "HIL", "FPGA/FPAA"],
         },
       ],
     },
@@ -87,7 +87,7 @@ export const translations: Record<Language, Content> = {
     },
     contact: {
       title:    "Vamos conversar",
-      subtitle: "Estou aberto a oportunidades de AI Engineer ou IoT/Edge AI, colaborações e boas conversas sobre engenharia. Minha caixa de entrada está sempre aberta.",
+      subtitle: "Estou aberto a oportunidades em Machine Learning Engineering, MLOps e AI Engineering, parcerias técnicas e projetos de engenharia. Minha caixa de entrada está sempre aberta.",
       name:     "Nome",
       email:    "Email",
       message:  "Mensagem",
@@ -98,7 +98,7 @@ export const translations: Record<Language, Content> = {
     },
     footer: {
       rights: "© 2026 Oséias Farias",
-      built:  "AI Engineer & IoT Systems",
+      built:  "Machine Learning Engineer · MLOps & AI Systems",
     },
     status: {
       ongoing: "Em andamento",
@@ -120,49 +120,49 @@ export const translations: Record<Language, Content> = {
     hero: {
       kicker:       "Open to new opportunities",
       name:         "Oséias Farias",
-      role:         "AI Engineer · IoT Systems & Cloud AI (AWS)",
-      lede:         "I connect edge hardware to AI in production: ESP32 and Raspberry Pi firmware, MQTT and event-driven serverless architectures on AWS. I'm building Otensor, a SaaS platform for intelligent IoT automation. Pursuing two master's degrees in AI applied to control systems.",
+      role:         "Machine Learning Engineer · MLOps & AI Systems (AWS)",
+      lede:         "Machine Learning / MLOps and Electrical Engineer. I design and deploy ML pipelines, autonomous agents, and event-driven serverless architectures on AWS, focused on system reliability, 100% test coverage, and physical world integration.",
       ctaPrimary:   "View projects",
       ctaSecondary: "Download CV",
       location:     "Brazil · Remote",
     },
     about: {
       title: "About",
-      lede:  "An electrical engineer who moved into software — and never let go of the hardware. My work today sits at the intersection of embedded systems, AI in production and serverless AWS architectures.",
+      lede:  "Electrical engineer who transitioned into software — and never left the hardware behind. My work thrives at the intersection of production AI models, resilient cloud architectures, and control systems in the physical world.",
       paras: [
-        "I'm building <strong>Otensor</strong>, a multi-tenant SaaS platform for intelligent IoT automation — the \"Arduino of IoT with AI\". ESP32 firmware and a Raspberry Pi agent publishing telemetry over MQTT, an intelligent automation engine and LLM/STT/TTS integration, all running locally in Docker or on AWS. MVP validated end to end on physical hardware.",
-        "I worked as an <strong>AI Developer at Verzel</strong>, on the <strong>Lunella/RosanaDesk</strong> platform — a multi-tenant SaaS with 9+ microservices in production. I architected ML/NLP pipelines in Python on AWS Lambda for topic extraction and classification from conversational data, integrated LLM agents (TaskingAI) and a voice assistant (VAPI, STT→LLM→TTS pipeline), and built a reactive Java backend (Quarkus, PostgreSQL, Redis, Keycloak).",
-        "In parallel I'm a Master's researcher in <strong>Electrical Engineering (UFABC)</strong> — artificial antifragility with adaptive control (PI, LQR, H∞), fault detection and isolation (FDI/EKF/UKF/CUSUM) and LLM agents (CrewAI) integrated via ZeroMQ in Hardware-in-the-Loop. Also a researcher at <strong>UFPA</strong> in model-free predictive control and Deep RL/DQN for power converters.",
-        "I'm looking for an <strong>AI Engineer</strong> or <strong>IoT/Edge AI</strong> role in a structured team where I can go deep on engineering intelligent systems that talk to the physical world.",
+        "<strong>Software Engineering & MLOps:</strong> I bridge mathematical systems engineering rigor with reliable software engineering practices (100% test coverage, CI/CD, and decoupled architectures). Author and maintainer of <strong>Synapsys</strong> (PyPI), an open-source control and ML framework backed by 501 automated tests.",
+        "<strong>Production Experience (Verzel):</strong> Worked as a <strong>Software & AI Developer</strong> on the <strong>Lunella/RosanaDesk</strong> multi-tenant SaaS platform. Architected Python ML/NLP pipelines on AWS Lambda for conversational topic extraction, LLM agents (TaskingAI), voice assistants (VAPI), and reactive Java microservices with Quarkus, PostgreSQL, and Redis.",
+        "<strong>IoT & Cloud Innovation (Otensor):</strong> Engineering the <strong>Otensor</strong> SaaS platform for intelligent IoT automation. Connecting edge C/C++ and Python firmware (ESP32/Raspberry Pi) with real-time MQTT telemetry and AWS SAM serverless orchestration, with end-to-end MVP validated on physical hardware.",
+        "<strong>Applied Research & Dual M.Sc.:</strong> Pursuing an M.Sc. at <strong>UFABC (FUNDEP Scholar)</strong> on artificial antifragility with LLM supervisors (CrewAI) in international partnership with AFOSR (USA), and an M.Sc. at <strong>UFPA</strong> on Deep RL and predictive control for power converters.",
       ],
     },
     focus: {
       title:    "What I'm strong at",
-      subtitle: "Four reinforcing fronts",
+      subtitle: "Four interconnected engineering fronts",
       pillars: [
         {
-          k: "IoT & Edge",
-          t: "Hardware that talks to the cloud",
-          d: "ESP32 firmware and Raspberry Pi agents publishing telemetry over MQTT, with resilient reconnection and automations firing at the edge. From sensor reading to live dashboard, validated on physical hardware.",
-          tags: ["ESP32", "Raspberry Pi", "MQTT", "C/C++", "RTOS", "Docker"],
+          k: "MLOps & Prod",
+          t: "Resilient production ML",
+          d: "Model serving, automated ML/NLP pipelines on AWS Lambda, drift monitoring, strict data contracts, and 100% automated test coverage with Pytest and CI/CD.",
+          tags: ["Python", "FastAPI", "MLflow", "AWS Lambda", "Pytest", "Docker"],
         },
         {
-          k: "ML/NLP",
-          t: "Models in production",
-          d: "ML/NLP pipelines in Python on AWS Lambda — topic extraction, conversation classification, multi-tenant consolidation and automated reporting. MLflow, FastAPI, drift monitoring and model serving.",
-          tags: ["Python", "NLP", "MLflow", "FastAPI", "Scikit-Learn", "AWS Lambda"],
+          k: "AI & Agents",
+          t: "Agentic systems & GenAI",
+          d: "Autonomous agentic workflows (CrewAI, LangGraph, TaskingAI), RAG pipelines, multi-model routing (LiteLLM), and real-time voice assistants (VAPI, STT→LLM→TTS).",
+          tags: ["CrewAI", "LangGraph", "RAG", "LiteLLM", "VAPI", "TaskingAI"],
         },
         {
-          k: "Cloud",
-          t: "AWS event-driven architecture",
-          d: "Decoupled systems: API Gateway → SNS → SQS FIFO → Lambda → EventBridge. Relational, NoSQL and vector databases — PostgreSQL, DynamoDB, Redis, pgvector, Qdrant.",
-          tags: ["AWS", "SQS", "SNS", "EventBridge", "pgvector", "Redis"],
+          k: "Cloud & Dist",
+          t: "Event-driven architectures (AWS)",
+          d: "Decoupled distributed systems: API Gateway → SNS → SQS FIFO → Lambda → EventBridge. Reactive microservices with Java Quarkus, PostgreSQL, Redis, and ZeroMQ IPC.",
+          tags: ["AWS Serverless", "SQS FIFO", "Java Quarkus", "PostgreSQL", "Redis", "ZeroMQ"],
         },
         {
-          k: "LLMs & AI",
-          t: "Agents and GenAI",
-          d: "RAG, agents (LangGraph, CrewAI), prompt engineering, MCP and observability (Langfuse). LLM integration with custom tools and voice pipelines (STT→LLM→TTS).",
-          tags: ["LangGraph", "CrewAI", "RAG", "LangFuse", "VAPI"],
+          k: "Edge AI / IoT",
+          t: "From physical sensor to cloud (Moat)",
+          d: "C/C++ and Python firmware on ESP32 and Raspberry Pi, real-time MQTT telemetry, Hardware-in-the-Loop (HIL) validation, and intelligent control on physical hardware.",
+          tags: ["ESP32", "Raspberry Pi", "MQTT", "C/C++", "HIL", "FPGA/FPAA"],
         },
       ],
     },
@@ -191,7 +191,7 @@ export const translations: Record<Language, Content> = {
     },
     contact: {
       title:    "Let's talk",
-      subtitle: "I'm open to AI Engineer or IoT/Edge AI opportunities, collaborations and good conversations about engineering. My inbox is always open.",
+      subtitle: "I'm open to Machine Learning Engineering, MLOps, and AI Engineering opportunities, technical collaborations, and engineering discussions. My inbox is always open.",
       name:     "Name",
       email:    "Email",
       message:  "Message",
@@ -202,7 +202,7 @@ export const translations: Record<Language, Content> = {
     },
     footer: {
       rights: "© 2026 Oséias Farias",
-      built:  "AI Engineer & IoT Systems",
+      built:  "Machine Learning Engineer · MLOps & AI Systems",
     },
     status: {
       ongoing: "Ongoing",
@@ -421,46 +421,6 @@ export const getProjects = (lang: Language): ProjectData[] => {
       tags:  ["Python", "AWS Lambda", "SQS", "NLP", "PostgreSQL"],
       link:  "",
     },
-    {
-      id:       "fastapi",
-      title:    "Full FastAPI REST & MLOps Foundation",
-      year:     "2024",
-      category: pt ? "Backend · MLOps" : "Backend · MLOps",
-      featured: false,
-      status:   "open source",
-      problem:  pt
-        ? "Entregar inferência de modelos de Machine Learning com padrões enterprise de robustez, cobertura de testes e CI/CD reprodutível."
-        : "Delivering ML model inference with enterprise-grade robustness, test coverage, and reproducible CI/CD pipelines.",
-      solution: pt
-        ? "API REST com FastAPI e SQLAlchemy, suporte a migrações com Alembic, containerização Docker multi-stage e automação de testes com Pytest no GitHub Actions."
-        : "REST API with FastAPI and SQLAlchemy, Alembic migrations, multi-stage Docker builds, and automated Pytest workflows via GitHub Actions.",
-      impact: pt
-        ? "Template estruturado para serving de modelos de ML com garantia de contratos de dados e integração contínua."
-        : "Structured template for ML model serving with data contracts and automated continuous integration.",
-      tags:  ["Python", "FastAPI", "Docker", "PostgreSQL", "Pytest", "CI/CD"],
-      link:  "https://github.com/Oseiasdfarias/full_fast_api",
-      github: "https://github.com/Oseiasdfarias/full_fast_api",
-    },
-    {
-      id:       "forum-hub",
-      title:    "API Fórum Hub & Arquitetura Spring Boot",
-      year:     "2024",
-      category: "Backend · Java",
-      featured: false,
-      status:   pt ? "concluído" : "shipped",
-      problem:  pt
-        ? "Arquitetura backend stateless com autenticação segura JWT e versionamento rigoroso de esquema de banco de dados relacional."
-        : "Stateless backend architecture requiring secure JWT auth and strict relational database schema versioning.",
-      solution: pt
-        ? "API em Spring Boot 3 com Spring Security, controle de acessos via JWT, migrações versionadas com Flyway e testes unitários em JUnit 5."
-        : "Spring Boot 3 API with Spring Security, JWT access control, Flyway schema migrations, and JUnit 5 testing.",
-      impact: pt
-        ? "Concluído como projeto de destaque da trilha Oracle Next Education com arquitetura limpa e rastreabilidade total."
-        : "Completed as standout project in the Oracle Next Education track with clean architecture and schema traceability.",
-      tags:  ["Java", "Spring Boot", "Spring Security", "MySQL", "Flyway", "JWT"],
-      link:  "https://github.com/Oseiasdfarias/forum_hub_challenge",
-      github: "https://github.com/Oseiasdfarias/forum_hub_challenge",
-    },
   ];
 };
 
@@ -469,26 +429,26 @@ export const getExperience = (lang: Language): ExperienceData[] => {
   const pt = lang === 'pt';
   return [
     {
-      title:       pt ? "Fundador & Engenheiro IoT / IA"                 : "Founder & Lead IoT / AI Engineer",
+      title:       pt ? "Engenheiro Líder de IoT & IA / Fundador"        : "Lead IoT & AI Engineer / Founder",
       company:     "Otensor",
       period:      pt ? "2025 — presente"                               : "2025 — Present",
       type:        "industry",
       current:     true,
       description: pt
-        ? "Concepção, arquitetura e desenvolvimento da plataforma SaaS multi-tenant Otensor. Firmware C/C++ e Python em ESP32 e Raspberry Pi com telemetria MQTT resiliente, motor de automação inteligente disparado na borda e orquestração de LLMs/voz (STT→LLM→TTS). Infraestrutura híbrida local em Docker e em nuvem serverless na AWS."
-        : "Design, architecture, and engineering of the Otensor multi-tenant SaaS platform. C/C++ and Python firmware on ESP32 and Raspberry Pi with resilient MQTT telemetry, edge-triggered intelligent rule engine, and LLM/voice orchestration (STT→LLM→TTS). Hybrid infrastructure spanning local Docker environments and AWS serverless cloud.",
-      tags: ["Python", "ESP32", "Raspberry Pi", "MQTT", "AWS", "Docker", "LLM", "RTOS"],
+        ? "Concepção, arquitetura e engenharia da plataforma SaaS multi-tenant Otensor para automação inteligente com IoT. Firmware C/C++ e Python em ESP32 e Raspberry Pi, telemetria MQTT resiliente, motor de automação com regras na borda e orquestração em nuvem com AWS SAM (Lambda/Python). MVP validado com hardware físico e documentação técnica pública."
+        : "Design, software architecture, and engineering of the Otensor multi-tenant SaaS platform for intelligent IoT automation. C/C++ and Python firmware on ESP32 and Raspberry Pi, resilient MQTT telemetry, edge rule engine, and cloud serverless AI orchestration via AWS SAM (Lambda/Python). MVP validated on physical hardware.",
+      tags: ["Python", "ESP32", "Raspberry Pi", "MQTT", "AWS SAM", "Docker", "RTOS"],
     },
     {
-      title:       pt ? "Desenvolvedor de IA"                           : "AI Developer",
+      title:       pt ? "Desenvolvedor de Software & IA"                 : "Software & AI Developer",
       company:     "Verzel · Lunella/RosanaDesk",
       period:      pt ? "dez 2025 — jun 2026"                          : "Dec 2025 — Jun 2026",
       type:        "industry",
       current:     false,
       description: pt
-        ? "Arquitetei arquitetura serverless event-driven na AWS (API Gateway → SNS → SQS FIFO → Lambda → EventBridge) com 9+ microsserviços em produção. Desenvolvi pipelines de ML/NLP em Python para extração e classificação de tópicos conversacionais com consolidação multi-tenant e relatórios automatizados (PDF, Slack). Integrei agentes LLM (TaskingAI) e assistente de voz (VAPI, STT→LLM→TTS). Backend Java reativo: Quarkus, Hibernate Panache, PostgreSQL, Flyway, Keycloak, Redis."
-        : "Architected an event-driven serverless architecture on AWS (API Gateway → SNS → SQS FIFO → Lambda → EventBridge) with 9+ microservices in production. Developed Python ML/NLP pipelines for topic extraction and classification from conversational data with multi-tenant consolidation and automated reports (PDF, Slack). Integrated LLM agents (TaskingAI) and voice assistant (VAPI, STT→LLM→TTS). Reactive Java backend: Quarkus, Hibernate Panache, PostgreSQL, Flyway, Keycloak, Redis.",
-      tags: ["Python", "NLP", "AWS Lambda", "SQS", "Java", "Quarkus", "Redis", "LLM"],
+        ? "Arquitetura serverless event-driven na AWS (API Gateway → SNS → SQS FIFO → Lambda → EventBridge) com 9+ microsserviços em produção. Pipelines de ML/PLN em Python para extração e classificação de tópicos conversacionais com consolidação multi-tenant e relatórios automatizados (PDF, Slack). Backend Java reativo: Quarkus, Hibernate Panache, PostgreSQL, Flyway, Keycloak, Redis. Integração de agentes LLM (TaskingAI) e assistente de voz (VAPI, STT→LLM→TTS)."
+        : "Event-driven serverless architecture on AWS (API Gateway → SNS → SQS FIFO → Lambda → EventBridge) with 9+ production microservices. Python ML/NLP pipelines for conversational topic extraction, multi-tenant data consolidation, and automated reports (PDF, Slack). Reactive Java backend: Quarkus, Hibernate Panache, PostgreSQL, Flyway, Keycloak, Redis. Integration of LLM agents (TaskingAI) and real-time voice assistants (VAPI, STT→LLM→TTS).",
+      tags: ["Python", "NLP", "AWS Lambda", "SQS FIFO", "Java Quarkus", "PostgreSQL", "Redis", "LLM"],
     },
     {
       title:       pt ? "Pesquisador de Mestrado (Bolsista FUNDEP)"    : "Master's Researcher (FUNDEP Scholar)",
@@ -497,9 +457,9 @@ export const getExperience = (lang: Language): ExperienceData[] => {
       type:        "research",
       current:     true,
       description: pt
-        ? "Controle adaptativo (PI, LQR, H∞) e detecção/isolamento de falhas (FDI) com filtros de Kalman (EKF/UKF) e CUSUM para reconfiguração autônoma de conversor Buck antifrágil. Supervisor com agentes LLM (CrewAI; OpenAI/Claude/Gemini) e integração via ZeroMQ em Software/Hardware-in-the-Loop (Simulink, FPGA/FPAA)."
-        : "Adaptive control (PI, LQR, H∞) and fault detection and isolation (FDI) with Kalman filters (EKF/UKF) and CUSUM for autonomous reconfiguration of an antifragile Buck converter. LLM agent supervisor (CrewAI; OpenAI/Claude/Gemini) and ZeroMQ integration in Software/Hardware-in-the-Loop (Simulink, FPGA/FPAA).",
-      tags: ["Python", "CrewAI", "EKF/UKF", "ZeroMQ", "FPGA", "HIL", "Simulink"],
+        ? "Pesquisa em Antifragilidade Artificial em parceria internacional com a AFOSR (Força Aérea dos EUA). Controle adaptativo (PI, LQR, H∞) e detecção/isolamento de falhas (FDI: filtros de Kalman EKF/UKF e CUSUM). Supervisor inteligente com agentes LLM (CrewAI, multimodelo via LiteLLM) e arquitetura distribuída em Python (ZeroMQ, memória compartilhada posix_ipc, Pydantic v2 e Pytest) em Software/Hardware-in-the-Loop (Simulink, FPGA/FPAA)."
+        : "Artificial Anti-fragility research in international partnership with AFOSR (US Air Force). Adaptive control (PI, LQR, H∞) and fault detection and isolation (FDI: Kalman filters EKF/UKF and CUSUM). Intelligent supervisor with LLM agents (CrewAI, multi-model via LiteLLM) and distributed Python architecture (ZeroMQ, posix_ipc shared memory, Pydantic v2, Pytest) in Software/Hardware-in-the-Loop (Simulink, FPGA/FPAA).",
+      tags: ["Python", "CrewAI", "ZeroMQ", "EKF/UKF", "LiteLLM", "FPGA", "HIL"],
     },
     {
       title:       pt ? "Estagiário — Análise de Dados"               : "Intern — Data Analysis",

@@ -836,14 +836,14 @@ const App: React.FC = () => {
             </motion.div>
 
             <motion.h1
-              initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.07, ease: [0.2, 0.7, 0.2, 1] }}
               style={serif('clamp(32px,min(5.8vw,6vh),68px)' as unknown as number, 500, {
                 lineHeight: 0.96, letterSpacing: '-.025em', margin: '0 0 clamp(10px,2vh,20px)',
               })}>
-              {content.hero.role.split(' & ')[0]}<br />
+              Machine Learning Engineer<br />
               <span style={{ fontStyle: 'italic', color: 'var(--accent)' }}>
-                {content.hero.role.includes(' & ') ? '& ' + content.hero.role.split(' & ')[1] : ''}
+                & MLOps / AI Systems
               </span>
             </motion.h1>
 
@@ -866,9 +866,9 @@ const App: React.FC = () => {
                 gap: '4px 24px', marginBottom: 'clamp(12px,2.5vh,26px)',
                 ...mono(12, { color: 'var(--fg-soft)' }),
               }}>
-              <div><span>ROLE / </span><span style={{ color: 'var(--fg-muted)' }}>AI ENGINEER · IOT</span></div>
+              <div><span>ROLE / </span><span style={{ color: 'var(--fg-muted)' }}>ML ENGINEER · MLOPS & AI</span></div>
               <div><span>LOC&nbsp;&nbsp;/ </span><span style={{ color: 'var(--fg-muted)' }}>{content.hero.location}</span></div>
-              <div><span>STACK/ </span><span style={{ color: 'var(--fg-muted)' }}>PYTHON · AWS · ESP32</span></div>
+              <div><span>STACK/ </span><span style={{ color: 'var(--fg-muted)' }}>PYTHON · AWS · PYTORCH · FASTAPI</span></div>
               <div><span>STAT&nbsp;/ </span><span style={{ color: 'var(--accent)' }}>{pt ? 'DISPONÍVEL' : 'AVAILABLE'}</span></div>
             </motion.div>
 
@@ -938,40 +938,59 @@ const App: React.FC = () => {
         }}>
           <MetricItem value={501} suffix="+" label={pt ? 'testes unitários' : 'unit tests'} />
           <MetricItem value={100} suffix="%" label={pt ? 'cobertura synapsys' : 'synapsys coverage'} />
-          <MetricItem value={2}   suffix=""  label={pt ? 'mestrados em IA/Ctrl' : "AI/Ctrl master's"} />
-          <MetricItem value={certs.length} suffix="" label={pt ? 'certificações' : 'certifications'} />
+          <MetricItem value={9}   suffix="+" label={pt ? 'microsserviços prod' : 'prod microservices'} />
+          <MetricItem value={2}   suffix=""  label={pt ? 'mestrados em IA/Eng' : "AI/Eng master's"} />
         </section>
 
         {/* ── ABOUT §00 ──────────────────────────────────────── */}
-        <section id="about" data-section="about" style={{ scrollMarginTop: 70 }}>
-          <div className="about-grid" style={{
-            display: 'grid', gridTemplateColumns: '120px minmax(0,1fr)',
-            gap: 'clamp(16px,3vw,40px)',
-            padding: 'clamp(40px,6vw,72px) 0',
-            borderBottom: '1px solid var(--line)',
+        <section id="about" data-section="about" style={{
+          scrollMarginTop: 70,
+          padding: 'clamp(40px,6vw,72px) 0',
+          borderBottom: '1px solid var(--line)',
+        }}>
+          <SectionHeader
+            num="§00"
+            title={content.about.title}
+            subtitle={`[ 04 ${pt ? 'PILARES' : 'PILLARS'} ]`}
+          />
+          <FadeIn>
+            <p style={serif('clamp(20px,2.5vw,28px)' as unknown as number, 400, {
+              lineHeight: 1.4, letterSpacing: '-.015em', margin: '0 0 28px', maxWidth: 900,
+              color: 'var(--fg)',
+            })}>
+              {content.about.lede}
+            </p>
+          </FadeIn>
+          <div className="about-paras-grid" style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
+            gap: 16,
           }}>
-            <FadeIn>
-              <div style={mono(12, { color: 'var(--fg-soft)', letterSpacing: '.04em' })}>
-                §00<br /><span style={{ color: 'var(--fg-muted)' }}>{content.about.title}</span>
-              </div>
-            </FadeIn>
-            <div style={{ maxWidth: 760 }}>
-              <FadeIn>
-                <p style={serif('clamp(24px,3.4vw,38px)' as unknown as number, 400, {
-                  lineHeight: 1.28, letterSpacing: '-.015em', margin: '0 0 30px',
-                })}>
-                  {content.about.lede}
-                </p>
+            {content.about.paras.map((para, i) => (
+              <FadeIn key={i} delay={i * 0.08}>
+                <div className="mod" style={{
+                  border: '1px solid var(--line)',
+                  borderRadius: 8,
+                  background: 'var(--panel)',
+                  padding: '24px 20px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  height: '100%',
+                }}>
+                  <span className="modbar" />
+                  <div style={{ ...mono(11, { color: 'var(--accent)', marginBottom: 14 }) }}>
+                    0{i + 1} //
+                  </div>
+                  <p style={{
+                    fontSize: 13.5,
+                    lineHeight: 1.65,
+                    color: 'var(--fg-muted)',
+                    margin: 0,
+                  }}
+                    dangerouslySetInnerHTML={{ __html: para }} />
+                </div>
               </FadeIn>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(230px,1fr))', gap: 22 }}>
-                {content.about.paras.map((para, i) => (
-                  <FadeIn key={i} delay={i * 0.08}>
-                    <p style={{ fontSize: 15.5, lineHeight: 1.72, color: 'var(--fg-muted)', margin: 0 }}
-                      dangerouslySetInnerHTML={{ __html: para }} />
-                  </FadeIn>
-                ))}
-              </div>
-            </div>
+            ))}
           </div>
         </section>
 
