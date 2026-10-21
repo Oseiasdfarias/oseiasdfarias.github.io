@@ -24,33 +24,33 @@ export const EduLogo: React.FC<EduLogoProps> = ({ id, size = 68 }) => {
       src: '/assets/logos/ufabc.png',
       alt: 'UFABC - Universidade Federal do ABC',
       badgeText: 'UFABC',
-      color: '#00d4bc',
-      bg: 'rgba(0, 100, 50, 0.15)',
-      border: 'rgba(0, 160, 90, 0.35)',
+      color: 'var(--c-teal)',
+      bg: 'color-mix(in srgb, var(--c-teal) 12%, transparent)',
+      border: 'color-mix(in srgb, var(--c-teal) 38%, transparent)',
     },
     ufpa: {
       src: '/assets/logos/ufpa.png',
       alt: 'UFPA - Universidade Federal do Pará',
       badgeText: 'UFPA',
-      color: '#38bdf8',
-      bg: 'rgba(11, 92, 173, 0.15)',
-      border: 'rgba(11, 92, 173, 0.35)',
+      color: 'var(--c-sky)',
+      bg: 'color-mix(in srgb, var(--c-sky) 12%, transparent)',
+      border: 'color-mix(in srgb, var(--c-sky) 38%, transparent)',
     },
     ifma: {
       src: '/assets/logos/instituto_federal.webp',
       alt: 'Instituto Federal',
       badgeText: 'IF',
-      color: '#f87171',
-      bg: 'rgba(239, 68, 68, 0.12)',
-      border: 'rgba(239, 68, 68, 0.3)',
+      color: 'var(--c-red)',
+      bg: 'color-mix(in srgb, var(--c-red) 12%, transparent)',
+      border: 'color-mix(in srgb, var(--c-red) 38%, transparent)',
     },
     oracle: {
       src: '/assets/logos/oracle_one.png',
       alt: 'Oracle Next Education',
       badgeText: 'ONE',
       color: 'var(--accent)',
-      bg: 'rgba(227, 169, 74, 0.15)',
-      border: 'rgba(227, 169, 74, 0.35)',
+      bg: 'var(--glow)',
+      border: 'color-mix(in srgb, var(--accent) 38%, transparent)',
     },
   };
 
@@ -65,10 +65,10 @@ export const EduLogo: React.FC<EduLogoProps> = ({ id, size = 68 }) => {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '8px 16px',
-        background: 'var(--bg2)',
+        background: 'var(--inset)',
         borderRadius: 8,
         border: '1px solid var(--line)',
-        boxShadow: '0 2px 10px rgba(0,0,0,0.07)',
+        boxShadow: '0 2px 10px var(--line)',
       }}>
         <img
           src={item.src}
@@ -103,7 +103,7 @@ export const EduLogo: React.FC<EduLogoProps> = ({ id, size = 68 }) => {
   return (
     <div style={{
       width: size, height: size * 0.75, borderRadius: 6,
-      background: 'var(--bg2)', border: '1px solid var(--line)',
+      background: 'var(--inset)', border: '1px solid var(--line)',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       color: 'var(--fg-muted)', flexShrink: 0
     }}>
@@ -126,19 +126,19 @@ export const CertIcon: React.FC<CertIconProps> = ({ category, title = '', size =
   }
 
   if (category === 'cloud' || lower.includes('aws') || lower.includes('cloud') || lower.includes('lambda')) {
-    return <Cloud size={size} style={{ color: '#38bdf8', flexShrink: 0 }} />;
+    return <Cloud size={size} style={{ color: 'var(--c-sky)', flexShrink: 0 }} />;
   }
 
   if (category === 'embedded' || lower.includes('embarcados') || lower.includes('rtos') || lower.includes('c++')) {
-    return <Cpu size={size} style={{ color: '#00d4bc', flexShrink: 0 }} />;
+    return <Cpu size={size} style={{ color: 'var(--c-teal)', flexShrink: 0 }} />;
   }
 
   if (category === 'backend' || lower.includes('spring') || lower.includes('java') || lower.includes('flask') || lower.includes('sql') || lower.includes('mysql') || lower.includes('rest')) {
-    return <Database size={size} style={{ color: '#f59e0b', flexShrink: 0 }} />;
+    return <Database size={size} style={{ color: 'var(--c-amber)', flexShrink: 0 }} />;
   }
 
   if (lower.includes('git') || lower.includes('github')) {
-    return <GitBranch size={size} style={{ color: '#a855f7', flexShrink: 0 }} />;
+    return <GitBranch size={size} style={{ color: 'var(--c-violet)', flexShrink: 0 }} />;
   }
 
   if (lower.includes('python') || lower.includes('shell')) {
