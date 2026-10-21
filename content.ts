@@ -19,7 +19,7 @@ export const translations: Record<Language, Content> = {
       role:         "Machine Learning & AI Engineer · MLOps",
       lede:         "Construo sistemas de IA que mantêm sistemas físicos funcionando: detectam quando algo falha e ajudam a corrigir, em produção. Engenheiro eletricista que migrou para software e IA, com agentes LLM, MLOps e arquiteturas serverless na AWS.",
       ctaPrimary:   "Ver projetos",
-      ctaSecondary: "LinkedIn",
+      ctaSecondary: "Currículo",
       location:     "Brasil · Remoto",
     },
     about: {
@@ -103,7 +103,7 @@ export const translations: Record<Language, Content> = {
       role:         "Machine Learning & AI Engineer · MLOps",
       lede:         "I build AI systems that keep physical systems running: they detect when something fails and help fix it, in production. Electrical engineer turned software and AI engineer, working with LLM agents, MLOps and serverless architectures on AWS.",
       ctaPrimary:   "View projects",
-      ctaSecondary: "LinkedIn",
+      ctaSecondary: "CV",
       location:     "Brazil · Remote",
     },
     about: {
