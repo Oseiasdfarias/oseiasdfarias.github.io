@@ -739,8 +739,7 @@ const App: React.FC = () => {
         }}>
           <SectionHeader num="§02" title={content.projects.title} subtitle={content.projects.subtitle} />
 
-          <div className="projects-grid"
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(340px,1fr))', gap: 20 }}>
+          <div className="projects-grid">
             {projects.map((proj, i) => {
               const statusLabel = proj.status || ((pt ? STATUS_LABELS_PT : STATUS_LABELS_EN)[i] ?? 'concluído');
               const statusColor = proj.status?.includes('produção') || proj.status?.includes('production')
@@ -1147,7 +1146,7 @@ const App: React.FC = () => {
             subtitle={pt ? 'FORMAÇÃO' : 'DEGREES'} />
 
           {/* Degree cards */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(262px,1fr))', gap: 16, marginBottom: 30, alignItems: 'stretch' }}>
+          <div className="edu-grid">
             {education.map((edu, i) => (
               <motion.div
                 key={i}
@@ -1225,7 +1224,7 @@ const App: React.FC = () => {
             title={pt ? 'Onde estou online' : 'Find me online'}
             subtitle={pt ? '[ 04 CANAIS ]' : '[ 04 CHANNELS ]'}
           />
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))', gap: 16, alignItems: 'stretch' }}>
+          <div className="community-grid">
             {([
               {
                 platform: 'YouTube',

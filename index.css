@@ -81,3 +81,30 @@ body {
   100% { opacity: 0; transform: translateY(-4px); }
 }
 
+
+
+/* Grades responsivas: no desktop, Formação e Comunidade numa linha; Projetos com a última linha centralizada */
+.edu-grid, .community-grid {
+  display: grid;
+  gap: 16px;
+  align-items: stretch;
+  grid-template-columns: repeat(auto-fit, minmax(262px, 1fr));
+}
+.edu-grid { margin-bottom: 30px; }
+@media (min-width: 1024px) {
+  .edu-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .community-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+.projects-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+.projects-grid > * { flex: 0 1 100%; min-width: 0; }
+@media (min-width: 760px) {
+  .projects-grid > * { flex-basis: calc((100% - 20px) / 2); }
+}
+@media (min-width: 1100px) {
+  .projects-grid > * { flex-basis: calc((100% - 40px) / 3); }
+}
