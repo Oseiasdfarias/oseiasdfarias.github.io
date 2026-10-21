@@ -1,10 +1,23 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="https://lucide.dev/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Oséias Farias — Machine Learning Engineer · MLOps & AI Systems</title>
+    <title>Oséias Farias · Machine Learning & AI Engineer</title>
+    <meta name="description" content="Machine Learning & AI Engineer (MLOps). I build AI systems that keep physical systems running: LLM agents, MLOps, AWS serverless and control systems. Open to remote roles." />
+    <link rel="canonical" href="https://oseiasdfarias.github.io/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://oseiasdfarias.github.io/" />
+    <meta property="og:title" content="Oséias Farias · Machine Learning & AI Engineer" />
+    <meta property="og:description" content="Reliable AI for physical systems: LLM agents, MLOps, AWS serverless and control systems. Open to remote roles." />
+    <meta property="og:image" content="https://oseiasdfarias.github.io/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Oséias Farias · Machine Learning & AI Engineer" />
+    <meta name="twitter:description" content="Reliable AI for physical systems: LLM agents, MLOps, AWS serverless and control systems." />
+    <meta name="twitter:image" content="https://oseiasdfarias.github.io/og-image.png" />
 
     <!-- Google Fonts: Plus Jakarta Sans + JetBrains Mono + IBM Plex Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,17 +52,19 @@
       /* ── Wallpaper de montanha (fixo, atrás do conteúdo) ── */
       .mountain-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; opacity: var(--mtn-opacity, 1); transition: opacity .3s; }
       .mountain-img {
-        position: absolute; left: 0; right: 0; bottom: -40px; height: min(64vh, 620px);
-        background-repeat: no-repeat; background-position: center bottom; background-size: cover;
-        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 34%);
-                mask-image: linear-gradient(to bottom, transparent 0%, #000 34%);
+        /* Foto em tela cheia (snowy summit), enquadrada nos picos; o topo some suavemente no fundo */
+        position: absolute; left: 0; right: 0; top: 0; bottom: -40px;
+        background-repeat: no-repeat; background-position: center 58%; background-size: cover;
+        -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,.35) 0%, #000 38%);
+                mask-image: linear-gradient(to bottom, rgba(0,0,0,.35) 0%, #000 38%);
         will-change: opacity, transform;
       }
+      .mountain-veil { position: absolute; inset: 0; }
       .mountain-grain {
         position: absolute; inset: 0; opacity: .05; mix-blend-mode: overlay;
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
       }
-      @media (max-width: 767px) { .mountain-img { height: 46vh; background-size: auto 100%; } }
+      @media (max-width: 767px) { .mountain-img { background-position: 45% 60%; } }
 
       /* ── Componentes do design atual (vidro, raio 12, cobre) ── */
       .btn {
@@ -272,9 +287,9 @@
   }
 }
 </script>
-    <script type="module" crossorigin src="/assets/index-Dw802XN4.js"></script>
+    <script type="module" crossorigin src="/assets/index-COdFZtlw.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/three-CsuulQ62.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-lDg5TPbr.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-B7HjIXIX.css">
   </head>
   <body>
     <div id="root"></div>
