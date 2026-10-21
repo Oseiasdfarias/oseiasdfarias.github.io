@@ -454,7 +454,7 @@ const App: React.FC = () => {
           </nav>
 
           {/* Actions */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+          <div className="header-actions" style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
             <button onClick={toggleLang} className="btn btn-sm btn-icon" style={{ fontSize: 11.5, fontWeight: 600 }}>
               {pt ? 'EN' : 'PT'}
             </button>
@@ -464,7 +464,7 @@ const App: React.FC = () => {
             <div ref={cvMenuRef} style={{ position: 'relative' }}>
               <button className="btn btn-sm" aria-haspopup="menu" aria-expanded={cvMenuOpen}
                 onClick={() => setCvMenuOpen(o => !o)}>
-                {content.hero.ctaSecondary} <ChevronDown size={14} />
+                <span className="li-full">{content.hero.ctaSecondary}</span><span className="li-short">CV</span> <ChevronDown size={14} />
               </button>
               {cvMenuOpen && (
                 <div role="menu" style={{
@@ -490,6 +490,9 @@ const App: React.FC = () => {
                 </div>
               )}
             </div>
+            <a className="btn btn-sm" href="https://www.linkedin.com/in/oseiasfarias/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+              <span className="li-full">LinkedIn</span><span className="li-short">in</span> <ArrowUpRight size={14} className="li-full" />
+            </a>
             {/* Hamburger */}
             <button className="mobile-menu-btn btn btn-sm btn-icon"
               onClick={() => setMobileMenuOpen(o => !o)}
