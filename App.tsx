@@ -6,43 +6,81 @@ import {
   getEducation, getCertifications, getResearch, getPublications, getOpenSource,
 } from './content';
 import { Language } from './types';
-import { useCounter } from './hooks/useAnimations';
 import { Aeropendulo3D } from './components/Aeropendulo3D';
 import { ProjectDiagram } from './components/ProjectDiagram';
 import { ResearchDiagram } from './components/ResearchDiagram';
 import { EduLogo, CertIcon } from './components/EduCertIcons';
+import { HeroInference } from './components/HeroInference';
+import { GithubActivity } from './components/GithubActivity';
 
-// ─── Theme tokens: Pure Monochrome (Linear / Vercel minimal) ─────────────────
-// Dark: OLED Black #000000 with surgical graphite panels & clean border lines
-// Light: Crisp White #ffffff with zinc panels & sharp typography
+// ─── Theme tokens: Graphite & Copper (night-mountain) ────────────────────────
+// Dark: near-black graphite with a fixed mountain wallpaper and a copper accent
+// Light: misty stone with pale mountains and a burnt-copper accent
 
 const DARK: CSSProperties = {
-  '--bg':           '#000000',
-  '--bg2':          '#0c0c0e',
-  '--panel':        '#111114',
-  '--line':         'rgba(255,255,255,.10)',
-  '--line-2':       'rgba(255,255,255,.26)',
-  '--grid':         'rgba(255,255,255,.03)',
-  '--fg':           '#ffffff',
-  '--fg-muted':     '#a1a1aa',
-  '--fg-soft':      '#71717a',
-  '--accent':       '#ffffff',
-  '--accent-2':     '#38bdf8',
+  '--bg':           '#0a0a0b',
+  '--bg2':          '#141416',
+  '--panel':        'rgba(20,20,22,.55)',
+  '--line':         'rgba(255,255,255,.09)',
+  '--line-2':       'rgba(255,255,255,.20)',
+  '--grid':         'rgba(255,255,255,.025)',
+  '--fg':           '#f5f5f4',
+  '--fg-muted':     '#a8a29e',
+  '--fg-soft':      '#78716c',
+  '--accent':       '#d4885a',
+  '--accent-2':     '#e3a47c',
+  '--glow':         'rgba(212,136,90,.22)',
+  '--c-teal':       '#2dd4bf',
+  '--c-sky':        '#38bdf8',
+  '--c-red':        '#f87171',
+  '--c-amber':      '#f59e0b',
+  '--c-violet':     '#a78bfa',
+  '--hud-bg':       'rgba(20,18,15,.75)',
+  '--stage-bg':     'rgba(0,0,0,.35)',
+  '--mtn-opacity':  '1',
+  '--hero-panel':   'rgba(20,20,22,.42)',
+  '--inset':        'rgba(255,255,255,.035)',
+  '--series':       '#c97d50',
+  '--node':         'rgba(10,10,11,.55)',
+  '--menu':         'rgba(20,20,22,.82)',
 } as CSSProperties;
 
 const LIGHT: CSSProperties = {
-  '--bg':           '#ffffff',
-  '--bg2':          '#f4f4f5',
-  '--panel':        '#fafafa',
-  '--line':         'rgba(0,0,0,.08)',
-  '--line-2':       'rgba(0,0,0,.22)',
-  '--grid':         'rgba(0,0,0,.03)',
-  '--fg':           '#09090b',
-  '--fg-muted':     '#52525b',
-  '--fg-soft':      '#71717a',
-  '--accent':       '#09090b',
-  '--accent-2':     '#0284c7',
+  '--bg':           '#f5f5f4',
+  '--bg2':          '#e9e8e6',
+  '--panel':        'rgba(255,255,255,.42)',
+  '--line':         'rgba(0,0,0,.13)',
+  '--line-2':       'rgba(0,0,0,.30)',
+  '--grid':         'rgba(0,0,0,.04)',
+  '--fg':           '#0c0a09',
+  '--fg-muted':     '#3a3633',
+  '--fg-soft':      '#57514c',
+  '--accent':       '#9a4a24',
+  '--accent-2':     '#82391a',
+  '--glow':         'rgba(154,74,36,.16)',
+  '--c-teal':       '#0f766e',
+  '--c-sky':        '#0369a1',
+  '--c-red':        '#b91c1c',
+  '--c-amber':      '#b45309',
+  '--c-violet':     '#6d28d9',
+  '--hud-bg':       'rgba(255,255,255,.88)',
+  '--stage-bg':     'rgba(0,0,0,.04)',
+  '--mtn-opacity':  '.78',
+  '--hero-panel':   'rgba(255,255,255,.38)',
+  '--inset':        'rgba(0,0,0,.035)',
+  '--series':       '#9a4a24',
+  '--node':         'rgba(255,255,255,.5)',
+  '--menu':         'rgba(250,250,249,.82)',
 } as CSSProperties;
+
+// Rótulo em caixa alta com tracking largo (estilo "CLAUDE CODE TIP")
+const caps = (size = 10.5, extra?: CSSProperties): CSSProperties => ({
+  fontFamily: "'Plus Jakarta Sans', -apple-system, sans-serif",
+  fontSize: size, fontWeight: 500,
+  textTransform: 'uppercase', letterSpacing: '.28em',
+  color: 'var(--fg-soft)',
+  ...extra,
+});
 
 // ─── Typography helpers ───────────────────────────────────────────────────────
 
@@ -99,249 +137,6 @@ const OtensorMark: React.FC<{ size?: number }> = ({ size = 22 }) => (
   </svg>
 );
 
-// ─── Hero: automação distribuída (nó sensor → broker → nó atuador) ────────────
-
-const TEL_N   = 96;    // amostras por ciclo
-const TEL_WIN = 56;    // amostras visíveis na janela
-const TEL_MIN = 25.0;
-const TEL_MAX = 29.5;
-const TEL_THR = 28.0;  // limiar da regra no broker
-
-/* Onda determinística — sem Math.random, para o painel renderizar idêntico em
-   qualquer tema/idioma. Média e amplitude dimensionadas para o trecho acima do
-   limiar durar ~4,7 s contíguos por ciclo de ~10,6 s: tempo de acionamento
-   suficiente para ler o estado, numa única janela (o LED não tremula). */
-const TEL_SAMPLES = Array.from({ length: TEL_N }, (_, i) => {
-  const t = (2 * Math.PI * i) / TEL_N;
-  return 27.4 + 1.8 * Math.sin(t) + 0.35 * Math.sin(3 * t + 0.7) + 0.15 * Math.sin(7 * t);
-});
-
-const SCOPE_X0 = 16,  SCOPE_X1 = 464;
-const SCOPE_Y0 = 280, SCOPE_Y1 = 220;
-const telY = (v: number) =>
-  SCOPE_Y0 - ((v - TEL_MIN) / (TEL_MAX - TEL_MIN)) * (SCOPE_Y0 - SCOPE_Y1);
-
-/* Antenas meandro e trilhas roteadas em 45°, como numa PCB real */
-const ANT_A     = 'M73 120 V 114 H 81 V 108 H 89 V 114 H 97 V 108 H 105 V 114 H 113 V 120';
-const ANT_B     = 'M367 120 V 114 H 375 V 108 H 383 V 114 H 391 V 108 H 399 V 114 H 407 V 120';
-const TRACE_A1  = 'M81 168 V 160 L 75 154';
-const TRACE_A2  = 'M105 168 V 160 L 111 154';
-const LINK_UP   = 'M120 104 L 200 52';   // nó A publica telemetria
-const LINK_DOWN = 'M280 52 L 360 104';   // broker publica comando
-
-const HeroTelemetry: React.FC<{ lang: Language }> = ({ lang }) => {
-  const pt = lang === 'pt';
-  const [idx, setIdx]     = useState(24);   // começa no pico, com a regra disparada
-  const [still, setStill] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (mq.matches) { setStill(true); return; }
-    const id = setInterval(() => setIdx(i => (i + 1) % TEL_N), 110);
-    return () => clearInterval(id);
-  }, []);
-
-  const current = TEL_SAMPLES[idx];
-  const fired   = current > TEL_THR;
-  const cmdFg   = fired ? 'var(--accent-2)' : 'var(--fg-soft)';
-
-  const pts = Array.from({ length: TEL_WIN }, (_, k) => {
-    const v = TEL_SAMPLES[(idx - TEL_WIN + 1 + k + TEL_N) % TEL_N];
-    const x = SCOPE_X0 + (k * (SCOPE_X1 - SCOPE_X0)) / (TEL_WIN - 1);
-    return `${x.toFixed(1)},${telY(v).toFixed(1)}`;
-  }).join(' ');
-
-  const headY = telY(current);
-  const thrY  = telY(TEL_THR);
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.9, delay: 0.16, ease: [0.2, 0.7, 0.2, 1] }}
-      style={{ position: 'relative', border: '1px solid var(--line)', background: 'var(--panel)', padding: '16px 16px 12px' }}
-    >
-      {([
-        { top: -1, left: -1,  borderTop: '2px solid var(--accent)',    borderLeft: '2px solid var(--accent)'  },
-        { top: -1, right: -1, borderTop: '2px solid var(--accent)',    borderRight: '2px solid var(--accent)' },
-        { bottom: -1, left: -1,  borderBottom: '2px solid var(--accent)', borderLeft: '2px solid var(--accent)'  },
-        { bottom: -1, right: -1, borderBottom: '2px solid var(--accent)', borderRight: '2px solid var(--accent)' },
-      ] as CSSProperties[]).map((s, i) => (
-        <div key={i} style={{ position: 'absolute', width: 14, height: 14, ...s }} />
-      ))}
-
-      <div style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        marginBottom: 14, ...mono(11, { color: 'var(--fg-soft)', letterSpacing: '.04em' }),
-      }}>
-        <span>FIG.01 — {pt ? 'AUTOMAÇÃO DISTRIBUÍDA' : 'DISTRIBUTED AUTOMATION'}</span>
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--accent)' }}>
-          <LiveDot />
-          {pt ? 'ao vivo' : 'live'}
-        </span>
-      </div>
-
-      <svg viewBox="0 0 480 300" width="100%"
-        style={{ display: 'block', overflow: 'visible', maxHeight: 'clamp(180px,42vh,340px)' }}>
-
-        <defs>
-          <marker id="tel-ar" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
-            <path d="M0 0 L 5 3 L 0 6" fill="none" stroke="var(--fg-soft)" strokeWidth="1.2" />
-          </marker>
-          <clipPath id="tel-over">
-            <rect x={SCOPE_X0} y={SCOPE_Y1 - 10} width={SCOPE_X1 - SCOPE_X0} height={thrY - SCOPE_Y1 + 10} />
-          </clipPath>
-        </defs>
-
-        {/* ── Broker + regra ── */}
-        <rect x="166" y="6" width="148" height="46" fill="var(--bg2)"
-          stroke={fired ? 'var(--accent-2)' : 'var(--line-2)'} strokeWidth="1.2" strokeDasharray="4 3" />
-        <text x="240" y="26" fontFamily="IBM Plex Mono" fontSize="9.5" fill="var(--fg)" textAnchor="middle">BROKER MQTT</text>
-        <text x="240" y="41" fontFamily="IBM Plex Mono" fontSize="7.5" fill={cmdFg} textAnchor="middle">
-          {fired
-            ? (pt ? 'regra disparada ⚡' : 'rule fired ⚡')
-            : (pt ? 'regra armada · temp > 28.0' : 'rule armed · temp > 28.0')}
-        </text>
-
-        {/* ── Enlaces entre os nós ── */}
-        <path d={LINK_UP} fill="none" stroke="var(--line-2)" strokeWidth="1.2" markerEnd="url(#tel-ar)" />
-        <path d={LINK_UP} fill="none" stroke="var(--accent)" strokeWidth="1.4" strokeDasharray="3 7"
-          style={still ? undefined : { animation: 'dashflow 1.1s linear infinite' }} />
-        <text x="150" y="72" fontFamily="IBM Plex Mono" fontSize="7" fill="var(--fg-soft)" textAnchor="end">
-          sala-01/temp ↑
-        </text>
-
-        <path d={LINK_DOWN} fill="none" stroke={fired ? 'var(--accent-2)' : 'var(--line-2)'}
-          strokeWidth="1.2" opacity={fired ? 0.5 : 1} markerEnd="url(#tel-ar)" />
-        {fired && !still && (
-          <path d={LINK_DOWN} fill="none" stroke="var(--accent-2)" strokeWidth="1.6" strokeDasharray="3 7"
-            style={{ animation: 'dashflow 0.8s linear infinite' }} />
-        )}
-        <text x="330" y="72" fontFamily="IBM Plex Mono" fontSize="7" fill={cmdFg}>
-          ↓ estufa-02/cmd
-        </text>
-
-        {/* ══ NÓ A — sensor ══ */}
-        <text x="8" y="98" fontFamily="IBM Plex Mono" fontSize="8" fill="var(--fg-soft)">
-          {pt ? 'NÓ A · sala-01' : 'NODE A · room-01'}
-        </text>
-        <rect x="8" y="104" width="170" height="96" fill="none" stroke="var(--line-2)" strokeWidth="1" opacity="0.8" />
-        <g fill="var(--bg)" stroke="var(--accent)" strokeWidth="1" opacity="0.55">
-          <circle cx="16" cy="112" r="3" /><circle cx="170" cy="112" r="3" />
-          <circle cx="16" cy="192" r="3" /><circle cx="170" cy="192" r="3" />
-        </g>
-        <path d={ANT_A} fill="none" stroke="var(--accent)" strokeWidth="1.5" opacity="0.85" />
-        <g fill="none" stroke="var(--accent)" strokeWidth="1" opacity="0.5">
-          <path d="M113 106 A 8 8 0 0 1 121 114" /><path d="M113 101 A 13 13 0 0 1 126 114" />
-        </g>
-        <rect x="49" y="120" width="88" height="34" fill="var(--bg2)" stroke="var(--line-2)" strokeWidth="1.2" />
-        <rect x="55" y="126" width="76" height="22" fill="none" stroke="var(--line-2)" strokeWidth="0.6" opacity="0.6" />
-        <text x="93" y="141" fontFamily="IBM Plex Mono" fontSize="9" fill="var(--fg)" textAnchor="middle">ESP32</text>
-        <g fill="var(--accent)" opacity="0.75">
-          <rect x="71" y="152" width="8" height="4" /><rect x="107" y="152" width="8" height="4" />
-          {[57, 71, 85, 99, 113, 127].map(x => <rect key={x} x={x} y="116" width="5" height="5" />)}
-        </g>
-        <g fill="none" stroke="var(--accent)" strokeWidth="1.4" opacity="0.35" strokeLinejoin="round">
-          <path d={TRACE_A1} /><path d={TRACE_A2} />
-        </g>
-        <g fill="none" stroke="var(--accent)" strokeWidth="1.4" strokeDasharray="3 8" strokeLinejoin="round"
-          style={still ? undefined : { animation: 'dashflow 1.1s linear infinite' }}>
-          <path d={TRACE_A1} /><path d={TRACE_A2} />
-        </g>
-        <rect x="65" y="168" width="56" height="22" fill="var(--bg2)" stroke="var(--line-2)" strokeWidth="1.2" />
-        <circle cx="71" cy="174" r="1.5" fill="var(--accent)" opacity="0.8" />
-        <text x="93" y="182" fontFamily="IBM Plex Mono" fontSize="8" fill="var(--fg-muted)" textAnchor="middle">DHT22</text>
-
-        {/* ══ NÓ B — atuador ══ */}
-        <text x="472" y="98" fontFamily="IBM Plex Mono" fontSize="8" fill="var(--fg-soft)" textAnchor="end">
-          {pt ? 'NÓ B · estufa-02' : 'NODE B · greenhouse-02'}
-        </text>
-        <rect x="302" y="104" width="170" height="96" fill="none" stroke="var(--line-2)" strokeWidth="1" opacity="0.8" />
-        <g fill="var(--bg)" stroke="var(--accent)" strokeWidth="1" opacity="0.55">
-          <circle cx="310" cy="112" r="3" /><circle cx="464" cy="112" r="3" />
-          <circle cx="310" cy="192" r="3" /><circle cx="464" cy="192" r="3" />
-        </g>
-        <path d={ANT_B} fill="none" stroke="var(--accent)" strokeWidth="1.5" opacity="0.85" />
-        <g fill="none" stroke={cmdFg} strokeWidth="1" opacity={fired ? 0.85 : 0.4}>
-          <path d="M367 106 A 8 8 0 0 0 359 114" /><path d="M367 101 A 13 13 0 0 0 354 114" />
-        </g>
-        <rect x="343" y="120" width="88" height="34" fill="var(--bg2)" stroke="var(--line-2)" strokeWidth="1.2" />
-        <rect x="349" y="126" width="76" height="22" fill="none" stroke="var(--line-2)" strokeWidth="0.6" opacity="0.6" />
-        <text x="387" y="141" fontFamily="IBM Plex Mono" fontSize="9" fill="var(--fg)" textAnchor="middle">ESP32</text>
-        <g fill="var(--accent)" opacity="0.75">
-          <rect x="383" y="152" width="8" height="4" />
-          {[351, 365, 379, 393, 407, 421].map(x => <rect key={x} x={x} y="116" width="5" height="5" />)}
-        </g>
-        {/* LED acionado pelo comando remoto */}
-        <path d="M387 154 V 162" fill="none" stroke={cmdFg} strokeWidth="1.5" />
-        <path d="M379 162 L 395 162 L 387 176 Z" fill={fired ? 'var(--accent-2)' : 'var(--bg2)'}
-          stroke={cmdFg} strokeWidth="1.3" strokeLinejoin="round" />
-        <path d="M377 176 H 397" stroke={cmdFg} strokeWidth="1.6" />
-        <path d="M387 176 V 186" fill="none" stroke={cmdFg} strokeWidth="1.5" />
-        <text x="373" y="170" fontFamily="IBM Plex Mono" fontSize="7" fill="var(--fg-soft)" textAnchor="end">D1</text>
-        {fired && (
-          <g stroke="var(--accent-2)" strokeWidth="1.2" fill="none">
-            <path d="M401 166 L 409 158 M409 158 L 405 158 M409 158 L 409 162" />
-            <path d="M401 174 L 409 166 M409 166 L 405 166 M409 166 L 409 170" />
-          </g>
-        )}
-        <g stroke={cmdFg} strokeWidth="1.4" opacity="0.7">
-          <path d="M377 186 H 397" /><path d="M380.5 191 H 393.5" /><path d="M384 196 H 390" />
-        </g>
-
-        {/* ── Osciloscópio: telemetria do nó A ── */}
-        <text x="8" y="208" fontFamily="IBM Plex Mono" fontSize="7.5" fill="var(--fg-soft)">sala-01 · sensor.temp</text>
-        <text x="452" y="210" fontFamily="Newsreader, Georgia, serif" fontSize="17" fill="var(--accent)" textAnchor="end">
-          {current.toFixed(1)}
-        </text>
-        <text x="470" y="210" fontFamily="IBM Plex Mono" fontSize="8" fill="var(--fg-soft)" textAnchor="end">°C</text>
-
-        <rect x="8" y="212" width="464" height="76" fill="var(--bg2)" stroke="var(--line)" strokeWidth="1" />
-        <g stroke="var(--line-2)" strokeWidth="0.5" opacity="0.3">
-          {[64, 120, 176, 232, 288, 344, 400, 456].map(x => <path key={x} d={`M${x} 212 V 288`} />)}
-          {[231, 250, 269].map(y => <path key={y} d={`M8 ${y} H 472`} />)}
-        </g>
-
-        <polygon points={`${SCOPE_X0},${SCOPE_Y0} ${pts} ${SCOPE_X1},${SCOPE_Y0}`} fill="var(--accent)" opacity="0.08" />
-        <polyline points={pts} fill="none" stroke="var(--accent)" strokeWidth="1.7" strokeLinejoin="round" strokeLinecap="round" />
-        {/* trecho acima do limiar — o que faz a regra disparar */}
-        <polyline points={pts} fill="none" stroke="var(--accent-2)" strokeWidth="2.1"
-          strokeLinejoin="round" strokeLinecap="round" clipPath="url(#tel-over)" />
-
-        <path d={`M${SCOPE_X0} ${thrY} H ${SCOPE_X1}`} stroke="var(--fg-soft)" strokeWidth="1" strokeDasharray="3 4" opacity="0.8" />
-        <text x="18" y={thrY - 4} fontFamily="IBM Plex Mono" fontSize="7" fill="var(--fg-soft)">
-          {pt ? 'limiar' : 'threshold'} {TEL_THR.toFixed(1)} °C
-        </text>
-
-        <circle cx={SCOPE_X1} cy={headY} r="4.5" fill="var(--accent)" opacity="0.18" />
-        <circle cx={SCOPE_X1} cy={headY} r="2.4" fill="var(--accent)" />
-      </svg>
-    </motion.div>
-  );
-};
-
-// ─── Metric item ──────────────────────────────────────────────────────────────
-
-const MetricItem: React.FC<{ value: number; suffix: string; label: string }> = ({ value, suffix, label }) => {
-  const { ref, count } = useCounter(value, 1300);
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }} transition={{ duration: 0.6, ease: [0.2, 0.7, 0.2, 1] }}
-      style={{ padding: '26px 22px', borderLeft: '1px solid var(--line)' }}
-    >
-      <div style={serif('clamp(38px,5vw,56px)' as unknown as number, 500, { lineHeight: 0.9, letterSpacing: '-.02em' })}>
-        <span ref={ref}>{count}</span>{suffix}
-      </div>
-      <div style={mono(11, {
-        color: 'var(--fg-soft)', marginTop: 10,
-        textTransform: 'uppercase', letterSpacing: '.06em',
-      })}>
-        {label}
-      </div>
-    </motion.div>
-  );
-};
-
 // ─── Section header ───────────────────────────────────────────────────────────
 
 const SectionHeader: React.FC<{
@@ -353,17 +148,22 @@ const SectionHeader: React.FC<{
       justifyContent: subtitle ? 'space-between' : 'flex-start',
       gap: 16, marginBottom: 30,
     }}>
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 16 }}>
-        <span style={mono(14, { color: 'var(--accent)' })}>{num}</span>
-        <h2 style={serif('clamp(28px,3.6vw,42px)' as unknown as number, 500, {
-          margin: 0, letterSpacing: '-.02em',
+      <div>
+        <div style={caps(10.5, { marginBottom: 14 })}>
+          <span style={{ color: 'var(--accent)' }}>{num.replace('§', '')}</span>
+          {subtitle && (
+            <>
+              <span style={{ margin: '0 10px', opacity: 0.5 }}>—</span>
+              {subtitle.replace(/[[\]]/g, '').trim()}
+            </>
+          )}
+        </div>
+        <h2 style={serif('clamp(28px,3.6vw,42px)' as unknown as number, 600, {
+          margin: 0, letterSpacing: '-.025em', lineHeight: 1.05,
         })}>
           {title}
         </h2>
       </div>
-      {subtitle && (
-        <span style={mono(11, { color: 'var(--fg-soft)', whiteSpace: 'nowrap' })}>{subtitle}</span>
-      )}
     </div>
   </FadeIn>
 );
@@ -441,17 +241,17 @@ const STATUS_COLORS    = ['var(--accent-2)', 'var(--accent)', 'var(--fg-muted)',
 // ─── App ──────────────────────────────────────────────────────────────────────
 
 const App: React.FC = () => {
-  const [lang,           setLang]           = useState<Language>('pt');
+  const [lang,           setLang]           = useState<Language>('en');
   const [darkMode,       setDarkMode]       = useState(true);
   const [activeSection,  setActiveSection]  = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [formStatus,     setFormStatus]     = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [modal,          setModal]          = useState<ModalState | null>(null);
   const [showTopBtn,     setShowTopBtn]     = useState(false);
-  const [openNavGroup,   setOpenNavGroup]   = useState<string | null>(null);
   const [copyStatus,     setCopyStatus]     = useState(false);
 
   const progressRef = useRef<HTMLDivElement>(null);
+  const mountainRef = useRef<HTMLDivElement>(null);
 
   const openModal  = (media: { src: string; caption: string }[], i: number) =>
     setModal({ ...media[i], index: i, total: media.length });
@@ -474,18 +274,36 @@ const App: React.FC = () => {
     { label: 'GitHub',   href: 'https://github.com/oseiasdfarias/' },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/oseiasfarias/' },
     { label: 'YouTube',  href: 'https://www.youtube.com/@otensor' },
-    { label: 'Medium',   href: 'https://oseiasfarias.medium.com' },
+    { label: 'Medium',   href: 'https://medium.com/@oseiasfarias' },
   ];
-  const CV_URL = '/cv_ml_mlops_ats.pdf';
+  // O CV em PDF volta quando a versão em inglês atualizada estiver pronta (src/canais/curriculo)
+  const CV_URL = 'https://www.linkedin.com/in/oseiasfarias/';
 
-  const NAV_SECTIONS = ['capabilities', 'projects', 'experience', 'research'] as const;
+  // Ordem idêntica à das seções na página
+  const NAV_ITEMS: { id: string; label: string; drawerOnly?: boolean }[] = [
+    { id: 'about',        label: content.nav.about },
+    { id: 'capabilities', label: content.nav.focus },
+    { id: 'projects',     label: content.nav.projects },
+    { id: 'opensource',   label: content.nav.opensource },
+    { id: 'experience',   label: content.nav.experience },
+    { id: 'research',     label: content.nav.research },
+    { id: 'education',    label: content.nav.education },
+    { id: 'community',    label: content.nav.community, drawerOnly: true },
+    { id: 'contact',      label: content.nav.contact },
+  ];
 
   useEffect(() => {
     const saved     = localStorage.getItem('of_theme2');
     const savedLang = localStorage.getItem('of_lang') as Language | null;
     setDarkMode(saved ? saved === 'dark' : true);
+    // Sem escolha salva: português para quem usa o navegador em português, inglês para o resto
     if (savedLang) setLang(savedLang);
+    else setLang((navigator.language || '').toLowerCase().startsWith('pt') ? 'pt' : 'en');
   }, []);
+
+  useEffect(() => {
+    document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
+  }, [lang]);
 
   const toggleTheme = () => {
     const next = !darkMode;
@@ -505,6 +323,12 @@ const App: React.FC = () => {
       const h = document.documentElement.scrollHeight - window.innerHeight;
       if (progressRef.current) {
         progressRef.current.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+      }
+      // Wallpaper de montanha: forte no hero, esmaece ao rolar para não competir com o texto
+      if (mountainRef.current) {
+        const t = Math.min(1, window.scrollY / (window.innerHeight * 0.9));
+        mountainRef.current.style.opacity = String(1 - t * 0.62);
+        mountainRef.current.style.transform = `translateY(${t * 40}px)`;
       }
     };
     window.addEventListener('scroll', onScroll, { passive: true });
@@ -555,17 +379,29 @@ const App: React.FC = () => {
       minHeight: '100vh',
       fontFamily: "'Plus Jakarta Sans', -apple-system, sans-serif",
       WebkitFontSmoothing: 'antialiased',
+      position: 'relative', isolation: 'isolate',
     }}>
 
       {/* Progress bar */}
       <div ref={progressRef} id="progress-bar" />
 
+      {/* ── WALLPAPER: montanhas noturnas fixas no rodapé da viewport ── */}
+      <div aria-hidden="true" className="mountain-bg">
+        <div ref={mountainRef} className="mountain-img"
+          style={{ backgroundImage: `url(/assets/bg/summit-${darkMode ? 'dark' : 'light'}.webp)` }} />
+        {/* Véu escuro do lado do texto, para manter a leitura sobre a foto no modo escuro */}
+        <div className="mountain-veil" style={{ background: darkMode
+          ? 'linear-gradient(90deg, rgba(10,10,11,.72) 0%, rgba(10,10,11,.45) 45%, rgba(10,10,11,.12) 100%)'
+          : 'none' }} />
+        <div className="mountain-grain" />
+      </div>
+
       {/* ── HEADER ──────────────────────────────────────────── */}
       <header style={{
         position: 'sticky', top: 0, zIndex: 70,
         background: darkMode
-          ? 'rgba(0,0,0,0.85)'
-          : 'rgba(255,255,255,0.85)',
+          ? 'rgba(10,10,11,0.72)'
+          : 'rgba(244,244,243,0.78)',
         backdropFilter: 'blur(12px)',
         borderBottom: '1px solid var(--line)',
       }}>
@@ -583,137 +419,39 @@ const App: React.FC = () => {
             <span style={serif(17, 500, { letterSpacing: '-.01em' })}>Oséias Farias</span>
           </a>
 
-          {/* Desktop nav */}
-          {/* Desktop nav with dropdowns */}
-          {(() => {
-            type NavItem = { id: string; num: string; label: string };
-            type NavGroup = { key: string; label: string; solo?: true; items?: NavItem[]; id?: string; top?: true };
-            const groups: NavGroup[] = [
-              { key: 'top',     label: pt ? 'Início' : 'Home',     solo: true, id: 'top', top: true },
-              { key: 'work',    label: pt ? 'Trabalho' : 'Work',   items: [
-                  { id: 'capabilities', num: '§01', label: content.nav.focus },
-                  { id: 'projects',     num: '§02', label: content.nav.projects },
-                  { id: 'opensource',   num: '§03', label: content.nav.opensource },
-              ]},
-              { key: 'profile', label: pt ? 'Perfil' : 'Profile',  items: [
-                  { id: 'about',      num: '§00', label: content.nav.about },
-                  { id: 'experience', num: '§04', label: content.nav.experience },
-                  { id: 'education',  num: '§06', label: content.nav.education },
-              ]},
-              { key: 'science', label: pt ? 'Pesquisa' : 'Science', items: [
-                  { id: 'research',   num: '§05', label: content.nav.research },
-                  { id: 'community',  num: '§07', label: content.nav.community },
-              ]},
-              { key: 'contact', label: content.nav.contact,         solo: true, id: 'contact' },
-            ];
-
-            const dropdownStyle: CSSProperties = {
-              position: 'absolute', top: 'calc(100% + 6px)', left: 0, zIndex: 200,
-              background: 'var(--panel)', border: '1px solid var(--line-2)',
-              borderRadius: 8, padding: 6, minWidth: 168,
-              boxShadow: '0 12px 32px rgba(0,0,0,.35)',
-              backdropFilter: 'blur(16px)',
-            };
-
-            return (
-              <nav className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: 4, height: '100%' }}>
-                {groups.map(g => {
-                  const isGroupActive = !g.solo && (g.items ?? []).some(it => activeSection === it.id);
-                  const isOpen = openNavGroup === g.key;
-
-                  if (g.solo) {
-                    const isSoloActive = !g.top && activeSection === g.id;
-                    return (
-                      <a key={g.key}
-                        href={g.top ? '#top' : `#${g.id}`}
-                        onClick={e => { e.preventDefault(); g.top ? window.scrollTo({ top: 0, behavior: 'smooth' }) : scrollTo(g.id!); }}
-                        style={{
-                          textDecoration: 'none', display: 'flex', alignItems: 'center',
-                          padding: '6px 12px', borderRadius: 6, cursor: 'pointer',
-                          background: isSoloActive ? 'var(--bg2)' : 'transparent',
-                          border: `1px solid ${isSoloActive ? 'var(--line-2)' : 'transparent'}`,
-                          transition: 'all .2s ease',
-                          ...mono(12, { color: isSoloActive ? 'var(--fg)' : 'var(--fg-muted)', fontWeight: isSoloActive ? 600 : 400 }),
-                        }}
-                        onMouseEnter={e => { if (!isSoloActive) { (e.currentTarget as HTMLElement).style.background = 'var(--bg2)'; (e.currentTarget as HTMLElement).style.color = 'var(--fg)'; } }}
-                        onMouseLeave={e => { if (!isSoloActive) { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.color = 'var(--fg-muted)'; } }}>
-                        {g.label}
-                      </a>
-                    );
-                  }
-
-                  return (
-                    <div key={g.key} style={{ position: 'relative', display: 'flex', alignItems: 'center' }}
-                      onMouseEnter={() => setOpenNavGroup(g.key)}
-                      onMouseLeave={() => setOpenNavGroup(null)}>
-                      <button style={{
-                        background: isGroupActive ? 'var(--bg2)' : isOpen ? 'var(--bg2)' : 'transparent',
-                        border: `1px solid ${isGroupActive ? 'var(--line-2)' : isOpen ? 'var(--line)' : 'transparent'}`,
-                        borderRadius: 6,
-                        cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6,
-                        padding: '6px 12px',
-                        transition: 'all .2s ease',
-                        ...mono(12, { color: isGroupActive || isOpen ? 'var(--fg)' : 'var(--fg-muted)', fontWeight: isGroupActive ? 600 : 400 }),
-                      }}>
-                        {g.label}
-                        <span style={{
-                          display: 'inline-block',
-                          fontSize: 9,
-                          transform: isOpen ? 'rotate(180deg)' : 'none',
-                          transition: 'transform 0.2s ease',
-                          opacity: 0.6,
-                        }}>▾</span>
-                      </button>
-                      {isOpen && (
-                        <div style={dropdownStyle}>
-                          {(g.items ?? []).map(item => {
-                            const isActive = activeSection === item.id;
-                            return (
-                              <button key={item.id}
-                                onClick={() => { scrollTo(item.id); setOpenNavGroup(null); }}
-                                style={{
-                                  display: 'flex', alignItems: 'center', gap: 10, width: '100%',
-                                  padding: '8px 12px', border: 'none', borderRadius: 6, cursor: 'pointer', textAlign: 'left',
-                                  background: isActive ? 'var(--bg2)' : 'transparent',
-                                  transition: 'background .15s ease',
-                                }}
-                                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--bg2)'; }}
-                                onMouseLeave={e => { if (!isActive) (e.currentTarget as HTMLElement).style.background = 'transparent'; }}>
-                                <span style={mono(10, { color: 'var(--accent-2)', minWidth: 26, fontWeight: 600 })}>{item.num}</span>
-                                <span style={mono(12, { color: isActive ? 'var(--fg)' : 'var(--fg-muted)', fontWeight: isActive ? 600 : 400 })}>{item.label}</span>
-                              </button>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </nav>
-            );
-          })()}
+          {/* Navegação: itens na ordem em que as seções aparecem na página */}
+          <nav className="nav-links nav-pill" aria-label={pt ? 'Seções' : 'Sections'}>
+            {NAV_ITEMS.filter(it => !it.drawerOnly).map(it => {
+              const active = activeSection === it.id;
+              return (
+                <a key={it.id} href={`#${it.id}`} aria-current={active ? 'true' : undefined}
+                  onClick={e => { e.preventDefault(); scrollTo(it.id); }}
+                  className={`nav-item${active ? ' is-active' : ''}`}>
+                  {active && (
+                    <motion.span layoutId="nav-active" className="nav-active"
+                      transition={{ type: 'spring', stiffness: 420, damping: 34 }} />
+                  )}
+                  <span style={{ position: 'relative' }}>{it.label}</span>
+                </a>
+              );
+            })}
+          </nav>
 
           {/* Actions */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
-            <button onClick={toggleLang} className="btnk invbtn"
-              style={{ cursor: 'pointer', background: 'var(--panel)', border: '1px solid var(--line-2)', color: 'var(--fg-muted)', ...mono(11), height: 32, padding: '0 9px', lineHeight: 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+            <button onClick={toggleLang} className="btn btn-sm btn-icon" style={{ fontSize: 11.5, fontWeight: 600 }}>
               {pt ? 'EN' : 'PT'}
             </button>
-            <button onClick={toggleTheme} aria-label="theme" className="btnk invbtn"
-              style={{ cursor: 'pointer', background: 'var(--panel)', border: '1px solid var(--line-2)', color: 'var(--fg-muted)', fontSize: 12, height: 32, padding: '0 9px', lineHeight: 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+            <button onClick={toggleTheme} aria-label="theme" className="btn btn-sm btn-icon">
               {darkMode ? <Sun size={14} /> : <Moon size={14} />}
             </button>
-            <a className="btnk invbtn" href={CV_URL} download="cv_ml_mlops_ats.pdf" target="_blank" rel="noreferrer"
-              style={{ textDecoration: 'none', background: 'var(--panel)', border: '1px solid var(--line-2)', color: 'var(--fg)', ...mono(11), height: 32, padding: '0 12px', lineHeight: 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
-              {content.hero.ctaSecondary} <ArrowUpRight size={13} style={{ display: 'inline', verticalAlign: 'middle' }} />
+            <a className="btn btn-sm" href={CV_URL} target="_blank" rel="noreferrer">
+              {content.hero.ctaSecondary} <ArrowUpRight size={14} />
             </a>
             {/* Hamburger */}
-            <button className="mobile-menu-btn btnk"
+            <button className="mobile-menu-btn btn btn-sm btn-icon"
               onClick={() => setMobileMenuOpen(o => !o)}
-              style={{
-                display: 'none', background: 'var(--panel)', border: '1px solid var(--line-2)',
-                color: 'var(--fg)', ...mono(14), padding: '4px 9px', cursor: 'pointer',
-              }}>
+              style={{ display: 'none' }}>
               {mobileMenuOpen ? <X size={16} /> : <Menu size={16} />}
             </button>
           </div>
@@ -728,61 +466,18 @@ const App: React.FC = () => {
               transition={{ duration: 0.18 }}
               style={{ borderTop: '1px solid var(--line)', overflow: 'hidden' }}
             >
-              <div style={{ padding: '10px clamp(20px,4vw,40px) 14px', display: 'flex', flexDirection: 'column', gap: 0 }}>
-                {/* Início */}
-                <button onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setMobileMenuOpen(false); }} className="btnk"
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', ...mono(12), color: 'var(--fg-muted)', padding: '7px 0', borderBottom: '1px solid var(--line)' }}>
-                  {pt ? 'Início' : 'Home'}
-                </button>
-
-                {/* Groups */}
-                {[
-                  { label: pt ? 'Trabalho' : 'Work', items: [
-                    { id: 'capabilities', num: '§01', label: content.nav.focus },
-                    { id: 'projects',     num: '§02', label: content.nav.projects },
-                    { id: 'opensource',   num: '§03', label: content.nav.opensource },
-                  ]},
-                  { label: pt ? 'Perfil' : 'Profile', items: [
-                    { id: 'about',      num: '§00', label: content.nav.about },
-                    { id: 'experience', num: '§04', label: content.nav.experience },
-                    { id: 'education',  num: '§06', label: content.nav.education },
-                  ]},
-                  { label: pt ? 'Pesquisa' : 'Science', items: [
-                    { id: 'research',  num: '§05', label: content.nav.research },
-                    { id: 'community', num: '§07', label: content.nav.community },
-                  ]},
-                ].map(group => (
-                  <div key={group.label} style={{ borderBottom: '1px solid var(--line)', paddingBottom: 4, marginBottom: 0 }}>
-                    <div style={{ ...mono(9, { color: 'var(--accent)', letterSpacing: '.08em' }), padding: '8px 0 4px' }}>
-                      {group.label.toUpperCase()}
-                    </div>
-                    {group.items.map(item => {
-                      const isActive = activeSection === item.id;
-                      return (
-                        <button key={item.id}
-                          onClick={() => { scrollTo(item.id); setMobileMenuOpen(false); }}
-                          className="btnk"
-                          style={{
-                            background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left',
-                            display: 'flex', alignItems: 'center', gap: 10, width: '100%',
-                            padding: '5px 0',
-                            borderLeft: `2px solid ${isActive ? 'var(--accent)' : 'transparent'}`,
-                            paddingLeft: isActive ? 8 : 0,
-                            transition: 'padding-left .2s, border-color .2s',
-                          }}>
-                          <span style={mono(9, { color: 'var(--accent)', minWidth: 22 })}>{item.num}</span>
-                          <span style={mono(12, { color: isActive ? 'var(--fg)' : 'var(--fg-muted)' })}>{item.label}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                ))}
-
-                {/* Contato */}
-                <button onClick={() => { scrollTo('contact'); setMobileMenuOpen(false); }} className="btnk"
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', ...mono(12), color: activeSection === 'contact' ? 'var(--accent)' : 'var(--fg-muted)', padding: '7px 0' }}>
-                  {content.nav.contact}
-                </button>
+              <div style={{ padding: '8px clamp(20px,4vw,40px) 16px', display: 'grid', gap: 2 }}>
+                {NAV_ITEMS.map((it, i) => {
+                  const active = activeSection === it.id;
+                  return (
+                    <a key={it.id} href={`#${it.id}`}
+                      onClick={e => { e.preventDefault(); scrollTo(it.id); }}
+                      className={`drawer-item${active ? ' is-active' : ''}`}>
+                      <span style={mono(10, { color: 'var(--accent)', minWidth: 22 })}>{String(i).padStart(2, '0')}</span>
+                      <span>{it.label}</span>
+                    </a>
+                  );
+                })}
               </div>
             </motion.nav>
           )}
@@ -791,6 +486,7 @@ const App: React.FC = () => {
 
       {/* ── MAIN CONTAINER ──────────────────────────────────── */}
       <div id="top" style={{
+        position: 'relative', zIndex: 1,
         maxWidth: 1240, margin: '0 auto',
         padding: '0 clamp(20px,4vw,40px)',
         backgroundImage: 'linear-gradient(90deg,var(--grid) 1px,transparent 1px), linear-gradient(90deg,transparent calc(50% - 1px),var(--grid) 50%,transparent calc(50% + 1px))',
@@ -799,53 +495,71 @@ const App: React.FC = () => {
 
         {/* ── HERO ────────────────────────────────────────────── */}
         <section style={{
+          display: 'flex', flexDirection: 'column', justifyContent: 'center',
+          minHeight: 'calc(100svh - 60px)',
+          padding: 'clamp(14px,4vh,56px) 0 clamp(12px,3vh,40px)',
+          borderBottom: '1px solid var(--line)',
+        }}>
+          <motion.h1
+            initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.07, ease: [0.2, 0.7, 0.2, 1] }}
+            className="hero-title"
+            style={serif('clamp(34px,min(5.4vw,8vh),76px)' as unknown as number, 600, {
+              lineHeight: 1.0, letterSpacing: '-.035em', margin: '0 0 clamp(22px,4.5vh,48px)',
+            })}>
+            Machine Learning &amp; AI Engineer<br />
+            <span style={{ color: 'var(--fg-soft)', whiteSpace: 'nowrap' }}>
+              MLOps · Reliable AI
+            </span>
+          </motion.h1>
+
+        <div className="hero-grid" style={{
           display: 'grid',
           gridTemplateColumns: 'minmax(0,1fr) minmax(0,1.04fr)',
           gap: 'clamp(20px,3vw,48px)',
           alignItems: 'center',
-          minHeight: 'calc(100svh - 60px)',
-          padding: 'clamp(14px,4vh,56px) 0 clamp(12px,3vh,40px)',
-          borderBottom: '1px solid var(--line)',
-        }} className="hero-grid">
+        }}>
 
           {/* Left — text */}
           <div>
-            {/* Avatar + kicker */}
+            {/* Perfil: foto grande + nome, status e ficha técnica */}
             <motion.div
               initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.2, 0.7, 0.2, 1] }}
-              style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 'clamp(36px,2.5vh,24px)' }}>
-              <div style={{
-                width: 52, height: 52, flexShrink: 0, overflow: 'hidden',
-                border: '1px solid var(--line-2)',
-                outline: '2px solid var(--accent)',
-                outlineOffset: 2,
+              className="hero-profile"
+              style={{ display: 'flex', alignItems: 'center', gap: 'clamp(18px,2.2vw,28px)', marginBottom: 'clamp(20px,3.5vh,36px)' }}>
+              <div className="hero-photo" style={{
+                position: 'relative', flexShrink: 0,
+                width: 'clamp(116px,min(13vw,19vh),172px)', aspectRatio: '1',
+                padding: 5, borderRadius: 22,
+                background: 'var(--panel)', border: '1px solid var(--line-2)',
+                backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)',
               }}>
-                <img
-                  src="https://github.com/oseiasdfarias.png"
-                  alt="Oséias Farias"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', filter: 'grayscale(1)' }}
-                />
+                <div style={{ width: '100%', height: '100%', borderRadius: 17, overflow: 'hidden' }}>
+                  <img
+                    src="https://github.com/oseiasdfarias.png?size=460"
+                    alt="Oséias Farias"
+                    style={{
+                      width: '100%', height: '100%', objectFit: 'cover', display: 'block',
+                    }}
+                  />
+                </div>
               </div>
-              <span style={mono(12, { color: 'var(--fg-soft)', letterSpacing: '.06em' })}>
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7, color: 'var(--accent)' }}>
-                  <LiveDot />
+              <div style={{ minWidth: 0 }}>
+                <div style={caps(10, { letterSpacing: '.22em', color: 'var(--accent)', marginBottom: 8 })}>
                   {content.hero.kicker}
-                </span>
-              </span>
+                </div>
+                <div style={serif('clamp(22px,2.2vw,28px)' as unknown as number, 600, { letterSpacing: '-.025em', lineHeight: 1.1, marginBottom: 12 })}>
+                  Oséias Farias
+                </div>
+                <div style={{ display: 'grid', gap: 3, ...mono(11.5, { color: 'var(--fg-soft)' }) }}>
+                  <div><span>ROLE&nbsp;/ </span><span style={{ color: 'var(--fg-muted)' }}>ML &amp; AI ENGINEER · MLOPS</span></div>
+                  <div><span>STACK/ </span><span style={{ color: 'var(--fg-muted)' }}>PYTHON · AWS · PYTORCH · FASTAPI</span></div>
+                  <div><span>LOC&nbsp;&nbsp;/ </span><span style={{ color: 'var(--fg-muted)' }}>{content.hero.location}</span></div>
+                </div>
+              </div>
             </motion.div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.07, ease: [0.2, 0.7, 0.2, 1] }}
-              style={serif('clamp(32px,min(5.8vw,6vh),68px)' as unknown as number, 500, {
-                lineHeight: 0.96, letterSpacing: '-.025em', margin: '0 0 clamp(10px,2vh,20px)',
-              })}>
-              Machine Learning Engineer<br />
-              <span style={{ fontStyle: 'italic', color: 'var(--accent)' }}>
-                & MLOps / AI Systems
-              </span>
-            </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
@@ -856,21 +570,6 @@ const App: React.FC = () => {
               }}>
               {content.hero.lede}
             </motion.p>
-
-            {/* Manifest grid */}
-            <motion.div
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.21, ease: [0.2, 0.7, 0.2, 1] }}
-              style={{
-                display: 'grid', gridTemplateColumns: 'repeat(2,auto)',
-                gap: '4px 24px', marginBottom: 'clamp(12px,2.5vh,26px)',
-                ...mono(12, { color: 'var(--fg-soft)' }),
-              }}>
-              <div><span>ROLE / </span><span style={{ color: 'var(--fg-muted)' }}>ML ENGINEER · MLOPS & AI</span></div>
-              <div><span>LOC&nbsp;&nbsp;/ </span><span style={{ color: 'var(--fg-muted)' }}>{content.hero.location}</span></div>
-              <div><span>STACK/ </span><span style={{ color: 'var(--fg-muted)' }}>PYTHON · AWS · PYTORCH · FASTAPI</span></div>
-              <div><span>STAT&nbsp;/ </span><span style={{ color: 'var(--accent)' }}>{pt ? 'DISPONÍVEL' : 'AVAILABLE'}</span></div>
-            </motion.div>
 
             {/* Building — projeto atual em destaque */}
             <motion.a
@@ -889,37 +588,30 @@ const App: React.FC = () => {
               <OtensorMark />
               <span style={{ color: 'var(--fg-soft)', letterSpacing: '.14em' }}>{pt ? 'CONSTRUINDO' : 'BUILDING'}</span>
               <span style={{ color: 'var(--accent-2)', fontWeight: 600 }}>Otensor IoT</span>
-              <span style={{ color: 'var(--fg-soft)' }}>— docs.otensor.com.br</span>
+              <span className="building-url" style={{ color: 'var(--fg-soft)' }}>— docs.otensor.com.br</span>
             </motion.a>
 
             {/* CTAs */}
             <motion.div
               initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.27, ease: [0.2, 0.7, 0.2, 1] }}
-              style={{ display: 'flex', gap: 0, flexWrap: 'wrap', alignItems: 'center' }}>
+              style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
               <a href="#projects"
                 onClick={e => { e.preventDefault(); scrollTo('projects'); }}
-                className="btnk"
-                style={{
-                  textDecoration: 'none', background: 'var(--accent)',
-                  color: 'var(--bg)', ...mono(13, { fontWeight: 500, padding: 'clamp(8px,1.4vh,12px) 18px', letterSpacing: '.02em' }),
-                }}>
-                {content.hero.ctaPrimary} <ArrowRight size={14} style={{ display: 'inline', verticalAlign: 'middle' }} />
+                className="btn btn-primary" style={{ height: 42, padding: '0 20px', fontSize: 14 }}>
+                {content.hero.ctaPrimary} <ArrowRight size={15} />
               </a>
               <a href="#contact"
                 onClick={e => { e.preventDefault(); scrollTo('contact'); }}
-                className="navlink"
-                style={{
-                  textDecoration: 'none',
-                  ...mono(13, { padding: 'clamp(8px,1.4vh,12px) 18px', borderBottom: '1px solid var(--line)' }),
-                }}>
+                className="btn" style={{ height: 42, padding: '0 20px', fontSize: 14 }}>
                 {content.nav.contact}
               </a>
             </motion.div>
           </div>
 
-          {/* Right — SVG DAG */}
-          <HeroTelemetry lang={lang} />
+          {/* Right — animação de LLM serving */}
+          <HeroInference lang={lang} />
+        </div>
         </section>
 
         {/* ── DAG mobile-only (acima das métricas) ───────────── */}
@@ -927,19 +619,15 @@ const App: React.FC = () => {
           padding: 'clamp(24px,5vw,40px) 0',
           borderBottom: '1px solid var(--line)',
         }}>
-          <HeroTelemetry lang={lang} />
+          <HeroInference lang={lang} />
         </div>
 
         {/* ── METRICS ─────────────────────────────────────────── */}
-        <section className="metrics-strip" style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit,minmax(150px,1fr))',
+        <section className="github-strip" style={{
+          padding: 'clamp(28px,4vw,44px) 0',
           borderBottom: '1px solid var(--line)',
         }}>
-          <MetricItem value={501} suffix="+" label={pt ? 'testes unitários' : 'unit tests'} />
-          <MetricItem value={100} suffix="%" label={pt ? 'cobertura synapsys' : 'synapsys coverage'} />
-          <MetricItem value={9}   suffix="+" label={pt ? 'microsserviços prod' : 'prod microservices'} />
-          <MetricItem value={2}   suffix=""  label={pt ? 'mestrados em IA/Eng' : "AI/Eng master's"} />
+          <GithubActivity lang={lang} />
         </section>
 
         {/* ── ABOUT §00 ──────────────────────────────────────── */}
@@ -956,7 +644,7 @@ const App: React.FC = () => {
           <FadeIn>
             <p style={serif('clamp(20px,2.5vw,28px)' as unknown as number, 400, {
               lineHeight: 1.4, letterSpacing: '-.015em', margin: '0 0 28px', maxWidth: 900,
-              color: 'var(--fg)',
+              color: 'var(--fg)', borderLeft: '2px solid var(--accent)', paddingLeft: 22,
             })}>
               {content.about.lede}
             </p>
@@ -978,8 +666,13 @@ const App: React.FC = () => {
                   height: '100%',
                 }}>
                   <span className="modbar" />
-                  <div style={{ ...mono(11, { color: 'var(--accent)', marginBottom: 14 }) }}>
-                    0{i + 1} //
+                  <div style={{
+                    width: 38, height: 38, borderRadius: 999, marginBottom: 16,
+                    border: '1px solid var(--accent)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    ...mono(12, { color: 'var(--accent-2)' }),
+                  }}>
+                    0{i + 1}
                   </div>
                   <p style={{
                     fontSize: 13.5,
@@ -1031,8 +724,7 @@ const App: React.FC = () => {
                   <p style={{ margin: '0 0 16px', fontSize: 14, lineHeight: 1.6, color: 'var(--fg-muted)' }}>{p.d}</p>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
                     {p.tags.map(tag => (
-                      <span key={tag} className="tagk"
-                        style={mono(10.5, { color: 'var(--fg-soft)', border: '1px solid var(--line)', padding: '2px 7px' })}>
+                      <span key={tag} className="chip">
                         {tag}
                       </span>
                     ))}
@@ -1051,8 +743,7 @@ const App: React.FC = () => {
         }}>
           <SectionHeader num="§02" title={content.projects.title} subtitle={content.projects.subtitle} />
 
-          <div className="projects-grid"
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(340px,1fr))', gap: 20 }}>
+          <div className="projects-grid">
             {projects.map((proj, i) => {
               const statusLabel = proj.status || ((pt ? STATUS_LABELS_PT : STATUS_LABELS_EN)[i] ?? 'concluído');
               const statusColor = proj.status?.includes('produção') || proj.status?.includes('production')
@@ -1081,7 +772,7 @@ const App: React.FC = () => {
                       <span>REC.0{i + 1}</span>
                       {proj.featured && (
                         <span style={{
-                          background: 'rgba(227,169,74,0.12)',
+                          background: 'var(--glow)',
                           color: 'var(--accent)',
                           padding: '1px 6px',
                           borderRadius: 2,
@@ -1104,7 +795,7 @@ const App: React.FC = () => {
                     marginBottom: 16,
                     border: '1px solid var(--line)',
                     overflow: 'hidden',
-                    background: 'var(--bg2)',
+                    background: 'var(--inset)',
                     height: 220,
                     position: 'relative',
                   }}>
@@ -1142,12 +833,12 @@ const App: React.FC = () => {
                   {proj.metrics && proj.metrics.length > 0 && (
                     <div style={{
                       display: 'grid', gridTemplateColumns: `repeat(${proj.metrics.length}, 1fr)`,
-                      gap: 8, padding: '10px 12px', background: 'var(--bg2)',
+                      gap: 8, padding: '10px 12px', background: 'var(--inset)', borderRadius: 8,
                       border: '1px solid var(--line)', marginBottom: 16,
                     }}>
                       {proj.metrics.map(m => (
                         <div key={m.label}>
-                          <div style={mono(9.5, { color: 'var(--fg-soft)', textTransform: 'uppercase' })}>{m.label}</div>
+                          <div style={caps(8.5, { letterSpacing: '.16em' })}>{m.label}</div>
                           <div style={mono(11, { color: 'var(--accent)', fontWeight: 600, marginTop: 2 })}>{m.value}</div>
                         </div>
                       ))}
@@ -1182,7 +873,7 @@ const App: React.FC = () => {
                   <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginTop: 16, flexWrap: 'wrap' }}>
                     {proj.link && (
                       <a className="reglink" href={proj.link} target="_blank" rel="noreferrer"
-                        style={mono(12, { display: 'inline-flex', alignItems: 'center', gap: 4 })}>
+                        style={{ fontSize: 13, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
                         {proj.link.includes('github.com')
                           ? (pt ? 'abrir repositório' : 'open repository')
                           : (pt ? 'abrir documentação' : 'open documentation')}
@@ -1191,7 +882,7 @@ const App: React.FC = () => {
                     )}
                     {proj.github && proj.github !== proj.link && (
                       <a className="reglink" href={proj.github} target="_blank" rel="noreferrer"
-                        style={mono(12, { display: 'inline-flex', alignItems: 'center', gap: 4 })}>
+                        style={{ fontSize: 13, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
                         {pt ? 'código fonte' : 'source code'}
                         <ArrowUpRight size={13} />
                       </a>
@@ -1205,8 +896,8 @@ const App: React.FC = () => {
           <FadeIn>
             <div style={{ marginTop: 24 }}>
               <a href="https://github.com/oseiasdfarias" target="_blank" rel="noreferrer"
-                className="navlink" style={mono(13)}>
-                {content.projects.viewAll} <ArrowRight size={14} style={{ display: 'inline', verticalAlign: 'middle' }} />
+                className="btn">
+                {content.projects.viewAll} <ArrowRight size={14} />
               </a>
             </div>
           </FadeIn>
@@ -1221,16 +912,16 @@ const App: React.FC = () => {
           <SectionHeader num="§03" title={content.opensource.title} subtitle={content.opensource.subtitle} />
 
           <FadeIn delay={0.08}>
-            <div className="opensource-grid" style={{
+            <div className="opensource-grid glass" style={{
               display: 'grid', gridTemplateColumns: 'minmax(0,1.05fr) minmax(0,1fr)',
-              border: '1px solid var(--line)', background: 'var(--panel)',
+              overflow: 'hidden',
             }}>
               {/* Left — info + stats */}
               <div style={{ padding: 'clamp(22px,3vw,32px)', borderRight: '1px solid var(--line)' }}>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: 11, flexWrap: 'wrap', marginBottom: 16 }}>
                   <h3 style={serif(30, 500, { margin: 0, letterSpacing: '-.02em' })}>{openSource.name}</h3>
-                  <span style={mono(11, { color: 'var(--accent)', border: '1px solid var(--line)', padding: '2px 7px' })}>{openSource.version}</span>
-                  <span style={mono(11, { color: 'var(--fg-soft)', border: '1px solid var(--line)', padding: '2px 7px' })}>{openSource.license}</span>
+                  <span className="badge">{openSource.version}</span>
+                  <span className="badge badge-muted">{openSource.license}</span>
                 </div>
                 <p style={{ margin: '0 0 22px', fontSize: 15, lineHeight: 1.66, color: 'var(--fg-muted)' }}>
                   {openSource.description}
@@ -1241,10 +932,7 @@ const App: React.FC = () => {
                   {openSource.stats.map(s => (
                     <div key={s.label} style={{ flex: 1, padding: '16px 12px 4px', borderRight: '1px solid var(--line)' }}>
                       <div style={serif(28, 500, { lineHeight: 0.9 })}>{s.value}</div>
-                      <div style={mono(10, {
-                        color: 'var(--fg-soft)', marginTop: 8,
-                        textTransform: 'uppercase', letterSpacing: '.06em',
-                      })}>
+                      <div style={caps(9, { marginTop: 10, letterSpacing: '.18em' })}>
                         {s.label}
                       </div>
                     </div>
@@ -1253,21 +941,11 @@ const App: React.FC = () => {
 
                 {/* Links */}
                 <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-                  <a className="btnk invbtn" href={openSource.github} target="_blank" rel="noreferrer"
-                    style={{
-                      textDecoration: 'none', ...mono(12, {
-                        color: 'var(--fg-muted)', border: '1px solid var(--line-2)', padding: '8px 14px',
-                      }),
-                    }}>
-                    GitHub <ArrowUpRight size={13} style={{ display: 'inline', verticalAlign: 'middle' }} />
+                  <a className="btn" href={openSource.github} target="_blank" rel="noreferrer">
+                    GitHub <ArrowUpRight size={14} />
                   </a>
-                  <a className="btnk" href={openSource.pypi} target="_blank" rel="noreferrer"
-                    style={{
-                      textDecoration: 'none', ...mono(12, {
-                        color: 'var(--bg)', background: 'var(--accent)', padding: '8px 14px',
-                      }),
-                    }}>
-                    PyPI <ArrowUpRight size={13} style={{ display: 'inline', verticalAlign: 'middle' }} />
+                  <a className="btn btn-primary" href={openSource.pypi} target="_blank" rel="noreferrer">
+                    PyPI <ArrowUpRight size={14} />
                   </a>
                 </div>
               </div>
@@ -1281,8 +959,8 @@ const App: React.FC = () => {
                   {openSource.demo.media.slice(0, 1).map((item, i) => (
                     <button key={i} onClick={() => openModal(openSource.demo.media, i)}
                       style={{
-                        aspectRatio: '16/9', border: '1px solid var(--line)',
-                        overflow: 'hidden', background: 'var(--bg2)', padding: 0, cursor: 'pointer',
+                        aspectRatio: '16/9', border: '1px solid var(--line)', borderRadius: 8,
+                        overflow: 'hidden', background: 'var(--inset)', padding: 0, cursor: 'pointer',
                         display: 'block', width: '100%',
                       }}>
                       <img src={item.src} alt={item.caption} loading="lazy"
@@ -1293,8 +971,8 @@ const App: React.FC = () => {
                     {openSource.demo.media.slice(1, 3).map((item, i) => (
                       <button key={i + 1} onClick={() => openModal(openSource.demo.media, i + 1)}
                         style={{
-                          aspectRatio: '16/10', border: '1px solid var(--line)',
-                          overflow: 'hidden', background: 'var(--bg2)', padding: 0, cursor: 'pointer',
+                          aspectRatio: '16/10', border: '1px solid var(--line)', borderRadius: 8,
+                          overflow: 'hidden', background: 'var(--inset)', padding: 0, cursor: 'pointer',
                           display: 'block', width: '100%',
                         }}>
                         <img src={item.src} alt={item.caption} loading="lazy"
@@ -1314,14 +992,8 @@ const App: React.FC = () => {
           padding: 'clamp(40px,6vw,72px) 0',
           borderBottom: '1px solid var(--line)',
         }}>
-          <FadeIn>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 14 }}>
-              <span style={mono(14, { color: 'var(--accent)' })}>§04</span>
-              <h2 style={serif('clamp(28px,3.6vw,42px)' as unknown as number, 500, { margin: 0, letterSpacing: '-.02em' })}>
-                {content.experience.title}
-              </h2>
-            </div>
-          </FadeIn>
+          <SectionHeader num="§04" title={content.experience.title}
+            subtitle={pt ? 'TRAJETÓRIA' : 'TRACK RECORD'} />
 
           <div style={{ maxWidth: 900 }}>
             {experience.map((exp, i) => (
@@ -1344,10 +1016,7 @@ const App: React.FC = () => {
                     flexWrap: 'wrap', marginBottom: 4,
                   }}>
                     <h3 style={serif(19, 500, { margin: 0 })}>{exp.title}</h3>
-                    <span style={mono(9.5, {
-                      textTransform: 'uppercase', letterSpacing: '.08em',
-                      color: 'var(--accent)', border: '1px solid var(--line)', padding: '1px 6px',
-                    })}>
+                    <span className="badge">
                       {exp.type === 'industry'
                         ? (pt ? 'Mercado' : 'Industry')
                         : exp.type === 'volunteer'
@@ -1367,8 +1036,7 @@ const App: React.FC = () => {
                   </p>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
                     {exp.tags.map(tag => (
-                      <span key={tag}
-                        style={mono(10.5, { color: 'var(--fg-soft)', border: '1px solid var(--line)', padding: '2px 7px' })}>
+                      <span key={tag} className="chip">
                         {tag}
                       </span>
                     ))}
@@ -1422,7 +1090,7 @@ const App: React.FC = () => {
                       border: '1px solid var(--line)',
                       borderRadius: 6,
                       overflow: 'hidden',
-                      background: 'var(--bg2)',
+                      background: 'var(--inset)',
                       height: 220,
                       position: 'relative',
                     }}>
@@ -1437,8 +1105,7 @@ const App: React.FC = () => {
                   </p>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
                     {r.tags.map(tag => (
-                      <span key={tag} className="tagk"
-                        style={mono(10, { color: 'var(--fg-soft)', border: '1px solid var(--line)', padding: '2px 6px' })}>
+                      <span key={tag} className="chip">
                         {tag}
                       </span>
                     ))}
@@ -1450,10 +1117,7 @@ const App: React.FC = () => {
 
           {/* Publications */}
           <FadeIn>
-            <div style={mono(11, {
-              textTransform: 'uppercase', letterSpacing: '.1em',
-              color: 'var(--fg-soft)', margin: '28px 0 4px',
-            })}>
+            <div style={caps(10.5, { margin: '32px 0 6px' })}>
               {content.research.publications}
             </div>
           </FadeIn>
@@ -1482,17 +1146,11 @@ const App: React.FC = () => {
           padding: 'clamp(40px,6vw,72px) 0',
           borderBottom: '1px solid var(--line)',
         }}>
-          <FadeIn>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 26 }}>
-              <span style={mono(14, { color: 'var(--accent)' })}>§06</span>
-              <h2 style={serif('clamp(28px,3.6vw,42px)' as unknown as number, 500, { margin: 0, letterSpacing: '-.02em' })}>
-                {content.education.title}
-              </h2>
-            </div>
-          </FadeIn>
+          <SectionHeader num="§06" title={content.education.title}
+            subtitle={pt ? 'FORMAÇÃO' : 'DEGREES'} />
 
           {/* Degree cards */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(262px,1fr))', gap: 16, marginBottom: 30, alignItems: 'stretch' }}>
+          <div className="edu-grid">
             {education.map((edu, i) => (
               <motion.div
                 key={i}
@@ -1526,10 +1184,7 @@ const App: React.FC = () => {
 
           {/* Certifications */}
           <FadeIn>
-            <div style={mono(11, {
-              textTransform: 'uppercase', letterSpacing: '.1em',
-              color: 'var(--fg-soft)', marginBottom: 8,
-            })}>
+            <div style={caps(10.5, { marginBottom: 12 })}>
               {content.education.certifications}
             </div>
           </FadeIn>
@@ -1538,8 +1193,8 @@ const App: React.FC = () => {
               <FadeIn key={i} delay={i * 0.03}>
                 <div style={{
                   display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10,
-                  padding: '13px 14px', border: '1px solid var(--line)', borderRadius: 6,
-                  background: 'var(--panel)',
+                  padding: '13px 14px', border: '1px solid var(--line)', borderRadius: 10,
+                  background: 'var(--panel)', backdropFilter: 'blur(6px)',
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 11, minWidth: 0 }}>
                     <CertIcon category={cert.category} title={cert.title} size={15} />
@@ -1571,9 +1226,9 @@ const App: React.FC = () => {
           <SectionHeader
             num="§07"
             title={pt ? 'Onde estou online' : 'Find me online'}
-            subtitle={pt ? '[ 03 CANAIS ]' : '[ 03 CHANNELS ]'}
+            subtitle={pt ? '[ 04 CANAIS ]' : '[ 04 CHANNELS ]'}
           />
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))', gap: 16, alignItems: 'stretch' }}>
+          <div className="community-grid">
             {([
               {
                 platform: 'YouTube',
@@ -1581,19 +1236,29 @@ const App: React.FC = () => {
                 href:     'https://www.youtube.com/@otensor',
                 tag:      'VIDEO',
                 desc: pt
-                  ? 'Vídeos sobre machine learning, controle inteligente e engenharia de software — do conceito ao código.'
-                  : 'Videos on machine learning, intelligent control and software engineering — from concept to code.',
+                  ? 'Vídeos sobre machine learning, controle inteligente e engenharia de software, do conceito ao código. 1,7 mil inscritos.'
+                  : 'Videos on machine learning, intelligent control and software engineering, from concept to code. 1.7k subscribers.',
                 cta: pt ? 'Assistir' : 'Watch',
               },
               {
                 platform: 'Medium',
                 handle:   '@oseiasfarias',
-                href:     'https://oseiasfarias.medium.com',
+                href:     'https://medium.com/@oseiasfarias',
                 tag:      'BLOG',
                 desc: pt
                   ? 'Artigos técnicos sobre MLOps, APIs, arquitetura de sistemas e experiências de pesquisa acadêmica.'
                   : 'Technical articles on MLOps, APIs, system architecture and academic research experiences.',
                 cta: pt ? 'Ler artigos' : 'Read articles',
+              },
+              {
+                platform: 'Udemy',
+                handle:   pt ? '2 cursos' : '2 courses',
+                href:     'https://www.udemy.com/course/python-iniciante-passo-a-passo/',
+                tag:      'COURSES',
+                desc: pt
+                  ? 'Cursos de Python para iniciantes, com mais de 2.100 alunos e notas 4,4 e 4,7.'
+                  : 'Python courses for beginners, with 2,100+ students and ratings of 4.4 and 4.7.',
+                cta: pt ? 'Ver curso' : 'See course',
               },
               {
                 platform: 'GitHub',
@@ -1623,12 +1288,7 @@ const App: React.FC = () => {
                     display: 'flex', alignItems: 'center',
                     justifyContent: 'space-between', marginBottom: 20,
                   }}>
-                    <span style={mono(10, {
-                      color: 'var(--accent)', border: '1px solid var(--line)',
-                      padding: '2px 7px', letterSpacing: '.06em',
-                    })}>
-                      {tag}
-                    </span>
+                    <span className="badge">{tag}</span>
                     <span style={mono(11, { color: 'var(--fg-soft)' })}>{handle}</span>
                   </div>
                   <h3 style={serif(32, 500, { margin: '0 0 12px', letterSpacing: '-.02em', lineHeight: 1 })}>
@@ -1639,14 +1299,9 @@ const App: React.FC = () => {
                   </p>
                   <a
                     href={href} target="_blank" rel="noreferrer"
-                    className="btnk invbtn"
-                    style={{
-                      textDecoration: 'none', alignSelf: 'flex-start',
-                      border: '1px solid var(--line-2)',
-                      ...mono(12, { color: 'var(--fg-muted)', padding: '8px 14px' }),
-                    }}
+                    className="btn" style={{ alignSelf: 'flex-start' }}
                   >
-                    {cta} <ArrowUpRight size={13} style={{ display: 'inline', verticalAlign: 'middle' }} />
+                    {cta} <ArrowUpRight size={14} />
                   </a>
                 </div>
               </motion.div>
@@ -1667,14 +1322,16 @@ const App: React.FC = () => {
             {/* Left — info + socials */}
             <FadeIn>
               <div>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 20 }}>
-                  <span style={mono(14, { color: 'var(--accent)' })}>§08</span>
-                  <h2 style={serif('clamp(30px,4.4vw,52px)' as unknown as number, 500, {
-                    margin: 0, letterSpacing: '-.025em',
-                  })}>
-                    {content.contact.title}
-                  </h2>
+                <div style={caps(10.5, { marginBottom: 14 })}>
+                  <span style={{ color: 'var(--accent)' }}>08</span>
+                  <span style={{ margin: '0 10px', opacity: 0.5 }}>—</span>
+                  {pt ? 'CONTATO' : 'CONTACT'}
                 </div>
+                <h2 style={serif('clamp(30px,4.4vw,52px)' as unknown as number, 600, {
+                  margin: '0 0 20px', letterSpacing: '-.03em', lineHeight: 1.02,
+                })}>
+                  {content.contact.title}
+                </h2>
                 <p style={{ margin: '0 0 26px', fontSize: 16.5, lineHeight: 1.6, color: 'var(--fg-muted)', maxWidth: 420 }}>
                   {content.contact.subtitle}
                 </p>
@@ -1688,18 +1345,8 @@ const App: React.FC = () => {
                       setCopyStatus(true);
                       setTimeout(() => setCopyStatus(false), 2500);
                     }}
-                    className="btnk"
-                    style={{
-                      background: 'var(--bg2)',
-                      border: '1px solid var(--line-2)',
-                      color: 'var(--fg)',
-                      padding: '8px 14px',
-                      cursor: 'pointer',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: 8,
-                      ...mono(12),
-                    }}
+                    className="btn"
+                    style={{ gap: 10, fontFamily: "'JetBrains Mono', monospace", fontSize: 12.5 }}
                   >
                     <span>oseias.dfarias@gmail.com</span>
                     <span style={{ color: 'var(--accent)', fontSize: 11 }}>
@@ -1708,10 +1355,10 @@ const App: React.FC = () => {
                   </button>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '10px 16px', ...mono(13) }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '10px 16px', fontSize: 14 }}>
                   {socials.map(s => (
                     <React.Fragment key={s.label}>
-                      <span style={{ color: 'var(--fg-soft)' }}>{s.label.slice(0, 2).toUpperCase()}</span>
+                      <span style={mono(11, { color: 'var(--fg-soft)', paddingTop: 2 })}>{s.label.slice(0, 2).toUpperCase()}</span>
                       <a className="reglink" href={s.href} target="_blank" rel="noreferrer"
                         style={{ justifySelf: 'start' }}>
                         {s.label} <ArrowUpRight size={12} style={{ display: 'inline', verticalAlign: 'middle' }} />
@@ -1724,36 +1371,18 @@ const App: React.FC = () => {
 
             {/* Right — form */}
             <FadeIn delay={0.1}>
-              <form onSubmit={handleSubmit} style={{
-                display: 'flex', flexDirection: 'column', gap: 0,
-                border: '1px solid var(--line)',
+              <form onSubmit={handleSubmit} className="glass" style={{
+                display: 'flex', flexDirection: 'column', gap: 0, overflow: 'hidden',
               }}>
                 <input type="text" name="name" required placeholder={content.contact.name}
-                  style={{
-                    background: 'var(--panel)', border: 'none',
-                    borderBottom: '1px solid var(--line)', padding: '15px 16px',
-                    color: 'var(--fg)', ...mono(14.5), outline: 'none',
-                  }} />
+                  className="field" />
                 <input type="email" name="email" required placeholder={content.contact.email}
-                  style={{
-                    background: 'var(--panel)', border: 'none',
-                    borderBottom: '1px solid var(--line)', padding: '15px 16px',
-                    color: 'var(--fg)', ...mono(14.5), outline: 'none',
-                  }} />
+                  className="field" />
                 <textarea name="message" rows={4} required placeholder={content.contact.message}
-                  style={{
-                    background: 'var(--panel)', border: 'none',
-                    borderBottom: '1px solid var(--line)', padding: '15px 16px',
-                    color: 'var(--fg)', ...mono(14.5), outline: 'none', resize: 'vertical',
-                  }} />
-                <button type="submit" disabled={formStatus === 'sending'} className="btnk"
-                  style={{
-                    cursor: 'pointer', background: 'var(--accent)', color: 'var(--bg)',
-                    border: 'none', padding: 15,
-                    ...mono(14, { fontWeight: 500, letterSpacing: '.02em' }),
-                    opacity: formStatus === 'sending' ? 0.6 : 1,
-                  }}>
-                  {formStatus === 'sending' ? content.contact.sending : content.contact.send} <ArrowRight size={14} style={{ display: 'inline', verticalAlign: 'middle' }} />
+                  className="field" style={{ resize: 'vertical' }} />
+                <button type="submit" disabled={formStatus === 'sending'} className="btn btn-primary"
+                  style={{ margin: 14, height: 44, fontSize: 14 }}>
+                  {formStatus === 'sending' ? content.contact.sending : content.contact.send} <ArrowRight size={15} />
                 </button>
                 {formStatus === 'success' && (
                   <p style={{ margin: 0, padding: '12px 16px', ...mono(12, { color: 'var(--accent)' }) }}>
@@ -1801,14 +1430,8 @@ const App: React.FC = () => {
             initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 12 }}
             transition={{ duration: 0.2 }}
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="btnk"
-            style={{
-              position: 'fixed', bottom: 24, right: 24, zIndex: 50,
-              background: 'var(--panel)', border: '1px solid var(--line-2)',
-              color: 'var(--fg-muted)', width: 40, height: 40,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              cursor: 'pointer', ...mono(14),
-            }}
+            className="btn btn-icon btn-round"
+            style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 50, width: 42, height: 42 }}
             aria-label="Voltar ao topo"
           >
             <ArrowUp size={16} />

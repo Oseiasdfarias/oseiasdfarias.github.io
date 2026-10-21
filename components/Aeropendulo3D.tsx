@@ -36,7 +36,7 @@ export const Aeropendulo3D: React.FC<Aeropendulo3DProps> = ({ interactive = true
 
     // Luzes
     const luzAmbiente = new THREE.HemisphereLight(0xffffff, 0x444444, 2.0);
-    const luzChave = new THREE.DirectionalLight(0xe3a94a, 1.8);
+    const luzChave = new THREE.DirectionalLight(0xd4885a, 1.8);
     luzChave.position.set(3, 5, 4);
     const luzRecorte = new THREE.DirectionalLight(0x00d4bc, 1.0);
     luzRecorte.position.set(-4, 2, -3);
@@ -245,7 +245,7 @@ export const Aeropendulo3D: React.FC<Aeropendulo3DProps> = ({ interactive = true
         width: '100%',
         height: '100%',
         minHeight: 200,
-        background: 'rgba(0,0,0,0.35)',
+        background: 'var(--stage-bg)',
         cursor: dragActive ? 'grabbing' : 'grab',
         overflow: 'hidden',
         borderRadius: 2,
@@ -264,7 +264,7 @@ export const Aeropendulo3D: React.FC<Aeropendulo3DProps> = ({ interactive = true
           fontFamily: "'IBM Plex Mono', monospace",
           fontSize: 11,
           color: 'var(--accent)',
-          background: 'rgba(20, 18, 15, 0.75)',
+          background: 'var(--hud-bg)',
           padding: '4px 10px',
           border: '1px solid var(--line)',
           pointerEvents: 'none',
