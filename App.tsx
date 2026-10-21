@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, CSSProperties } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Sun, Moon, Menu, ArrowUpRight, ArrowRight, ArrowUp, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, Sun, Moon, Menu, ArrowUpRight, ArrowRight, ArrowUp, ChevronLeft, ChevronRight, Download, ChevronDown } from 'lucide-react';
 import {
   translations, getProjects, getExperience,
   getEducation, getCertifications, getResearch, getPublications, getOpenSource,
@@ -245,6 +245,8 @@ const App: React.FC = () => {
   const [darkMode,       setDarkMode]       = useState(true);
   const [activeSection,  setActiveSection]  = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [cvMenuOpen,     setCvMenuOpen]     = useState(false);
+  const cvMenuRef = useRef<HTMLDivElement>(null);
   const [formStatus,     setFormStatus]     = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [modal,          setModal]          = useState<ModalState | null>(null);
   const [showTopBtn,     setShowTopBtn]     = useState(false);
@@ -276,8 +278,22 @@ const App: React.FC = () => {
     { label: 'YouTube',  href: 'https://www.youtube.com/@otensor' },
     { label: 'Medium',   href: 'https://medium.com/@oseiasfarias' },
   ];
-  // O CV em PDF volta quando a versão em inglês atualizada estiver pronta (src/canais/curriculo)
-  const CV_URL = 'https://www.linkedin.com/in/oseiasfarias/';
+  // Versões públicas (sem telefone), geradas em /mnt/vms/workspace/cv/cv_ml_mlops_engineer
+  const CV_FILES = [
+    { lang: 'en' as Language, label: 'English',   href: '/Oseias_Farias_CV_EN.pdf' },
+    { lang: 'pt' as Language, label: 'Português', href: '/Oseias_Farias_CV_PT.pdf' },
+  ];
+
+  useEffect(() => {
+    if (!cvMenuOpen) return;
+    const close = (e: MouseEvent) => {
+      if (cvMenuRef.current && !cvMenuRef.current.contains(e.target as Node)) setCvMenuOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setCvMenuOpen(false); };
+    document.addEventListener('mousedown', close);
+    document.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('mousedown', close); document.removeEventListener('keydown', onKey); };
+  }, [cvMenuOpen]);
 
   // Ordem idêntica à das seções na página
   const NAV_ITEMS: { id: string; label: string; drawerOnly?: boolean }[] = [
@@ -438,15 +454,44 @@ const App: React.FC = () => {
           </nav>
 
           {/* Actions */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+          <div className="header-actions" style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
             <button onClick={toggleLang} className="btn btn-sm btn-icon" style={{ fontSize: 11.5, fontWeight: 600 }}>
               {pt ? 'EN' : 'PT'}
             </button>
             <button onClick={toggleTheme} aria-label="theme" className="btn btn-sm btn-icon">
               {darkMode ? <Sun size={14} /> : <Moon size={14} />}
             </button>
-            <a className="btn btn-sm" href={CV_URL} target="_blank" rel="noreferrer">
-              {content.hero.ctaSecondary} <ArrowUpRight size={14} />
+            <div ref={cvMenuRef} style={{ position: 'relative' }}>
+              <button className="btn btn-sm" aria-haspopup="menu" aria-expanded={cvMenuOpen}
+                onClick={() => setCvMenuOpen(o => !o)}>
+                <span className="li-full">{content.hero.ctaSecondary}</span><span className="li-short">CV</span> <ChevronDown size={14} />
+              </button>
+              {cvMenuOpen && (
+                <div role="menu" style={{
+                  position: 'absolute', right: 0, top: 'calc(100% + 6px)', minWidth: 190, zIndex: 60,
+                  background: 'var(--menu)', border: '1px solid var(--line-2)', borderRadius: 8, padding: 6,
+                  WebkitBackdropFilter: 'blur(12px)', backdropFilter: 'blur(12px)',
+                  boxShadow: '0 12px 28px -10px rgba(0,0,0,.45)',
+                }}>
+                  {[...CV_FILES].sort((a, b) => (a.lang === lang ? -1 : b.lang === lang ? 1 : 0)).map(f => (
+                    <a key={f.lang} role="menuitem" href={f.href} download
+                      onClick={() => setCvMenuOpen(false)}
+                      style={{
+                        display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10,
+                        padding: '9px 10px', borderRadius: 6, textDecoration: 'none',
+                        color: 'var(--fg)', fontSize: 13,
+                      }}
+                      onMouseEnter={e => (e.currentTarget.style.background = 'var(--inset)')}
+                      onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
+                      <span>{f.label} <span style={{ color: 'var(--fg-soft)', fontSize: 11.5 }}>PDF</span></span>
+                      <Download size={14} />
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+            <a className="btn btn-sm" href="https://www.linkedin.com/in/oseiasfarias/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+              <span className="li-full">LinkedIn</span><span className="li-short">in</span> <ArrowUpRight size={14} className="li-full" />
             </a>
             {/* Hamburger */}
             <button className="mobile-menu-btn btn btn-sm btn-icon"
