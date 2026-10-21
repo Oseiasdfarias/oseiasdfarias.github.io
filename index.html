@@ -52,17 +52,19 @@
       /* ── Wallpaper de montanha (fixo, atrás do conteúdo) ── */
       .mountain-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; opacity: var(--mtn-opacity, 1); transition: opacity .3s; }
       .mountain-img {
-        position: absolute; left: 0; right: 0; bottom: -40px; height: min(64vh, 620px);
-        background-repeat: no-repeat; background-position: center bottom; background-size: cover;
-        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 34%);
-                mask-image: linear-gradient(to bottom, transparent 0%, #000 34%);
+        /* Foto em tela cheia (snowy summit), enquadrada nos picos; o topo some suavemente no fundo */
+        position: absolute; left: 0; right: 0; top: 0; bottom: -40px;
+        background-repeat: no-repeat; background-position: center 58%; background-size: cover;
+        -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,.35) 0%, #000 38%);
+                mask-image: linear-gradient(to bottom, rgba(0,0,0,.35) 0%, #000 38%);
         will-change: opacity, transform;
       }
+      .mountain-veil { position: absolute; inset: 0; }
       .mountain-grain {
         position: absolute; inset: 0; opacity: .05; mix-blend-mode: overlay;
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
       }
-      @media (max-width: 767px) { .mountain-img { height: 46vh; background-size: auto 100%; } }
+      @media (max-width: 767px) { .mountain-img { background-position: 45% 60%; } }
 
       /* ── Componentes do design atual (vidro, raio 12, cobre) ── */
       .btn {

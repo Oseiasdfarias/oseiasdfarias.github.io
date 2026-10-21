@@ -388,7 +388,11 @@ const App: React.FC = () => {
       {/* ── WALLPAPER: montanhas noturnas fixas no rodapé da viewport ── */}
       <div aria-hidden="true" className="mountain-bg">
         <div ref={mountainRef} className="mountain-img"
-          style={{ backgroundImage: `url(/assets/bg/mountains-${darkMode ? 'dark' : 'light'}.webp)` }} />
+          style={{ backgroundImage: `url(/assets/bg/summit-${darkMode ? 'dark' : 'light'}.webp)` }} />
+        {/* Véu escuro do lado do texto, para manter a leitura sobre a foto no modo escuro */}
+        <div className="mountain-veil" style={{ background: darkMode
+          ? 'linear-gradient(90deg, rgba(10,10,11,.72) 0%, rgba(10,10,11,.45) 45%, rgba(10,10,11,.12) 100%)'
+          : 'none' }} />
         <div className="mountain-grain" />
       </div>
 
