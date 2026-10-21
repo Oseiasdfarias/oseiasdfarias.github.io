@@ -241,7 +241,7 @@ const STATUS_COLORS    = ['var(--accent-2)', 'var(--accent)', 'var(--fg-muted)',
 // ─── App ──────────────────────────────────────────────────────────────────────
 
 const App: React.FC = () => {
-  const [lang,           setLang]           = useState<Language>('pt');
+  const [lang,           setLang]           = useState<Language>('en');
   const [darkMode,       setDarkMode]       = useState(true);
   const [activeSection,  setActiveSection]  = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -274,9 +274,10 @@ const App: React.FC = () => {
     { label: 'GitHub',   href: 'https://github.com/oseiasdfarias/' },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/oseiasfarias/' },
     { label: 'YouTube',  href: 'https://www.youtube.com/@otensor' },
-    { label: 'Medium',   href: 'https://oseiasfarias.medium.com' },
+    { label: 'Medium',   href: 'https://medium.com/@oseiasfarias' },
   ];
-  const CV_URL = '/cv_ml_mlops_ats.pdf';
+  // O CV em PDF volta quando a versão em inglês atualizada estiver pronta (src/canais/curriculo)
+  const CV_URL = 'https://www.linkedin.com/in/oseiasfarias/';
 
   // Ordem idêntica à das seções na página
   const NAV_ITEMS: { id: string; label: string; drawerOnly?: boolean }[] = [
@@ -295,8 +296,14 @@ const App: React.FC = () => {
     const saved     = localStorage.getItem('of_theme2');
     const savedLang = localStorage.getItem('of_lang') as Language | null;
     setDarkMode(saved ? saved === 'dark' : true);
+    // Sem escolha salva: português para quem usa o navegador em português, inglês para o resto
     if (savedLang) setLang(savedLang);
+    else setLang((navigator.language || '').toLowerCase().startsWith('pt') ? 'pt' : 'en');
   }, []);
+
+  useEffect(() => {
+    document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
+  }, [lang]);
 
   const toggleTheme = () => {
     const next = !darkMode;
@@ -434,7 +441,7 @@ const App: React.FC = () => {
             <button onClick={toggleTheme} aria-label="theme" className="btn btn-sm btn-icon">
               {darkMode ? <Sun size={14} /> : <Moon size={14} />}
             </button>
-            <a className="btn btn-sm" href={CV_URL} download="cv_ml_mlops_ats.pdf" target="_blank" rel="noreferrer">
+            <a className="btn btn-sm" href={CV_URL} target="_blank" rel="noreferrer">
               {content.hero.ctaSecondary} <ArrowUpRight size={14} />
             </a>
             {/* Hamburger */}
@@ -496,9 +503,9 @@ const App: React.FC = () => {
             style={serif('clamp(34px,min(5.4vw,8vh),76px)' as unknown as number, 600, {
               lineHeight: 1.0, letterSpacing: '-.035em', margin: '0 0 clamp(22px,4.5vh,48px)',
             })}>
-            Machine Learning Engineer<br />
+            Machine Learning &amp; AI Engineer<br />
             <span style={{ color: 'var(--fg-soft)', whiteSpace: 'nowrap' }}>
-              & MLOps / AI Systems
+              MLOps · Reliable AI
             </span>
           </motion.h1>
 
@@ -542,7 +549,7 @@ const App: React.FC = () => {
                   Oséias Farias
                 </div>
                 <div style={{ display: 'grid', gap: 3, ...mono(11.5, { color: 'var(--fg-soft)' }) }}>
-                  <div><span>ROLE&nbsp;/ </span><span style={{ color: 'var(--fg-muted)' }}>ML ENGINEER · MLOPS & AI</span></div>
+                  <div><span>ROLE&nbsp;/ </span><span style={{ color: 'var(--fg-muted)' }}>ML &amp; AI ENGINEER · MLOPS</span></div>
                   <div><span>STACK/ </span><span style={{ color: 'var(--fg-muted)' }}>PYTHON · AWS · PYTORCH · FASTAPI</span></div>
                   <div><span>LOC&nbsp;&nbsp;/ </span><span style={{ color: 'var(--fg-muted)' }}>{content.hero.location}</span></div>
                 </div>
@@ -1216,7 +1223,7 @@ const App: React.FC = () => {
           <SectionHeader
             num="§07"
             title={pt ? 'Onde estou online' : 'Find me online'}
-            subtitle={pt ? '[ 03 CANAIS ]' : '[ 03 CHANNELS ]'}
+            subtitle={pt ? '[ 04 CANAIS ]' : '[ 04 CHANNELS ]'}
           />
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))', gap: 16, alignItems: 'stretch' }}>
             {([
@@ -1226,19 +1233,29 @@ const App: React.FC = () => {
                 href:     'https://www.youtube.com/@otensor',
                 tag:      'VIDEO',
                 desc: pt
-                  ? 'Vídeos sobre machine learning, controle inteligente e engenharia de software — do conceito ao código.'
-                  : 'Videos on machine learning, intelligent control and software engineering — from concept to code.',
+                  ? 'Vídeos sobre machine learning, controle inteligente e engenharia de software, do conceito ao código. 1,7 mil inscritos.'
+                  : 'Videos on machine learning, intelligent control and software engineering, from concept to code. 1.7k subscribers.',
                 cta: pt ? 'Assistir' : 'Watch',
               },
               {
                 platform: 'Medium',
                 handle:   '@oseiasfarias',
-                href:     'https://oseiasfarias.medium.com',
+                href:     'https://medium.com/@oseiasfarias',
                 tag:      'BLOG',
                 desc: pt
                   ? 'Artigos técnicos sobre MLOps, APIs, arquitetura de sistemas e experiências de pesquisa acadêmica.'
                   : 'Technical articles on MLOps, APIs, system architecture and academic research experiences.',
                 cta: pt ? 'Ler artigos' : 'Read articles',
+              },
+              {
+                platform: 'Udemy',
+                handle:   pt ? '2 cursos' : '2 courses',
+                href:     'https://www.udemy.com/course/python-iniciante-passo-a-passo/',
+                tag:      'COURSES',
+                desc: pt
+                  ? 'Cursos de Python para iniciantes, com mais de 2.100 alunos e notas 4,4 e 4,7.'
+                  : 'Python courses for beginners, with 2,100+ students and ratings of 4.4 and 4.7.',
+                cta: pt ? 'Ver curso' : 'See course',
               },
               {
                 platform: 'GitHub',

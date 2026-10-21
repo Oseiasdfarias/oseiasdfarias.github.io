@@ -8,7 +8,7 @@ interface ResearchDiagramProps {
 export const ResearchDiagram: React.FC<ResearchDiagramProps> = ({ type, lang = 'pt' }) => {
   const pt = lang === 'pt';
 
-  // 1. UFABC: Antifragilidade, Conversor Buck, Controle Adaptativo (LQR/H∞), Kalman FDI e Supervisão CrewAI via ZeroMQ
+  // 1. UFABC: Antifragilidade, Conversor Buck, Controle Adaptativo (LQR/H∞), Kalman FDI e supervisão multiagente (JADE) via ZeroMQ
   if (type === 'ufabc') {
     return (
       <svg viewBox="0 0 420 220" width="100%" height="100%" style={{ display: 'block', background: 'transparent' }}>
@@ -58,14 +58,14 @@ export const ResearchDiagram: React.FC<ResearchDiagramProps> = ({ type, lang = '
           <rect x="300" y="20" width="95" height="108" rx="4" fill="var(--panel)" stroke="var(--line-2)" strokeWidth="1.2" />
           <text x="347" y="42" fontFamily="JetBrains Mono, IBM Plex Mono, monospace" fontSize="8" fill="var(--accent-2)" textAnchor="middle" fontWeight="600">AI SUPERVISOR</text>
           <rect x="308" y="56" width="79" height="28" rx="3" fill="var(--node)" stroke="var(--line)" />
-          <text x="347" y="73" fontFamily="JetBrains Mono, IBM Plex Mono, monospace" fontSize="7.5" fill="var(--fg)" textAnchor="middle">CrewAI Agents</text>
+          <text x="347" y="73" fontFamily="JetBrains Mono, IBM Plex Mono, monospace" fontSize="7.5" fill="var(--fg)" textAnchor="middle">JADE Agents</text>
           <rect x="308" y="88" width="79" height="30" rx="3" fill="var(--node)" stroke="var(--line)" />
           <text x="347" y="102" fontFamily="JetBrains Mono, IBM Plex Mono, monospace" fontSize="6.5" fill="var(--fg-soft)" textAnchor="middle">Reconfiguração</text>
           <text x="347" y="112" fontFamily="JetBrains Mono, IBM Plex Mono, monospace" fontSize="6.5" fill="var(--fg-muted)" textAnchor="middle">Autônoma</text>
         </g>
 
         <text x="210" y="195" fontFamily="JetBrains Mono, IBM Plex Mono, monospace" fontSize="7.5" fill="var(--fg-soft)" textAnchor="middle" letterSpacing="0.04em">
-          {pt ? 'ANTIFRAGILIDADE ARTIFICIAL · CONVERSOR BUCK + HIL + CREWAI' : 'ARTIFICIAL ANTIFRAGILITY · BUCK CONVERTER + HIL + CREWAI'}
+          {pt ? 'ANTIFRAGILIDADE ARTIFICIAL · CONVERSOR BUCK + HIL + MULTIAGENTE' : 'ARTIFICIAL ANTIFRAGILITY · BUCK CONVERTER + HIL + MULTI-AGENT'}
         </text>
       </svg>
     );
