@@ -12,21 +12,22 @@ import { ResearchDiagram } from './components/ResearchDiagram';
 import { EduLogo, CertIcon } from './components/EduCertIcons';
 import { HeroInference } from './components/HeroInference';
 import { GithubActivity } from './components/GithubActivity';
+import { AuroraBackground } from './components/AuroraBackground';
 
 // ─── Theme tokens: Graphite & Copper (night-mountain) ────────────────────────
 // Dark: near-black graphite with a fixed mountain wallpaper and a copper accent
 // Light: misty stone with pale mountains and a burnt-copper accent
 
 const DARK: CSSProperties = {
-  '--bg':           '#0a0a0b',
-  '--bg2':          '#141416',
-  '--panel':        'rgba(20,20,22,.55)',
-  '--line':         'rgba(255,255,255,.09)',
-  '--line-2':       'rgba(255,255,255,.20)',
+  '--bg':           '#050505',
+  '--bg2':          '#101011',
+  '--panel':        'rgba(16,16,17,.55)',
+  '--line':         'rgba(255,255,255,.12)',
+  '--line-2':       'rgba(255,255,255,.22)',
   '--grid':         'rgba(255,255,255,.025)',
-  '--fg':           '#f5f5f4',
-  '--fg-muted':     '#a8a29e',
-  '--fg-soft':      '#78716c',
+  '--fg':           '#f5f5f3',
+  '--fg-muted':     '#b8b8b6',
+  '--fg-soft':      '#969694',
   '--accent':       '#d4885a',
   '--accent-2':     '#e3a47c',
   '--glow':         'rgba(212,136,90,.22)',
@@ -65,7 +66,7 @@ const LIGHT: CSSProperties = {
   '--c-violet':     '#6d28d9',
   '--hud-bg':       'rgba(255,255,255,.88)',
   '--stage-bg':     'rgba(0,0,0,.04)',
-  '--mtn-opacity':  '.78',
+  '--mtn-opacity':  '1',
   '--hero-panel':   'rgba(255,255,255,.38)',
   '--inset':        'rgba(0,0,0,.035)',
   '--series':       '#9a4a24',
@@ -75,9 +76,9 @@ const LIGHT: CSSProperties = {
 
 // Rótulo em caixa alta com tracking largo (estilo "CLAUDE CODE TIP")
 const caps = (size = 10.5, extra?: CSSProperties): CSSProperties => ({
-  fontFamily: "'Plus Jakarta Sans', -apple-system, sans-serif",
-  fontSize: size, fontWeight: 500,
-  textTransform: 'uppercase', letterSpacing: '.28em',
+  fontFamily: "'JetBrains Mono', 'IBM Plex Mono', monospace",
+  fontSize: size, fontWeight: 400,
+  textTransform: 'uppercase', letterSpacing: '.22em',
   color: 'var(--fg-soft)',
   ...extra,
 });
@@ -149,17 +150,17 @@ const SectionHeader: React.FC<{
       gap: 16, marginBottom: 30,
     }}>
       <div>
-        <div style={caps(10.5, { marginBottom: 14 })}>
+        <div style={caps(10, { marginBottom: 18, display: 'flex', alignItems: 'center', gap: 14 })}>
           <span style={{ color: 'var(--accent)' }}>{num.replace('§', '')}</span>
           {subtitle && (
             <>
-              <span style={{ margin: '0 10px', opacity: 0.5 }}>—</span>
-              {subtitle.replace(/[[\]]/g, '').trim()}
+              <span aria-hidden="true" style={{ width: 'clamp(24px,6vw,64px)', height: 1, background: 'var(--line-2)' }} />
+              <span>{subtitle.replace(/[[\]]/g, '').trim()}</span>
             </>
           )}
         </div>
-        <h2 style={serif('clamp(28px,3.6vw,42px)' as unknown as number, 600, {
-          margin: 0, letterSpacing: '-.025em', lineHeight: 1.05,
+        <h2 className="display" style={serif('clamp(34px,4.6vw,64px)' as unknown as number, 300, {
+          margin: 0, letterSpacing: '-.045em', lineHeight: 1,
         })}>
           {title}
         </h2>
@@ -196,7 +197,7 @@ const MediaModal: React.FC<{
       }}
       onClick={onClose}
     >
-      <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(4px)' }} />
+      <div style={{ position: 'absolute', inset: 0, background: 'rgba(5,5,5,0.92)', backdropFilter: 'blur(10px)' }} />
       <motion.div
         initial={{ scale: 0.94, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.94, opacity: 0 }} transition={{ duration: 0.2 }}
@@ -204,13 +205,13 @@ const MediaModal: React.FC<{
         onClick={e => e.stopPropagation()}
       >
         <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12, padding: '0 4px' }}>
-          <span style={mono(11, { color: '#888' })}>{modal.index + 1} / {modal.total}</span>
+          <span style={caps(10, { color: 'var(--accent)' })}>{String(modal.index + 1).padStart(2, '0')} / {String(modal.total).padStart(2, '0')}</span>
           <button onClick={onClose}
             style={{ display: 'flex', alignItems: 'center', gap: 6, ...mono(11, { color: '#999', background: 'none', border: 'none', cursor: 'pointer' }) }}>
             <X size={13} /> ESC
           </button>
         </div>
-        <div style={{ width: '100%', border: '1px solid rgba(255,255,255,.1)', overflow: 'hidden', background: '#000' }}>
+        <div style={{ width: '100%', border: '1px solid rgba(255,255,255,.18)', overflow: 'hidden', background: '#050505' }}>
           <img src={modal.src} alt={modal.caption}
             style={{ width: '100%', height: 'auto', maxHeight: '72vh', objectFit: 'contain', display: 'block' }} />
         </div>
@@ -250,6 +251,7 @@ const App: React.FC = () => {
   const [formStatus,     setFormStatus]     = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [modal,          setModal]          = useState<ModalState | null>(null);
   const [showTopBtn,     setShowTopBtn]     = useState(false);
+  const [scrolled,       setScrolled]       = useState(false);
   const [copyStatus,     setCopyStatus]     = useState(false);
 
   const progressRef = useRef<HTMLDivElement>(null);
@@ -336,6 +338,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const onScroll = () => {
       setShowTopBtn(window.scrollY > 500);
+      setScrolled(window.scrollY > 24);
       const h = document.documentElement.scrollHeight - window.innerHeight;
       if (progressRef.current) {
         progressRef.current.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
@@ -343,7 +346,7 @@ const App: React.FC = () => {
       // Wallpaper de montanha: forte no hero, esmaece ao rolar para não competir com o texto
       if (mountainRef.current) {
         const t = Math.min(1, window.scrollY / (window.innerHeight * 0.9));
-        mountainRef.current.style.opacity = String(1 - t * 0.62);
+        mountainRef.current.style.opacity = String(1 - t * 0.42);
         mountainRef.current.style.transform = `translateY(${t * 40}px)`;
       }
     };
@@ -407,32 +410,55 @@ const App: React.FC = () => {
           style={{ backgroundImage: `url(/assets/bg/summit-${darkMode ? 'dark' : 'light'}.webp)` }} />
         {/* Véu escuro do lado do texto, para manter a leitura sobre a foto no modo escuro */}
         <div className="mountain-veil" style={{ background: darkMode
-          ? 'linear-gradient(90deg, rgba(10,10,11,.72) 0%, rgba(10,10,11,.45) 45%, rgba(10,10,11,.12) 100%)'
+          ? 'linear-gradient(90deg, rgba(5,5,5,.52) 0%, rgba(5,5,5,.26) 45%, rgba(5,5,5,.02) 100%)'
           : 'none' }} />
         <div className="mountain-grain" />
       </div>
 
+      {/* ── ÍNDICE LATERAL: seções, só em telas largas ───────── */}
+      <nav aria-label={pt ? 'Índice' : 'Index'} className="side-index">
+        {NAV_ITEMS.filter(it => !it.drawerOnly).map((it, i) => (
+          <a key={it.id} href={`#${it.id}`}
+            onClick={e => { e.preventDefault(); scrollTo(it.id); }}
+            aria-current={activeSection === it.id ? 'true' : undefined}
+            className={`side-index-item${activeSection === it.id ? ' is-active' : ''}`}>
+            <span className="side-index-num">{String(i + 1).padStart(2, '0')}</span>
+            <span className="side-index-label">{it.label}</span>
+          </a>
+        ))}
+      </nav>
+
       {/* ── HEADER ──────────────────────────────────────────── */}
       <header style={{
-        position: 'sticky', top: 0, zIndex: 70,
-        background: darkMode
-          ? 'rgba(10,10,11,0.72)'
+        position: 'sticky', top: 0, zIndex: 70, height: 58,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        padding: scrolled ? '0 8px' : 0,
+        pointerEvents: scrolled ? 'none' : 'auto',
+        background: scrolled ? 'transparent' : darkMode
+          ? 'rgba(5,5,5,0.72)'
           : 'rgba(244,244,243,0.78)',
-        backdropFilter: 'blur(12px)',
-        borderBottom: '1px solid var(--line)',
+        backdropFilter: scrolled ? 'none' : 'blur(12px)',
+        borderBottom: scrolled ? '1px solid transparent' : '1px solid var(--line)',
+        transition: 'background .4s, border-color .4s, padding .5s cubic-bezier(.19,1,.22,1)',
       }}>
         <div style={{
-          maxWidth: 1240, margin: '0 auto',
-          padding: '0 clamp(20px,4vw,40px)',
-          height: 58, display: 'flex', alignItems: 'center',
+          width: '100%', maxWidth: 1240, pointerEvents: 'auto', minWidth: 0,
+          padding: scrolled ? '0 clamp(16px,2.4vw,28px)' : '0 clamp(20px,4vw,40px)',
+          height: scrolled ? 48 : 58, display: 'flex', alignItems: 'center',
           justifyContent: 'space-between', gap: 18,
+          borderRadius: scrolled ? 999 : 0,
+          border: scrolled ? '1px solid var(--line-2)' : '1px solid transparent',
+          background: scrolled ? (darkMode ? 'rgba(8,8,8,.88)' : 'rgba(250,250,249,.88)') : 'transparent',
+          backdropFilter: scrolled ? 'blur(20px)' : 'none',
+          WebkitBackdropFilter: scrolled ? 'blur(20px)' : 'none',
+          transition: 'padding .5s cubic-bezier(.19,1,.22,1), height .5s cubic-bezier(.19,1,.22,1), border-radius .5s, background .4s, border-color .4s',
         }}>
           {/* Logo */}
           <a href="#top"
             onClick={e => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
             style={{ textDecoration: 'none', display: 'flex', alignItems: 'baseline', gap: 11, color: 'var(--fg)' }}>
             <span style={mono(13, { fontWeight: 600, letterSpacing: '.04em', color: 'var(--accent)' })}>OF</span>
-            <span style={serif(17, 500, { letterSpacing: '-.01em' })}>Oséias Farias</span>
+            <span className="logo-name" style={serif(17, 500, { letterSpacing: '-.01em' })}>Oséias Farias</span>
           </a>
 
           {/* Navegação: itens na ordem em que as seções aparecem na página */}
@@ -454,7 +480,7 @@ const App: React.FC = () => {
           </nav>
 
           {/* Actions */}
-          <div className="header-actions" style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+          <div className="header-actions" style={{ display: 'flex', alignItems: 'center', gap: 7, flexShrink: 0 }}>
             <button onClick={toggleLang} className="btn btn-sm btn-icon" style={{ fontSize: 11.5, fontWeight: 600 }}>
               {pt ? 'EN' : 'PT'}
             </button>
@@ -540,11 +566,20 @@ const App: React.FC = () => {
 
         {/* ── HERO ────────────────────────────────────────────── */}
         <section style={{
+          position: 'relative',
           display: 'flex', flexDirection: 'column', justifyContent: 'center',
           minHeight: 'calc(100svh - 60px)',
           padding: 'clamp(14px,4vh,56px) 0 clamp(12px,3vh,40px)',
           borderBottom: '1px solid var(--line)',
         }}>
+          <div aria-hidden="true" className="hero-atmosphere">
+            <AuroraBackground key={darkMode ? 'dark' : 'light'} light={!darkMode} intensity={darkMode ? 1.15 : 1.0} />
+            <div className={`hero-vignette${darkMode ? '' : ' is-light'}`} />
+          </div>
+          <div aria-hidden="true" className="hero-coordinate">
+            <span className="status-dot" />
+            <span>{content.hero.location}</span>
+          </div>
           <motion.h1
             initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.07, ease: [0.2, 0.7, 0.2, 1] }}
@@ -1367,13 +1402,13 @@ const App: React.FC = () => {
             {/* Left — info + socials */}
             <FadeIn>
               <div>
-                <div style={caps(10.5, { marginBottom: 14 })}>
+                <div style={caps(10, { marginBottom: 18, display: 'flex', alignItems: 'center', gap: 14 })}>
                   <span style={{ color: 'var(--accent)' }}>08</span>
-                  <span style={{ margin: '0 10px', opacity: 0.5 }}>—</span>
-                  {pt ? 'CONTATO' : 'CONTACT'}
+                  <span aria-hidden="true" style={{ width: 'clamp(24px,6vw,64px)', height: 1, background: 'var(--line-2)' }} />
+                  <span>{pt ? 'CONTATO' : 'CONTACT'}</span>
                 </div>
-                <h2 style={serif('clamp(30px,4.4vw,52px)' as unknown as number, 600, {
-                  margin: '0 0 20px', letterSpacing: '-.03em', lineHeight: 1.02,
+                <h2 className="display" style={serif('clamp(34px,4.6vw,64px)' as unknown as number, 300, {
+                  margin: '0 0 24px', letterSpacing: '-.045em', lineHeight: 1,
                 })}>
                   {content.contact.title}
                 </h2>
@@ -1416,7 +1451,7 @@ const App: React.FC = () => {
 
             {/* Right — form */}
             <FadeIn delay={0.1}>
-              <form onSubmit={handleSubmit} className="glass" style={{
+              <form onSubmit={handleSubmit} className={`glass form-editorial${darkMode ? "" : " paper"}`} style={{
                 display: 'flex', flexDirection: 'column', gap: 0, overflow: 'hidden',
               }}>
                 <input type="text" name="name" required placeholder={content.contact.name}
