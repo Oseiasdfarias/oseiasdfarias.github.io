@@ -20,6 +20,7 @@ uniform float uIntensity;
 uniform float uGrain;
 uniform float uSeed;
 uniform float uPixel;
+uniform float uWhite;
 uniform vec3 uColors[3];
 
 float hash21(vec2 p) {
@@ -83,7 +84,7 @@ void main() {
     float rays = 0.45 + 0.85 * fbm2(vec2(uv.x * 13.0 + seed, y * 1.7 - t * 0.55));
     float breathe = 0.78 + 0.22 * sin(t * 0.31 + seed) * cos(t * 0.17 + seed * 0.7);
     float weight = ribbon * envelope * rays * breathe * 0.46;
-    vec3 hot = mix(uColors[i % 3], vec3(1.0), clamp(core * 0.42, 0.0, 0.45));
+    vec3 hot = mix(uColors[i % 3], vec3(1.0), clamp(core * uWhite, 0.0, 0.45));
     accum += hot * weight;
     alpha += weight;
   }
@@ -106,11 +107,17 @@ void main() {
 }
 `;
 
-// Cobre, âmbar e rosa-queimado: casam com o acento --accent do portfólio.
+// Azul, ciano e índigo: contrastam com o cobre do acento e da foto de montanha.
 const COLORS: [number, number, number][] = [
-  [0.83, 0.53, 0.35],
-  [0.96, 0.62, 0.30],
-  [0.70, 0.30, 0.38],
+  [0.26, 0.55, 0.98],
+  [0.30, 0.80, 1.00],
+  [0.46, 0.40, 0.96],
+];
+// Tema claro: tons mais fundos, para as faixas lerem sobre fundo claro.
+const COLORS_LIGHT: [number, number, number][] = [
+  [0.10, 0.36, 0.82],
+  [0.12, 0.56, 0.90],
+  [0.32, 0.26, 0.78],
 ];
 
 function compile(gl: WebGL2RenderingContext, type: number, src: string) {
@@ -122,9 +129,9 @@ function compile(gl: WebGL2RenderingContext, type: number, src: string) {
   return sh;
 }
 
-interface Props { intensity?: number; bands?: number; }
+interface Props { intensity?: number; bands?: number; light?: boolean; }
 
-export const AuroraBackground: React.FC<Props> = ({ intensity = 1.15, bands = 4 }) => {
+export const AuroraBackground: React.FC<Props> = ({ intensity = 1.15, bands = 4, light = false }) => {
   const wrap = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const [fallback, setFallback] = useState(false);
@@ -159,7 +166,8 @@ export const AuroraBackground: React.FC<Props> = ({ intensity = 1.15, bands = 4 
     gl.uniform1f(u('uGrain'), 0.85);
     gl.uniform1f(u('uSeed'), 3.0);
     gl.uniform1f(u('uPixel'), 2.0);
-    gl.uniform3fv(u('uColors'), new Float32Array(COLORS.flat()));
+    gl.uniform1f(u('uWhite'), light ? 0.08 : 0.42);
+    gl.uniform3fv(u('uColors'), new Float32Array((light ? COLORS_LIGHT : COLORS).flat()));
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
 
@@ -197,7 +205,7 @@ export const AuroraBackground: React.FC<Props> = ({ intensity = 1.15, bands = 4 
       cancelAnimationFrame(raf); ro.disconnect(); io.disconnect();
       gl.deleteProgram(prog); gl.deleteShader(vs); gl.deleteShader(fs); gl.deleteBuffer(buf);
     };
-  }, [bands, intensity]);
+  }, [bands, intensity, light]);
 
   return (
     <div ref={wrap} aria-hidden="true" className={`aurora-curtain${fallback ? ' aurora-fallback' : ''}`}>

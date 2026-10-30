@@ -66,7 +66,7 @@ const LIGHT: CSSProperties = {
   '--c-violet':     '#6d28d9',
   '--hud-bg':       'rgba(255,255,255,.88)',
   '--stage-bg':     'rgba(0,0,0,.04)',
-  '--mtn-opacity':  '.78',
+  '--mtn-opacity':  '1',
   '--hero-panel':   'rgba(255,255,255,.38)',
   '--inset':        'rgba(0,0,0,.035)',
   '--series':       '#9a4a24',
@@ -346,7 +346,7 @@ const App: React.FC = () => {
       // Wallpaper de montanha: forte no hero, esmaece ao rolar para não competir com o texto
       if (mountainRef.current) {
         const t = Math.min(1, window.scrollY / (window.innerHeight * 0.9));
-        mountainRef.current.style.opacity = String(1 - t * 0.62);
+        mountainRef.current.style.opacity = String(1 - t * 0.42);
         mountainRef.current.style.transform = `translateY(${t * 40}px)`;
       }
     };
@@ -410,7 +410,7 @@ const App: React.FC = () => {
           style={{ backgroundImage: `url(/assets/bg/summit-${darkMode ? 'dark' : 'light'}.webp)` }} />
         {/* Véu escuro do lado do texto, para manter a leitura sobre a foto no modo escuro */}
         <div className="mountain-veil" style={{ background: darkMode
-          ? 'linear-gradient(90deg, rgba(10,10,11,.72) 0%, rgba(10,10,11,.45) 45%, rgba(10,10,11,.12) 100%)'
+          ? 'linear-gradient(90deg, rgba(5,5,5,.52) 0%, rgba(5,5,5,.26) 45%, rgba(5,5,5,.02) 100%)'
           : 'none' }} />
         <div className="mountain-grain" />
       </div>
@@ -572,12 +572,10 @@ const App: React.FC = () => {
           padding: 'clamp(14px,4vh,56px) 0 clamp(12px,3vh,40px)',
           borderBottom: '1px solid var(--line)',
         }}>
-          {darkMode && (
-            <div aria-hidden="true" className="hero-atmosphere">
-              <AuroraBackground />
-              <div className="hero-vignette" />
-            </div>
-          )}
+          <div aria-hidden="true" className="hero-atmosphere">
+            <AuroraBackground key={darkMode ? 'dark' : 'light'} light={!darkMode} intensity={darkMode ? 1.15 : 1.0} />
+            <div className={`hero-vignette${darkMode ? '' : ' is-light'}`} />
+          </div>
           <div aria-hidden="true" className="hero-coordinate">
             <span className="status-dot" />
             <span>{content.hero.location}</span>
