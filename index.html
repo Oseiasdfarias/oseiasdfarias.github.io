@@ -2,7 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="https://lucide.dev/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#050505" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Oséias Farias · Machine Learning & AI Engineer</title>
     <meta name="description" content="Machine Learning & AI Engineer (MLOps). I build AI systems that keep physical systems running: LLM agents, MLOps, AWS serverless and control systems. Open to remote roles." />
@@ -22,7 +26,7 @@
     <!-- Google Fonts: Plus Jakarta Sans + JetBrains Mono + IBM Plex Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@100..900&display=swap" rel="stylesheet">
 
     <style>
       html { scroll-behavior: smooth; }
@@ -65,6 +69,83 @@
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
       }
       @media (max-width: 767px) { .mountain-img { background-position: 45% 60%; } }
+
+      /* ── Títulos de seção em Inter ── */
+      .display { font-family: 'Inter', 'Plus Jakarta Sans', -apple-system, sans-serif; }
+
+      /* ── Seções editoriais: cards viram linhas com filete superior ── */
+      .mod {
+        border-radius: 0 !important; background: transparent !important;
+        border-width: 1px 0 0 0 !important;
+        -webkit-backdrop-filter: none; backdrop-filter: none;
+      }
+      .mod:hover { border-top-color: var(--accent) !important; }
+
+      /* ── Coordenada vertical + ponto de status no hero ── */
+      .hero-coordinate {
+        position: absolute; right: -2px; top: 24px; z-index: 1; display: flex; align-items: center; gap: 12px;
+        writing-mode: vertical-rl; pointer-events: none;
+        font: 400 9px 'JetBrains Mono', monospace; letter-spacing: .22em; text-transform: uppercase; color: var(--fg-soft);
+      }
+      .status-dot { display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: var(--accent); animation: livedot 2s ease-out infinite; }
+      @media (max-width: 900px) { .hero-coordinate { display: none; } }
+
+      /* ── Formulário editorial: campos mono, cantos retos (escuro e claro) ── */
+      .form-editorial { border-radius: 0 !important; border-width: 1px 0 0 0; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+      .form-editorial .field {
+        font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace; font-size: 12.5px; letter-spacing: .04em;
+        padding: 18px 22px;
+      }
+      .form-editorial .field::placeholder { text-transform: uppercase; letter-spacing: .16em; font-size: 10.5px; }
+      .form-editorial .btn { border-radius: 0; }
+
+      /* ── Tema claro: bloco "papel" dentro da página ── */
+      .paper {
+        --fg: #171717; --fg-muted: #454541; --fg-soft: #6b6b66; --bg: #eeeee8;
+        --line: rgba(0,0,0,.14); --line-2: rgba(0,0,0,.32); --accent: #9a4a24; --panel: transparent;
+        background: #eeeee8 !important; color: #171717;
+      }
+      .paper .field:focus { background: rgba(154,74,36,.07); }
+      .paper .btn-primary { background: #171717; color: #eeeee8; border-color: #171717; }
+      .paper .btn-primary svg { color: #eeeee8; }
+      .paper .btn-primary:hover { background: #9a4a24; border-color: #9a4a24; color: #fff; }
+
+      /* ── Índice lateral (≥1500px): números mono, rótulo aparece no hover/ativo ── */
+      .side-index { display: none; }
+      @media (min-width: 1500px) {
+        .side-index {
+          display: flex; flex-direction: column; gap: 2px;
+          position: fixed; right: 28px; top: 50%; transform: translateY(-50%); z-index: 60;
+        }
+        .side-index-item {
+          display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 5px 0;
+          font: 400 10px 'JetBrains Mono', monospace; letter-spacing: .18em; text-transform: uppercase;
+          color: var(--fg-soft); text-decoration: none; transition: color .4s;
+        }
+        .side-index-label { opacity: 0; transform: translateX(8px); transition: opacity .4s, transform .5s cubic-bezier(.19,1,.22,1); }
+        .side-index-num { width: 22px; text-align: right; }
+        .side-index-item:hover, .side-index-item.is-active { color: var(--fg); }
+        .side-index-item:hover .side-index-label, .side-index-item.is-active .side-index-label { opacity: 1; transform: none; }
+        .side-index-item.is-active .side-index-num { color: var(--accent); }
+      }
+
+      /* ── Hero: aurora WebGL em tela cheia atrás do conteúdo (estilo aiXis) ── */
+      body { overflow-x: clip; }
+      .hero-atmosphere {
+        position: absolute; top: 0; bottom: 0; left: 50%; width: 100vw; transform: translateX(-50%);
+        z-index: -1; pointer-events: none; overflow: clip;
+      }
+      .aurora-curtain { position: absolute; inset: 0 0 -30px 0; }
+      .aurora-curtain canvas { width: 100%; height: 100%; display: block; }
+      .aurora-fallback {
+        background: radial-gradient(ellipse at 70% 80%, rgba(212,136,90,.40), transparent 50%),
+                    radial-gradient(ellipse at 43% 70%, rgba(180,80,70,.32), transparent 45%);
+      }
+      .hero-vignette {
+        position: absolute; inset: 0;
+        background: linear-gradient(90deg, rgba(5,5,5,.70), rgba(5,5,5,.28) 48%, rgba(5,5,5,.04)),
+                    linear-gradient(0deg, var(--bg) 0%, transparent 32%, rgba(5,5,5,.15) 80%, rgba(5,5,5,.6) 100%);
+      }
 
       /* ── Componentes do design atual (vidro, raio 12, cobre) ── */
       .btn {
@@ -167,6 +248,12 @@
       @media (min-width: 1200px) {
         .mobile-menu-btn { display: none !important; }
         .mobile-nav-drawer { display: none !important; }
+      }
+
+      /* Telefones estreitos: só o monograma "OF" e botões mais juntos, para a barra caber */
+      @media (max-width: 430px) {
+        .logo-name { display: none; }
+        .header-actions { gap: 4px !important; }
       }
 
       /* ── Menu em pílula com indicador deslizante ─────────────── */
@@ -287,7 +374,7 @@
   }
 }
 </script>
-    <script type="module" crossorigin src="/assets/index-CPiwLMCg.js"></script>
+    <script type="module" crossorigin src="/assets/index-B880OwNE.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/three-CsuulQ62.js">
     <link rel="stylesheet" crossorigin href="/assets/index-BPW5I0KC.css">
   </head>
