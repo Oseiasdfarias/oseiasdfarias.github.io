@@ -36,6 +36,14 @@ export const EduLogo: React.FC<EduLogoProps> = ({ id, size = 68 }) => {
       bg: 'color-mix(in srgb, var(--c-sky) 12%, transparent)',
       border: 'color-mix(in srgb, var(--c-sky) 38%, transparent)',
     },
+    ifpa: {
+      src: '/assets/logos/Instituto_Federal_do_Pará_-_Marca_Vertical_2015.svg.webp',
+      alt: 'IFPA - Instituto Federal do Pará',
+      badgeText: 'IFPA',
+      color: 'var(--c-red)',
+      bg: 'color-mix(in srgb, var(--c-red) 12%, transparent)',
+      border: 'color-mix(in srgb, var(--c-red) 38%, transparent)',
+    },
     ifma: {
       src: '/assets/logos/instituto_federal.webp',
       alt: 'Instituto Federal',

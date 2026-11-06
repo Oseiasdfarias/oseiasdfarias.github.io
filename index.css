@@ -92,7 +92,7 @@ body {
 }
 .edu-grid { margin-bottom: 30px; }
 @media (min-width: 1024px) {
-  .edu-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .edu-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .community-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 .projects-grid {

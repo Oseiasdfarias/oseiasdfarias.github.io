@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 380">
+  <!-- Otensor — marca oficial (canônica). Anel + chip de 4 pinos + núcleo.
+       Fonte de verdade da geometria: brand/_planejamento/identity.md.
+       Sem fundo/glow — decoração fica por conta de quem consome. -->
+  <circle cx="190" cy="190" r="181" fill="none" stroke="#00B4A0" stroke-width="18"/>
+  <rect x="182" y="122" width="16" height="30" rx="4" fill="#00B4A0"/>
+  <rect x="182" y="226" width="16" height="30" rx="4" fill="#00B4A0"/>
+  <rect x="226" y="182" width="30" height="16" rx="4" fill="#00B4A0"/>
+  <rect x="122" y="182" width="30" height="16" rx="4" fill="#00B4A0"/>
+  <rect x="159" y="159" width="62" height="62" rx="9" fill="none" stroke="#00B4A0" stroke-width="10"/>
+  <circle cx="190" cy="190" r="11" fill="#00D4BC"/>
+</svg>
