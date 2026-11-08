@@ -700,6 +700,8 @@ export const getPublications = (lang: Language): PublicationData[] => {
 const ALURA = "https://cursos.alura.com.br/certificate/";
 const ALURA_DEGREE = "https://cursos.alura.com.br/degree/certificate/";
 const ALURA_PROGRAM = "https://cursos.alura.com.br/program/certificate/";
+// Certificado completo (jan a nov/2024): lista todas as trilhas e cursos, verificável sem login
+const ALURA_FULL = "https://cursos.alura.com.br/user/oseias-dfarias/fullCertificate/feaffcd16e8ad830a977475d8629adc3";
 const UDEMY = "https://udemy.com/certificate/";
 
 // Subcategorias da seção de certificados, na ordem em que aparecem
@@ -722,6 +724,9 @@ export const getCertifications = (_lang: Language): CertificationData[] => [
   // IA, ML & Deep Learning
   { title: "AI Engineer Core Track: LLM Engineering, RAG, QLoRA, Agents", issuer: "Udemy · Ligency, Ed Donner", date: "nov 2026", category: "ai", link: "https://udemy-certificate.s3.amazonaws.com/pdf/UC-2051246d-bb2a-497d-905f-8d73213149e3.pdf" },
   { title: "Claude Academy: Model Context Protocol, tópicos avançados",  issuer: "Anthropic",          date: "nov 2026", category: "ai", link: "https://academy.claude.com/verify/00adbaa8fd71630747a688befdb7a9a2" },
+  { title: "ChatGPT e programação: aumente sua produtividade",          issuer: "Alura · Oracle ONE", date: "out 2024", category: "ai", link: ALURA_FULL },
+  { title: "ChatGPT e JavaScript: construa o jogo Pong",                issuer: "Alura · Oracle ONE", date: "out 2024", category: "ai", link: ALURA_FULL },
+  { title: "Formação IA Generativa — ONE (8h)",                         issuer: "Alura · Oracle ONE", date: "out 2024", category: "ai", link: ALURA_FULL },
   { title: "AWS Machine Learning Foundations",                          issuer: "Udacity",            date: "out 2021", category: "ai" },
   { title: "Aprendizagem por Reforço com Deep Learning, PyTorch e Python", issuer: "Udemy",           date: "2021", category: "ai", link: UDEMY + "UC-0e7a0cc8-54f6-4720-bd15-740088404273" },
   { title: "Machine Learning e Data Science com Python de A a Z",      issuer: "Udemy",              date: "2021", category: "ai", link: UDEMY + "UC-e38f3500-7c76-40d9-aa3d-414dfc3a9d9c" },
@@ -737,7 +742,9 @@ export const getCertifications = (_lang: Language): CertificationData[] => [
   { title: "Formação SQL com MySQL Server da Oracle",                   issuer: "Alura · Oracle ONE", date: "nov 2024", category: "data", link: ALURA_DEGREE + "509b46f9-e68c-4e9b-b41f-06f3889f1f8b" },
   // Back-end & APIs
   { title: "REST APIs com Python e Flask",                              issuer: "Udemy",              date: "out 2025", category: "backend", link: UDEMY + "UC-563dd22a-5969-472b-903f-810314964a90" },
-  { title: "Programa Oracle Next Education — Back-end",                 issuer: "Alura · Oracle ONE", date: "jul 2024", category: "backend", link: ALURA_PROGRAM + "deb0e367-c4ec-486d-9572-9eeb41e2bb63" },
+  { title: "Arquitetura Java: descomplicando a Clean Architecture",     issuer: "Alura · Oracle ONE", date: "set 2024", category: "backend", link: ALURA_FULL },
+  { title: "Formação Java e Spring Framework T6 — ONE (108h)",          issuer: "Alura · Oracle ONE", date: "jul 2024", category: "backend", link: ALURA_FULL },
+  { title: "Programa Oracle Next Education F2 T6 — Back-end (303h, 6 formações)", issuer: "Alura · Oracle ONE", date: "jul 2024", category: "backend", link: ALURA_PROGRAM + "deb0e367-c4ec-486d-9572-9eeb41e2bb63" },
   { title: "Formação Java Web: Spring Boot",                            issuer: "Alura",              date: "jun 2024", category: "backend", link: ALURA_DEGREE + "55e5774e-576a-4bf4-859e-db5ee59c35da" },
   { title: "Formação Java e Orientação a Objetos — ONE",                issuer: "Alura · Oracle ONE", date: "abr 2024", category: "backend", link: ALURA_DEGREE + "ad767b4a-af1d-4cd8-829b-90ec96db2e83" },
   { title: "Formação Aprenda a programar em Java com Orientação a Objetos", issuer: "Alura",          date: "abr 2024", category: "backend", link: ALURA_DEGREE + "03d96642-4087-46e0-b7ff-beeb18f2657c" },
