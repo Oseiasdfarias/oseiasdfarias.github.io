@@ -696,7 +696,10 @@ export const getPublications = (lang: Language): PublicationData[] => {
 };
 
 // ─── Certifications ────────────────────────────────────────────────────────
+// A Alura usa um endereço por tipo de certificado: curso avulso, formação e programa
 const ALURA = "https://cursos.alura.com.br/certificate/";
+const ALURA_DEGREE = "https://cursos.alura.com.br/degree/certificate/";
+const ALURA_PROGRAM = "https://cursos.alura.com.br/program/certificate/";
 const UDEMY = "https://udemy.com/certificate/";
 
 // Subcategorias da seção de certificados, na ordem em que aparecem
@@ -731,20 +734,20 @@ export const getCertifications = (_lang: Language): CertificationData[] => [
   // Dados & Estatística
   { title: "SQL para Análise de Dados: do Básico ao Avançado",          issuer: "Udemy · Data Driven School", date: "nov 2026", category: "data", link: "https://udemy-certificate.s3.amazonaws.com/pdf/UC-4d1b7627-1f68-4697-bfef-2e5e3edc3aa1.pdf" },
   { title: "EBA — Estatística do Básico ao Avançado",                  issuer: "EBA",                date: "abr 2025", category: "data" },
-  { title: "Formação SQL com MySQL Server da Oracle",                   issuer: "Alura · Oracle ONE", date: "nov 2024", category: "data", link: ALURA + "509b46f9-e68c-4e9b-b41f-06f3889f1f8b" },
+  { title: "Formação SQL com MySQL Server da Oracle",                   issuer: "Alura · Oracle ONE", date: "nov 2024", category: "data", link: ALURA_DEGREE + "509b46f9-e68c-4e9b-b41f-06f3889f1f8b" },
   // Back-end & APIs
   { title: "REST APIs com Python e Flask",                              issuer: "Udemy",              date: "out 2025", category: "backend", link: UDEMY + "UC-563dd22a-5969-472b-903f-810314964a90" },
-  { title: "Programa Oracle Next Education — Back-end",                 issuer: "Alura · Oracle ONE", date: "jul 2024", category: "backend", link: ALURA + "deb0e367-c4ec-486d-9572-9eeb41e2bb63" },
-  { title: "Formação Java Web: Spring Boot",                            issuer: "Alura",              date: "jun 2024", category: "backend", link: ALURA + "55e5774e-576a-4bf4-859e-db5ee59c35da" },
-  { title: "Formação Java e Orientação a Objetos — ONE",                issuer: "Alura · Oracle ONE", date: "abr 2024", category: "backend", link: ALURA + "ad767b4a-af1d-4cd8-829b-90ec96db2e83" },
-  { title: "Formação Aprenda a programar em Java com Orientação a Objetos", issuer: "Alura",          date: "abr 2024", category: "backend", link: ALURA + "03d96642-4087-46e0-b7ff-beeb18f2657c" },
+  { title: "Programa Oracle Next Education — Back-end",                 issuer: "Alura · Oracle ONE", date: "jul 2024", category: "backend", link: ALURA_PROGRAM + "deb0e367-c4ec-486d-9572-9eeb41e2bb63" },
+  { title: "Formação Java Web: Spring Boot",                            issuer: "Alura",              date: "jun 2024", category: "backend", link: ALURA_DEGREE + "55e5774e-576a-4bf4-859e-db5ee59c35da" },
+  { title: "Formação Java e Orientação a Objetos — ONE",                issuer: "Alura · Oracle ONE", date: "abr 2024", category: "backend", link: ALURA_DEGREE + "ad767b4a-af1d-4cd8-829b-90ec96db2e83" },
+  { title: "Formação Aprenda a programar em Java com Orientação a Objetos", issuer: "Alura",          date: "abr 2024", category: "backend", link: ALURA_DEGREE + "03d96642-4087-46e0-b7ff-beeb18f2657c" },
   // Front-end & Web
-  { title: "Formação Iniciante em Programação — ONE (HTML, CSS e JS)",  issuer: "Alura · Oracle ONE", date: "jan 2024", category: "frontend", link: ALURA + "a80af173-9021-47ee-8590-0725f57f655b" },
+  { title: "Formação Iniciante em Programação — ONE (HTML, CSS e JS)",  issuer: "Alura · Oracle ONE", date: "jan 2024", category: "frontend", link: ALURA_DEGREE + "a80af173-9021-47ee-8590-0725f57f655b" },
   { title: "Lógica de programação: explore funções e listas",           issuer: "Alura",              date: "jan 2024", category: "frontend", link: ALURA + "12c3d19a-9bff-4631-9f24-7c3b2d32586f" },
   { title: "Lógica de programação: mergulhe em programação com JavaScript", issuer: "Alura",          date: "jan 2024", category: "frontend", link: ALURA + "b15ab008-646e-4be8-a576-85364f54ec68" },
   // Cloud & DevOps
   { title: "AWS Lambda com Python e Serverless Framework",              issuer: "Udemy",              date: "abr 2024", category: "cloud", link: UDEMY + "UC-e9b6a86d-443f-47a8-81b9-9f4f46a20ef8" },
-  { title: "Formação Oracle Cloud Infrastructure — ONE",                issuer: "Alura · Oracle ONE", date: "nov 2024", category: "cloud", link: ALURA + "72a32952-7dba-444c-bc8b-844b66bbd79f" },
+  { title: "Formação Oracle Cloud Infrastructure — ONE",                issuer: "Alura · Oracle ONE", date: "nov 2024", category: "cloud", link: ALURA_DEGREE + "72a32952-7dba-444c-bc8b-844b66bbd79f" },
   { title: "AWS para Iniciantes (curso preparatório)",                   issuer: "Udemy",              date: "dez 2023", category: "cloud", link: UDEMY + "UC-e5431d02-ba73-4cde-ab87-ce987e558d55" },
   { title: "Git e GitHub: compartilhando e colaborando em projetos",    issuer: "Alura",              date: "jan 2024", category: "cloud", link: ALURA + "95e10d93-4b98-4e9a-8d99-6e8b524c91f4" },
   { title: "Curso de Shell Script do Iniciante ao Avançado",            issuer: "Udemy",              date: "2021", category: "cloud", link: UDEMY + "UC-f7ab28e8-928a-4b9f-a672-bf722c0c5493" },
@@ -758,7 +761,7 @@ export const getCertifications = (_lang: Language): CertificationData[] => [
   { title: "Introdução à Ciência da Computação com Python — Parte 2",   issuer: "Coursera · IME USP", date: "nov 2020", category: "dev", link: "https://coursera.org/verify/H6MVL62HNL2M" },
   { title: "Introdução à Ciência da Computação com Python — Parte 1",   issuer: "Coursera · IME USP", date: "abr 2020", category: "dev", link: "https://coursera.org/verify/HYE73UXFY7G4" },
   // Carreira & desenvolvimento pessoal
-  { title: "Formação Empreendedorismo, Agilidade e Protagonismo na Carreira — ONE", issuer: "Alura · Oracle ONE", date: "mai 2024", category: "career", link: ALURA + "7891c882-8411-4fb6-aa4b-84e51f9fa019" },
+  { title: "Formação Empreendedorismo, Agilidade e Protagonismo na Carreira — ONE", issuer: "Alura · Oracle ONE", date: "mai 2024", category: "career", link: ALURA_DEGREE + "7891c882-8411-4fb6-aa4b-84e51f9fa019" },
   { title: "Propósito profissional: seja protagonista da sua carreira", issuer: "Alura",              date: "abr 2024", category: "career", link: ALURA + "a5a37bd9-9614-469c-86dc-9582c3d85e37" },
-  { title: "Formação Desenvolvimento Pessoal — ONE",                    issuer: "Alura · Oracle ONE", date: "jan 2024", category: "career", link: ALURA + "767d8dcf-f15d-4ddb-a36c-7d7510f22608" },
+  { title: "Formação Desenvolvimento Pessoal — ONE",                    issuer: "Alura · Oracle ONE", date: "jan 2024", category: "career", link: ALURA_DEGREE + "767d8dcf-f15d-4ddb-a36c-7d7510f22608" },
 ];
