@@ -3,16 +3,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Sun, Moon, Menu, ArrowUpRight, ArrowRight, ArrowUp, ChevronLeft, ChevronRight, Download, ChevronDown } from 'lucide-react';
 import {
   translations, getProjects, getExperience,
-  getEducation, getCertifications, getResearch, getPublications, getOpenSource,
+  getEducation, getCertifications, getResearch, getPublications,
 } from './content';
 import { Language } from './types';
 import { Aeropendulo3D } from './components/Aeropendulo3D';
 import { ProjectDiagram } from './components/ProjectDiagram';
-import { ResearchDiagram } from './components/ResearchDiagram';
-import { EduLogo, CertIcon } from './components/EduCertIcons';
+import { Certifications } from './components/Certifications';
 import { HeroInference } from './components/HeroInference';
 import { GithubActivity } from './components/GithubActivity';
 import { AuroraBackground } from './components/AuroraBackground';
+import { MediumPosts } from './components/MediumPosts';
+import { TrustBand, StackGrid } from './components/BrandSections';
+import { LogoPlate } from './components/BrandMark';
+import { ProjectVisual, hasProjectVisual } from './components/ProjectVisual';
 
 // ─── Theme tokens: Graphite & Copper (night-mountain) ────────────────────────
 // Dark: near-black graphite with a fixed mountain wallpaper and a copper accent
@@ -250,6 +253,8 @@ const App: React.FC = () => {
   const cvMenuRef = useRef<HTMLDivElement>(null);
   const [formStatus,     setFormStatus]     = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [modal,          setModal]          = useState<ModalState | null>(null);
+  const [modalMedia,     setModalMedia]     = useState<{ src: string; caption: string }[]>([]);
+  const [openProj,       setOpenProj]       = useState<Record<string, boolean>>({});
   const [showTopBtn,     setShowTopBtn]     = useState(false);
   const [scrolled,       setScrolled]       = useState(false);
   const [copyStatus,     setCopyStatus]     = useState(false);
@@ -257,8 +262,10 @@ const App: React.FC = () => {
   const progressRef = useRef<HTMLDivElement>(null);
   const mountainRef = useRef<HTMLDivElement>(null);
 
-  const openModal  = (media: { src: string; caption: string }[], i: number) =>
+  const openModal  = (media: { src: string; caption: string }[], i: number) => {
+    setModalMedia(media);
     setModal({ ...media[i], index: i, total: media.length });
+  };
   const closeModal = () => setModal(null);
   const prevMedia  = (media: { src: string; caption: string }[]) =>
     setModal(m => m ? { ...media[(m.index - 1 + m.total) % m.total], index: (m.index - 1 + m.total) % m.total, total: m.total } : null);
@@ -272,7 +279,6 @@ const App: React.FC = () => {
   const research   = getResearch(lang);
   const certs      = getCertifications(lang);
   const pubs       = getPublications(lang);
-  const openSource = getOpenSource(lang);
 
   const socials = [
     { label: 'GitHub',   href: 'https://github.com/oseiasdfarias/' },
@@ -302,9 +308,9 @@ const App: React.FC = () => {
     { id: 'about',        label: content.nav.about },
     { id: 'capabilities', label: content.nav.focus },
     { id: 'projects',     label: content.nav.projects },
-    { id: 'opensource',   label: content.nav.opensource },
     { id: 'experience',   label: content.nav.experience },
     { id: 'research',     label: content.nav.research },
+    { id: 'writing',      label: content.nav.writing },
     { id: 'education',    label: content.nav.education },
     { id: 'community',    label: content.nav.community, drawerOnly: true },
     { id: 'contact',      label: content.nav.contact },
@@ -391,7 +397,7 @@ const App: React.FC = () => {
 
   // ─────────────────────────────────────────────────────────────────────────
   return (
-    <div style={{
+    <div className={darkMode ? 'theme-dark' : 'theme-light'} style={{
       ...theme,
       background: 'var(--bg)',
       color: 'var(--fg)',
@@ -444,9 +450,9 @@ const App: React.FC = () => {
         <div style={{
           width: '100%', maxWidth: 1240, pointerEvents: 'auto', minWidth: 0,
           padding: scrolled ? '0 clamp(16px,2.4vw,28px)' : '0 clamp(20px,4vw,40px)',
-          height: scrolled ? 48 : 58, display: 'flex', alignItems: 'center',
+          height: scrolled ? 46 : 58, display: 'flex', alignItems: 'center',
           justifyContent: 'space-between', gap: 18,
-          borderRadius: scrolled ? 999 : 0,
+          borderRadius: scrolled ? 'var(--hdr-r)' : 0,
           border: scrolled ? '1px solid var(--line-2)' : '1px solid transparent',
           background: scrolled ? (darkMode ? 'rgba(8,8,8,.88)' : 'rgba(250,250,249,.88)') : 'transparent',
           backdropFilter: scrolled ? 'blur(20px)' : 'none',
@@ -702,6 +708,11 @@ const App: React.FC = () => {
           <HeroInference lang={lang} />
         </div>
 
+        {/* ── ONDE ATUEI ──────────────────────────────────────── */}
+        <section style={{ padding: 'clamp(28px,4vw,44px) 0', borderBottom: '1px solid var(--line)' }}>
+          <TrustBand lang={lang} />
+        </section>
+
         {/* ── METRICS ─────────────────────────────────────────── */}
         <section className="github-strip" style={{
           padding: 'clamp(28px,4vw,44px) 0',
@@ -813,6 +824,7 @@ const App: React.FC = () => {
               </motion.div>
             ))}
           </div>
+          <StackGrid lang={lang} />
         </section>
 
         {/* ── PROJECTS §02 ───────────────────────────────────── */}
@@ -881,6 +893,8 @@ const App: React.FC = () => {
                   }}>
                     {proj.id === 'lab-virtual' ? (
                       <Aeropendulo3D />
+                    ) : hasProjectVisual(proj.id) ? (
+                      <ProjectVisual id={proj.id!} lang={lang} />
                     ) : proj.image ? (
                       <img
                         src={proj.image}
@@ -925,20 +939,50 @@ const App: React.FC = () => {
                     </div>
                   )}
 
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 12, flex: 1 }}>
-                    {([
-                      { k: 'P', text: proj.problem,  accent: false },
-                      { k: 'S', text: proj.solution,  accent: false },
-                      { k: 'I', text: proj.impact,    accent: true  },
-                    ]).map(({ k, text, accent }) => (
-                      <div key={k} style={{ display: 'grid', gridTemplateColumns: '14px 1fr', gap: 10 }}>
-                        <span style={mono(11, { color: 'var(--accent)' })}>{k}</span>
-                        <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.55, color: accent ? 'var(--fg)' : 'var(--fg-muted)' }}>
-                          {text}
-                        </p>
+                  {(() => {
+                    const key = proj.id ?? String(i);
+                    const open = !!openProj[key];
+                    const panelId = `proj-psi-${key}`;
+                    return (
+                      <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+                        {proj.summary && (
+                          <p style={{ margin: '0 0 12px', fontSize: 14, lineHeight: 1.6, color: 'var(--fg)' }}>
+                            {proj.summary}
+                          </p>
+                        )}
+                        <button type="button" className="psi-toggle"
+                          aria-expanded={open} aria-controls={panelId}
+                          onClick={() => setOpenProj(o => ({ ...o, [key]: !o[key] }))}>
+                          <span>{pt ? 'Problema · solução · impacto' : 'Problem · solution · impact'}</span>
+                          <ChevronDown size={13} style={{ transform: open ? 'rotate(180deg)' : 'none', transition: 'transform .3s' }} />
+                        </button>
+                        <AnimatePresence initial={false}>
+                          {open && (
+                            <motion.div id={panelId} key="psi"
+                              initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.35, ease: [0.2, 0.7, 0.2, 1] }}
+                              style={{ overflow: 'hidden' }}>
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: 12, paddingTop: 14 }}>
+                                {([
+                                  { k: 'P', text: proj.problem,  accent: false },
+                                  { k: 'S', text: proj.solution,  accent: false },
+                                  { k: 'I', text: proj.impact,    accent: true  },
+                                ]).map(({ k, text, accent }) => (
+                                  <div key={k} style={{ display: 'grid', gridTemplateColumns: '14px 1fr', gap: 10 }}>
+                                    <span style={mono(11, { color: 'var(--accent)' })}>{k}</span>
+                                    <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.55, color: accent ? 'var(--fg)' : 'var(--fg-muted)' }}>
+                                      {text}
+                                    </p>
+                                  </div>
+                                ))}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </div>
-                    ))}
-                  </div>
+                    );
+                  })()}
                   <div style={{
                     display: 'flex', flexWrap: 'wrap', gap: 5,
                     margin: '18px 0 0', paddingTop: 16, borderTop: '1px solid var(--line)',
@@ -983,96 +1027,13 @@ const App: React.FC = () => {
           </FadeIn>
         </section>
 
-        {/* ── OPEN SOURCE §03 ────────────────────────────────── */}
-        <section id="opensource" data-section="opensource" style={{
-          scrollMarginTop: 70,
-          padding: 'clamp(40px,6vw,72px) 0',
-          borderBottom: '1px solid var(--line)',
-        }}>
-          <SectionHeader num="§03" title={content.opensource.title} subtitle={content.opensource.subtitle} />
-
-          <FadeIn delay={0.08}>
-            <div className="opensource-grid glass" style={{
-              display: 'grid', gridTemplateColumns: 'minmax(0,1.05fr) minmax(0,1fr)',
-              overflow: 'hidden',
-            }}>
-              {/* Left — info + stats */}
-              <div style={{ padding: 'clamp(22px,3vw,32px)', borderRight: '1px solid var(--line)' }}>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 11, flexWrap: 'wrap', marginBottom: 16 }}>
-                  <h3 style={serif(30, 500, { margin: 0, letterSpacing: '-.02em' })}>{openSource.name}</h3>
-                  <span className="badge">{openSource.version}</span>
-                  <span className="badge badge-muted">{openSource.license}</span>
-                </div>
-                <p style={{ margin: '0 0 22px', fontSize: 15, lineHeight: 1.66, color: 'var(--fg-muted)' }}>
-                  {openSource.description}
-                </p>
-
-                {/* Stats */}
-                <div style={{ display: 'flex', gap: 0, borderTop: '1px solid var(--line)', marginBottom: 22 }}>
-                  {openSource.stats.map(s => (
-                    <div key={s.label} style={{ flex: 1, padding: '16px 12px 4px', borderRight: '1px solid var(--line)' }}>
-                      <div style={serif(28, 500, { lineHeight: 0.9 })}>{s.value}</div>
-                      <div style={caps(9, { marginTop: 10, letterSpacing: '.18em' })}>
-                        {s.label}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Links */}
-                <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-                  <a className="btn" href={openSource.github} target="_blank" rel="noreferrer">
-                    GitHub <ArrowUpRight size={14} />
-                  </a>
-                  <a className="btn btn-primary" href={openSource.pypi} target="_blank" rel="noreferrer">
-                    PyPI <ArrowUpRight size={14} />
-                  </a>
-                </div>
-              </div>
-
-              {/* Right — demo GIFs */}
-              <div style={{ padding: 'clamp(22px,3vw,32px)' }}>
-                <div style={mono(11, { color: 'var(--fg-soft)', marginBottom: 10 })}>
-                  FIG.02 — {openSource.demo.title}
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  {openSource.demo.media.slice(0, 1).map((item, i) => (
-                    <button key={i} onClick={() => openModal(openSource.demo.media, i)}
-                      style={{
-                        aspectRatio: '16/9', border: '1px solid var(--line)', borderRadius: 8,
-                        overflow: 'hidden', background: 'var(--inset)', padding: 0, cursor: 'pointer',
-                        display: 'block', width: '100%',
-                      }}>
-                      <img src={item.src} alt={item.caption} loading="lazy"
-                        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-                    </button>
-                  ))}
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-                    {openSource.demo.media.slice(1, 3).map((item, i) => (
-                      <button key={i + 1} onClick={() => openModal(openSource.demo.media, i + 1)}
-                        style={{
-                          aspectRatio: '16/10', border: '1px solid var(--line)', borderRadius: 8,
-                          overflow: 'hidden', background: 'var(--inset)', padding: 0, cursor: 'pointer',
-                          display: 'block', width: '100%',
-                        }}>
-                        <img src={item.src} alt={item.caption} loading="lazy"
-                          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </FadeIn>
-        </section>
-
-        {/* ── EXPERIENCE §04 ─────────────────────────────────── */}
+        {/* ── EXPERIENCE §03 ─────────────────────────────────── */}
         <section id="experience" data-section="experience" style={{
           scrollMarginTop: 70,
           padding: 'clamp(40px,6vw,72px) 0',
           borderBottom: '1px solid var(--line)',
         }}>
-          <SectionHeader num="§04" title={content.experience.title}
+          <SectionHeader num="§03" title={content.experience.title}
             subtitle={pt ? 'TRAJETÓRIA' : 'TRACK RECORD'} />
 
           <div style={{ maxWidth: 900 }}>
@@ -1083,12 +1044,13 @@ const App: React.FC = () => {
                 viewport={{ once: true, margin: '-5%' }}
                 transition={{ duration: 0.65, delay: i * 0.07, ease: [0.2, 0.7, 0.2, 1] }}
                 style={{
-                  display: 'grid', gridTemplateColumns: '170px 1fr',
+                  display: 'grid', gridTemplateColumns: '200px 1fr',
                   gap: 24, padding: '22px 0', borderTop: '1px solid var(--line)',
                 }}>
                 <div className="experience-period"
                   style={mono(12, { color: 'var(--fg-soft)', paddingTop: 4 })}>
                   {exp.period}
+                  {exp.brand && <LogoPlate id={exp.brand} />}
                 </div>
                 <div>
                   <div style={{
@@ -1127,13 +1089,13 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        {/* ── RESEARCH §05 ───────────────────────────────────── */}
+        {/* ── RESEARCH §04 ───────────────────────────────────── */}
         <section id="research" data-section="research" style={{
           scrollMarginTop: 70,
           padding: 'clamp(40px,6vw,72px) 0',
           borderBottom: '1px solid var(--line)',
         }}>
-          <SectionHeader num="§05" title={content.research.title} subtitle={content.research.subtitle} />
+          <SectionHeader num="§04" title={content.research.title} subtitle={content.research.subtitle} />
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(290px,1fr))', gap: 20, alignItems: 'stretch' }}>
             {research.map((r, i) => (
@@ -1174,7 +1136,7 @@ const App: React.FC = () => {
                       height: 220,
                       position: 'relative',
                     }}>
-                      <ResearchDiagram type={r.id as 'ufabc' | 'ufpa'} lang={lang} />
+                      <ProjectVisual id={`research:${r.id}`} lang={lang} />
                     </div>
                   )}
 
@@ -1220,6 +1182,16 @@ const App: React.FC = () => {
           </div>
         </section>
 
+        {/* ── WRITING §05 ────────────────────────────────────── */}
+        <section id="writing" data-section="writing" style={{
+          scrollMarginTop: 70,
+          padding: 'clamp(40px,6vw,72px) 0',
+          borderBottom: '1px solid var(--line)',
+        }}>
+          <SectionHeader num="§05" title={pt ? 'Artigos' : 'Writing'} subtitle={pt ? 'MEDIUM · SÉRIE IA NA PRÁTICA' : 'MEDIUM · AI IN PRACTICE SERIES'} />
+          <MediumPosts lang={lang} />
+        </section>
+
         {/* ── EDUCATION §06 ──────────────────────────────────── */}
         <section id="education" data-section="education" style={{
           scrollMarginTop: 70,
@@ -1243,12 +1215,12 @@ const App: React.FC = () => {
                   border: '1px solid var(--line)', borderRadius: 8,
                   background: 'var(--panel)', padding: 22,
                   display: 'flex', flexDirection: 'column', flex: 1,
-                  alignItems: 'center', textAlign: 'center',
+                  alignItems: 'flex-start', textAlign: 'left',
                 }}>
                   <span className="modbar" />
-                  {/* Top Centered Logo */}
-                  <div style={{ marginBottom: 18, display: 'flex', justifyContent: 'center' }}>
-                    <EduLogo id={edu.id} size={68} />
+                  {/* Mesma placa de logo da Trajetória */}
+                  <div style={{ marginBottom: 18 }}>
+                    <LogoPlate id={edu.id === 'oracle' ? 'oracle-one' : edu.id} />
                   </div>
                   <div style={mono(11, { color: 'var(--accent)', marginBottom: 6 })}>
                     {edu.period} · {edu.institution}
@@ -1268,33 +1240,7 @@ const App: React.FC = () => {
               {content.education.certifications}
             </div>
           </FadeIn>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(252px,1fr))', gap: 8 }}>
-            {certs.map((cert, i) => (
-              <FadeIn key={i} delay={i * 0.03}>
-                <div style={{
-                  display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10,
-                  padding: '13px 14px', border: '1px solid var(--line)', borderRadius: 10,
-                  background: 'var(--panel)', backdropFilter: 'blur(6px)',
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 11, minWidth: 0 }}>
-                    <CertIcon category={cert.category} title={cert.title} size={15} />
-                    <div style={{ minWidth: 0 }}>
-                      <div style={serif(14.5, 500, {
-                        whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
-                      })}>
-                        {cert.link
-                          ? <a href={cert.link} target="_blank" rel="noreferrer"
-                            style={{ textDecoration: 'none', color: 'inherit' }}>{cert.title}</a>
-                          : cert.title}
-                      </div>
-                      <div style={mono(10, { color: 'var(--fg-soft)', marginTop: 2 })}>{cert.issuer}</div>
-                    </div>
-                  </div>
-                  <span style={mono(10.5, { color: 'var(--fg-soft)', whiteSpace: 'nowrap' })}>{cert.date}</span>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
+          <Certifications certs={certs} lang={lang} />
         </section>
 
         {/* ── COMMUNITY §07 ─────────────────────────────────── */}
@@ -1497,8 +1443,8 @@ const App: React.FC = () => {
           <MediaModal
             modal={modal}
             onClose={closeModal}
-            onPrev={() => prevMedia(openSource.demo.media)}
-            onNext={() => nextMedia(openSource.demo.media)}
+            onPrev={() => prevMedia(modalMedia)}
+            onNext={() => nextMedia(modalMedia)}
           />
         )}
       </AnimatePresence>

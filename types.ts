@@ -32,6 +32,8 @@ export interface Content {
     projects: string;
     opensource: string;
     research: string;
+    writing: string;
+    community: string;
     education: string;
     contact: string;
   };
@@ -106,6 +108,7 @@ export interface ProjectData {
   status?: string;
   image?: string;
   metrics?: { label: string; value: string }[];
+  summary?: string;
   problem: string;
   solution: string;
   impact: string;
@@ -122,6 +125,7 @@ export interface ExperienceData {
   type: 'industry' | 'research' | 'volunteer';
   current?: boolean;
   tags: string[];
+  brand?: string;
 }
 
 export interface PublicationData {
@@ -141,12 +145,16 @@ export interface EducationData {
   description: string;
 }
 
+export type CertCategory = 'ai' | 'data' | 'backend' | 'frontend' | 'cloud' | 'embedded' | 'dev' | 'career';
+
 export interface CertificationData {
   title: string;
   issuer: string;
   date: string;
   link?: string;
-  category?: 'ai' | 'cloud' | 'embedded' | 'backend' | 'dev';
+  category?: CertCategory;
+  /** Nome original (em português), quando o título exibido é a tradução */
+  original?: string;
 }
 
 export interface ResearchData {

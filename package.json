@@ -8,9 +8,10 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "predeploy": "npm run github:stats || echo 'github:stats falhou - mantendo o snapshot anterior'; npm run build",
+    "predeploy": "npm run github:stats || echo 'github:stats falhou - mantendo o snapshot anterior'; npm run medium:posts || echo 'medium:posts falhou - mantendo o snapshot anterior'; npm run build",
     "deploy": "gh-pages -d dist",
-    "github:stats": "node scripts/github-stats.mjs"
+    "github:stats": "node scripts/github-stats.mjs",
+    "medium:posts": "node scripts/medium-posts.mjs"
   },
   "dependencies": {
     "@types/three": "^0.184.1",

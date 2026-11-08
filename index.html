@@ -265,27 +265,26 @@
         .header-actions { gap: 4px !important; }
       }
 
-      /* ── Menu em pílula com indicador deslizante ─────────────── */
-      .nav-pill {
-        display: flex; align-items: center; gap: 2px; padding: 4px;
-        border-radius: 999px; border: 1px solid var(--line);
-        background: var(--panel); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
-      }
+      /* ── Menu superior: quadrado e minimalista (desktop) ─────── */
+      :root { --hdr-r: 999px; }            /* celular: a barra continua arredondada */
+      @media (min-width: 768px) { :root { --hdr-r: 0px; } }
+      .nav-pill { display: flex; align-items: center; gap: 4px; padding: 0; border: 0; background: none; }
       .nav-item {
-        position: relative; display: inline-flex; align-items: center; height: 30px; padding: 0 13px;
-        border-radius: 999px; text-decoration: none; white-space: nowrap;
-        font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: -.005em;
-        color: var(--fg-muted); transition: color .2s;
+        position: relative; display: inline-flex; align-items: center; height: 32px; padding: 0 12px;
+        text-decoration: none; white-space: nowrap;
+        font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase;
+        color: var(--fg-soft); transition: color .2s;
       }
-      .nav-item:hover { color: var(--fg); }
-      .nav-item.is-active { color: var(--fg); }
-      .nav-active {
-        position: absolute; inset: 0; border-radius: 999px;
-        background: var(--bg2); border: 1px solid var(--line-2);
-      }
-      .nav-item.is-active::after {
-        content: ''; position: absolute; left: 50%; bottom: 3px; width: 4px; height: 4px; margin-left: -2px;
-        border-radius: 999px; background: var(--accent);
+      .nav-item:hover, .nav-item.is-active { color: var(--fg); }
+      .nav-active { position: absolute; left: 12px; right: 12px; bottom: 0; height: 1px; background: var(--accent); }
+      @media (min-width: 768px) {
+        .header-actions .btn {
+          border-radius: 0; height: 30px; padding: 0 11px; background: transparent; gap: 6px;
+          font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 400; letter-spacing: .12em; text-transform: uppercase;
+          -webkit-backdrop-filter: none; backdrop-filter: none;
+        }
+        .header-actions .btn-icon { width: 30px; padding: 0; }
+        .header-actions .btn:hover { transform: none; }
       }
       .drawer-item {
         display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px;
@@ -369,6 +368,145 @@
         .pub-row { grid-template-columns: 1fr !important; }
         .pub-meta { white-space: normal !important; }
       }
+
+      /* ── Artigos (Medium): cards com capa + linhas editoriais ── */
+      .writing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+      .writing-card {
+        display: flex; flex-direction: column; padding: 18px 0 0; color: inherit; text-decoration: none;
+        border-style: solid; border-color: var(--line);
+      }
+      .writing-cover { aspect-ratio: 16 / 9; overflow: hidden; background: #f7f7f5; border: 1px solid var(--line); padding: 10px; }
+      /* As capas são diagramas de proporções bem diferentes: mostrar inteiras, sem recorte */
+      .writing-cover img {
+        width: 100%; height: 100%; object-fit: contain; display: block;
+        transition: transform .8s cubic-bezier(.2,.7,.2,1);
+      }
+      .writing-card:hover .writing-cover img { transform: scale(1.03); }
+      .writing-title {
+        margin: 0 0 10px; font: 500 19px/1.25 'Inter', 'Plus Jakarta Sans', sans-serif; letter-spacing: -.02em;
+        display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+      }
+      .writing-excerpt {
+        margin: 0 0 18px; flex: 1; font-size: 13.5px; line-height: 1.6; color: var(--fg-muted);
+        display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+      }
+      .writing-read {
+        display: inline-flex; align-items: center; gap: 6px; align-self: flex-start;
+        font: 400 10.5px 'JetBrains Mono', monospace; letter-spacing: .16em; text-transform: uppercase; color: var(--fg-soft);
+        transition: color .3s;
+      }
+      .writing-card:hover .writing-read { color: var(--accent); }
+      .writing-row {
+        display: grid; grid-template-columns: 104px minmax(0, 1fr) auto 16px; gap: 20px; align-items: baseline;
+        padding: 15px 0; border-top: 1px solid var(--line); color: inherit; text-decoration: none; transition: border-color .3s;
+      }
+      .writing-row:last-child { border-bottom: 1px solid var(--line); }
+      .writing-row-title { font: 500 16px/1.35 'Inter', 'Plus Jakarta Sans', sans-serif; letter-spacing: -.01em; transition: color .3s; }
+      .writing-row-meta { white-space: nowrap; }
+      .writing-row-arrow { color: var(--fg-soft); align-self: center; transition: transform .3s, color .3s; }
+      .writing-row:hover .writing-row-title, .writing-row:hover .writing-row-arrow { color: var(--accent); }
+      .writing-row:hover .writing-row-arrow { transform: translate(2px, -2px); }
+      @media (max-width: 720px) {
+        .writing-row { grid-template-columns: minmax(0, 1fr) 16px; gap: 6px 14px; }
+        .writing-row-date { grid-column: 1 / -1; }
+        .writing-row-meta { display: none; }
+      }
+      /* ── Logos de marca (BrandMark): silhueta no tom do texto, cor no hover ── */
+      .brand { position: relative; display: inline-flex; align-items: center; justify-content: center; line-height: 0; color: var(--fg-muted); transition: color .35s; }
+      .brand img { display: block; width: auto; object-fit: contain; opacity: 0; transition: opacity .35s; }
+      .brand-mask {
+        position: absolute; inset: 0; background: currentColor; transition: background-color .35s, opacity .35s;
+        -webkit-mask: var(--src) center / contain no-repeat; mask: var(--src) center / contain no-repeat;
+      }
+      .brand-mono:hover .brand-mask, .brand-host:hover .brand-mono .brand-mask { background: var(--brand); }
+      .theme-dark .brand-mono.brand-dark:hover .brand-mask, .theme-dark .brand-host:hover .brand-mono.brand-dark .brand-mask { background: var(--fg); }
+      .brand-image:hover img, .brand-host:hover .brand-image img { opacity: 1; }
+      .brand-image:hover .brand-mask, .brand-host:hover .brand-image .brand-mask { opacity: 0; }
+      /* Logos coloridos escuros não leem sobre o fundo escuro: no hover ganham uma placa clara */
+      .theme-dark .brand-image::before {
+        content: ""; position: absolute; inset: -6px -8px; border-radius: 6px; background: #f4f4f1; opacity: 0; transition: opacity .35s;
+      }
+      .theme-dark .brand-image:hover::before, .theme-dark .brand-host:hover .brand-image::before { opacity: 1; }
+      .theme-dark .brand-image img { position: relative; }
+      @media (prefers-reduced-motion: reduce) { .brand, .brand img, .brand-mask, .brand-image::before { transition: none; } }
+
+      /* ── Faixa "Onde atuei" ── */
+      .trust-band { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); align-items: start; gap: 30px 20px; }
+      @media (max-width: 1180px) { .trust-band { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+      .trust-item { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; text-decoration: none; color: inherit; min-width: 0; }
+      .trust-logo { display: flex; align-items: center; gap: 10px; height: 52px; }
+      .trust-word { font: 600 19px/1 'Inter', 'Plus Jakarta Sans', sans-serif; letter-spacing: -.03em; color: var(--fg-muted); transition: color .35s; white-space: nowrap; }
+      .brand-host:hover .trust-word { color: var(--fg); }
+      .trust-cap { font: 400 9.5px/1.5 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--fg-soft); }
+      @media (max-width: 720px) {
+        .trust-band { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 18px; }
+        .trust-logo { height: 44px; }
+        .trust-word { font-size: 18px; }
+      }
+
+      /* ── Stack ── */
+      .stack-groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 32px; }
+      .stack-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 8px; }
+      .stack-tile {
+        display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 18px 8px 14px;
+        border: 1px solid var(--line); transition: border-color .35s, background .35s; text-align: center;
+      }
+      .stack-tile:hover { border-color: var(--line-2); background: color-mix(in srgb, var(--fg) 3%, transparent); }
+      .stack-name { font: 400 10.5px 'JetBrains Mono', monospace; letter-spacing: .04em; color: var(--fg-soft); transition: color .35s; }
+      .stack-tile:hover .stack-name { color: var(--fg); }
+      @media (max-width: 860px) { .stack-groups { grid-template-columns: 1fr; } }
+      @media (max-width: 420px) { .stack-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+      /* ── Visual dos cards de projeto: ilustração + faixa de logos ── */
+      .pv-stack {
+        display: flex; align-items: center; justify-content: center; gap: 22px; height: 46px; flex: none;
+        border-top: 1px solid var(--line);
+      }
+      .pv-flow { stroke-dasharray: 4 4; animation: pvflow 1.4s linear infinite; }
+      @keyframes pvflow { to { stroke-dashoffset: -16; } }
+      .pv-pulse { animation: pvpulse 2.4s ease-in-out infinite; }
+      @keyframes pvpulse { 50% { opacity: .45; } }
+      @media (prefers-reduced-motion: reduce) { .pv-flow, .pv-pulse { animation: none; } }
+
+      /* ── Projetos: alternar problema · solução · impacto ── */
+      .psi-toggle {
+        display: inline-flex; align-items: center; gap: 8px; align-self: flex-start; padding: 6px 0; margin: 0;
+        background: none; border: 0; border-bottom: 1px solid var(--line-2); cursor: pointer;
+        font: 400 10.5px 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--accent);
+        transition: border-color .3s, color .3s;
+      }
+      .psi-toggle:hover { border-color: var(--accent); }
+      .psi-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+      /* ── Certificados: chips de subcategoria e cartões ── */
+      .cert-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+      .cert-chip {
+        display: inline-flex; align-items: center; gap: 8px; padding: 7px 13px; cursor: pointer;
+        background: none; border: 1px solid var(--line-2); border-radius: 999px; color: var(--fg-muted);
+        font: 400 11px 'JetBrains Mono', monospace; letter-spacing: .06em; transition: border-color .25s, color .25s, background .25s;
+      }
+      .cert-chip:hover { border-color: var(--accent); color: var(--fg); }
+      .cert-chip.is-on { border-color: var(--accent); color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent); }
+      .cert-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+      .cert-chip-n { color: var(--fg-soft); font-size: 10px; }
+      .cert-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 8px; }
+      .cert-card {
+        display: flex; align-items: flex-start; gap: 11px; height: 100%; padding: 13px 14px; text-decoration: none; color: inherit;
+        border: 1px solid var(--line); border-radius: 10px; background: var(--panel); backdrop-filter: blur(6px);
+        transition: border-color .3s, transform .3s;
+      }
+      a.cert-card:hover { border-color: var(--accent); transform: translateY(-1px); }
+      .cert-title { font: 500 14px/1.35 'Plus Jakarta Sans', sans-serif; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+      .cert-arrow { color: var(--fg-soft); flex-shrink: 0; margin-top: 3px; transition: color .3s, transform .3s; }
+      a.cert-card:hover .cert-arrow { color: var(--accent); transform: translate(2px, -2px); }
+
+      /* ── Placa de logo na Trajetória ── */
+      .exp-plate {
+        display: flex; align-items: center; justify-content: center; width: 176px; height: 88px; margin-top: 14px;
+        border: 1px solid var(--line);
+      }
+      .mod .exp-plate { margin-top: 0; }
+      @media (max-width: 767px) { .exp-plate { width: 152px; height: 76px; margin: 8px 0 6px; } }
     </style>
 
     <script type="importmap">
