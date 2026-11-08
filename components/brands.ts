@@ -26,6 +26,7 @@ export const BRANDS: Record<string, Brand> = {
   'redis': { name: "Redis", src: 'logos/tech/redis.svg', hex: '#FF4438', kind: 'mono' },
   'graphql': { name: "GraphQL", src: 'logos/tech/graphql.svg', hex: '#E10098', kind: 'mono' },
   'quarkus': { name: "Quarkus", src: 'logos/tech/quarkus.svg', hex: '#4695EB', kind: 'mono' },
+  'bitbucket': { name: "Bitbucket", src: 'logos/tech/bitbucket.svg', hex: '#0052CC', kind: 'mono' },
   'vuedotjs': { name: "Vue.js", src: 'logos/tech/vuedotjs.svg', hex: '#4FC08D', kind: 'mono' },
   'react': { name: "React", src: 'logos/tech/react.svg', hex: '#61DAFB', kind: 'mono' },
   'threedotjs': { name: "Three.js", src: 'logos/tech/threedotjs.svg', hex: '#000000', kind: 'mono', dark: true },

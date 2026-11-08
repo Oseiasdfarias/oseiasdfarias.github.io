@@ -59,10 +59,11 @@ export const TrustBand: React.FC<{ lang: Language }> = ({ lang }) => {
 // As mesmas quatro frentes do Foco. Só ferramentas com logo; conceitos ficam nos chips.
 
 const STACK: { k: [string, string]; ids: string[] }[] = [
-  { k: ['ML & MLOps', 'ML & MLOps'], ids: ['python', 'pytorch', 'tensorflow', 'scikitlearn', 'mlflow', 'dvc', 'numpy', 'pandas', 'scipy', 'apachespark', 'jupyter', 'opencv', 'keras', 'streamlit', 'plotly'] },
-  { k: ['IA, agentes & APIs', 'AI, agents & APIs'], ids: ['openai', 'googlegemini', 'claude', 'cursor', 'vapi', 'elevenlabs', 'langchain', 'crewai', 'ollama', 'fastapi', 'flask', 'postman', 'pydantic', 'pytest', 'react'] },
-  { k: ['Cloud, back-end & DevOps', 'Cloud, back end & DevOps'], ids: ['aws', 'docker', 'githubactions', 'linux', 'ubuntu', 'git', 'postgresql', 'redis', 'graphql', 'quarkus', 'java', 'typescript', 'vuedotjs', 'nginx', 'supabase'] },
-  { k: ['Sistemas físicos & pesquisa', 'Physical systems & research'], ids: ['px4', 'aeropendulo', 'matlab', 'latex', 'notebooklm', 'espressif', 'raspberrypi', 'arduino', 'platformio', 'c', 'cplusplus', 'mqtt', 'eclipsemosquitto', 'sqlite', 'threedotjs'] },
+  // Cada grupo vai do que mais uso e tenho mais familiaridade (pelos projetos e pela experiência) ao mais ocasional
+  { k: ['ML & MLOps', 'ML & MLOps'], ids: ['python', 'pytorch', 'mlflow', 'dvc', 'scikitlearn', 'numpy', 'pandas', 'scipy', 'jupyter', 'tensorflow', 'opencv', 'keras', 'apachespark', 'streamlit', 'plotly'] },
+  { k: ['IA, agentes & APIs', 'AI, agents & APIs'], ids: ['fastapi', 'pydantic', 'pytest', 'claude', 'openai', 'langchain', 'crewai', 'elevenlabs', 'vapi', 'googlegemini', 'cursor', 'react', 'flask', 'ollama', 'postman'] },
+  { k: ['Cloud, back-end & DevOps', 'Cloud, back end & DevOps'], ids: ['aws', 'docker', 'linux', 'githubactions', 'git', 'bitbucket', 'postgresql', 'redis', 'nginx', 'java', 'quarkus', 'graphql', 'typescript', 'ubuntu', 'supabase'] },
+  { k: ['Sistemas físicos & pesquisa', 'Physical systems & research'], ids: ['matlab', 'px4', 'espressif', 'aeropendulo', 'raspberrypi', 'mqtt', 'arduino', 'latex', 'c', 'cplusplus', 'platformio', 'eclipsemosquitto', 'sqlite', 'notebooklm', 'threedotjs'] },
 ];
 
 
