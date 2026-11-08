@@ -720,8 +720,56 @@ export const getCertCategories = (lang: Language): { id: CertCategory; label: st
   ];
 };
 
+// Nomes em inglês dos certificados (o original em português fica no tooltip do cartão)
+const CERT_TITLES_EN: Record<string, string> = {
+  "AI Engineer Core Track: LLM Engineering, RAG, QLoRA, Agents": "AI Engineer Core Track: LLM Engineering, RAG, QLoRA, Agents",
+  "Claude Academy: Model Context Protocol, tópicos avançados": "Claude Academy: Model Context Protocol, Advanced Topics",
+  "Formação IA Generativa — ONE (ChatGPT, 25h)": "Generative AI Learning Path — ONE (ChatGPT, 25h)",
+  "AWS Machine Learning Foundations": "AWS Machine Learning Foundations",
+  "Aprendizagem por Reforço com Deep Learning, PyTorch e Python": "Reinforcement Learning with Deep Learning, PyTorch and Python",
+  "Machine Learning e Data Science com Python de A a Z": "Machine Learning and Data Science with Python from A to Z",
+  "Deep Learning com Python de A a Z — O Curso Completo": "Deep Learning with Python from A to Z — The Complete Course",
+  "Manual Prático do Deep Learning — Redes Neurais Profundas": "Practical Deep Learning Handbook — Deep Neural Networks",
+  "Redes Neurais Artificiais em Python": "Artificial Neural Networks in Python",
+  "Machine Learning com Spark e PySpark: o Curso Completo": "Machine Learning with Spark and PySpark: The Complete Course",
+  "Detecção de Objetos com YOLO, Darknet, OpenCV e Python": "Object Detection with YOLO, Darknet, OpenCV and Python",
+  "Capacitação em Inteligência Artificial": "Artificial Intelligence Training",
+  "SQL para Análise de Dados: do Básico ao Avançado": "SQL for Data Analysis: From Basic to Advanced",
+  "EBA — Estatística do Básico ao Avançado": "EBA — Statistics from Basic to Advanced",
+  "Formação SQL com MySQL Server da Oracle — ONE (70h)": "SQL with Oracle MySQL Server Learning Path — ONE (70h)",
+  "Formação SQL com MySQL Server da Oracle (66h)": "SQL with Oracle MySQL Server Learning Path (66h)",
+  "REST APIs com Python e Flask": "REST APIs with Python and Flask",
+  "Arquitetura Java: descomplicando a Clean Architecture": "Java Architecture: Demystifying Clean Architecture",
+  "Formação Java e Spring Framework T6 — ONE (108h)": "Java and Spring Framework Learning Path T6 — ONE (108h)",
+  "Formação Java e Spring Boot (34h)": "Java and Spring Boot Learning Path (34h)",
+  "Programa Oracle Next Education F2 T6 — Back-end (303h, 6 formações)": "Oracle Next Education F2 T6 Program — Back End (303h, 6 learning paths)",
+  "Formação Java Web: Spring Boot (40h)": "Java Web Learning Path: Build Applications with Spring Boot (40h)",
+  "Formação Java e Orientação a Objetos — ONE (49h)": "Java and Object-Oriented Programming Learning Path — ONE (49h)",
+  "Formação Aprenda a programar em Java com Orientação a Objetos (39h)": "Learn to Program in Java with Object-Oriented Programming Learning Path (39h)",
+  "Formação Iniciante em Programação — ONE (HTML, CSS e JS, 54h)": "Programming Beginner Learning Path — ONE (HTML, CSS and JS, 54h)",
+  "Lógica de programação: explore funções e listas": "Programming Logic: Explore Functions and Lists",
+  "Lógica de programação: mergulhe em programação com JavaScript": "Programming Logic: Dive into Programming with JavaScript",
+  "AWS Lambda com Python e Serverless Framework": "AWS Lambda with Python and the Serverless Framework",
+  "Formação Oracle Cloud Infrastructure — ONE (21h)": "Oracle Cloud Infrastructure Learning Path — ONE (21h)",
+  "AWS para Iniciantes (curso preparatório)": "AWS for Beginners (preparatory course)",
+  "Git e GitHub: compartilhando e colaborando em projetos": "Git and GitHub: Sharing and Collaborating on Projects",
+  "Curso de Shell Script do Iniciante ao Avançado": "Shell Script Course from Beginner to Advanced",
+  "Capacitação Profissional em Sistemas Embarcados (160h)": "Professional Training in Embedded Systems (160h)",
+  "Robotics: Aerial Robotics": "Robotics: Aerial Robotics",
+  "Python 3 do Básico ao Avançado (com projetos reais)": "Python 3 from Basic to Advanced (with real projects)",
+  "Aprendendo C++ — Básico ao Avançado": "Learning C++ — Basic to Advanced",
+  "Programação Orientada a Objetos em C++": "Object-Oriented Programming in C++",
+  "Introdução à Ciência da Computação com Python — Parte 2": "Introduction to Computer Science with Python — Part 2",
+  "Introdução à Ciência da Computação com Python — Parte 1": "Introduction to Computer Science with Python — Part 1",
+  "Trilha Minha carreira (40h)": "My Career Track (40h)",
+  "Trilha Minha carreira (32h)": "My Career Track (32h)",
+  "Formação Empreendedorismo, Agilidade e Protagonismo na Carreira — ONE (54h)": "Entrepreneurship, Agility and Career Leadership Learning Path — ONE (54h)",
+  "Propósito profissional: seja protagonista da sua carreira": "Professional Purpose: Be the Protagonist of Your Career",
+  "Formação Desenvolvimento Pessoal — ONE (38h)": "Personal Development Learning Path — ONE (38h)",
+};
+
 // Agrupados por categoria; dentro de cada uma, do mais recente para o mais antigo
-export const getCertifications = (_lang: Language): CertificationData[] => [
+const CERTIFICATIONS: CertificationData[] = [
   // IA, ML & Deep Learning
   { title: "AI Engineer Core Track: LLM Engineering, RAG, QLoRA, Agents", issuer: "Udemy · Ligency, Ed Donner", date: "nov 2026", category: "ai", link: "https://udemy-certificate.s3.amazonaws.com/pdf/UC-2051246d-bb2a-497d-905f-8d73213149e3.pdf" },
   { title: "Claude Academy: Model Context Protocol, tópicos avançados",  issuer: "Anthropic",          date: "nov 2026", category: "ai", link: "https://academy.claude.com/verify/00adbaa8fd71630747a688befdb7a9a2" },
@@ -775,3 +823,8 @@ export const getCertifications = (_lang: Language): CertificationData[] => [
   { title: "Propósito profissional: seja protagonista da sua carreira", issuer: "Alura",              date: "abr 2024", category: "career", link: ALURA + "a5a37bd9-9614-469c-86dc-9582c3d85e37" },
   { title: "Formação Desenvolvimento Pessoal — ONE (38h)",                    issuer: "Alura · Oracle ONE", date: "jan 2024", category: "career", link: alura("degree-desenvolvimento-pessoal-turma6-one-695707") },
 ];
+
+export const getCertifications = (lang: Language): CertificationData[] =>
+  lang === 'pt'
+    ? CERTIFICATIONS
+    : CERTIFICATIONS.map(c => (CERT_TITLES_EN[c.title] ? { ...c, title: CERT_TITLES_EN[c.title], original: c.title } : c));

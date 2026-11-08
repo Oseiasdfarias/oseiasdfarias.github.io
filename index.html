@@ -265,27 +265,26 @@
         .header-actions { gap: 4px !important; }
       }
 
-      /* ── Menu em pílula com indicador deslizante ─────────────── */
-      .nav-pill {
-        display: flex; align-items: center; gap: 2px; padding: 4px;
-        border-radius: 999px; border: 1px solid var(--line);
-        background: var(--panel); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
-      }
+      /* ── Menu superior: quadrado e minimalista (desktop) ─────── */
+      :root { --hdr-r: 999px; }            /* celular: a barra continua arredondada */
+      @media (min-width: 768px) { :root { --hdr-r: 0px; } }
+      .nav-pill { display: flex; align-items: center; gap: 4px; padding: 0; border: 0; background: none; }
       .nav-item {
-        position: relative; display: inline-flex; align-items: center; height: 30px; padding: 0 13px;
-        border-radius: 999px; text-decoration: none; white-space: nowrap;
-        font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: -.005em;
-        color: var(--fg-muted); transition: color .2s;
+        position: relative; display: inline-flex; align-items: center; height: 32px; padding: 0 12px;
+        text-decoration: none; white-space: nowrap;
+        font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase;
+        color: var(--fg-soft); transition: color .2s;
       }
-      .nav-item:hover { color: var(--fg); }
-      .nav-item.is-active { color: var(--fg); }
-      .nav-active {
-        position: absolute; inset: 0; border-radius: 999px;
-        background: var(--bg2); border: 1px solid var(--line-2);
-      }
-      .nav-item.is-active::after {
-        content: ''; position: absolute; left: 50%; bottom: 3px; width: 4px; height: 4px; margin-left: -2px;
-        border-radius: 999px; background: var(--accent);
+      .nav-item:hover, .nav-item.is-active { color: var(--fg); }
+      .nav-active { position: absolute; left: 12px; right: 12px; bottom: 0; height: 1px; background: var(--accent); }
+      @media (min-width: 768px) {
+        .header-actions .btn {
+          border-radius: 0; height: 30px; padding: 0 11px; background: transparent; gap: 6px;
+          font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 400; letter-spacing: .12em; text-transform: uppercase;
+          -webkit-backdrop-filter: none; backdrop-filter: none;
+        }
+        .header-actions .btn-icon { width: 30px; padding: 0; }
+        .header-actions .btn:hover { transform: none; }
       }
       .drawer-item {
         display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px;

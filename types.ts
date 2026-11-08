@@ -153,6 +153,8 @@ export interface CertificationData {
   date: string;
   link?: string;
   category?: CertCategory;
+  /** Nome original (em português), quando o título exibido é a tradução */
+  original?: string;
 }
 
 export interface ResearchData {

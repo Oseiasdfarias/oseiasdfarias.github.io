@@ -81,8 +81,8 @@ export const Certifications: React.FC<{ certs: CertificationData[]; lang: Langua
                     viewport={{ once: true, margin: '-20px' }}
                     transition={{ duration: 0.4, delay: Math.min(i, 8) * 0.03 }}>
                     {cert.link
-                      ? <a href={cert.link} target="_blank" rel="noreferrer" className="cert-card">{body}</a>
-                      : <div className="cert-card is-static">{body}</div>}
+                      ? <a href={cert.link} target="_blank" rel="noreferrer" className="cert-card" title={cert.original}>{body}</a>
+                      : <div className="cert-card is-static" title={cert.original}>{body}</div>}
                   </motion.div>
                 );
               })}

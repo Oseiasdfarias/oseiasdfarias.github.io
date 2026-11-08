@@ -450,9 +450,9 @@ const App: React.FC = () => {
         <div style={{
           width: '100%', maxWidth: 1240, pointerEvents: 'auto', minWidth: 0,
           padding: scrolled ? '0 clamp(16px,2.4vw,28px)' : '0 clamp(20px,4vw,40px)',
-          height: scrolled ? 48 : 58, display: 'flex', alignItems: 'center',
+          height: scrolled ? 46 : 58, display: 'flex', alignItems: 'center',
           justifyContent: 'space-between', gap: 18,
-          borderRadius: scrolled ? 999 : 0,
+          borderRadius: scrolled ? 'var(--hdr-r)' : 0,
           border: scrolled ? '1px solid var(--line-2)' : '1px solid transparent',
           background: scrolled ? (darkMode ? 'rgba(8,8,8,.88)' : 'rgba(250,250,249,.88)') : 'transparent',
           backdropFilter: scrolled ? 'blur(20px)' : 'none',
