@@ -145,12 +145,16 @@ export interface EducationData {
   description: string;
 }
 
+export type CertCategory = 'ai' | 'data' | 'backend' | 'frontend' | 'cloud' | 'embedded' | 'dev' | 'career';
+
 export interface CertificationData {
   title: string;
   issuer: string;
   date: string;
   link?: string;
-  category?: 'ai' | 'cloud' | 'embedded' | 'backend' | 'dev';
+  category?: CertCategory;
+  /** Nome original (em português), quando o título exibido é a tradução */
+  original?: string;
 }
 
 export interface ResearchData {

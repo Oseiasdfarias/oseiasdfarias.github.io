@@ -3,7 +3,7 @@
 // Roda no predeploy; o feed traz só os 10 posts mais recentes.
 // Uso: node scripts/medium-posts.mjs [usuario]
 
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -51,6 +51,17 @@ if (!posts.length) throw new Error('feed sem posts');
 // Nem toda parte cita o total da série; herda de uma que cite
 const total = posts.find(p => p.series?.total)?.series.total ?? null;
 for (const p of posts) if (p.series && !p.series.total) p.series.total = total;
+// Versão em inglês (scripts/medium-translations.json, mantida à mão): título, resumo e tags.
+const trPath = join(dirname(fileURLToPath(import.meta.url)), 'medium-translations.json');
+const tr = existsSync(trPath) ? JSON.parse(readFileSync(trPath, 'utf8')) : { posts: {}, tags: {} };
+const missing = [];
+for (const p of posts) {
+  const key = p.url.match(/-([0-9a-f]{12})$/)?.[1];
+  const t = key && tr.posts[key];
+  if (t) p.en = { title: t.title, excerpt: t.excerpt, tags: p.tags.map(g => tr.tags[g] ?? g) };
+  else missing.push(p.title);
+}
+if (missing.length) console.warn(`sem tradução para o inglês (aparecem em português): ${missing.join(' | ')}`);
 mkdirSync(dirname(OUT), { recursive: true });
 writeFileSync(OUT, JSON.stringify({ generatedAt: new Date().toISOString(), profile: `https://medium.com/@${USER}`, posts }));
 console.log(`medium.json: ${posts.length} posts · mais recente: ${posts[0].title}`);

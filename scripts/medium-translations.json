@@ -1,0 +1,50 @@
+{
+  "_comment": "Traduções em inglês dos artigos do Medium (que são em português). Chave: id de 12 caracteres no fim da URL. Artigo novo sem entrada aqui aparece em português.",
+  "tags": {
+    "ciencia-de-dados": "data-science",
+    "estatística-descritiva": "descriptive-statistics",
+    "estatistica-aplicada": "applied-statistics"
+  },
+  "posts": {
+    "cc01519d8018": {
+      "title": "Drift detection and automatic retraining: keeping models healthy in production",
+      "excerpt": "You deployed it. The API is up, requests are coming in, the model responds. It looks like the work is done."
+    },
+    "c916032e0f96": {
+      "title": "Serving ML models in production: FastAPI + Docker + AWS Lambda",
+      "excerpt": "This is where many projects get stuck. The model works perfectly in the notebook, but putting it into production behind a real API, reachable by other systems and running in the cloud, feels like a huge leap."
+    },
+    "6a141604503f": {
+      "title": "MLOps in practice: tracking experiments and versioning models with MLflow",
+      "excerpt": "In the previous three articles we built ML pipelines, trained neural networks and exported models. But there is a scene that repeats in every unstructured ML project: someone runs the notebook seventeen times with…"
+    },
+    "0f84940b63c5": {
+      "title": "Deep Learning with PyTorch: from tensor to trained model with full control",
+      "excerpt": "In the previous article we built a classic ML pipeline with scikit-learn: encapsulated preprocessing, cross-validation, exported model. It works very well for tabular data and conventional business problems."
+    },
+    "f2b79650a164": {
+      "title": "ML pipelines with scikit-learn: feature engineering, validation and a production-ready model",
+      "excerpt": "There is a pattern I see in almost every ML project that reaches me from outside: the model works in the notebook, but when someone tries to put it into production, it turns into chaos."
+    },
+    "d1ef0167a4c3": {
+      "title": "From hype to production: the real map of the AI ecosystem in 2026",
+      "excerpt": "I work at a company where we build an AI agents platform that integrates with enterprise products: ERPs, CRM systems, e-commerce platforms. A client sends a document, the agent reads it, extracts…"
+    },
+    "6b299a91646a": {
+      "title": "Engineering AI agents in production: why the prompt is only the tip of the iceberg",
+      "excerpt": "The shift of generative AI from simple chatbots to autonomous agents integrated into the corporate ecosystem is what we could call this decade’s “microservices moment”. It is not about…"
+    },
+    "d714c2644fe7": {
+      "title": "Complete Guide: Mastering the OpenAI Platform | Query Structure and Implementation",
+      "excerpt": ""
+    },
+    "56f004e4d8b0": {
+      "title": "SQL command groups",
+      "excerpt": "SQL is the widely adopted standard for working with structured data. Large technology companies use relational databases to store and manage data coming from many sources. These…"
+    },
+    "a1949514b4ee": {
+      "title": "P1 — Statistics for Data Science",
+      "excerpt": "Statistics is a branch of mathematics dedicated to the collection, analysis, interpretation, presentation and organization of data. Its main goal is to extract meaningful information and reliable conclusions from…"
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import { Content, ProjectData, ExperienceData, EducationData, CertificationData, Language, ResearchData, PublicationData } from './types';
+import { Content, CertCategory, ProjectData, ExperienceData, EducationData, CertificationData, Language, ResearchData, PublicationData } from './types';
 
 export const translations: Record<Language, Content> = {
   pt: {
@@ -27,19 +27,18 @@ export const translations: Record<Language, Content> = {
       title: "Sobre",
       lede:  "Engenheiro eletricista que migrou para software e nunca largou o hardware. Comecei em plantas industriais, por isso me importo com o sistema em volta do modelo, não só com o modelo.",
       paras: [
-        "<strong>Pesquisa aplicada (UFABC, projeto financiado pela AFOSR):</strong> construí um <strong>supervisor multiagente</strong> que detecta falhas num conversor de energia e reconfigura o controlador sozinho, e o software que liga a planta simulada e real (Simulink, hardware-in-the-loop) ao supervisor. Primeiro autor de artigo apresentado no <strong>CBA 2026</strong>.",
-        "<strong>Produção (Verzel):</strong> como <strong>Desenvolvedor Backend & IA</strong>, entreguei funções de voz com IA e integrações multi-tenant na plataforma de agentes de IA <strong>Lunella</strong>, com Java (Quarkus), Vue.js e serviços serverless na AWS.",
-        "<strong>ML em produção:</strong> serviço de detecção de anomalias em vibração escalado em réplicas, com modelos no S3 e estado no Redis, que me levou à etapa final do processo de ML Engineering da <strong>Tractian</strong> (top 5% dos candidatos). Também mantenho o <strong>Youfy</strong>, laboratório de MLOps com DVC, MLflow e registro de modelos.",
-        "<strong>Ferramentas do dia a dia:</strong> trabalho em <strong>Linux</strong> tanto em IA, ML, deep learning e ciência de dados quanto na pesquisa do mestrado, com <strong>Docker</strong>, <strong>AWS</strong>, CI/CD com <strong>GitHub Actions</strong>, MATLAB e Simulink, e Claude Code como parte do fluxo de desenvolvimento.",
-        "<strong>IoT (Otensor):</strong> plataforma de automação que liga ESP32 e Raspberry Pi a um painel em tempo real e a um motor de automações, validada de ponta a ponta em hardware real.",
+        "<strong>Pesquisa aplicada (UFABC, projeto financiado pela AFOSR):</strong> construí um <strong>supervisor multiagente</strong> que detecta falhas num conversor de energia e reconfigura o controlador sozinho, e o software que liga a planta (Simulink, hardware-in-the-loop) a ele. Primeiro autor de artigo apresentado no <strong>CBA 2026</strong>. No mestrado da UFPA, rodo simulações reprodutíveis, com mais de 1.700 execuções conferidas por hash.",
+        "<strong>Produção (Verzel):</strong> como <strong>Desenvolvedor Backend & IA</strong>, entreguei funções de voz com IA e integrações multi-tenant na plataforma de agentes <strong>Lunella</strong>, com Java (Quarkus), Vue.js e AWS serverless. Cada cliente conecta a própria conta de voz, com a chave criptografada, e integrei agentes de voz para atendimento por telefone, numa plataforma de mais de 9 microsserviços.",
+        "<strong>ML em produção:</strong> serviço de detecção de anomalias em vibração escalado em réplicas, com modelos no S3 e estado no Redis, que me levou à etapa final do processo de ML Engineering da <strong>Tractian</strong> (top 5%). Mantenho o <strong>Youfy</strong>, laboratório de MLOps com DVC e MLflow, e publiquei no PyPI o <strong>glassllm</strong>, um Transformer em NumPy em que se vê cada cálculo de um LLM.",
+        "<strong>Ferramentas do dia a dia:</strong> trabalho em <strong>Linux</strong> tanto em IA, ML, deep learning e ciência de dados quanto na pesquisa do mestrado, com <strong>Docker</strong>, <strong>AWS</strong> e CI/CD com <strong>GitHub Actions</strong>. Uso MATLAB e Simulink para controle, Python para modelos e serviços, Shell para automação, Git para versionar tudo e Claude Code como parte do fluxo de desenvolvimento, do código aos testes.",
       ],
     },
     focus: {
       title:    "No que sou forte",
       subtitle: "Quatro frentes de engenharia que se conectam",
       pillars: [
-        { k: "MLOps", t: "Ciclo de vida de modelos", d: "Dados versionados (DVC), treino reprodutível rastreado no MLflow, registro de modelos com portão de promoção e serving que recusa entradas fora da especificação. Testes automatizados e CI.", tags: ["Python", "DVC", "MLflow", "PyTorch", "Pytest", "Docker"] },
-        { k: "AI & Agentes", t: "Agentes LLM com ferramentas", d: "Agentes que chamam APIs reais (CRM, agenda), funções de voz com IA (ElevenLabs, VAPI, Twilio) e plataforma de agentes multi-tenant em produção.", tags: ["LLM agents", "TaskingAI", "OpenAI API", "VAPI", "ElevenLabs", "FastAPI"] },
+        { k: "MLOps", t: "Ciclo de vida de modelos", d: "Dados versionados (DVC), treino reprodutível rastreado no MLflow, registro de modelos com portão de promoção e serving que recusa entradas fora da especificação. Serviço de inferência em réplicas atrás de nginx, com modelos no S3 e estado no Redis. Testes automatizados e CI.", tags: ["Python", "DVC", "MLflow", "PyTorch", "Pytest", "Docker", "nginx"] },
+        { k: "AI & Agentes", t: "Agentes LLM com ferramentas", d: "Agentes que chamam APIs reais (CRM, agenda), funções de voz com IA (ElevenLabs, VAPI, Twilio), orquestração multiagente (CrewAI, LangChain) e plataforma de agentes multi-tenant em produção.", tags: ["LLM agents", "CrewAI", "LangChain", "OpenAI API", "VAPI", "ElevenLabs", "FastAPI"] },
         { k: "Cloud & Back-end", t: "Serverless e microsserviços na AWS", d: "Serviços orientados a eventos com Lambda, SQS e DynamoDB, back-end Java reativo (Quarkus), GraphQL, PostgreSQL e Redis, com infraestrutura como código e CI/CD.", tags: ["AWS Lambda", "SQS", "Quarkus", "GraphQL", "PostgreSQL", "Redis"] },
         { k: "Sistemas físicos", t: "Do sensor à nuvem", d: "Controle e detecção de falhas (LQR, H∞, Kalman, CUSUM), Simulink com software-in-the-loop e hardware-in-the-loop, firmware em ESP32 e telemetria MQTT. Montei um quadricóptero completo com PX4, telemetria e rádio, testado em voo.", tags: ["Simulink", "HIL", "PX4", "ESP32", "MQTT", "FPGA/FPAA"] },
       ],
@@ -113,19 +112,18 @@ export const translations: Record<Language, Content> = {
       title: "About",
       lede:  "Electrical engineer who moved into software and never left the hardware behind. I started in industrial plants, so I care about the system around the model, not only the model.",
       paras: [
-        "<strong>Applied research (UFABC, AFOSR-funded project):</strong> I built a <strong>multi-agent supervisor</strong> that detects faults in a power converter and reconfigures its controller on its own, plus the software that connects the simulated and real plant (Simulink, hardware-in-the-loop) to the supervisor. First author of a paper presented at <strong>CBA 2026</strong>.",
-        "<strong>Production (Verzel):</strong> as a <strong>Backend & AI Developer</strong>, I delivered voice AI features and multi-tenant integrations for <strong>Lunella</strong>, an AI agent platform, with Java (Quarkus), Vue.js and AWS serverless services.",
-        "<strong>ML in production:</strong> a vibration anomaly detection service scaled across replicas, with models in S3 and state in Redis, which took me to the final stage of <strong>Tractian</strong>'s ML Engineering hiring process (top 5% of candidates). I also maintain <strong>Youfy</strong>, an MLOps lab with DVC, MLflow and a model registry.",
-        "<strong>Everyday tools:</strong> I work on <strong>Linux</strong> for AI, ML, deep learning and data science as well as for my master's research, with <strong>Docker</strong>, <strong>AWS</strong>, CI/CD with <strong>GitHub Actions</strong>, MATLAB and Simulink, and Claude Code as part of my development workflow.",
-        "<strong>IoT (Otensor):</strong> an automation platform that connects ESP32 and Raspberry Pi devices to a real-time dashboard and an automation engine, validated end to end on real hardware.",
+        "<strong>Applied research (UFABC, AFOSR-funded project):</strong> I built a <strong>multi-agent supervisor</strong> that detects faults in a power converter and reconfigures its controller on its own, plus the software that connects the plant (Simulink, hardware-in-the-loop) to it. First author of a paper presented at <strong>CBA 2026</strong>. In my UFPA master's I run reproducible simulations, with 1,700+ runs verified by hash.",
+        "<strong>Production (Verzel):</strong> as a <strong>Backend & AI Developer</strong>, I delivered voice AI features and multi-tenant integrations for <strong>Lunella</strong>, an AI agent platform, with Java (Quarkus), Vue.js and AWS serverless. Each client connects its own voice account, with the key stored encrypted, and I integrated voice agents for phone support, on a platform of 9+ microservices.",
+        "<strong>ML in production:</strong> a vibration anomaly detection service scaled across replicas, with models in S3 and state in Redis, which took me to the final stage of <strong>Tractian</strong>'s ML Engineering hiring process (top 5%). I maintain <strong>Youfy</strong>, an MLOps lab with DVC and MLflow, and published <strong>glassllm</strong> on PyPI, a NumPy Transformer where you see every calculation of an LLM.",
+        "<strong>Everyday tools:</strong> I work on <strong>Linux</strong> for AI, ML, deep learning and data science as well as for my master's research, with <strong>Docker</strong>, <strong>AWS</strong> and CI/CD with <strong>GitHub Actions</strong>. I use MATLAB and Simulink for control, Python for models and services, Shell for automation, Git for versioning everything and Claude Code as part of my development workflow, from code to tests.",
       ],
     },
     focus: {
       title:    "What I'm strong at",
       subtitle: "Four interconnected engineering fronts",
       pillars: [
-        { k: "MLOps", t: "Model lifecycle", d: "Versioned data (DVC), reproducible training tracked in MLflow, a model registry with a promotion gate and serving that rejects inputs outside the spec. Automated tests and CI.", tags: ["Python", "DVC", "MLflow", "PyTorch", "Pytest", "Docker"] },
-        { k: "AI & Agents", t: "LLM agents with tools", d: "Agents that call real APIs (CRM, calendar), voice AI features (ElevenLabs, VAPI, Twilio) and a multi-tenant AI agent platform in production.", tags: ["LLM agents", "TaskingAI", "OpenAI API", "VAPI", "ElevenLabs", "FastAPI"] },
+        { k: "MLOps", t: "Model lifecycle", d: "Versioned data (DVC), reproducible training tracked in MLflow, a model registry with a promotion gate and serving that rejects inputs outside the spec. Inference service on replicas behind nginx, with models in S3 and state in Redis. Automated tests and CI.", tags: ["Python", "DVC", "MLflow", "PyTorch", "Pytest", "Docker", "nginx"] },
+        { k: "AI & Agents", t: "LLM agents with tools", d: "Agents that call real APIs (CRM, calendar), voice AI features (ElevenLabs, VAPI, Twilio), multi-agent orchestration (CrewAI, LangChain) and a multi-tenant AI agent platform in production.", tags: ["LLM agents", "CrewAI", "LangChain", "OpenAI API", "VAPI", "ElevenLabs", "FastAPI"] },
         { k: "Cloud & Back end", t: "Serverless and microservices on AWS", d: "Event-driven services with Lambda, SQS and DynamoDB, a reactive Java back end (Quarkus), GraphQL, PostgreSQL and Redis, with infrastructure as code and CI/CD.", tags: ["AWS Lambda", "SQS", "Quarkus", "GraphQL", "PostgreSQL", "Redis"] },
         { k: "Physical systems", t: "From sensor to cloud", d: "Control and fault detection (LQR, H∞, Kalman, CUSUM), Simulink with software-in-the-loop and hardware-in-the-loop, ESP32 firmware and MQTT telemetry. I built a full PX4 quadcopter with telemetry and radio, and flew it.", tags: ["Simulink", "HIL", "PX4", "ESP32", "MQTT", "FPGA/FPAA"] },
       ],
@@ -185,9 +183,9 @@ export const getResearch = (lang: Language): ResearchData[] => [
     period:      lang === 'pt' ? "abr 2025 — presente" : "Apr 2025 — Present",
     ongoing:     true,
     description: lang === 'pt'
-      ? "Supervisão adaptativa de um conversor Buck: um sistema multiagente (JADE) detecta anomalias (observador de Luenberger, CUSUM adaptativo), identifica o modelo online e reconfigura o controlador (LQR ou H∞) com troca a quente sem salto. Planta no Simulink ligada ao Python por software-in-the-loop e validação em hardware-in-the-loop (FPGA/FPAA). Projeto financiado pela AFOSR (Força Aérea dos EUA)."
-      : "Adaptive supervision of a buck converter: a multi-agent system (JADE) detects anomalies (Luenberger observer, adaptive CUSUM), identifies the model online and reconfigures the controller (LQR or H∞) with a bumpless hot swap. Simulink plant coupled to Python by software-in-the-loop, with hardware-in-the-loop validation (FPGA/FPAA). Funded by the U.S. Air Force Office of Scientific Research (AFOSR).",
-    tags: ["Python", "JADE", "CUSUM", "LQR / H∞", "Simulink", "ZeroMQ", "HIL"],
+      ? "Supervisão adaptativa de um conversor Buck: um sistema multiagente (JADE) detecta anomalias (observador de Luenberger, CUSUM adaptativo), identifica o modelo online e reconfigura o controlador (LQR ou H∞) com troca a quente sem salto. Planta no Simulink ligada ao Python por software-in-the-loop e validação em hardware-in-the-loop (FPGA/FPAA). Na etapa atual, o supervisor também roda com agentes LLM (CrewAI, Gemini) sobre MQTT e Redis, num workspace Docker Compose com uma biblioteca compartilhada de estados e falhas. Projeto financiado pela AFOSR (Força Aérea dos EUA)."
+      : "Adaptive supervision of a buck converter: a multi-agent system (JADE) detects anomalies (Luenberger observer, adaptive CUSUM), identifies the model online and reconfigures the controller (LQR or H∞) with a bumpless hot swap. Simulink plant coupled to Python by software-in-the-loop, with hardware-in-the-loop validation (FPGA/FPAA). In its current stage the supervisor also runs with LLM agents (CrewAI, Gemini) over MQTT and Redis, in a Docker Compose workspace with a shared library for states and faults. Funded by the U.S. Air Force Office of Scientific Research (AFOSR).",
+    tags: ["Python", "JADE", "CrewAI", "CUSUM", "LQR / H∞", "Simulink", "MQTT", "HIL"],
   },
   {
     id:          "ufpa",
@@ -198,9 +196,9 @@ export const getResearch = (lang: Language): ResearchData[] => [
     period:      lang === 'pt' ? "2025 — presente" : "2025 — Present",
     ongoing:     true,
     description: lang === 'pt'
-      ? "Controle preditivo e aprendizado por reforço profundo (DQN) para conversores de eletrônica de potência, com identificação de sistemas online (ARX via RLS). Artigo apresentado no CBA 2026 sobre FCS-MPC robusto a variações paramétricas em inversores conectados à rede."
-      : "Predictive control and deep reinforcement learning (DQN) for power electronics converters, with online system identification (ARX via RLS). Paper presented at CBA 2026 on FCS-MPC robust to parameter variations in grid-connected inverters.",
-    tags: ["PyTorch", "Deep RL", "DQN", "TensorFlow", "Embedded AI"],
+      ? "Controle preditivo e aprendizado por reforço profundo (DQN) para conversores de eletrônica de potência, com identificação de sistemas online (ARX via RLS). Artigo apresentado no CBA 2026 sobre FCS-MPC robusto a variações paramétricas em inversores conectados à rede. Os ensaios são reprodutíveis: modelo do Simulink gerado por script, protocolo único com cenários casados, mais de 1.700 execuções conferidas por hash e análise pré-registrada em Python."
+      : "Predictive control and deep reinforcement learning (DQN) for power electronics converters, with online system identification (ARX via RLS). Paper presented at CBA 2026 on FCS-MPC robust to parameter variations in grid-connected inverters. The trials are reproducible: Simulink model generated by script, a single protocol with matched scenarios, 1,700+ runs verified by hash and a pre-registered analysis in Python.",
+    tags: ["PyTorch", "Deep RL", "DQN", "MATLAB", "SciPy", lang === 'pt' ? "Reprodutibilidade" : "Reproducibility"],
   },
 ];
 
@@ -320,6 +318,34 @@ export const getProjects = (lang: Language): ProjectData[] => {
       tags:  ["ESP32", "C++", "Python", "VPython", "PID", "Three.js"],
       link:  "https://oseiasdfarias.github.io/lab-virtual/",
       github: "https://github.com/Oseiasdfarias/lab-virtual",
+    },
+    {
+      id:       "glassllm",
+      summary:  pt
+        ? "Transformer escrito do zero em NumPy, no PyPI, em que se vê a equação, o código e os valores reais de cada passo de um LLM."
+        : "A Transformer written from scratch in NumPy, on PyPI, where you see the equation, the code and the real values of every step of an LLM.",
+      title:    pt ? "glassllm: um LLM que dá para enxergar por dentro" : "glassllm: an LLM you can see inside",
+      year:     "2026",
+      category: pt ? "ML · LLM · Educação" : "ML · LLM · Education",
+      featured: false,
+      status:   "open source",
+      metrics: [
+        { label: "Runtime", value: pt ? "só NumPy" : "NumPy only" },
+        { label: pt ? "Parâmetros" : "Parameters", value: "852.608" },
+        { label: pt ? "Operações rastreadas" : "Traced ops", value: pt ? "77 por previsão" : "77 per prediction" },
+      ],
+      problem:  pt
+        ? "Um LLM costuma ser uma caixa-preta: as bibliotecas escondem os cálculos entre o token de entrada e o próximo token previsto, e é difícil estudar atenção, embeddings e treino sem ler milhares de linhas."
+        : "An LLM is usually a black box: libraries hide the calculations between the input token and the predicted next token, and it is hard to study attention, embeddings and training without reading thousands of lines.",
+      solution: pt
+        ? "Um Transformer decoder-only completo em NumPy: tokenizador BPE, autograd próprio, RoPE, atenção com consultas agrupadas, KV cache, RMSNorm e SwiGLU. O Tracer registra a equação, o formato do tensor e a linha de código de cada operação, e um laboratório interativo roda o mesmo pacote no navegador (Pyodide)."
+        : "A complete decoder-only Transformer in NumPy: BPE tokenizer, its own autograd, RoPE, grouped-query attention, KV cache, RMSNorm and SwiGLU. A Tracer records the equation, tensor shape and source line of every operation, and an interactive lab runs the same package in the browser (Pyodide).",
+      impact: pt
+        ? "Publicado no PyPI sob licença MIT, com modelos em português e inglês treinados em obras de domínio público, testes de paridade contra o PyTorch e documentação bilíngue de 35 páginas por idioma."
+        : "Published on PyPI under the MIT license, with Portuguese and English models trained on public-domain books, parity tests against PyTorch and bilingual documentation of 35 pages per language.",
+      tags:  ["Python", "NumPy", "Transformer", "Autograd", "PyPI", "Pyodide"],
+      link:  "https://oseiasdfarias.github.io/glassllm/",
+      github: "https://github.com/Oseiasdfarias/glassllm",
     },
     {
       id:       "quadrotor",
@@ -621,68 +647,182 @@ export const getEducation = (lang: Language): EducationData[] => {
 };
 
 // ─── Publications ──────────────────────────────────────────────────────────
-export const getPublications = (_lang: Language): PublicationData[] => [
-  {
-    title:       "Supervisão Adaptativa de Conversor Buck por Sistema Multiagente com Ciclo Percepção-Raciocínio-Ação e Reconfiguração Autônoma de Controladores",
-    venue:       "CBA 2026 · apresentado / presented",
-    date:        "2026",
-    description: "Farias, O. D. (1º autor), Estrada Martínez, E., Lescano, J. C. O. S., Potts, A. S. Supervisor multiagente JADE que detecta falhas e reconfigura o controlador de um conversor Buck.",
-  },
-  {
-    title:       "FCS-MPC com ARX Adaptativo via RLS para Controle P-Q Robusto a Variações Paramétricas em Inversores Trifásicos Conectados à Rede",
-    venue:       "CBA 2026 · apresentado / presented",
-    date:        "2026",
-    description: "Farias, O. D. (1º autor), Teixeira, R. B. Controle preditivo com modelo identificado online para inversores conectados à rede.",
-  },
-  {
-    title:       "Gêmeo Digital como ferramenta para um Laboratório Virtual de modelagem e controle de sistemas dinâmicos",
-    venue:       "BDM · UFPA",
-    date:        "2023",
-    description: "Laboratório virtual combinando protótipo físico do Aeropêndulo, simulador 3D e interface interativa, validado com PID em malha fechada.",
-  },
-  {
-    title:       "Laboratório Virtual de Controle de Sistemas com VPython no ensino de Engenharia",
-    venue:       "COBENGE 2023",
-    date:        "2023",
-    description: "Simulações de MAGLEV e Aeropêndulo demonstrando a efetividade do VPython no ensino de engenharia.",
-  },
-  {
-    title:       "SMART HOUSE — Automação Residencial com Arduino",
-    venue:       "ENEEL 2018 · Even3",
-    date:        "2018",
-    description: "Automação residencial com Arduino, app Android e sensores de luminosidade, temperatura e gás.",
-  },
-];
+export const getPublications = (lang: Language): PublicationData[] => {
+  const pt = lang === 'pt';
+  const presented = pt ? "apresentado" : "presented";
+  return [
+    {
+      title:       pt ? "Supervisão Adaptativa de Conversor Buck por Sistema Multiagente com Ciclo Percepção-Raciocínio-Ação e Reconfiguração Autônoma de Controladores"
+                       : "Adaptive Supervision of a Buck Converter by a Multi-Agent System with a Perception-Reasoning-Action Cycle and Autonomous Controller Reconfiguration",
+      venue:       `CBA 2026 · ${presented}`,
+      date:        "2026",
+      description: pt ? "Farias, O. D. (1º autor), Estrada Martínez, E., Lescano, J. C. O. S., Potts, A. S. Supervisor multiagente JADE que detecta falhas e reconfigura o controlador de um conversor Buck."
+                      : "Farias, O. D. (first author), Estrada Martínez, E., Lescano, J. C. O. S., Potts, A. S. A JADE multi-agent supervisor that detects faults and reconfigures a Buck converter's controller.",
+    },
+    {
+      title:       pt ? "FCS-MPC com ARX Adaptativo via RLS para Controle P-Q Robusto a Variações Paramétricas em Inversores Trifásicos Conectados à Rede"
+                       : "FCS-MPC with RLS-Adaptive ARX for P-Q Control Robust to Parametric Variations in Grid-Connected Three-Phase Inverters",
+      venue:       `CBA 2026 · ${presented}`,
+      date:        "2026",
+      description: pt ? "Farias, O. D. (1º autor), Teixeira, R. B. Controle preditivo com modelo identificado online para inversores conectados à rede."
+                      : "Farias, O. D. (first author), Teixeira, R. B. Predictive control with an online-identified model for grid-connected inverters.",
+    },
+    {
+      title:       pt ? "Gêmeo Digital como ferramenta para um Laboratório Virtual de modelagem e controle de sistemas dinâmicos"
+                       : "Digital Twin as a Tool for a Virtual Laboratory on Modeling and Control of Dynamic Systems",
+      venue:       pt ? "BDM · UFPA" : "UFPA Digital Monograph Library (BDM)",
+      date:        "2023",
+      description: pt ? "Laboratório virtual combinando protótipo físico do Aeropêndulo, simulador 3D e interface interativa, validado com PID em malha fechada."
+                      : "A virtual lab combining a physical Aeropendulum prototype, a 3D simulator and an interactive interface, validated with closed-loop PID.",
+    },
+    {
+      title:       pt ? "Laboratório Virtual de Controle de Sistemas com VPython no ensino de Engenharia"
+                       : "Virtual Control Systems Laboratory with VPython for Engineering Education",
+      venue:       "COBENGE 2023",
+      date:        "2023",
+      description: pt ? "Simulações de MAGLEV e Aeropêndulo demonstrando a efetividade do VPython no ensino de engenharia."
+                      : "MAGLEV and Aeropendulum simulations showing how effective VPython is for engineering education.",
+    },
+    {
+      title:       pt ? "SMART HOUSE — Automação Residencial com Arduino" : "SMART HOUSE: Home Automation with Arduino",
+      venue:       "ENEEL 2018 · Even3",
+      date:        "2018",
+      description: pt ? "Automação residencial com Arduino, app Android e sensores de luminosidade, temperatura e gás."
+                      : "Home automation with Arduino, an Android app and light, temperature and gas sensors.",
+    },
+  ];
+};
 
 // ─── Certifications ────────────────────────────────────────────────────────
-export const getCertifications = (_lang: Language): CertificationData[] => [
-  // ML / IA / Cloud — mais recentes e relevantes primeiro
-  { title: "REST APIs com Python e Flask",                              issuer: "Udemy",              date: "out 2025", category: "backend", link: "https://udemy.com/certificate/UC-563dd22a-5969-472b-903f-810314964a90" },
-  { title: "EBA — Estatística do Básico ao Avançado",                  issuer: "EBA",                date: "abr 2025", category: "ai" },
-  { title: "AWS Lambda com Python e Serverless Framework",              issuer: "Udemy",              date: "abr 2024", category: "cloud", link: "https://udemy.com/certificate/UC-e9b6a86d-443f-47a8-81b9-9f4f46a20ef8" },
-  { title: "AWS Machine Learning Foundations",                          issuer: "Udacity",            date: "out 2021", category: "cloud" },
-  { title: "Aprendizagem por Reforço com Deep Learning, PyTorch e Python", issuer: "Udemy",          date: "2021", category: "ai", link: "https://udemy.com/certificate/UC-0e7a0cc8-54f6-4720-bd15-740088404273" },
-  { title: "Machine Learning e Data Science com Python de A a Z",      issuer: "Udemy",              date: "2021", category: "ai", link: "https://udemy.com/certificate/UC-e38f3500-7c76-40d9-aa3d-414dfc3a9d9c" },
-  { title: "Deep Learning com Python de A a Z — O Curso Completo",     issuer: "Udemy",              date: "2021", category: "ai", link: "https://udemy.com/certificate/UC-63c2f666-44e2-4525-a0f3-a6a05df483b6" },
-  { title: "Manual Prático do Deep Learning — Redes Neurais Profundas",issuer: "Udemy",              date: "2021", category: "ai", link: "https://udemy.com/certificate/UC-c7e188bb-d877-401e-b7de-b2d7e21ba584" },
-  { title: "Redes Neurais Artificiais em Python",                       issuer: "Udemy",              date: "2021", category: "ai", link: "https://udemy.com/certificate/UC-26899d66-2d96-474d-8194-dccdee108035" },
-  { title: "Machine Learning com Spark e PySpark: o Curso Completo",   issuer: "Udemy",              date: "2021", category: "ai", link: "https://udemy.com/certificate/UC-d57f72b3-2a1f-480b-8294-5c6fcbdca523" },
-  { title: "Detecção de Objetos com YOLO, Darknet, OpenCV e Python",   issuer: "Udemy",              date: "2021", category: "ai", link: "https://udemy.com/certificate/UC-328f4454-77d0-44de-b032-8d1e5a4cc923" },
+// A Alura usa um endereço por tipo de certificado: curso avulso, formação e programa
+const ALURA = "https://cursos.alura.com.br/certificate/";
+// Trilhas e formações: endereço individual de cada certificado, no perfil público
+const alura = (slug: string) => `https://cursos.alura.com.br/user/oseias-dfarias/${slug}/certificate`;
+const ALURA_PROGRAM = "https://cursos.alura.com.br/program/certificate/";
+// Certificado completo (jan a nov/2024): lista todas as trilhas e cursos, verificável sem login
+const ALURA_FULL = "https://cursos.alura.com.br/user/oseias-dfarias/fullCertificate/feaffcd16e8ad830a977475d8629adc3";
+const UDEMY = "https://udemy.com/certificate/";
+
+// Subcategorias da seção de certificados, na ordem em que aparecem
+export const getCertCategories = (lang: Language): { id: CertCategory; label: string }[] => {
+  const pt = lang === 'pt';
+  return [
+    { id: 'ai',       label: pt ? "IA, ML & Deep Learning"        : "AI, ML & Deep Learning" },
+    { id: 'data',     label: pt ? "Dados & Estatística"           : "Data & Statistics" },
+    { id: 'backend',  label: pt ? "Back-end & APIs"               : "Back end & APIs" },
+    { id: 'frontend', label: pt ? "Front-end & Web"               : "Front end & Web" },
+    { id: 'cloud',    label: pt ? "Cloud & DevOps"                : "Cloud & DevOps" },
+    { id: 'embedded', label: pt ? "Embarcados, IoT & Robótica"    : "Embedded, IoT & Robotics" },
+    { id: 'dev',      label: pt ? "Fundamentos de programação"    : "Programming fundamentals" },
+    { id: 'career',   label: pt ? "Carreira & desenvolvimento pessoal" : "Career & personal development" },
+  ];
+};
+
+// Nomes em inglês dos certificados (o original em português fica no tooltip do cartão)
+const CERT_TITLES_EN: Record<string, string> = {
+  "AI Engineer Core Track: LLM Engineering, RAG, QLoRA, Agents": "AI Engineer Core Track: LLM Engineering, RAG, QLoRA, Agents",
+  "Claude Academy: Model Context Protocol, tópicos avançados": "Claude Academy: Model Context Protocol, Advanced Topics",
+  "Formação IA Generativa — ONE (ChatGPT, 25h)": "Generative AI Learning Path — ONE (ChatGPT, 25h)",
+  "AWS Machine Learning Foundations": "AWS Machine Learning Foundations",
+  "Aprendizagem por Reforço com Deep Learning, PyTorch e Python": "Reinforcement Learning with Deep Learning, PyTorch and Python",
+  "Machine Learning e Data Science com Python de A a Z": "Machine Learning and Data Science with Python from A to Z",
+  "Deep Learning com Python de A a Z — O Curso Completo": "Deep Learning with Python from A to Z — The Complete Course",
+  "Manual Prático do Deep Learning — Redes Neurais Profundas": "Practical Deep Learning Handbook — Deep Neural Networks",
+  "Redes Neurais Artificiais em Python": "Artificial Neural Networks in Python",
+  "Machine Learning com Spark e PySpark: o Curso Completo": "Machine Learning with Spark and PySpark: The Complete Course",
+  "Detecção de Objetos com YOLO, Darknet, OpenCV e Python": "Object Detection with YOLO, Darknet, OpenCV and Python",
+  "Capacitação em Inteligência Artificial": "Artificial Intelligence Training",
+  "SQL para Análise de Dados: do Básico ao Avançado": "SQL for Data Analysis: From Basic to Advanced",
+  "EBA — Estatística do Básico ao Avançado": "EBA — Statistics from Basic to Advanced",
+  "Formação SQL com MySQL Server da Oracle — ONE (70h)": "SQL with Oracle MySQL Server Learning Path — ONE (70h)",
+  "Formação SQL com MySQL Server da Oracle (66h)": "SQL with Oracle MySQL Server Learning Path (66h)",
+  "REST APIs com Python e Flask": "REST APIs with Python and Flask",
+  "Arquitetura Java: descomplicando a Clean Architecture": "Java Architecture: Demystifying Clean Architecture",
+  "Formação Java e Spring Framework T6 — ONE (108h)": "Java and Spring Framework Learning Path T6 — ONE (108h)",
+  "Formação Java e Spring Boot (34h)": "Java and Spring Boot Learning Path (34h)",
+  "Programa Oracle Next Education F2 T6 — Back-end (303h, 6 formações)": "Oracle Next Education F2 T6 Program — Back End (303h, 6 learning paths)",
+  "Formação Java Web: Spring Boot (40h)": "Java Web Learning Path: Build Applications with Spring Boot (40h)",
+  "Formação Java e Orientação a Objetos — ONE (49h)": "Java and Object-Oriented Programming Learning Path — ONE (49h)",
+  "Formação Aprenda a programar em Java com Orientação a Objetos (39h)": "Learn to Program in Java with Object-Oriented Programming Learning Path (39h)",
+  "Formação Iniciante em Programação — ONE (HTML, CSS e JS, 54h)": "Programming Beginner Learning Path — ONE (HTML, CSS and JS, 54h)",
+  "Lógica de programação: explore funções e listas": "Programming Logic: Explore Functions and Lists",
+  "Lógica de programação: mergulhe em programação com JavaScript": "Programming Logic: Dive into Programming with JavaScript",
+  "AWS Lambda com Python e Serverless Framework": "AWS Lambda with Python and the Serverless Framework",
+  "Formação Oracle Cloud Infrastructure — ONE (21h)": "Oracle Cloud Infrastructure Learning Path — ONE (21h)",
+  "AWS para Iniciantes (curso preparatório)": "AWS for Beginners (preparatory course)",
+  "Git e GitHub: compartilhando e colaborando em projetos": "Git and GitHub: Sharing and Collaborating on Projects",
+  "Curso de Shell Script do Iniciante ao Avançado": "Shell Script Course from Beginner to Advanced",
+  "Capacitação Profissional em Sistemas Embarcados (160h)": "Professional Training in Embedded Systems (160h)",
+  "Robotics: Aerial Robotics": "Robotics: Aerial Robotics",
+  "Python 3 do Básico ao Avançado (com projetos reais)": "Python 3 from Basic to Advanced (with real projects)",
+  "Aprendendo C++ — Básico ao Avançado": "Learning C++ — Basic to Advanced",
+  "Programação Orientada a Objetos em C++": "Object-Oriented Programming in C++",
+  "Introdução à Ciência da Computação com Python — Parte 2": "Introduction to Computer Science with Python — Part 2",
+  "Introdução à Ciência da Computação com Python — Parte 1": "Introduction to Computer Science with Python — Part 1",
+  "Trilha Minha carreira (40h)": "My Career Track (40h)",
+  "Trilha Minha carreira (32h)": "My Career Track (32h)",
+  "Formação Empreendedorismo, Agilidade e Protagonismo na Carreira — ONE (54h)": "Entrepreneurship, Agility and Career Leadership Learning Path — ONE (54h)",
+  "Propósito profissional: seja protagonista da sua carreira": "Professional Purpose: Be the Protagonist of Your Career",
+  "Formação Desenvolvimento Pessoal — ONE (38h)": "Personal Development Learning Path — ONE (38h)",
+};
+
+// Agrupados por categoria; dentro de cada uma, do mais recente para o mais antigo
+const CERTIFICATIONS: CertificationData[] = [
+  // IA, ML & Deep Learning
+  { title: "AI Engineer Core Track: LLM Engineering, RAG, QLoRA, Agents", issuer: "Udemy · Ligency, Ed Donner", date: "nov 2026", category: "ai", link: "https://udemy-certificate.s3.amazonaws.com/pdf/UC-2051246d-bb2a-497d-905f-8d73213149e3.pdf" },
+  { title: "Claude Academy: Model Context Protocol, tópicos avançados",  issuer: "Anthropic",          date: "nov 2026", category: "ai", link: "https://academy.claude.com/verify/00adbaa8fd71630747a688befdb7a9a2" },
+  { title: "Formação IA Generativa — ONE (ChatGPT, 25h)",             issuer: "Alura · Oracle ONE", date: "out 2024", category: "ai", link: alura("degree-ia-generativa-one-797632") },
+  { title: "AWS Machine Learning Foundations",                          issuer: "Udacity",            date: "out 2021", category: "ai" },
+  { title: "Aprendizagem por Reforço com Deep Learning, PyTorch e Python", issuer: "Udemy",           date: "2021", category: "ai", link: UDEMY + "UC-0e7a0cc8-54f6-4720-bd15-740088404273" },
+  { title: "Machine Learning e Data Science com Python de A a Z",      issuer: "Udemy",              date: "2021", category: "ai", link: UDEMY + "UC-e38f3500-7c76-40d9-aa3d-414dfc3a9d9c" },
+  { title: "Deep Learning com Python de A a Z — O Curso Completo",     issuer: "Udemy",              date: "2021", category: "ai", link: UDEMY + "UC-63c2f666-44e2-4525-a0f3-a6a05df483b6" },
+  { title: "Manual Prático do Deep Learning — Redes Neurais Profundas",issuer: "Udemy",              date: "2021", category: "ai", link: UDEMY + "UC-c7e188bb-d877-401e-b7de-b2d7e21ba584" },
+  { title: "Redes Neurais Artificiais em Python",                       issuer: "Udemy",              date: "2021", category: "ai", link: UDEMY + "UC-26899d66-2d96-474d-8194-dccdee108035" },
+  { title: "Machine Learning com Spark e PySpark: o Curso Completo",   issuer: "Udemy",              date: "2021", category: "ai", link: UDEMY + "UC-d57f72b3-2a1f-480b-8294-5c6fcbdca523" },
+  { title: "Detecção de Objetos com YOLO, Darknet, OpenCV e Python",   issuer: "Udemy",              date: "2021", category: "ai", link: UDEMY + "UC-328f4454-77d0-44de-b032-8d1e5a4cc923" },
   { title: "Capacitação em Inteligência Artificial",                    issuer: "IFAL",               date: "jan 2021", category: "ai" },
-  // Cloud / Backend
-  { title: "AWS para Iniciantes (curso preparatório)",                   issuer: "Udemy",              date: "dez 2023", category: "cloud", link: "https://udemy.com/certificate/UC-e5431d02-ba73-4cde-ab87-ce987e558d55" },
-  { title: "Formação Oracle Cloud Infrastructure — ONE",                issuer: "Alura · Oracle ONE", date: "nov 2024", category: "cloud", link: "https://cursos.alura.com.br/certificate/72a32952-7dba-444c-bc8b-844b66bbd79f" },
-  { title: "Programa Oracle Next Education — Back-end",                 issuer: "Alura · Oracle ONE", date: "jul 2024", category: "backend", link: "https://cursos.alura.com.br/certificate/deb0e367-c4ec-486d-9572-9eeb41e2bb63" },
-  { title: "Formação Java Web: Spring Boot",                            issuer: "Alura",              date: "jun 2024", category: "backend", link: "https://cursos.alura.com.br/certificate/55e5774e-576a-4bf4-859e-db5ee59c35da" },
-  { title: "Formação Java e Orientação a Objetos — ONE",                issuer: "Alura · Oracle ONE", date: "abr 2024", category: "backend", link: "https://cursos.alura.com.br/certificate/ad767b4a-af1d-4cd8-829b-90ec96db2e83" },
-  { title: "Formação SQL com MySQL Server da Oracle",                   issuer: "Alura · Oracle ONE", date: "nov 2024", category: "backend", link: "https://cursos.alura.com.br/certificate/509b46f9-e68c-4e9b-b41f-06f3889f1f8b" },
-  // Sistemas Embarcados
+  // Dados & Estatística
+  { title: "SQL para Análise de Dados: do Básico ao Avançado",          issuer: "Udemy · Data Driven School", date: "nov 2026", category: "data", link: "https://udemy-certificate.s3.amazonaws.com/pdf/UC-4d1b7627-1f68-4697-bfef-2e5e3edc3aa1.pdf" },
+  { title: "EBA — Estatística do Básico ao Avançado",                  issuer: "EBA",                date: "abr 2025", category: "data" },
+  { title: "Formação SQL com MySQL Server da Oracle — ONE (70h)",       issuer: "Alura · Oracle ONE", date: "nov 2024", category: "data", link: alura("degree-oracle-mysql-one-401691") },
+  { title: "Formação SQL com MySQL Server da Oracle (66h)",                   issuer: "Alura", date: "nov 2024", category: "data", link: alura("degree-oracle-mysql-v3983-3983") },
+  // Back-end & APIs
+  { title: "REST APIs com Python e Flask",                              issuer: "Udemy",              date: "out 2025", category: "backend", link: UDEMY + "UC-563dd22a-5969-472b-903f-810314964a90" },
+  { title: "Arquitetura Java: descomplicando a Clean Architecture",     issuer: "Alura · Oracle ONE", date: "set 2024", category: "backend", link: ALURA_FULL },
+  { title: "Formação Java e Spring Framework T6 — ONE (108h)",          issuer: "Alura · Oracle ONE", date: "jul 2024", category: "backend", link: alura("degree-spring-framework-turma6-one-733547") },
+  { title: "Formação Java e Spring Boot (34h)",                         issuer: "Alura",              date: "jul 2024", category: "backend", link: alura("degree-spring-boot-3-475714") },
+  { title: "Programa Oracle Next Education F2 T6 — Back-end (303h, 6 formações)", issuer: "Alura · Oracle ONE", date: "jul 2024", category: "backend", link: ALURA_PROGRAM + "deb0e367-c4ec-486d-9572-9eeb41e2bb63" },
+  { title: "Formação Java Web: Spring Boot (40h)",                            issuer: "Alura",              date: "jun 2024", category: "backend", link: alura("degree-java-web-spring-boot-596328") },
+  { title: "Formação Java e Orientação a Objetos — ONE (49h)",                issuer: "Alura · Oracle ONE", date: "abr 2024", category: "backend", link: alura("degree-java-turma6-one-733558") },
+  { title: "Formação Aprenda a programar em Java com Orientação a Objetos (39h)", issuer: "Alura",          date: "abr 2024", category: "backend", link: alura("degree-java-568827") },
+  // Front-end & Web
+  { title: "Formação Iniciante em Programação — ONE (HTML, CSS e JS, 54h)",  issuer: "Alura · Oracle ONE", date: "jan 2024", category: "frontend", link: alura("degree-logica-de-programacao-turma-6-oracle-one-695775") },
+  { title: "Lógica de programação: explore funções e listas",           issuer: "Alura",              date: "jan 2024", category: "frontend", link: ALURA + "12c3d19a-9bff-4631-9f24-7c3b2d32586f" },
+  { title: "Lógica de programação: mergulhe em programação com JavaScript", issuer: "Alura",          date: "jan 2024", category: "frontend", link: ALURA + "b15ab008-646e-4be8-a576-85364f54ec68" },
+  // Cloud & DevOps
+  { title: "AWS Lambda com Python e Serverless Framework",              issuer: "Udemy",              date: "abr 2024", category: "cloud", link: UDEMY + "UC-e9b6a86d-443f-47a8-81b9-9f4f46a20ef8" },
+  { title: "Formação Oracle Cloud Infrastructure — ONE (21h)",                issuer: "Alura · Oracle ONE", date: "nov 2024", category: "cloud", link: alura("degree-oracle-cloud-infraestructure-one-416381") },
+  { title: "AWS para Iniciantes (curso preparatório)",                   issuer: "Udemy",              date: "dez 2023", category: "cloud", link: UDEMY + "UC-e5431d02-ba73-4cde-ab87-ce987e558d55" },
+  { title: "Git e GitHub: compartilhando e colaborando em projetos",    issuer: "Alura",              date: "jan 2024", category: "cloud", link: ALURA + "95e10d93-4b98-4e9a-8d99-6e8b524c91f4" },
+  { title: "Curso de Shell Script do Iniciante ao Avançado",            issuer: "Udemy",              date: "2021", category: "cloud", link: UDEMY + "UC-f7ab28e8-928a-4b9f-a672-bf722c0c5493" },
+  // Embarcados, IoT & Robótica
   { title: "Capacitação Profissional em Sistemas Embarcados (160h)",    issuer: "IFMA · SOFTEX",      date: "nov 2024", category: "embedded" },
+  { title: "Robotics: Aerial Robotics",                                 issuer: "Univ. of Pennsylvania", date: "fev 2022", category: "embedded", link: "https://coursera.org/verify/AFGKYGDN62AD" },
   // Fundamentos de programação
-  { title: "Python 3 do Básico ao Avançado (com projetos reais)",       issuer: "Udemy",              date: "jan 2021", category: "dev", link: "https://udemy.com/certificate/UC-a3b4a8cd-1d0d-4238-ba05-b92c0558d1e8" },
-  { title: "Curso de Shell Script do Iniciante ao Avançado",            issuer: "Udemy",              date: "2021", category: "dev", link: "https://udemy.com/certificate/UC-f7ab28e8-928a-4b9f-a672-bf722c0c5493" },
-  { title: "Aprendendo C++ — Básico ao Avançado",                       issuer: "Udemy",              date: "2021", category: "dev", link: "https://udemy.com/certificate/UC-54fbb592-d496-45ef-879f-55530fa29b96" },
-  { title: "Programação Orientada a Objetos em C++",                    issuer: "Udemy",              date: "2021", category: "dev", link: "https://udemy.com/certificate/UC-a926438a-7437-4633-8339-75bb7d7c7f0b" },
+  { title: "Python 3 do Básico ao Avançado (com projetos reais)",       issuer: "Udemy",              date: "jan 2021", category: "dev", link: UDEMY + "UC-a3b4a8cd-1d0d-4238-ba05-b92c0558d1e8" },
+  { title: "Aprendendo C++ — Básico ao Avançado",                       issuer: "Udemy",              date: "2021", category: "dev", link: UDEMY + "UC-54fbb592-d496-45ef-879f-55530fa29b96" },
+  { title: "Programação Orientada a Objetos em C++",                    issuer: "Udemy",              date: "2021", category: "dev", link: UDEMY + "UC-a926438a-7437-4633-8339-75bb7d7c7f0b" },
   { title: "Introdução à Ciência da Computação com Python — Parte 2",   issuer: "Coursera · IME USP", date: "nov 2020", category: "dev", link: "https://coursera.org/verify/H6MVL62HNL2M" },
   { title: "Introdução à Ciência da Computação com Python — Parte 1",   issuer: "Coursera · IME USP", date: "abr 2020", category: "dev", link: "https://coursera.org/verify/HYE73UXFY7G4" },
+  // Carreira & desenvolvimento pessoal
+  { title: "Trilha Minha carreira (40h)",                             issuer: "Alura",              date: "abr 2024", category: "career", link: alura("degree-minha-carreira-v349835-349835") },
+  { title: "Trilha Minha carreira (32h)",                             issuer: "Alura",              date: "abr 2024", category: "career", link: alura("degree-minha-carreira-v131189-131189") },
+  { title: "Formação Empreendedorismo, Agilidade e Protagonismo na Carreira — ONE (54h)", issuer: "Alura · Oracle ONE", date: "mai 2024", category: "career", link: alura("degree-empreendedorismo-e-agilidade-turma6-one-733647") },
+  { title: "Propósito profissional: seja protagonista da sua carreira", issuer: "Alura",              date: "abr 2024", category: "career", link: ALURA + "a5a37bd9-9614-469c-86dc-9582c3d85e37" },
+  { title: "Formação Desenvolvimento Pessoal — ONE (38h)",                    issuer: "Alura · Oracle ONE", date: "jan 2024", category: "career", link: alura("degree-desenvolvimento-pessoal-turma6-one-695707") },
 ];
+
+export const getCertifications = (lang: Language): CertificationData[] =>
+  lang === 'pt'
+    ? CERTIFICATIONS
+    : CERTIFICATIONS.map(c => (CERT_TITLES_EN[c.title] ? { ...c, title: CERT_TITLES_EN[c.title], original: c.title } : c));

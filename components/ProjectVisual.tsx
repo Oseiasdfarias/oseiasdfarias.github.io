@@ -231,13 +231,46 @@ const Inverter: React.FC<{ pt: boolean }> = ({ pt }) => {
   );
 };
 
+// glassllm: do token ao próximo token, com a atenção causal à mostra
+const Glass: React.FC<{ pt: boolean }> = ({ pt }) => {
+  const toks = ['Alice', 'was', 'begin', 'ning', 'to'];
+  const N = toks.length, C = 17, X0 = 78, Y0 = 34;
+  // pesos de atenção ilustrativos (a linha da última posição é a que prevê o próximo token)
+  const w = [[1], [.7, .3], [.2, .15, .65], [.1, .1, .6, .2], [.35, .08, .12, .15, .3]];
+  return (
+    <>
+      <Label x={24} y={22}>{pt ? 'ATENÇÃO CAUSAL' : 'CAUSAL ATTENTION'}</Label>
+      {toks.map((t, i) => (
+        <text key={t} x={X0 - 8} y={Y0 + i * C + 11} fill={i === N - 1 ? 'var(--fg)' : INK} fontFamily={MONO} fontSize={9} textAnchor="end">{t}</text>
+      ))}
+      {w.map((row, i) => row.map((v, j) => (
+        <rect key={`${i}-${j}`} x={X0 + j * C} y={Y0 + i * C} width={C - 3} height={C - 3} rx={2}
+          fill={ACC} opacity={0.12 + v * 0.8} className={i === N - 1 ? 'pv-pulse' : undefined} />
+      )))}
+      {Array.from({ length: N }).map((_, i) => Array.from({ length: N - 1 - i }).map((__, k) => {
+        const j = i + 1 + k;
+        return <rect key={`m${i}-${j}`} x={X0 + j * C} y={Y0 + i * C} width={C - 3} height={C - 3} rx={2} fill="none" stroke={LINE} strokeDasharray="2 3" />;
+      }))}
+      <rect x={X0 - 4} y={Y0 + (N - 1) * C - 3} width={N * C + 2} height={C + 3} rx={3} fill="none" stroke={ACC} />
+      <Arrow x1={X0 + N * C + 12} x2={X0 + N * C + 50} y={Y0 + (N - 1) * C + 9} />
+      <Label x={290} y={22}>SOFTMAX</Label>
+      {[44, 26, 18, 10, 6].map((h, i) => (
+        <rect key={i} x={290 + i * 17} y={110 - h} width={11} height={h} rx={1.5} fill={i === 0 ? ACC : 'var(--fg-muted)'} opacity={i === 0 ? 1 : 0.55} />
+      ))}
+      <Label x={290} y={126}>{pt ? 'próximo token' : 'next token'}</Label>
+      <Label x={24} y={142}>{pt ? 'só NumPy · cada cálculo à mostra' : 'NumPy only · every step visible'}</Label>
+    </>
+  );
+};
+
 const VISUALS: Record<string, { art: React.FC<{ pt: boolean }>; stack: string[] }> = {
   'vibration-anomaly': { art: Vibration, stack: ['python', 'fastapi', 'redis', 'docker', 'pytest'] },
   'youfy':             { art: Youfy,     stack: ['python', 'pytorch', 'mlflow', 'dvc', 'postgresql'] },
   'sdr-agent':         { art: Sdr,       stack: ['openai', 'fastapi', 'redis', 'react'] },
+  'glassllm':          { art: Glass,     stack: ['python', 'numpy', 'pytorch', 'pypi'] },
   'otensor':           { art: Otensor,   stack: ['espressif', 'raspberrypi', 'mqtt', 'docker', 'aws'] },
-  'research:ufabc':    { art: Buck,      stack: ['ufabc', 'afosr', 'python', 'matlab'] },
-  'research:ufpa':     { art: Inverter,  stack: ['ufpa', 'python', 'pytorch', 'tensorflow', 'matlab'] },
+  'research:ufabc':    { art: Buck,      stack: ['ufabc', 'afosr', 'python', 'crewai', 'matlab'] },
+  'research:ufpa':     { art: Inverter,  stack: ['ufpa', 'python', 'pytorch', 'matlab', 'scipy'] },
 };
 
 export const hasProjectVisual = (id?: string) => !!id && id in VISUALS;
