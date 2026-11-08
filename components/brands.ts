@@ -60,6 +60,7 @@ export const BRANDS: Record<string, Brand> = {
   'ibge': { name: "IBGE", src: 'logos/org/ibge.svg', hex: '#1F4E9C', kind: 'image' },
   // Eletrobras: Wikimedia Commons, CC BY-SA 3.0
   'eletrobras': { name: "Eletrobras", src: 'logos/org/eletrobras.png', hex: '#0A6EB4', kind: 'image' },
+  'apachespark': { name: "Apache Spark", src: 'logos/tech/apachespark.svg', hex: '#E25A1C', kind: 'mono' },
   'scipy': { name: "SciPy", src: 'logos/tech/scipy.svg', hex: '#8CAAE6', kind: 'mono' },
   'langchain': { name: "LangChain", src: 'logos/tech/langchain.svg', hex: '#7FC8FF', kind: 'mono' },
   'crewai': { name: "CrewAI", src: 'logos/tech/crewai.svg', hex: '#FF5A50', kind: 'mono' },
