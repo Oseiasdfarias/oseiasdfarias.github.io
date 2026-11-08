@@ -25,3 +25,17 @@ export const BrandMark: React.FC<{ id: string; height: number; maxWidth?: number
     </span>
   );
 };
+
+// ─── Placa de logo ───────────────────────────────────────────────────────────
+// A mesma caixa na Trajetória e na Formação. Cada logo tem a altura que o enche
+// bem sem estourar a placa (marcas altas, como brasões, ficam maiores que as largas).
+const PLATE_H: Record<string, number> = {
+  ufabc: 64, ufpa: 64, ifpa: 60, ifma: 60, alumnione: 66, 'oracle-one': 44, otensor: 56, verzel: 52, udemy: 52,
+  piracanjuba: 34, dow: 40, ibge: 34, eletrobras: 32,
+};
+
+export const LogoPlate: React.FC<{ id: string }> = ({ id }) => (
+  <div className="exp-plate brand-host">
+    <BrandMark id={id} height={PLATE_H[id] ?? 44} maxWidth={148} />
+  </div>
+);

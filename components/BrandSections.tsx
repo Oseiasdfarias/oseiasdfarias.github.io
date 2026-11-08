@@ -59,9 +59,9 @@ export const TrustBand: React.FC<{ lang: Language }> = ({ lang }) => {
 // As mesmas quatro frentes do Foco. Só ferramentas com logo; conceitos ficam nos chips.
 
 const STACK: { k: [string, string]; ids: string[] }[] = [
-  { k: ['ML & MLOps', 'ML & MLOps'], ids: ['python', 'pytorch', 'tensorflow', 'scikitlearn', 'mlflow', 'dvc', 'numpy', 'pandas', 'jupyter', 'opencv'] },
-  { k: ['IA, agentes & APIs', 'AI, agents & APIs'], ids: ['openai', 'googlegemini', 'claude', 'cursor', 'vapi', 'elevenlabs', 'fastapi', 'pydantic', 'pytest', 'react'] },
-  { k: ['Cloud, back-end & DevOps', 'Cloud, back end & DevOps'], ids: ['aws', 'docker', 'githubactions', 'linux', 'ubuntu', 'git', 'postgresql', 'redis', 'graphql', 'quarkus', 'java', 'vuedotjs'] },
+  { k: ['ML & MLOps', 'ML & MLOps'], ids: ['python', 'pytorch', 'tensorflow', 'scikitlearn', 'mlflow', 'dvc', 'numpy', 'pandas', 'scipy', 'jupyter', 'opencv'] },
+  { k: ['IA, agentes & APIs', 'AI, agents & APIs'], ids: ['openai', 'googlegemini', 'claude', 'cursor', 'vapi', 'elevenlabs', 'langchain', 'crewai', 'fastapi', 'pydantic', 'pytest', 'react'] },
+  { k: ['Cloud, back-end & DevOps', 'Cloud, back end & DevOps'], ids: ['aws', 'docker', 'githubactions', 'linux', 'ubuntu', 'git', 'postgresql', 'redis', 'graphql', 'quarkus', 'java', 'typescript', 'vuedotjs', 'nginx', 'supabase'] },
   { k: ['Sistemas físicos', 'Physical systems'], ids: ['px4', 'aeropendulo', 'matlab', 'espressif', 'raspberrypi', 'arduino', 'mqtt', 'threedotjs'] },
 ];
 

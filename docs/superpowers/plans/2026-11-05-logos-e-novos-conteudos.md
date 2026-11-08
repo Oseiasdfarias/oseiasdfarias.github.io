@@ -146,3 +146,31 @@ Seção alimentada aos poucos, pela conversa. Cada item registra a informação,
 - 2026-11-05 · Site: N1, N2, N10 e o parágrafo de N3 aplicados; CBA "aceito" → "apresentado"; "Artigos" na barra superior. Sem commit.
 - 2026-11-05 · Repo `vibration-anomaly-detection` publicado (N2). Recebido N10 (IFPA).
 - 2026-11-05 · Recebidos N1–N9. Imagens do LinkedIn salvas localmente (sem commit). Análise do substituto do Synapsys feita no GitHub.
+
+
+## Mapeamento de contexto atual (2026-11-08)
+
+Fontes lidas: `workspace_think/` (27 pastas), `antifragility-workspace/` (UFABC, crewAI) e `simulacao_v2/` (UFPA, qualificação).
+
+### Aplicado no site
+| Achado | Onde entrou |
+|---|---|
+| **glassllm**: Transformer em NumPy, PyPI, 852.608 parâmetros, 77 operações rastreadas, docs bilíngues | Card em Projetos (REC.05), Sobre, pilar IA |
+| Serviço em réplicas atrás de **nginx**, S3, Redis | Pilar MLOps, tile nginx |
+| **CrewAI / LangChain** (supervisor LLM do mestrado; backend do Pomotensor) | Pilar IA, Pesquisa UFABC, tiles |
+| **Campanhas reprodutíveis** (1.701 execuções, SHA-256, pré-registro, .slx gerado por script) | Sobre, Pesquisa UFPA |
+| TypeScript, Supabase, SciPy | Tiles da Stack |
+
+### Candidatos que NÃO entraram (precisam de decisão)
+| Item | Por quê não |
+|---|---|
+| **TCC Verificado** (curso + plugin de agentes do Claude Code, v1.13.1, 10 agentes) | Repositórios privados e produto à venda; só entra com seu OK |
+| **faceless-engine** (Whisper large-v3, Silero VAD, ffmpeg, Kokoro TTS, Playwright; 253 testes) | Privado; bom para "pipeline de mídia com IA" |
+| **Crivo** (bot Telegram, preço medido contra histórico próprio, Postgres com RLS, Alembic) | Privado e em desenvolvimento |
+| **insta-tech / onda-quadrada** (TypeScript, clean architecture, dependency-cruiser, vitest) | Privado |
+| **Pomotensor** (FastAPI, Supabase, LangChain multi-LLM, Mercado Pago, React/Zustand/React Query) | Sem README; produto não lançado? |
+| Doutorado (AgAF, antifragilidade agêntica sob adversário) | Proposta, ainda não é fato |
+| `plano-saida-brasil`, `plano-carreira-ingles`, relatório de segurança | Pessoais; ficam fora |
+
+### A confirmar
+- O supervisor com CrewAI do `antifragility-workspace` foi implementado por outra pessoa (o `CLAUDE.local.md` cita o Elyser). O texto diz "o supervisor também roda com agentes LLM", sem afirmar autoria.

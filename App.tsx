@@ -8,13 +8,13 @@ import {
 import { Language } from './types';
 import { Aeropendulo3D } from './components/Aeropendulo3D';
 import { ProjectDiagram } from './components/ProjectDiagram';
-import { EduLogo, CertIcon } from './components/EduCertIcons';
+import { Certifications } from './components/Certifications';
 import { HeroInference } from './components/HeroInference';
 import { GithubActivity } from './components/GithubActivity';
 import { AuroraBackground } from './components/AuroraBackground';
 import { MediumPosts } from './components/MediumPosts';
 import { TrustBand, StackGrid } from './components/BrandSections';
-import { BrandMark } from './components/BrandMark';
+import { LogoPlate } from './components/BrandMark';
 import { ProjectVisual, hasProjectVisual } from './components/ProjectVisual';
 
 // ─── Theme tokens: Graphite & Copper (night-mountain) ────────────────────────
@@ -1044,17 +1044,13 @@ const App: React.FC = () => {
                 viewport={{ once: true, margin: '-5%' }}
                 transition={{ duration: 0.65, delay: i * 0.07, ease: [0.2, 0.7, 0.2, 1] }}
                 style={{
-                  display: 'grid', gridTemplateColumns: '170px 1fr',
+                  display: 'grid', gridTemplateColumns: '200px 1fr',
                   gap: 24, padding: '22px 0', borderTop: '1px solid var(--line)',
                 }}>
                 <div className="experience-period"
                   style={mono(12, { color: 'var(--fg-soft)', paddingTop: 4 })}>
                   {exp.period}
-                  {exp.brand && (
-                    <div className="exp-plate brand-host">
-                      <BrandMark id={exp.brand} height={({ piracanjuba: 22, alumnione: 40, dow: 26, ibge: 24, eletrobras: 20 } as Record<string, number>)[exp.brand] ?? 30} maxWidth={104} />
-                    </div>
-                  )}
+                  {exp.brand && <LogoPlate id={exp.brand} />}
                 </div>
                 <div>
                   <div style={{
@@ -1219,12 +1215,12 @@ const App: React.FC = () => {
                   border: '1px solid var(--line)', borderRadius: 8,
                   background: 'var(--panel)', padding: 22,
                   display: 'flex', flexDirection: 'column', flex: 1,
-                  alignItems: 'center', textAlign: 'center',
+                  alignItems: 'flex-start', textAlign: 'left',
                 }}>
                   <span className="modbar" />
-                  {/* Top Centered Logo */}
-                  <div style={{ marginBottom: 18, display: 'flex', justifyContent: 'center' }}>
-                    <EduLogo id={edu.id} size={68} />
+                  {/* Mesma placa de logo da Trajetória */}
+                  <div style={{ marginBottom: 18 }}>
+                    <LogoPlate id={edu.id === 'oracle' ? 'oracle-one' : edu.id} />
                   </div>
                   <div style={mono(11, { color: 'var(--accent)', marginBottom: 6 })}>
                     {edu.period} · {edu.institution}
@@ -1244,33 +1240,7 @@ const App: React.FC = () => {
               {content.education.certifications}
             </div>
           </FadeIn>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(252px,1fr))', gap: 8 }}>
-            {certs.map((cert, i) => (
-              <FadeIn key={i} delay={i * 0.03}>
-                <div style={{
-                  display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10,
-                  padding: '13px 14px', border: '1px solid var(--line)', borderRadius: 10,
-                  background: 'var(--panel)', backdropFilter: 'blur(6px)',
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 11, minWidth: 0 }}>
-                    <CertIcon category={cert.category} title={cert.title} size={15} />
-                    <div style={{ minWidth: 0 }}>
-                      <div style={serif(14.5, 500, {
-                        whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
-                      })}>
-                        {cert.link
-                          ? <a href={cert.link} target="_blank" rel="noreferrer"
-                            style={{ textDecoration: 'none', color: 'inherit' }}>{cert.title}</a>
-                          : cert.title}
-                      </div>
-                      <div style={mono(10, { color: 'var(--fg-soft)', marginTop: 2 })}>{cert.issuer}</div>
-                    </div>
-                  </div>
-                  <span style={mono(10.5, { color: 'var(--fg-soft)', whiteSpace: 'nowrap' })}>{cert.date}</span>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
+          <Certifications certs={certs} lang={lang} />
         </section>
 
         {/* ── COMMUNITY §07 ─────────────────────────────────── */}

@@ -479,12 +479,35 @@
       .psi-toggle:hover { border-color: var(--accent); }
       .psi-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
+      /* ── Certificados: chips de subcategoria e cartões ── */
+      .cert-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+      .cert-chip {
+        display: inline-flex; align-items: center; gap: 8px; padding: 7px 13px; cursor: pointer;
+        background: none; border: 1px solid var(--line-2); border-radius: 999px; color: var(--fg-muted);
+        font: 400 11px 'JetBrains Mono', monospace; letter-spacing: .06em; transition: border-color .25s, color .25s, background .25s;
+      }
+      .cert-chip:hover { border-color: var(--accent); color: var(--fg); }
+      .cert-chip.is-on { border-color: var(--accent); color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent); }
+      .cert-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+      .cert-chip-n { color: var(--fg-soft); font-size: 10px; }
+      .cert-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 8px; }
+      .cert-card {
+        display: flex; align-items: flex-start; gap: 11px; height: 100%; padding: 13px 14px; text-decoration: none; color: inherit;
+        border: 1px solid var(--line); border-radius: 10px; background: var(--panel); backdrop-filter: blur(6px);
+        transition: border-color .3s, transform .3s;
+      }
+      a.cert-card:hover { border-color: var(--accent); transform: translateY(-1px); }
+      .cert-title { font: 500 14px/1.35 'Plus Jakarta Sans', sans-serif; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+      .cert-arrow { color: var(--fg-soft); flex-shrink: 0; margin-top: 3px; transition: color .3s, transform .3s; }
+      a.cert-card:hover .cert-arrow { color: var(--accent); transform: translate(2px, -2px); }
+
       /* ── Placa de logo na Trajetória ── */
       .exp-plate {
-        display: flex; align-items: center; justify-content: center; width: 132px; height: 60px; margin-top: 14px;
+        display: flex; align-items: center; justify-content: center; width: 176px; height: 88px; margin-top: 14px;
         border: 1px solid var(--line);
       }
-      @media (max-width: 767px) { .exp-plate { width: 112px; height: 52px; margin: 8px 0 6px; } }
+      .mod .exp-plate { margin-top: 0; }
+      @media (max-width: 767px) { .exp-plate { width: 152px; height: 76px; margin: 8px 0 6px; } }
     </style>
 
     <script type="importmap">

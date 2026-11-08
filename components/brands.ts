@@ -51,6 +51,7 @@ export const BRANDS: Record<string, Brand> = {
   'ufabc': { name: "UFABC", src: 'logos/ufabc.png', hex: '#006633', kind: 'image' },
   'ufpa': { name: "UFPA", src: 'logos/ufpa.png', hex: '#1E3A8A', kind: 'image', dark: true },
   'ifpa': { name: "IFPA", src: 'logos/instituto_federal.webp', hex: '#2F9E41', kind: 'image' },
+  'ifma': { name: "IFMA", src: 'logos/instituto_federal.webp', hex: '#2F9E41', kind: 'image' },
   'oracle-one': { name: "Oracle ONE", src: 'logos/oracle_one.png', hex: '#C74634', kind: 'image' },
   'alumnione': { name: "AlumniONE BR", src: 'logos/alumnione-br.webp', hex: '#C74634', kind: 'image' },
   'verzel': { name: "Verzel", src: 'logos/org/verzel.svg', hex: '#7D72FF', kind: 'mono' },
@@ -59,6 +60,12 @@ export const BRANDS: Record<string, Brand> = {
   'ibge': { name: "IBGE", src: 'logos/org/ibge.svg', hex: '#1F4E9C', kind: 'image' },
   // Eletrobras: Wikimedia Commons, CC BY-SA 3.0
   'eletrobras': { name: "Eletrobras", src: 'logos/org/eletrobras.png', hex: '#0A6EB4', kind: 'image' },
+  'scipy': { name: "SciPy", src: 'logos/tech/scipy.svg', hex: '#8CAAE6', kind: 'mono' },
+  'langchain': { name: "LangChain", src: 'logos/tech/langchain.svg', hex: '#7FC8FF', kind: 'mono' },
+  'crewai': { name: "CrewAI", src: 'logos/tech/crewai.svg', hex: '#FF5A50', kind: 'mono' },
+  'typescript': { name: "TypeScript", src: 'logos/tech/typescript.svg', hex: '#3178C6', kind: 'mono' },
+  'nginx': { name: "nginx", src: 'logos/tech/nginx.svg', hex: '#009639', kind: 'mono' },
+  'supabase': { name: "Supabase", src: 'logos/tech/supabase.svg', hex: '#3FCF8E', kind: 'mono' },
   // Lobe Icons (MIT)
   'openai': { name: "OpenAI", src: 'logos/tech/openai.svg', hex: '#000000', kind: 'mono', dark: true },
   'googlegemini': { name: "Gemini", src: 'logos/tech/googlegemini.svg', hex: '#8E75B2', kind: 'mono' },
