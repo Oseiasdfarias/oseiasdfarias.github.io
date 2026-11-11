@@ -263,8 +263,36 @@ const Glass: React.FC<{ pt: boolean }> = ({ pt }) => {
   );
 };
 
+// Manual com trechos, um deles recuperado, e a resposta citando a página
+const Rag: React.FC<{ pt: boolean }> = ({ pt }) => {
+  const rows = [0, 1, 2, 3, 4, 5];
+  const hit = 3;
+  return (
+    <>
+      <Label x={24} y={22}>{pt ? 'MANUAL · P. 42' : 'MANUAL · P. 42'}</Label>
+      <rect x={24} y={30} width={112} height={98} rx={3} fill="none" stroke={LINE} />
+      {rows.map(i => (
+        <rect key={i} x={34} y={40 + i * 14} width={i === hit ? 92 : 70 + ((i * 17) % 22)} height={7} rx={2}
+          fill={i === hit ? ACC : 'var(--fg-muted)'} opacity={i === hit ? 1 : 0.35}
+          className={i === hit ? 'pv-pulse' : undefined} />
+      ))}
+      <Label x={24} y={142}>{pt ? 'busca vetorial + BM25' : 'vector + BM25 search'}</Label>
+      <Arrow x1={150} x2={196} y={79} />
+      <Label x={210} y={22}>{pt ? 'RESPOSTA' : 'ANSWER'}</Label>
+      <rect x={210} y={34} width={166} height={58} rx={6} fill="color-mix(in srgb, var(--accent) 14%, transparent)" stroke={ACC} />
+      <text x={222} y={52} fill="var(--fg)" fontFamily={MONO} fontSize={8.5}>{pt ? 'Segundo o manual,' : 'According to the'}</text>
+      <text x={222} y={66} fill="var(--fg)" fontFamily={MONO} fontSize={8.5}>{pt ? 'o procedimento é…' : 'manual, the step is…'}</text>
+      <text x={222} y={82} fill={ACC} fontFamily={MONO} fontSize={8.5}>(p. 42)</text>
+      <rect x={210} y={100} width={166} height={20} rx={3} fill="none" stroke={LINE} />
+      <text x={220} y={113.5} fill={INK} fontFamily={MONO} fontSize={8.5}>{pt ? 'sem fonte? "não encontrei"' : 'no source? "not found"'}</text>
+      <Label x={376} y={142} color={ACC} anchor="end">hit@3 12/13</Label>
+    </>
+  );
+};
+
 const VISUALS: Record<string, { art: React.FC<{ pt: boolean }>; stack: string[] }> = {
   'vibration-anomaly': { art: Vibration, stack: ['python', 'fastapi', 'redis', 'docker', 'pytest'] },
+  'rag-manual':        { art: Rag,       stack: ['python', 'pytorch', 'ollama', 'pytest'] },
   'youfy':             { art: Youfy,     stack: ['python', 'pytorch', 'mlflow', 'dvc', 'postgresql'] },
   'sdr-agent':         { art: Sdr,       stack: ['openai', 'fastapi', 'redis', 'react'] },
   'glassllm':          { art: Glass,     stack: ['python', 'numpy', 'pytorch', 'pypi'] },

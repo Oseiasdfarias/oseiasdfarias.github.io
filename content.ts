@@ -235,6 +235,34 @@ export const getProjects = (lang: Language): ProjectData[] => {
       github: "https://github.com/Oseiasdfarias/vibration-anomaly-detection",
     },
     {
+      id:       "rag-manual",
+      summary:  pt
+        ? "RAG sobre manual de manutenção de motores elétricos: resposta com a página de origem, 35 configurações de busca comparadas e código em camadas com 47 testes."
+        : "RAG over an electric-motor maintenance manual: answers cite the source page, 35 retrieval setups compared and layered code with 47 tests.",
+      title:    pt ? "RAG sobre manual técnico, com avaliação" : "RAG over a technical manual, with evaluation",
+      year:     "2026",
+      category: pt ? "LLM · RAG · Avaliação" : "LLM · RAG · Evaluation",
+      featured: true,
+      status:   "PoC",
+      metrics: [
+        { label: "hit@3", value: "12/13" },
+        { label: "MRR", value: pt ? "0,87" : "0.87" },
+        { label: pt ? "Testes" : "Tests", value: "47" },
+      ],
+      problem:  pt
+        ? "Técnicos de manutenção perdem tempo procurando procedimentos e causas de falha em manuais longos, e um LLM sozinho responde de memória, sem mostrar a fonte."
+        : "Maintenance technicians lose time searching long manuals for procedures and failure causes, and an LLM alone answers from memory without showing its source.",
+      solution: pt
+        ? "RAG sobre o manual de motores elétricos da WEG: trechos guardam a página de origem; busca vetorial, por palavra (BM25) e híbrida (RRF), com reranker opcional; um LLM local no Ollama responde citando a página ou diz que não encontrou. Código em camadas (domínio, aplicação, infraestrutura)."
+        : "RAG over WEG's electric-motor manual: chunks keep their source page; vector, keyword (BM25) and hybrid (RRF) retrieval with an optional reranker; a local LLM on Ollama answers citing the page or says it found nothing. Layered code (domain, application, infrastructure).",
+      impact: pt
+        ? "Com 15 perguntas de teste, trocar o modelo de embedding por um multilíngue levou a busca de 7 para 12 acertos em 13 (resultado otimista, conjunto pequeno). A avaliação mostrou que o gargalo era o modelo gerador, não a busca."
+        : "On 15 test questions, switching to a multilingual embedding model took retrieval from 7 to 12 hits out of 13 (optimistic, small set). The evaluation showed the bottleneck was the generator model, not retrieval.",
+      tags:  ["Python", "RAG", "ChromaDB", "BM25", "Ollama", "Pytest"],
+      link:  "",
+      github: "https://github.com/Oseiasdfarias/rag-manual-poc",
+    },
+    {
       id:       "youfy",
       summary:  pt
         ? "Laboratório de MLOps num app de música: dados versionados, treino rastreado no MLflow e portão de promoção de modelos, com 109 testes no CI."
@@ -346,34 +374,6 @@ export const getProjects = (lang: Language): ProjectData[] => {
       tags:  ["Python", "NumPy", "Transformer", "Autograd", "PyPI", "Pyodide"],
       link:  "https://oseiasdfarias.github.io/glassllm/",
       github: "https://github.com/Oseiasdfarias/glassllm",
-    },
-    {
-      id:       "quadrotor",
-      summary:  pt
-        ? "Quadricóptero montado do zero com PX4, rádio e telemetria, testado em voo."
-        : "A quadcopter built from scratch with PX4, radio and telemetry, flight-tested.",
-      title:    pt ? "Quadricóptero com PX4: montado e testado em voo" : "PX4 quadcopter: built and flight-tested",
-      year:     "2021–2023",
-      category: pt ? "Drones · Controle de voo · Hardware" : "Drones · Flight control · Hardware",
-      featured: false,
-      status:   pt ? "concluído" : "shipped",
-      image:    "/assets/quadrotor.webp",
-      metrics: [
-        { label: pt ? "Autopiloto" : "Autopilot", value: "PX4" },
-        { label: pt ? "Comunicação" : "Link", value: pt ? "Rádio + telemetria" : "Radio + telemetry" },
-        { label: pt ? "Validação" : "Validation", value: pt ? "Voo real" : "Real flight" },
-      ],
-      problem:  pt
-        ? "Simulação não mostra tudo o que um controlador de voo enfrenta: vibração, ruído dos sensores e atraso no enlace de rádio só aparecem numa aeronave real."
-        : "Simulation does not show everything a flight controller faces: vibration, sensor noise and radio link delay only show up on a real aircraft.",
-      solution: pt
-        ? "Montagem completa de um quadricóptero: estrutura, motores e hélices, controladora de voo com PX4, rádio controle e telemetria para acompanhar o voo em tempo real."
-        : "A full quadcopter build: frame, motors and propellers, a PX4 flight controller, radio control and telemetry to follow the flight in real time.",
-      impact: pt
-        ? "Voou e funcionou como esperado. É a base prática por trás do quadricóptero 3D com Neural-LQR do Synapsys."
-        : "It flew and worked as expected. It is the hands-on groundwork behind Synapsys' 3D Neural-LQR quadcopter.",
-      tags:  ["PX4", pt ? "Controle de voo" : "Flight control", pt ? "Telemetria" : "Telemetry", pt ? "Rádio" : "Radio", "Hardware"],
-      link:  "",
     },
     {
       id:       "otensor",
