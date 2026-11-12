@@ -25,7 +25,7 @@ const TEXT = {
     flag: 'padrão incomum · 96%',
     agent: 'AGENTE DE IA',
     q: 'Por que o motor 3 está vibrando?',
-    a: 'Sinal típico de desgaste no rolamento. O manual recomenda inspecionar e lubrificar antes de trocar a peça.',
+    a: 'Sinal típico de desgaste no rolamento. O manual recomenda inspecionar e lubrificar antes de trocar.',
     src: 'fonte: manual técnico · rolamentos',
     status: 'ESTADO',
     states: ['Normal', 'Alerta', 'Diagnóstico', 'Estável'],
@@ -39,8 +39,8 @@ const TEXT = {
       { t: 'A IA explica', d: 'Um agente consulta o manual técnico e responde em linguagem clara, mostrando a fonte.' },
       { t: 'A equipe age', d: 'A manutenção é feita no momento certo e a máquina volta a funcionar normalmente.' },
     ],
-    based: 'baseado nos projetos',
-    projects: ['detecção de vibração', 'RAG sobre manual', 'supervisor multiagente'],
+    proj: 'projeto',
+    stepProject: ['detecção de vibração', 'detecção de vibração', 'RAG sobre manual', 'supervisor multiagente'],
     stepLabel: (i: number) => `Ir para o passo ${i + 1}`,
   },
   en: {
@@ -66,8 +66,8 @@ const TEXT = {
       { t: 'AI explains', d: 'An agent looks up the technical manual and answers in plain language, showing its source.' },
       { t: 'The team acts', d: 'Maintenance happens at the right time and the machine goes back to normal.' },
     ],
-    based: 'built on my projects',
-    projects: ['vibration detection', 'RAG over a manual', 'multi-agent supervisor'],
+    proj: 'project',
+    stepProject: ['vibration detection', 'vibration detection', 'RAG over a manual', 'multi-agent supervisor'],
     stepLabel: (i: number) => `Go to step ${i + 1}`,
   },
 } as const;
@@ -80,8 +80,8 @@ const signal = (u: number, a: number) =>
   7 * Math.sin(u * 0.32) + 2.2 * Math.sin(u * 1.1 + 1) +
   a * 22 * Math.sin(u * 1.9) * Math.pow(Math.abs(Math.sin(u * 0.11)), 1.5);
 
-// Layout do SVG (viewBox 480 × 300)
-const WX0 = 14, WX1 = 466, WY = 66, LIM = 21;
+// Layout do SVG (viewBox 480 × 206)
+const WX0 = 14, WX1 = 466, WY = 56, LIM = 19;
 
 export const HeroStory: React.FC<{ lang: Language }> = ({ lang }) => {
   const L = TEXT[lang === 'pt' ? 'pt' : 'en'];
@@ -125,7 +125,8 @@ export const HeroStory: React.FC<{ lang: Language }> = ({ lang }) => {
     if (line) out.push(line);
     return out;
   };
-  const answerLines = wrap(step >= 3 ? L.a : answer, 44);
+  const answerLines = wrap(step >= 3 ? L.a : answer, 54);
+  const chipY = 161 + Math.max(1, wrap(L.a, 54).length) * 13 - 3;   // selo da fonte logo abaixo da resposta completa
 
   return (
     <motion.div
@@ -162,8 +163,8 @@ export const HeroStory: React.FC<{ lang: Language }> = ({ lang }) => {
         ))}
       </div>
 
-      <svg viewBox="0 0 480 252" width="100%" role="img" aria-label={L.aria}
-        style={{ display: 'block', overflow: 'visible', maxHeight: 'clamp(190px,38vh,320px)', marginTop: 12 }}>
+      <svg viewBox="0 0 480 206" width="100%" role="img" aria-label={L.aria}
+        style={{ display: 'block', overflow: 'visible', maxHeight: 'clamp(160px,30vh,260px)', marginTop: 10 }}>
         {/* ── Sensor ── */}
         <text x={WX0} y="14" fontFamily={MONO} fontSize="8.5" fill="var(--fg-soft)" letterSpacing="1.2">{L.sensor}</text>
         <rect x={WX0 - 4} y={WY - LIM} width={WX1 - WX0 + 8} height={LIM * 2} fill="var(--c-teal)" opacity="0.06" />
@@ -178,63 +179,53 @@ export const HeroStory: React.FC<{ lang: Language }> = ({ lang }) => {
           </g>
         )}
 
-        <path d="M10 124 H 470" stroke="var(--line)" />
+        <path d="M10 104 H 470" stroke="var(--line)" />
 
         {/* ── Agente ── */}
-        <text x="14" y="142" fontFamily={MONO} fontSize="8.5" fill="var(--fg-soft)" letterSpacing="1.2">{L.agent}</text>
+        <text x="14" y="120" fontFamily={MONO} fontSize="8.5" fill="var(--fg-soft)" letterSpacing="1.2">{L.agent}</text>
         {qOn ? (
           <>
-            <rect x="14" y="150" width="204" height="20" fill="var(--node)" stroke="var(--line-2)" />
-            <text x="22" y="163.5" fontFamily={MONO} fontSize="8.8" fill="var(--fg-muted)">{L.q}</text>
+            <rect x="14" y="127" width="204" height="19" fill="var(--node)" stroke="var(--line-2)" />
+            <text x="22" y="139.8" fontFamily={MONO} fontSize="8.8" fill="var(--fg-muted)">{L.q}</text>
             {answerLines.map((ln, i) => (
-              <text key={i} x="14" y={186 + i * 13} fontFamily="'Plus Jakarta Sans', sans-serif" fontSize="10" fill="var(--fg)">
+              <text key={i} x="14" y={161 + i * 13} fontFamily="'Plus Jakarta Sans', sans-serif" fontSize="10" fill="var(--fg)">
                 {i === 0 && <tspan fill="var(--accent)">▸ </tspan>}{ln}
                 {i === answerLines.length - 1 && typed < 1 && step === 2 && <tspan fill="var(--accent)" opacity={t % 4 < 2 ? 1 : 0}>▍</tspan>}
               </text>
             ))}
             {srcOn && (
               <g>
-                <rect x="14" y="228" width="196" height="17" fill="none" stroke="var(--accent)" strokeOpacity="0.7" />
-                <text x="22" y="239" fontFamily={MONO} fontSize="8" fill="var(--accent)">{L.src}</text>
+                <rect x="14" y={chipY} width="196" height="17" fill="none" stroke="var(--accent)" strokeOpacity="0.7" />
+                <text x="22" y={chipY + 11.5} fontFamily={MONO} fontSize="8" fill="var(--accent)">{L.src}</text>
               </g>
             )}
           </>
         ) : (
-          <text x="14" y="168" fontFamily={MONO} fontSize="8" fill="var(--fg-soft)">
+          <text x="14" y="142" fontFamily={MONO} fontSize="8" fill="var(--fg-soft)">
             {step === 0 ? L.idle : L.waiting}
           </text>
         )}
 
         {/* ── Estado da máquina ── */}
-        <path d="M318 134 V 246" stroke="var(--line)" />
-        <text x="334" y="142" fontFamily={MONO} fontSize="8.5" fill="var(--fg-soft)" letterSpacing="1.2">{L.status}</text>
-        <circle cx="342" cy="166" r="6" fill={stateColor} style={{ transition: 'fill .4s' }} />
-        <circle cx="342" cy="166" r="11" fill="none" stroke={stateColor} strokeOpacity="0.35" />
-        <text x="358" y="170.5" fontFamily="'Plus Jakarta Sans', sans-serif" fontSize="14" fontWeight="600" fill="var(--fg)">{stateLabel}</text>
+        <path d="M318 112 V 202" stroke="var(--line)" />
+        <text x="334" y="120" fontFamily={MONO} fontSize="8.5" fill="var(--fg-soft)" letterSpacing="1.2">{L.status}</text>
+        <circle cx="342" cy="140" r="6" fill={stateColor} style={{ transition: 'fill .4s' }} />
+        <circle cx="342" cy="140" r="11" fill="none" stroke={stateColor} strokeOpacity="0.35" />
+        <text x="358" y="144.5" fontFamily="'Plus Jakarta Sans', sans-serif" fontSize="14" fontWeight="600" fill="var(--fg)">{stateLabel}</text>
         {L.actions.map((act, i) => (
-          <text key={i} x="334" y={196 + i * 13} fontFamily={MONO} fontSize="8.5"
+          <text key={i} x="334" y={166 + i * 12} fontFamily={MONO} fontSize="8.5"
             fill={i <= step ? 'var(--fg-muted)' : 'var(--fg-soft)'} opacity={i <= step ? 1 : 0.35}>
             {i <= step ? '✓' : '○'} {act}
           </text>
         ))}
       </svg>
 
-      {/* Legenda do passo, em linguagem simples */}
-      <div style={{ marginTop: 10, paddingTop: 12, borderTop: '1px solid var(--line)', minHeight: 62 }}>
-        <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 15, fontWeight: 600, color: 'var(--fg)' }}>
-          <span style={{ ...mono(11, { color: 'var(--accent)', marginRight: 8 }) }}>{String(step + 1).padStart(2, '0')}</span>
-          {L.steps[step].t}
-        </div>
-        <p style={{ margin: '4px 0 0', fontSize: 13.5, lineHeight: 1.5, color: 'var(--fg-muted)' }}>{L.steps[step].d}</p>
-      </div>
-
-      <div style={{
-        display: 'flex', flexWrap: 'wrap', gap: '4px 10px', marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--line)',
-        ...mono(9.5, { color: 'var(--fg-soft)', letterSpacing: '.04em' }),
-      }}>
-        <span>{L.based}:</span>
-        {L.projects.map((p, i) => <span key={p} style={{ color: 'var(--fg-muted)' }}>{p}{i < L.projects.length - 1 ? ' ·' : ''}</span>)}
-      </div>
+      {/* Legenda do passo, em linguagem simples, com o projeto que o sustenta */}
+      <p style={{ margin: '8px 0 0', paddingTop: 10, borderTop: '1px solid var(--line)', minHeight: 50, fontSize: 13.5, lineHeight: 1.5, color: 'var(--fg-muted)' }}>
+        <span style={{ ...mono(11, { color: 'var(--accent)', marginRight: 7 }) }}>{String(step + 1).padStart(2, '0')}</span>
+        <strong style={{ color: 'var(--fg)', fontWeight: 600 }}>{L.steps[step].t}.</strong>{' '}{L.steps[step].d}{' '}
+        <span style={{ ...mono(10, { color: 'var(--fg-soft)', whiteSpace: 'nowrap' }) }}>· {L.proj}: <span style={{ color: 'var(--accent)' }}>{L.stepProject[step]}</span></span>
+      </p>
     </motion.div>
   );
 };
