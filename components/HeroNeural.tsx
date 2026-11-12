@@ -124,13 +124,14 @@ export const HeroNeural: React.FC<{ dark: boolean; label: string; height?: strin
 
     const neuron = (x: number, y: number, a: number, rad: number) => {
       if (a > 0.05) {
-        const g = ctx.createRadialGradient(x, y, 0, x, y, rad * 4);
+        const R = rad * (dark ? 4 : 2.6);
+        const g = ctx.createRadialGradient(x, y, 0, x, y, R);
         g.addColorStop(0, POS); g.addColorStop(1, 'transparent');
-        ctx.globalAlpha = a * 0.45; ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, rad * 4, 0, Math.PI * 2); ctx.fill();
+        ctx.globalAlpha = a * (dark ? 0.45 : 0.16); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, R, 0, Math.PI * 2); ctx.fill();
       }
       ctx.globalAlpha = 1; ctx.fillStyle = BG; ctx.beginPath(); ctx.arc(x, y, rad, 0, Math.PI * 2); ctx.fill();
       ctx.globalAlpha = 0.12 + a * 0.88; ctx.fillStyle = POS; ctx.beginPath(); ctx.arc(x, y, rad, 0, Math.PI * 2); ctx.fill();
-      ctx.globalAlpha = 0.45 + a * 0.45; ctx.strokeStyle = a > 0.35 ? POS : INK; ctx.lineWidth = 1.1;
+      ctx.globalAlpha = (dark ? 0.45 : 0.6) + a * 0.4; ctx.strokeStyle = a > 0.35 ? POS : INK; ctx.lineWidth = dark ? 1.1 : 1;
       ctx.beginPath(); ctx.arc(x, y, rad, 0, Math.PI * 2); ctx.stroke();
     };
 
@@ -153,7 +154,8 @@ export const HeroNeural: React.FC<{ dark: boolean; label: string; height?: strin
       ctx.restore();
       }
       // no claro o fundo já é nebuloso: em vez de véu, linhas e neurônios mais fortes
-      const boost = dark ? 1 : 1.7;
+      const boost = dark ? 1 : 1.2;
+      const thin = dark ? 1 : 0.7;
 
       // pixels → 1ª oculta (só dos pixels acesos)
       ctx.lineWidth = 0.6;
@@ -176,12 +178,13 @@ export const HeroNeural: React.FC<{ dark: boolean; label: string; height?: strin
           const w = W[i][j], mag = Math.min(1, Math.abs(w) / scale), on = act[l][i] * k;
           ctx.strokeStyle = w > 0 ? POS : NEG;
           ctx.globalAlpha = Math.min(1, ((dark ? 0.05 : 0.07) + mag * 0.08 + on * mag * 0.4) * boost);
-          ctx.lineWidth = 0.5 + mag * 1.5 * (0.4 + on);
+          ctx.lineWidth = (0.5 + mag * 1.5 * (0.4 + on)) * thin;
           curve(lx[l], ly[l][i], lx[l + 1], ly[l + 1][j]);
         }
       }
 
       // grade do dígito (entrada)
+      if (!dark) { ctx.globalAlpha = 0.85; ctx.fillStyle = BG; ctx.fillRect(gx - 3, gy - 3, cell * 8 + 6, cell * 8 + 6); }
       ctx.strokeStyle = SOFT; ctx.lineWidth = 1; ctx.globalAlpha = dark ? 0.35 : 0.55;
       ctx.strokeRect(gx - 3, gy - 3, cell * 8 + 6, cell * 8 + 6);
       ctx.fillStyle = INK;
@@ -232,9 +235,10 @@ export const HeroNeural: React.FC<{ dark: boolean; label: string; height?: strin
         if (isWin && kWin > 0) {
           // faixa de destaque atrás da linha vencedora (número, barra e porcentagem)
           const rowH = fs * 1.9, x0 = ox - rO - 8, x1 = bx + barW + fs * 3.2;
-          ctx.globalAlpha = (dark ? 0.16 : 0.22) * kWin; ctx.fillStyle = POS;
+          if (!dark) { ctx.globalAlpha = 0.9 * kWin; ctx.fillStyle = BG; ctx.beginPath(); ctx.roundRect(x0, y - rowH / 2, x1 - x0, rowH, rowH / 2); ctx.fill(); }
+          ctx.globalAlpha = (dark ? 0.16 : 0.14) * kWin; ctx.fillStyle = POS;
           ctx.beginPath(); ctx.roundRect(x0, y - rowH / 2, x1 - x0, rowH, rowH / 2); ctx.fill();
-          ctx.globalAlpha = (dark ? 0.55 : 0.75) * kWin; ctx.strokeStyle = POS; ctx.lineWidth = 1;
+          ctx.globalAlpha = (dark ? 0.55 : 0.9) * kWin; ctx.strokeStyle = POS; ctx.lineWidth = dark ? 1 : 1.3;
           ctx.beginPath(); ctx.roundRect(x0, y - rowH / 2, x1 - x0, rowH, rowH / 2); ctx.stroke();
           // anéis que expandem a partir do neurônio, repetindo enquanto a decisão está na tela
           for (let k = 0; k < 2; k++) {
@@ -248,7 +252,7 @@ export const HeroNeural: React.FC<{ dark: boolean; label: string; height?: strin
 
         // rótulo 0–9 (o vencedor maior, em negrito e na cor de destaque)
         const size = isWin ? fs * (1 + 0.55 * pop) : fs;
-        ctx.globalAlpha = isWin ? 0.5 + 0.5 * kWin : 0.5;
+        ctx.globalAlpha = isWin ? 0.5 + 0.5 * kWin : (dark ? 0.5 : 0.75);
         ctx.fillStyle = isWin && kWin > 0.2 ? POS : INK;
         ctx.font = `${isWin && kWin > 0.2 ? 700 : 400} ${size}px ${MONO}`;
         ctx.fillText(String(j), lx0 - (size - fs) * 0.25, y + 0.5);
