@@ -278,6 +278,14 @@
         mask-composite: intersect;
       }
 
+      /* ── Hero (desktop): a rede avança sobre o espaço livre à direita e um pouco sobre o vão ── */
+      @media (min-width: 1200px) {
+        .hero-grid .hero-neural {
+          width: calc(100% + clamp(0px, (100vw - 1240px) / 2 + 40px, 260px) + clamp(12px, 2vw, 32px)) !important;
+          margin-left: calc(-1 * clamp(12px, 2vw, 32px));
+        }
+      }
+
       /* ── Hero: passos da história (FIG.01) ── */
       .story-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
       .story-step {

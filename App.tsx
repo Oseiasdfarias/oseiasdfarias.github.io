@@ -620,7 +620,7 @@ const App: React.FC = () => {
 
         <div className="hero-grid" style={{
           display: 'grid',
-          gridTemplateColumns: 'minmax(0,1fr) minmax(0,1.04fr)',
+          gridTemplateColumns: 'minmax(0,1fr) minmax(0,1.2fr)',
           gap: 'clamp(20px,3vw,48px)',
           alignItems: 'center',
         }}>
