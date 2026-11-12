@@ -64,7 +64,7 @@ export const HeroNeural: React.FC<{ dark: boolean; label: string; height?: strin
     const layout = () => {
       cell = Math.max(7, Math.min((Hd * 0.44) / 8, (Wd * 0.18) / 8));
       gx = Wd * 0.04; gy = Hd / 2 - cell * 4;
-      const x0 = gx + cell * 8 + Wd * 0.12, x1 = Wd * 0.76;
+      const x0 = gx + cell * 8 + Wd * 0.11, x1 = Wd * 0.68;
       barW = Math.max(26, Wd * 0.1);
       lx = SIZES.map((_, l) => (l === 0 ? 0 : x0 + ((l - 1) / (NL - 2)) * (x1 - x0)));
       ly = SIZES.map((n, l) => {
@@ -221,24 +221,46 @@ export const HeroNeural: React.FC<{ dark: boolean; label: string; height?: strin
       const rO = Math.max(4, Math.min(7, Hd / 62));
       const fs = Math.max(10, Math.min(14, Hd / 30));
       ctx.textBaseline = 'middle';
+      // "pulo" do número vencedor: cresce passando um pouco do tamanho final e assenta
+      const tWin = age - DRAW_MS - LAYER_MS * (NL - 1);
+      const pop = kWin <= 0 ? 0 : tWin < 260 ? ease(tWin / 260) * 1.18 : 1.18 - 0.18 * ease((tWin - 260) / 220);
+      const lx0 = ox + rO + 9;
       for (let j = 0; j < SIZES[L]; j++) {
         const pj = out[j] ?? 0, a = Math.min(1, pj * 1.4) * kO, isWin = j === winner, y = ly[L][j];
-        neuron(ox, y, a, rO);
-        ctx.globalAlpha = isWin ? 0.4 + 0.6 * kWin : 0.55;
-        ctx.fillStyle = isWin && kWin > 0.3 ? POS : INK;
-        ctx.font = `${isWin ? 600 : 400} ${fs}px ${MONO}`;
-        ctx.fillText(String(j), ox + rO + 9, y + 0.5);
-        const bx = ox + rO + 9 + fs * 0.9;
-        ctx.globalAlpha = 0.12; ctx.fillStyle = INK; ctx.fillRect(bx, y - 1.5, barW, 3);
-        ctx.globalAlpha = 0.9; ctx.fillStyle = isWin ? POS : SOFT; ctx.fillRect(bx, y - 1.5, barW * pj * kO, 3);
-        if (pj >= 0.05 && kO > 0.3) {
-          ctx.globalAlpha = (isWin ? 0.95 : 0.7) * kO; ctx.fillStyle = isWin ? POS : SOFT;
-          ctx.font = `${isWin ? 600 : 400} ${fs * 0.78}px ${MONO}`;
-          ctx.fillText(`${Math.round(pj * 100)}%`, bx + barW + 6, y + 0.5);
-        }
+        const bx = lx0 + fs * 0.9;
+
         if (isWin && kWin > 0) {
-          ctx.globalAlpha = kWin * 0.95; ctx.strokeStyle = POS; ctx.lineWidth = 1.4;
-          ctx.beginPath(); ctx.arc(ox, y, rO + 5 + (1 - kWin) * 6, 0, Math.PI * 2); ctx.stroke();
+          // faixa de destaque atrás da linha vencedora (número, barra e porcentagem)
+          const rowH = fs * 1.9, x0 = ox - rO - 8, x1 = bx + barW + fs * 3.2;
+          ctx.globalAlpha = (dark ? 0.16 : 0.22) * kWin; ctx.fillStyle = POS;
+          ctx.beginPath(); ctx.roundRect(x0, y - rowH / 2, x1 - x0, rowH, rowH / 2); ctx.fill();
+          ctx.globalAlpha = (dark ? 0.55 : 0.75) * kWin; ctx.strokeStyle = POS; ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.roundRect(x0, y - rowH / 2, x1 - x0, rowH, rowH / 2); ctx.stroke();
+          // anéis que expandem a partir do neurônio, repetindo enquanto a decisão está na tela
+          for (let k = 0; k < 2; k++) {
+            const ph = ((tWin + k * 550) % 1100) / 1100;
+            ctx.globalAlpha = (1 - ph) * 0.7 * kWin; ctx.strokeStyle = POS; ctx.lineWidth = 1.3;
+            ctx.beginPath(); ctx.arc(ox, y, rO + 3 + ph * 16, 0, Math.PI * 2); ctx.stroke();
+          }
+        }
+
+        neuron(ox, y, isWin ? Math.max(a, kWin) : a, isWin ? rO * (1 + 0.25 * pop) : rO);
+
+        // rótulo 0–9 (o vencedor maior, em negrito e na cor de destaque)
+        const size = isWin ? fs * (1 + 0.55 * pop) : fs;
+        ctx.globalAlpha = isWin ? 0.5 + 0.5 * kWin : 0.5;
+        ctx.fillStyle = isWin && kWin > 0.2 ? POS : INK;
+        ctx.font = `${isWin && kWin > 0.2 ? 700 : 400} ${size}px ${MONO}`;
+        ctx.fillText(String(j), lx0 - (size - fs) * 0.25, y + 0.5);
+
+        // barra de probabilidade (a do vencedor mais grossa)
+        const bh = isWin ? 3 + 3 * kWin : 3;
+        ctx.globalAlpha = 0.12; ctx.fillStyle = INK; ctx.fillRect(bx, y - 1.5, barW, 3);
+        ctx.globalAlpha = 0.9; ctx.fillStyle = isWin ? POS : SOFT; ctx.fillRect(bx, y - bh / 2, barW * pj * kO, bh);
+        if (pj >= 0.05 && kO > 0.3) {
+          ctx.globalAlpha = (isWin ? 1 : 0.7) * kO; ctx.fillStyle = isWin ? POS : SOFT;
+          ctx.font = `${isWin ? 700 : 400} ${isWin ? fs * (0.8 + 0.25 * kWin) : fs * 0.78}px ${MONO}`;
+          ctx.fillText(`${Math.round(pj * 100)}%`, bx + barW + 6, y + 0.5);
         }
       }
       ctx.globalAlpha = 1;
