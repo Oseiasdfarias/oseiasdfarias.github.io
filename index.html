@@ -269,6 +269,15 @@
         .header-actions { gap: 4px !important; }
       }
 
+      /* ── Hero: rede neural sem moldura, bordas somem no fundo ── */
+      .hero-neural {
+        /* esmaece só as bordas, sem apagar a primeira e a última camada */
+        -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent), linear-gradient(180deg, transparent, #000 8%, #000 92%, transparent);
+        -webkit-mask-composite: source-in;
+        mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent), linear-gradient(180deg, transparent, #000 8%, #000 92%, transparent);
+        mask-composite: intersect;
+      }
+
       /* ── Hero: passos da história (FIG.01) ── */
       .story-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
       .story-step {

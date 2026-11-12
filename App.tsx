@@ -22,7 +22,7 @@ const WhenVisible: React.FC<{ children: React.ReactNode; minHeight?: number }> =
 const Aeropendulo3D = React.lazy(() => import('./components/Aeropendulo3D').then(m => ({ default: m.Aeropendulo3D })));
 import { ProjectDiagram } from './components/ProjectDiagram';
 import { Certifications } from './components/Certifications';
-import { HeroStory } from './components/HeroStory';
+import { HeroNeural } from './components/HeroNeural';
 import { GithubActivity } from './components/GithubActivity';
 import { AuroraBackground } from './components/AuroraBackground';
 import { MediumPosts } from './components/MediumPosts';
@@ -410,7 +410,7 @@ const App: React.FC = () => {
 
   // ─────────────────────────────────────────────────────────────────────────
   return (
-    <div className={darkMode ? 'theme-dark' : 'theme-light'} style={{
+    <div data-theme-root className={darkMode ? 'theme-dark' : 'theme-light'} style={{
       ...theme,
       background: 'var(--bg)',
       color: 'var(--fg)',
@@ -714,8 +714,8 @@ const App: React.FC = () => {
             </motion.div>
           </div>
 
-          {/* Right — IA em produção, em 4 passos */}
-          <HeroStory lang={lang} />
+          {/* Right — rede neural viva, solta sobre o fundo */}
+          <HeroNeural dark={darkMode} label={pt ? 'Rede neural reconhecendo dígitos escritos à mão: a imagem de um número entra, os neurônios acendem e a saída indica qual número é' : 'Neural network recognizing handwritten digits: the image of a number goes in, neurons light up and the output shows which number it is'} />
         </div>
         </section>
 
@@ -724,7 +724,7 @@ const App: React.FC = () => {
           padding: 'clamp(24px,5vw,40px) 0',
           borderBottom: '1px solid var(--line)',
         }}>
-          <HeroStory lang={lang} />
+          <HeroNeural dark={darkMode} height="clamp(220px,62vw,300px)" label={pt ? 'Rede neural reconhecendo dígitos escritos à mão: a imagem de um número entra, os neurônios acendem e a saída indica qual número é' : 'Neural network recognizing handwritten digits: the image of a number goes in, neurons light up and the output shows which number it is'} />
         </div>
 
         {/* ── ONDE ATUEI ──────────────────────────────────────── */}
