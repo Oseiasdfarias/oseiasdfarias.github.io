@@ -16,7 +16,9 @@ OUT = ROOT / "components" / "digitsNet.ts"
 X, y = load_digits(return_X_y=True)
 X = X / 16.0
 Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.25, random_state=0, stratify=y)
-clf = MLPClassifier(hidden_layer_sizes=(16, 12), activation="logistic", alpha=1e-3,
+# alpha = 0.5 (regularização L2): a rede fica menos confiante demais e as probabilidades
+# ficam distribuídas entre os dígitos parecidos, sem perder muito acerto
+clf = MLPClassifier(hidden_layer_sizes=(16, 12), activation="logistic", alpha=0.5,
                     max_iter=2000, random_state=1).fit(Xtr, ytr)
 acc = clf.score(Xte, yte)
 
@@ -25,7 +27,10 @@ proba = clf.predict_proba(Xte)
 samples = []
 for d in range(10):
     ok = np.where((yte == d) & (proba.argmax(1) == d))[0]
-    best = ok[np.argsort(-proba[ok, d])[len(ok) // 2]]   # confiança mediana: a barra mostra alguma dúvida real
+    # um acerto com dúvida real: confiança perto de 60% e um 2º colocado visível
+    sec = np.sort(proba[ok], axis=1)[:, -2]
+    score = np.abs(proba[ok, d] - 0.6) - 0.3 * np.minimum(sec, 0.25)
+    best = ok[np.argmin(score)]
     samples.append({"label": d, "px": [int(round(v * 16)) for v in Xte[best]]})
 
 r2 = lambda a: np.round(a, 2).tolist()

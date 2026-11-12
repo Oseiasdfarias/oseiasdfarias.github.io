@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { DIGITS_NET } from './digitsNet';
 
 // ─── Hero: rede neural reconhecendo dígitos ──────────────────────────────────
-// Rede de verdade, treinada por scripts/digits_train.py (64 → 16 → 12 → 10):
+// Rede de verdade, treinada por scripts/digits_train.py (64 → 16 → 12 → 10, 95% no teste):
 //  · à esquerda, um dígito 8×8 do conjunto de teste surge pixel a pixel (entrada);
 //  · ativação = brilho do neurônio (como no vídeo do 3Blue1Brown);
 //  · peso = cor e espessura da conexão: cobre positivo, azul negativo (TensorFlow Playground);
@@ -65,7 +65,7 @@ export const HeroNeural: React.FC<{ dark: boolean; label: string; height?: strin
       cell = Math.max(7, Math.min((Hd * 0.44) / 8, (Wd * 0.18) / 8));
       gx = Wd * 0.04; gy = Hd / 2 - cell * 4;
       const x0 = gx + cell * 8 + Wd * 0.12, x1 = Wd * 0.76;
-      barW = Math.max(22, Wd * 0.09);
+      barW = Math.max(26, Wd * 0.1);
       lx = SIZES.map((_, l) => (l === 0 ? 0 : x0 + ((l - 1) / (NL - 2)) * (x1 - x0)));
       ly = SIZES.map((n, l) => {
         if (l === 0) return [];
@@ -144,11 +144,16 @@ export const HeroNeural: React.FC<{ dark: boolean; label: string; height?: strin
 
       ctx.clearRect(0, 0, Wd, Hd);
       // véu suave atrás da figura (elipse que chega a zero nas bordas)
+      if (dark) {
       ctx.save(); ctx.translate(Wd / 2, Hd / 2); ctx.scale(Wd / 2, Hd / 2);
       const v = ctx.createRadialGradient(0, 0, 0, 0, 0, 1);
-      v.addColorStop(0, BG); v.addColorStop(0.65, BG); v.addColorStop(1, 'transparent');
-      ctx.globalAlpha = dark ? 0.55 : 0.35; ctx.fillStyle = v; ctx.fillRect(-1, -1, 2, 2);
+      if (dark) { v.addColorStop(0, BG); v.addColorStop(0.65, BG); v.addColorStop(1, 'transparent'); }
+      else { v.addColorStop(0, BG); v.addColorStop(0.3, BG); v.addColorStop(0.75, 'rgba(245,245,244,0.35)'); v.addColorStop(1, 'transparent'); }
+      ctx.globalAlpha = 0.55; ctx.fillStyle = v; ctx.fillRect(-1, -1, 2, 2);
       ctx.restore();
+      }
+      // no claro o fundo já é nebuloso: em vez de véu, linhas e neurônios mais fortes
+      const boost = dark ? 1 : 1.7;
 
       // pixels → 1ª oculta (só dos pixels acesos)
       ctx.lineWidth = 0.6;
@@ -159,7 +164,7 @@ export const HeroNeural: React.FC<{ dark: boolean; label: string; height?: strin
         for (let j = 0; j < SIZES[1]; j++) {
           const w = NET.W[0][i][j], mag = Math.min(1, Math.abs(w) / 2.5);
           if (mag < 0.35) continue;
-          ctx.strokeStyle = w > 0 ? POS : NEG; ctx.globalAlpha = 0.05 + a * mag * 0.16 * (0.6 + kL(1));
+          ctx.strokeStyle = w > 0 ? POS : NEG; ctx.globalAlpha = Math.min(1, (0.05 + a * mag * 0.16 * (0.6 + kL(1))) * boost);
           ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(lx[1], ly[1][j]); ctx.stroke();
         }
       }
@@ -170,19 +175,19 @@ export const HeroNeural: React.FC<{ dark: boolean; label: string; height?: strin
         for (let i = 0; i < SIZES[l]; i++) for (let j = 0; j < SIZES[l + 1]; j++) {
           const w = W[i][j], mag = Math.min(1, Math.abs(w) / scale), on = act[l][i] * k;
           ctx.strokeStyle = w > 0 ? POS : NEG;
-          ctx.globalAlpha = (dark ? 0.05 : 0.07) + mag * 0.08 + on * mag * 0.4;
+          ctx.globalAlpha = Math.min(1, ((dark ? 0.05 : 0.07) + mag * 0.08 + on * mag * 0.4) * boost);
           ctx.lineWidth = 0.5 + mag * 1.5 * (0.4 + on);
           curve(lx[l], ly[l][i], lx[l + 1], ly[l + 1][j]);
         }
       }
 
       // grade do dígito (entrada)
-      ctx.strokeStyle = SOFT; ctx.lineWidth = 1; ctx.globalAlpha = 0.35;
+      ctx.strokeStyle = SOFT; ctx.lineWidth = 1; ctx.globalAlpha = dark ? 0.35 : 0.55;
       ctx.strokeRect(gx - 3, gy - 3, cell * 8 + 6, cell * 8 + 6);
       ctx.fillStyle = INK;
       for (let i = 0; i < SIZES[0]; i++) {
         const p = pxc(i), a = act[0][i] * kIn(i);
-        ctx.globalAlpha = 0.06; ctx.fillRect(p.x - cell / 2 + 0.6, p.y - cell / 2 + 0.6, cell - 1.2, cell - 1.2);
+        ctx.globalAlpha = dark ? 0.06 : 0.1; ctx.fillRect(p.x - cell / 2 + 0.6, p.y - cell / 2 + 0.6, cell - 1.2, cell - 1.2);
         if (a > 0.02) { ctx.globalAlpha = a; ctx.fillRect(p.x - cell / 2 + 0.6, p.y - cell / 2 + 0.6, cell - 1.2, cell - 1.2); }
       }
 
@@ -226,11 +231,14 @@ export const HeroNeural: React.FC<{ dark: boolean; label: string; height?: strin
         const bx = ox + rO + 9 + fs * 0.9;
         ctx.globalAlpha = 0.12; ctx.fillStyle = INK; ctx.fillRect(bx, y - 1.5, barW, 3);
         ctx.globalAlpha = 0.9; ctx.fillStyle = isWin ? POS : SOFT; ctx.fillRect(bx, y - 1.5, barW * pj * kO, 3);
+        if (pj >= 0.05 && kO > 0.3) {
+          ctx.globalAlpha = (isWin ? 0.95 : 0.7) * kO; ctx.fillStyle = isWin ? POS : SOFT;
+          ctx.font = `${isWin ? 600 : 400} ${fs * 0.78}px ${MONO}`;
+          ctx.fillText(`${Math.round(pj * 100)}%`, bx + barW + 6, y + 0.5);
+        }
         if (isWin && kWin > 0) {
           ctx.globalAlpha = kWin * 0.95; ctx.strokeStyle = POS; ctx.lineWidth = 1.4;
           ctx.beginPath(); ctx.arc(ox, y, rO + 5 + (1 - kWin) * 6, 0, Math.PI * 2); ctx.stroke();
-          ctx.font = `400 ${fs * 0.78}px ${MONO}`; ctx.fillStyle = POS;
-          ctx.fillText(`${Math.round(pj * 100)}%`, bx + barW + 6, y + 0.5);
         }
       }
       ctx.globalAlpha = 1;
