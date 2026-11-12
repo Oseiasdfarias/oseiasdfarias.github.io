@@ -22,7 +22,7 @@ const WhenVisible: React.FC<{ children: React.ReactNode; minHeight?: number }> =
 const Aeropendulo3D = React.lazy(() => import('./components/Aeropendulo3D').then(m => ({ default: m.Aeropendulo3D })));
 import { ProjectDiagram } from './components/ProjectDiagram';
 import { Certifications } from './components/Certifications';
-import { HeroInference } from './components/HeroInference';
+import { HeroStory } from './components/HeroStory';
 import { GithubActivity } from './components/GithubActivity';
 import { AuroraBackground } from './components/AuroraBackground';
 import { MediumPosts } from './components/MediumPosts';
@@ -714,8 +714,8 @@ const App: React.FC = () => {
             </motion.div>
           </div>
 
-          {/* Right — animação de LLM serving */}
-          <HeroInference lang={lang} />
+          {/* Right — IA em produção, em 4 passos */}
+          <HeroStory lang={lang} />
         </div>
         </section>
 
@@ -724,7 +724,7 @@ const App: React.FC = () => {
           padding: 'clamp(24px,5vw,40px) 0',
           borderBottom: '1px solid var(--line)',
         }}>
-          <HeroInference lang={lang} />
+          <HeroStory lang={lang} />
         </div>
 
         {/* ── ONDE ATUEI ──────────────────────────────────────── */}
