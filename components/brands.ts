@@ -50,7 +50,8 @@ export const BRANDS: Record<string, Brand> = {
   'java': { name: "Java", src: 'logos/tech/java.svg', hex: '#EA2D2E', kind: 'mono' },
   'matlab': { name: "MATLAB / Simulink", src: 'logos/tech/matlab.svg', hex: '#0076A8', kind: 'mono' },
   'ufabc': { name: "UFABC", src: 'logos/ufabc.png', hex: '#006633', kind: 'image' },
-  'ufpa': { name: "UFPA", src: 'logos/ufpa.png', hex: '#1E3A8A', kind: 'image', dark: true },
+  // Brasão branco oficial (ascom.ufpa.br), com fundo transparente: vira silhueta nos dois temas
+  'ufpa': { name: "UFPA", src: 'logos/org/ufpa-brasao.webp', hex: '#1E3A8A', kind: 'mono', dark: true },
   'ifpa': { name: "IFPA", src: 'logos/instituto_federal.webp', hex: '#2F9E41', kind: 'image' },
   'ifma': { name: "IFMA", src: 'logos/instituto_federal.webp', hex: '#2F9E41', kind: 'image' },
   'oracle-one': { name: "Oracle ONE", src: 'logos/oracle_one.png', hex: '#C74634', kind: 'image' },
