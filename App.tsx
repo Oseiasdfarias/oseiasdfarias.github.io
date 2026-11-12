@@ -863,7 +863,7 @@ const App: React.FC = () => {
                   ? 'var(--accent-2)'
                   : 'var(--fg-muted)';
               return (
-                <motion.article key={i} className="mod card-interactive"
+                <motion.article key={i} data-proj-key={proj.id ?? String(i)} className="mod card-interactive"
                   initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-30px' }}
                   transition={{ duration: 0.6, ease: [0.2, 0.7, 0.2, 1] }}
@@ -971,7 +971,19 @@ const App: React.FC = () => {
                         )}
                         <button type="button" className="psi-toggle"
                           aria-expanded={open} aria-controls={panelId}
-                          onClick={() => setOpenProj(o => ({ ...o, [key]: !o[key] }))}>
+                          onClick={e => {
+                            // abre ou fecha junto todos os cards da mesma linha da grade (3, 2 ou 1 coluna)
+                            const card = e.currentTarget.closest('article') as HTMLElement | null;
+                            const row = card?.parentElement
+                              ? [...card.parentElement.children].filter(el => (el as HTMLElement).offsetTop === card.offsetTop)
+                              : [];
+                            const keys = row.map(el => (el as HTMLElement).dataset.projKey).filter(Boolean) as string[];
+                            setOpenProj(o => {
+                              const next = { ...o };
+                              for (const k of keys.length ? keys : [key]) next[k] = !open;
+                              return next;
+                            });
+                          }}>
                           <span>{pt ? 'Problema · solução · impacto' : 'Problem · solution · impact'}</span>
                           <ChevronDown size={13} style={{ transform: open ? 'rotate(180deg)' : 'none', transition: 'transform .3s' }} />
                         </button>

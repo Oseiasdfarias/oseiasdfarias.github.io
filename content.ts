@@ -209,8 +209,8 @@ export const getProjects = (lang: Language): ProjectData[] => {
     {
       id:       "vibration-anomaly",
       summary:  pt
-        ? "Detector de anomalias em vibração escalado em 3 réplicas, com modelos no S3 e estado no Redis. Top 5% no desafio de ML Engineering da Tractian."
-        : "A vibration anomaly detector scaled across 3 replicas, with models in S3 and state in Redis. Top 5% in Tractian's ML Engineering challenge.",
+        ? "Detector de anomalias em vibração em 3 réplicas, com modelos no S3 e estado no Redis. Top 5% no desafio de ML Engineering da Tractian."
+        : "A vibration anomaly detector across 3 replicas, with models in S3 and state in Redis. Top 5% in Tractian's ML Engineering challenge.",
       title:    pt ? "Detecção de anomalias em vibração, em produção" : "Vibration anomaly detection in production",
       year:     "2026",
       category: pt ? "ML Engineering · Manutenção preditiva" : "ML Engineering · Predictive maintenance",
@@ -222,14 +222,14 @@ export const getProjects = (lang: Language): ProjectData[] => {
         { label: "/predict p50", value: "1,2 ms" },
       ],
       problem:  pt
-        ? "Um detector que roda num processo só perde os modelos quando reinicia, não escala com a frota de sensores e, com várias réplicas, cada uma enxerga um estado diferente."
-        : "A detector running in a single process loses its models on restart, cannot scale with the sensor fleet and, with several replicas, each one sees a different state.",
+        ? "Um detector num processo só perde os modelos ao reiniciar, não escala com a frota de sensores e, com várias réplicas, cada uma vê um estado diferente."
+        : "A single-process detector loses its models on restart, cannot scale with the sensor fleet and, with several replicas, each one sees a different state.",
       solution: pt
-        ? "API FastAPI em 3 réplicas atrás de nginx, modelos versionados num armazenamento S3 e estado dos alertas no Redis. Detector z-score bivariado (velocidade e aceleração) e motor de alertas que rearma e escala quando a falha piora."
-        : "A FastAPI service in 3 replicas behind nginx, versioned models in S3-compatible storage and alert state in Redis. A bivariate z-score detector (velocity and acceleration) and an alert engine that re-arms and escalates when the fault gets worse.",
+        ? "API FastAPI em 3 réplicas atrás de nginx, modelos versionados no S3 e estado dos alertas no Redis. Detector z-score bivariado (velocidade e aceleração) e alertas que rearmam e escalam quando a falha piora."
+        : "A FastAPI service in 3 replicas behind nginx, versioned models in S3 and alert state in Redis. A bivariate z-score detector (velocity and acceleration) and alerts that re-arm and escalate as the fault worsens.",
       impact: pt
-        ? "Desafio do Tech Fast Track 2026 da Tractian: top 5% dos candidatos e etapa final com o time de ML. F1 de 0,864 nos dados reais (antes, 10 de 39 cenários; depois, 32 de 39)."
-        : "Tractian Tech Fast Track 2026 challenge: top 5% of candidates and a final round with the ML team. F1 of 0.864 on real data (from 10 of 39 scenarios passing to 32 of 39).",
+        ? "Top 5% dos candidatos no Tech Fast Track 2026 da Tractian e etapa final com o time de ML. F1 de 0,864 nos dados reais (de 10 para 32 de 39 cenários)."
+        : "Top 5% of candidates in Tractian's Tech Fast Track 2026 and a final round with the ML team. F1 of 0.864 on real data (from 10 to 32 of 39 scenarios).",
       tags:  ["Python", "FastAPI", "Redis", "S3", "nginx", "Docker", "Pytest"],
       link:  "",
       github: "https://github.com/Oseiasdfarias/vibration-anomaly-detection",
@@ -237,8 +237,8 @@ export const getProjects = (lang: Language): ProjectData[] => {
     {
       id:       "rag-manual",
       summary:  pt
-        ? "RAG sobre manual de manutenção de motores elétricos: resposta com a página de origem, 35 configurações de busca comparadas e código em camadas com 47 testes."
-        : "RAG over an electric-motor maintenance manual: answers cite the source page, 35 retrieval setups compared and layered code with 47 tests.",
+        ? "RAG sobre manual de motores elétricos: resposta com a página de origem, 35 configurações de busca comparadas e 47 testes."
+        : "RAG over an electric-motor manual: answers cite the source page, 35 retrieval setups compared and 47 tests in layered code.",
       title:    pt ? "RAG sobre manual técnico, com avaliação" : "RAG over a technical manual, with evaluation",
       year:     "2026",
       category: pt ? "LLM · RAG · Avaliação" : "LLM · RAG · Evaluation",
@@ -253,11 +253,11 @@ export const getProjects = (lang: Language): ProjectData[] => {
         ? "Técnicos de manutenção perdem tempo procurando procedimentos e causas de falha em manuais longos, e um LLM sozinho responde de memória, sem mostrar a fonte."
         : "Maintenance technicians lose time searching long manuals for procedures and failure causes, and an LLM alone answers from memory without showing its source.",
       solution: pt
-        ? "RAG sobre o manual de motores elétricos da WEG: trechos guardam a página de origem; busca vetorial, por palavra (BM25) e híbrida (RRF), com reranker opcional; um LLM local no Ollama responde citando a página ou diz que não encontrou. Código em camadas (domínio, aplicação, infraestrutura)."
-        : "RAG over WEG's electric-motor manual: chunks keep their source page; vector, keyword (BM25) and hybrid (RRF) retrieval with an optional reranker; a local LLM on Ollama answers citing the page or says it found nothing. Layered code (domain, application, infrastructure).",
+        ? "Trechos do manual da WEG guardam a página de origem; busca vetorial, BM25 e híbrida (RRF), com reranker opcional; um LLM local no Ollama cita a página ou diz que não encontrou. Código em camadas."
+        : "Chunks of WEG's manual keep their source page; vector, BM25 and hybrid (RRF) retrieval with an optional reranker; a local LLM on Ollama cites the page or says it found nothing. Layered code.",
       impact: pt
-        ? "Em 15 perguntas de teste (13 com resposta no manual), trocar o modelo de embedding por um multilíngue levou a busca de 7 para 12 acertos em 13 (resultado otimista, conjunto pequeno). A avaliação mostrou que o gargalo era o modelo gerador, não a busca."
-        : "On 15 test questions (13 answerable from the manual), switching to a multilingual embedding model took retrieval from 7 to 12 hits out of 13 (optimistic, small set). The evaluation showed the bottleneck was the generator model, not retrieval.",
+        ? "Em 13 perguntas com resposta no manual, um embedding multilíngue levou a busca de 7 para 12 acertos (conjunto pequeno). O gargalo era o gerador, não a busca."
+        : "On 13 questions answerable from the manual, a multilingual embedding took retrieval from 7 to 12 hits (small set). The bottleneck was the generator, not retrieval.",
       tags:  ["Python", "RAG", "ChromaDB", "BM25", "Ollama", "Pytest"],
       link:  "",
       github: "https://github.com/Oseiasdfarias/rag-manual-poc",
@@ -278,14 +278,14 @@ export const getProjects = (lang: Language): ProjectData[] => {
         { label: pt ? "Promoção" : "Promotion", value: pt ? "Portão automático" : "Automated gate" },
       ],
       problem:  pt
-        ? "Modelos de ML costumam funcionar no notebook e falhar em produção: vazamento entre treino e teste, diferença entre treino e serving e modelos novos substituindo os bons por acaso."
-        : "ML models often work in a notebook and fail in production: leakage between train and test, training/serving skew, and new models replacing good ones by chance.",
+        ? "Modelos de ML funcionam no notebook e falham em produção: vazamento entre treino e teste, diferença entre treino e serving e modelo novo trocando o bom por acaso."
+        : "ML models work in a notebook and fail in production: leakage between train and test, training/serving skew, and a new model replacing a good one by chance.",
       solution: pt
-        ? "Um app de música que existe para dar trabalho real aos modelos: dados versionados com DVC, divisão por artista verificada por testes de propriedade, treino determinístico rastreado no MLflow, registro de modelos com portão de promoção e serving que valida a especificação de features."
-        : "A music app that exists to give models a real job: DVC-versioned data, artist-disjoint splits verified by property tests, deterministic training tracked in MLflow, a model registry with a promotion gate and serving that validates the feature spec.",
+        ? "App de música que dá trabalho real aos modelos: dados no DVC, divisão por artista checada por testes de propriedade, treino no MLflow, portão de promoção e serving que valida as features."
+        : "A music app that gives models a real job: DVC-versioned data, artist-disjoint splits checked by property tests, training tracked in MLflow, a promotion gate and serving that validates the features.",
       impact: pt
-        ? "Ciclo de dados e treino fechado, com 109 testes no CI. Próximos passos: API de inferência e monitoramento de drift."
-        : "Data and training loop closed, with 109 tests in CI. Next: an inference API and drift monitoring.",
+        ? "Ciclo de dados e treino fechado, com DVC, MLflow e 109 testes no CI. Próximos passos: uma API de inferência e o monitoramento de drift em produção."
+        : "Data and training loop closed, with DVC, MLflow and 109 tests in CI. Next steps: an inference API and drift monitoring in production.",
       tags:  ["Python", "PyTorch", "MLflow", "DVC", "Hypothesis", "PostgreSQL"],
       link:  "https://oseiasdfarias.github.io/youfy/",
       github: "https://github.com/Oseiasdfarias/youfy",
@@ -293,8 +293,8 @@ export const getProjects = (lang: Language): ProjectData[] => {
     {
       id:       "sdr-agent",
       summary:  pt
-        ? "Agente de vendas com LLM que conversa com o lead, registra no CRM e marca a reunião na agenda, sem intervenção humana."
-        : "An LLM sales agent that talks to the lead, records it in the CRM and books the meeting, with no human in the loop.",
+        ? "Agente de vendas com LLM que conversa com o lead, registra tudo no CRM e marca a reunião na agenda, sem intervenção humana."
+        : "An LLM sales agent that talks to the lead, records everything in the CRM and books the meeting, with no human in the loop.",
       title:    pt ? "sdr-agent: agente LLM com ferramentas" : "sdr-agent: LLM agent with tools",
       year:     "2025",
       category: pt ? "Agentes LLM · Serverless" : "LLM agents · Serverless",
@@ -306,14 +306,14 @@ export const getProjects = (lang: Language): ProjectData[] => {
         { label: "Deploy", value: "Vercel" },
       ],
       problem:  pt
-        ? "Qualificar leads e marcar reuniões exige um vendedor repetindo as mesmas perguntas e alternando entre CRM e agenda."
-        : "Qualifying leads and booking meetings means a person repeating the same questions and switching between a CRM and a calendar.",
+        ? "Qualificar leads e marcar reuniões exige um vendedor repetindo as mesmas perguntas e alternando o tempo todo entre o CRM e a agenda."
+        : "Qualifying leads and booking meetings means a salesperson repeating the same questions and constantly switching between a CRM and a calendar.",
       solution: pt
-        ? "Agente de vendas na API de Assistentes da OpenAI que conversa num chat web, registra o lead no Pipefy, busca horários livres e marca a reunião no Cal.com por chamadas de ferramentas. Back-end FastAPI serverless e sessão em Redis."
+        ? "Agente na API de Assistentes da OpenAI que conversa num chat web, registra o lead no Pipefy, busca horários e marca a reunião no Cal.com por chamadas de ferramentas. FastAPI serverless e sessão em Redis."
         : "A sales agent on the OpenAI Assistants API that talks in a web chat, records the lead in Pipefy, finds free slots and books the meeting in Cal.com through tool calls. Serverless FastAPI back end and Redis sessions.",
       impact: pt
-        ? "Fluxo completo do primeiro contato à reunião marcada, sem intervenção humana (vídeo de demonstração no repositório)."
-        : "Full flow from first message to a booked meeting with no human in the loop (demo video in the repository).",
+        ? "Fluxo completo do primeiro contato à reunião marcada, com o agente usando o CRM e a agenda de verdade. Vídeo de demonstração no repositório."
+        : "Full flow from the first message to a booked meeting, with the agent using a real CRM and calendar. Demo video in the repository.",
       tags:  ["Python", "FastAPI", "OpenAI API", "Redis", "React"],
       link:  "",
       github: "https://github.com/Oseiasdfarias/oseias_desafio_elite_dev_ia",
@@ -322,7 +322,7 @@ export const getProjects = (lang: Language): ProjectData[] => {
       id:       "lab-virtual",
       summary:  pt
         ? "Aeropêndulo real com ESP32 e gêmeo digital 3D para testar controle em malha fechada. Meu TCC, com artigo no COBENGE 2023."
-        : "A real ESP32 aeropendulum with a 3D digital twin for closed-loop control tests. My thesis, with a COBENGE 2023 paper.",
+        : "A real ESP32 aeropendulum with a 3D digital twin for testing closed-loop control. My thesis, with a COBENGE 2023 paper.",
       title:    pt ? "Laboratório Virtual: aeropêndulo e gêmeo digital" : "Virtual Lab: aeropendulum and digital twin",
       year:     "2023–2026",
       category: pt ? "Hardware · Gêmeo Digital 3D · Controle" : "Hardware · 3D Digital Twin · Control",
@@ -335,14 +335,14 @@ export const getProjects = (lang: Language): ProjectData[] => {
         { label: pt ? "Publicação" : "Thesis", value: "BDM / UFPA" },
       ],
       problem:  pt
-        ? "O ensino de controle costuma ficar só na teoria, sem uma planta real e barata para testar leis de controle em malha fechada."
-        : "Control courses often stay on paper, without a real, low-cost plant to test closed-loop control laws.",
+        ? "O ensino de controle costuma ficar só na teoria, sem uma planta real e barata em que o aluno teste leis de controle em malha fechada."
+        : "Control courses often stay on paper, without a real, low-cost plant where students can test closed-loop control laws themselves.",
       solution: pt
         ? "Plataforma aberta com protótipo físico (aeropêndulo com ESP32), firmware com PID rodando na placa, interface para ensaios em tempo real e um gêmeo digital 3D que acompanha o movimento medido."
         : "An open platform with a physical prototype (ESP32 aeropendulum), PID firmware running on the board, a desktop interface for real-time tests and a 3D digital twin that follows the measured motion.",
       impact: pt
-        ? "Monografia na biblioteca da UFPA, artigo no COBENGE 2023 e documentação online com modelagem, identificação e controle."
-        : "Thesis at the UFPA library, a COBENGE 2023 paper and online docs covering modeling, identification and control.",
+        ? "Validado com PID em malha fechada. Monografia na biblioteca da UFPA, artigo no COBENGE 2023 e documentação online de modelagem e controle."
+        : "Validated with closed-loop PID. Thesis at the UFPA library, a COBENGE 2023 paper and online docs on modeling, identification and control.",
       tags:  ["ESP32", "C++", "Python", "VPython", "PID", "Three.js"],
       link:  "https://oseiasdfarias.github.io/lab-virtual/",
       github: "https://github.com/Oseiasdfarias/lab-virtual",
@@ -363,14 +363,14 @@ export const getProjects = (lang: Language): ProjectData[] => {
         { label: pt ? "Operações rastreadas" : "Traced ops", value: pt ? "77 por previsão" : "77 per prediction" },
       ],
       problem:  pt
-        ? "Um LLM costuma ser uma caixa-preta: as bibliotecas escondem os cálculos entre o token de entrada e o próximo token previsto, e é difícil estudar atenção, embeddings e treino sem ler milhares de linhas."
-        : "An LLM is usually a black box: libraries hide the calculations between the input token and the predicted next token, and it is hard to study attention, embeddings and training without reading thousands of lines.",
+        ? "Um LLM costuma ser uma caixa-preta: as bibliotecas escondem os cálculos entre o token de entrada e o próximo, e estudar atenção e treino exige ler milhares de linhas."
+        : "An LLM is usually a black box: libraries hide the math between the input token and the next one, and studying attention and training means reading thousands of lines.",
       solution: pt
-        ? "Um Transformer decoder-only completo em NumPy: tokenizador BPE, autograd próprio, RoPE, atenção com consultas agrupadas, KV cache, RMSNorm e SwiGLU. O Tracer registra a equação, o formato do tensor e a linha de código de cada operação, e um laboratório interativo roda o mesmo pacote no navegador (Pyodide)."
-        : "A complete decoder-only Transformer in NumPy: BPE tokenizer, its own autograd, RoPE, grouped-query attention, KV cache, RMSNorm and SwiGLU. A Tracer records the equation, tensor shape and source line of every operation, and an interactive lab runs the same package in the browser (Pyodide).",
+        ? "Transformer decoder-only em NumPy, com tokenizador BPE, autograd próprio, RoPE, KV cache e SwiGLU. Um Tracer mostra a equação e a linha de código de cada operação, e o laboratório roda no navegador."
+        : "A decoder-only Transformer in NumPy, with a BPE tokenizer, its own autograd, RoPE, KV cache and SwiGLU. A Tracer shows the equation and source line of every operation, and the lab runs in the browser.",
       impact: pt
-        ? "Publicado no PyPI sob licença MIT, com modelos em português e inglês treinados em obras de domínio público, testes de paridade contra o PyTorch e documentação bilíngue de 35 páginas por idioma."
-        : "Published on PyPI under the MIT license, with Portuguese and English models trained on public-domain books, parity tests against PyTorch and bilingual documentation of 35 pages per language.",
+        ? "No PyPI sob licença MIT, com modelos em português e inglês treinados em obras de domínio público, testes de paridade com o PyTorch e docs bilíngues."
+        : "On PyPI under the MIT license, with Portuguese and English models trained on public-domain books, parity tests against PyTorch and bilingual docs.",
       tags:  ["Python", "NumPy", "Transformer", "Autograd", "PyPI", "Pyodide"],
       link:  "https://oseiasdfarias.github.io/glassllm/",
       github: "https://github.com/Oseiasdfarias/glassllm",
@@ -378,8 +378,8 @@ export const getProjects = (lang: Language): ProjectData[] => {
     {
       id:       "otensor",
       summary:  pt
-        ? "Plataforma IoT multi-tenant que liga ESP32 e Raspberry Pi a um painel em tempo real e a automações por evento."
-        : "A multi-tenant IoT platform connecting ESP32 and Raspberry Pi to a real-time dashboard and event-driven automations.",
+        ? "Plataforma IoT multi-tenant que liga ESP32 e Raspberry Pi a um painel em tempo real e a automações por evento, testada em hardware."
+        : "A multi-tenant IoT platform connecting ESP32 and Raspberry Pi to a real-time dashboard and event-driven automations, tested on hardware.",
       title:    pt ? "Otensor: plataforma de automação IoT" : "Otensor: IoT automation platform",
       year:     "2026",
       category: pt ? "IoT · Edge · Cloud" : "IoT · Edge · Cloud",
@@ -397,16 +397,16 @@ export const getProjects = (lang: Language): ProjectData[] => {
         ? "Plataforma multi-tenant que liga dispositivos (ESP32, Raspberry Pi) a um painel em tempo real e a um motor de automações orientado a eventos. Roda 100% local em Docker e usa AWS SAM e Lambda na nuvem."
         : "A multi-tenant platform that connects devices (ESP32, Raspberry Pi) to a real-time dashboard and an event-driven automation engine. Runs fully local in Docker and uses AWS SAM and Lambda in the cloud.",
       impact: pt
-        ? "Ciclo validado em hardware real: telemetria ao vivo, automação disparada por limiar e acionamento refletido no painel."
-        : "Loop validated on real hardware: live telemetry, threshold-triggered automation and device actuation reflected in the dashboard.",
+        ? "Ciclo validado em hardware real: telemetria ao vivo, automação disparada por limiar e o acionamento do dispositivo refletido no painel."
+        : "Loop validated on real hardware: live telemetry, threshold-triggered automation and device actuation reflected back in the dashboard.",
       tags:  ["Python", "ESP32", "Raspberry Pi", "MQTT", "AWS SAM", "Docker"],
       link:  "https://docs.otensor.com.br",
     },
     {
       id:       "animaflow",
       summary:  pt
-        ? "Biblioteca Python para diagramas de arquitetura animados como código, renderizados em Manim ou HTML. Publicada no PyPI."
-        : "A Python library for animated architecture diagrams as code, rendered with Manim or HTML. Published on PyPI.",
+        ? "Biblioteca Python para diagramas de arquitetura animados como código, renderizados em Manim ou em HTML interativo. Publicada no PyPI."
+        : "A Python library for animated architecture diagrams as code, rendered with Manim or as interactive HTML. Published on PyPI.",
       title:    pt ? "animaflow: diagramas de arquitetura como código" : "animaflow: architecture diagrams as code",
       year:     "2025–2026",
       category: "Open Source · Developer Tools · Python",
@@ -418,14 +418,14 @@ export const getProjects = (lang: Language): ProjectData[] => {
         { label: pt ? "Publicação" : "Package", value: "PyPI" },
       ],
       problem:  pt
-        ? "Diagramas de arquitetura animados exigem edição manual de vídeo, que não dá para versionar no Git."
-        : "Animated architecture diagrams usually need manual video editing that cannot be versioned in Git.",
+        ? "Diagramas de arquitetura animados exigem edição manual de vídeo, que não dá para versionar no Git e precisa ser refeita a cada mudança no sistema."
+        : "Animated architecture diagrams usually need manual video editing, which cannot be versioned in Git and has to be redone whenever the system changes.",
       solution: pt
-        ? "Biblioteca Python declarativa: descreva o fluxo uma vez em código e renderize com Manim (MP4/GIF) ou como HTML/SVG interativo."
-        : "A declarative Python library: describe the flow once in code and render it with Manim (MP4/GIF) or as interactive HTML/SVG.",
+        ? "Biblioteca Python declarativa: o fluxo é descrito uma vez em código e renderizado com Manim (MP4/GIF), como HTML/SVG interativo ou com Remotion. O diagrama vira código versionável e revisável."
+        : "A declarative Python library: the flow is described once in code and rendered with Manim (MP4/GIF), as interactive HTML/SVG or with Remotion. The diagram becomes versionable, reviewable code.",
       impact: pt
-        ? "Publicada no PyPI, com documentação online e exemplos de pipelines orientados a eventos, multiagentes e RAG."
-        : "Published on PyPI, with online docs and examples of event-driven, multi-agent and RAG pipelines.",
+        ? "Publicada no PyPI, com documentação online e exemplos prontos de pipelines orientados a eventos, sistemas multiagentes e RAG."
+        : "Published on PyPI, with online docs and ready-made examples of event-driven pipelines, multi-agent systems and RAG.",
       tags:  ["Python", "Manim", "SVG", "JavaScript", "PyPI"],
       link:  "https://oseiasdfarias.github.io/animaflow/",
       github: "https://github.com/Oseiasdfarias/animaflow",
@@ -450,11 +450,11 @@ export const getProjects = (lang: Language): ProjectData[] => {
         ? "Testar um controlador baseado em rede neural costuma exigir juntar MATLAB, scripts soltos e simuladores que não conversam entre si."
         : "Testing a neural network controller usually means stitching together MATLAB, loose scripts and simulators that do not talk to each other.",
       solution: pt
-        ? "Framework que usa modelos PyTorch, Keras ou JAX como controladores, com PID e LQR, API compatível com MATLAB, simulação distribuída (ZeroMQ) e visualização 3D para fluxos MIL, SIL e HIL."
-        : "A framework that uses PyTorch, Keras or JAX models as controllers, with PID and LQR, a MATLAB-compatible API, distributed simulation (ZeroMQ) and 3D visualization for MIL, SIL and HIL workflows.",
+        ? "Framework que usa modelos PyTorch, Keras ou JAX como controladores, ao lado de PID e LQR, com API compatível com MATLAB, simulação distribuída (ZeroMQ) e visualização 3D para fluxos MIL, SIL e HIL."
+        : "A framework that uses PyTorch, Keras or JAX models as controllers alongside PID and LQR, with a MATLAB-compatible API, distributed simulation (ZeroMQ) and 3D visualization for MIL, SIL and HIL workflows.",
       impact: pt
-        ? "Publicado no PyPI, com 501 testes e 100% de cobertura. Demo: quadricóptero 3D com Neural-LQR a 50 Hz."
-        : "Published on PyPI, with 501 tests and 100% coverage. Demo: a 3D quadcopter with Neural-LQR at 50 Hz.",
+        ? "Publicado no PyPI como open source, com 501 testes e 100% de cobertura. Demo: um quadricóptero 3D controlado por Neural-LQR a 50 Hz."
+        : "Published on PyPI as open source, with 501 tests and 100% coverage. Demo: a 3D quadcopter controlled by Neural-LQR at 50 Hz.",
       tags:  ["Python", "PyTorch", "ZeroMQ", "SciPy", "PyVista"],
       link:  "https://pypi.org/project/synapsys/",
       github: "https://github.com/synapsys-lab/synapsys",
