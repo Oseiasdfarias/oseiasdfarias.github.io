@@ -6,6 +6,20 @@ import {
   getEducation, getCertifications, getResearch, getPublications,
 } from './content';
 import { Language } from './types';
+// Inclinação 3D leve + foco de luz que segue o cursor nos cards de projeto
+const tiltOff = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const onCardMove = (e: React.PointerEvent<HTMLElement>) => {
+  if (tiltOff || e.pointerType !== 'mouse') return;
+  const el = e.currentTarget, r = el.getBoundingClientRect();
+  const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+  el.style.setProperty('--mx', `${(px * 100).toFixed(1)}%`);
+  el.style.setProperty('--my', `${(py * 100).toFixed(1)}%`);
+  el.style.transform = `perspective(1000px) rotateX(${((0.5 - py) * 5).toFixed(2)}deg) rotateY(${((px - 0.5) * 6).toFixed(2)}deg) translateY(-3px)`;
+};
+const onCardLeave = (e: React.PointerEvent<HTMLElement>) => {
+  e.currentTarget.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
+};
+
 // Monta o filho só quando ele chega perto da tela (o 3D baixa o three.js, ~130 KB)
 const WhenVisible: React.FC<{ children: React.ReactNode; minHeight?: number }> = ({ children, minHeight = 220 }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -863,10 +877,11 @@ const App: React.FC = () => {
                   ? 'var(--accent-2)'
                   : 'var(--fg-muted)';
               return (
-                <motion.article key={i} className="mod card-interactive"
+                <motion.article key={i} className="mod card-interactive proj-card"
+                  onPointerMove={onCardMove} onPointerLeave={onCardLeave}
                   initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-30px' }}
-                  transition={{ duration: 0.6, ease: [0.2, 0.7, 0.2, 1] }}
+                  transition={{ duration: 0.6, delay: (i % 3) * 0.09, ease: [0.2, 0.7, 0.2, 1] }}
                   style={{
                     border: '1px solid var(--line)', borderRadius: 8,
                     background: 'var(--panel)', padding: '26px 24px',
@@ -896,13 +911,14 @@ const App: React.FC = () => {
                       )}
                     </span>
                     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: statusColor }}>
-                      <span style={{ width: 6, height: 6, borderRadius: 999, background: statusColor }} />
+                      <span className={statusColor !== 'var(--fg-muted)' || /andamento|progress/i.test(statusLabel) ? 'status-live' : undefined}
+                        style={{ width: 6, height: 6, borderRadius: 999, background: statusColor }} />
                       {statusLabel}
                     </span>
                   </div>
 
                   {/* Visual preview padronizado (220px de altura para todos os cards) */}
-                  <div style={{
+                  <div className="proj-visual" style={{
                     marginBottom: 16,
                     border: '1px solid var(--line)',
                     overflow: 'hidden',
@@ -949,11 +965,14 @@ const App: React.FC = () => {
                       gap: 8, padding: '10px 12px', background: 'var(--inset)', borderRadius: 8,
                       border: '1px solid var(--line)', marginBottom: 16,
                     }}>
-                      {proj.metrics.map(m => (
-                        <div key={m.label}>
+                      {proj.metrics.map((m, mi) => (
+                        <motion.div key={m.label}
+                          initial={{ opacity: 0, y: 6 }} whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true, margin: '-20px' }}
+                          transition={{ duration: 0.45, delay: 0.25 + mi * 0.1 + (i % 3) * 0.09 }}>
                           <div style={caps(8.5, { letterSpacing: '.16em' })}>{m.label}</div>
                           <div style={mono(11, { color: 'var(--accent)', fontWeight: 600, marginTop: 2 })}>{m.value}</div>
-                        </div>
+                        </motion.div>
                       ))}
                     </div>
                   )}
