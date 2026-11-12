@@ -6,7 +6,20 @@ import {
   getEducation, getCertifications, getResearch, getPublications,
 } from './content';
 import { Language } from './types';
-import { Aeropendulo3D } from './components/Aeropendulo3D';
+// Monta o filho só quando ele chega perto da tela (o 3D baixa o three.js, ~130 KB)
+const WhenVisible: React.FC<{ children: React.ReactNode; minHeight?: number }> = ({ children, minHeight = 220 }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [on, setOn] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || on) return;
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setOn(true); io.disconnect(); } }, { rootMargin: '400px' });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [on]);
+  return <div ref={ref} style={{ width: '100%', height: '100%', minHeight }}>{on ? children : null}</div>;
+};
+const Aeropendulo3D = React.lazy(() => import('./components/Aeropendulo3D').then(m => ({ default: m.Aeropendulo3D })));
 import { ProjectDiagram } from './components/ProjectDiagram';
 import { Certifications } from './components/Certifications';
 import { HeroInference } from './components/HeroInference';
@@ -434,6 +447,8 @@ const App: React.FC = () => {
         ))}
       </nav>
 
+      <a href="#top" className="skip-link">{pt ? 'Pular para o conteúdo' : 'Skip to content'}</a>
+
       {/* ── HEADER ──────────────────────────────────────────── */}
       <header style={{
         position: 'sticky', top: 0, zIndex: 70, height: 58,
@@ -487,10 +502,12 @@ const App: React.FC = () => {
 
           {/* Actions */}
           <div className="header-actions" style={{ display: 'flex', alignItems: 'center', gap: 7, flexShrink: 0 }}>
-            <button onClick={toggleLang} className="btn btn-sm btn-icon" style={{ fontSize: 11.5, fontWeight: 600 }}>
+            <button onClick={toggleLang} className="btn btn-sm btn-icon" style={{ fontSize: 11.5, fontWeight: 600 }}
+              aria-label={pt ? 'Mudar o idioma para inglês' : 'Switch language to Portuguese'} lang={pt ? 'en' : 'pt-BR'}>
               {pt ? 'EN' : 'PT'}
             </button>
-            <button onClick={toggleTheme} aria-label="theme" className="btn btn-sm btn-icon">
+            <button onClick={toggleTheme} className="btn btn-sm btn-icon"
+              aria-label={darkMode ? (pt ? 'Usar tema claro' : 'Use light theme') : (pt ? 'Usar tema escuro' : 'Use dark theme')}>
               {darkMode ? <Sun size={14} /> : <Moon size={14} />}
             </button>
             <div ref={cvMenuRef} style={{ position: 'relative' }}>
@@ -527,6 +544,8 @@ const App: React.FC = () => {
             </a>
             {/* Hamburger */}
             <button className="mobile-menu-btn btn btn-sm btn-icon"
+              aria-label={mobileMenuOpen ? (pt ? 'Fechar menu' : 'Close menu') : (pt ? 'Abrir menu' : 'Open menu')}
+              aria-expanded={mobileMenuOpen} aria-controls="mobile-nav"
               onClick={() => setMobileMenuOpen(o => !o)}
               style={{ display: 'none' }}>
               {mobileMenuOpen ? <X size={16} /> : <Menu size={16} />}
@@ -538,7 +557,7 @@ const App: React.FC = () => {
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.nav
-              className="mobile-nav-drawer"
+              id="mobile-nav" className="mobile-nav-drawer"
               initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.18 }}
               style={{ borderTop: '1px solid var(--line)', overflow: 'hidden' }}
@@ -562,7 +581,7 @@ const App: React.FC = () => {
       </header>
 
       {/* ── MAIN CONTAINER ──────────────────────────────────── */}
-      <div id="top" style={{
+      <main id="top" tabIndex={-1} style={{ outline: 'none',
         position: 'relative', zIndex: 1,
         maxWidth: 1240, margin: '0 auto',
         padding: '0 clamp(20px,4vw,40px)',
@@ -892,7 +911,7 @@ const App: React.FC = () => {
                     position: 'relative',
                   }}>
                     {proj.id === 'lab-virtual' ? (
-                      <Aeropendulo3D />
+                      <WhenVisible><React.Suspense fallback={null}><Aeropendulo3D /></React.Suspense></WhenVisible>
                     ) : hasProjectVisual(proj.id) ? (
                       <ProjectVisual id={proj.id!} lang={lang} />
                     ) : proj.image ? (
@@ -1435,7 +1454,7 @@ const App: React.FC = () => {
           </div>
         </section>
 
-      </div>{/* end main container */}
+      </main>{/* end main container */}
 
       {/* ── Media modal ──────────────────────────────────────── */}
       <AnimatePresence>
@@ -1458,7 +1477,7 @@ const App: React.FC = () => {
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="btn btn-icon btn-round"
             style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 50, width: 42, height: 42 }}
-            aria-label="Voltar ao topo"
+            aria-label={pt ? 'Voltar ao topo' : 'Back to top'}
           >
             <ArrowUp size={16} />
           </motion.button>

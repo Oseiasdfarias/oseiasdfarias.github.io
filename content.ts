@@ -256,8 +256,8 @@ export const getProjects = (lang: Language): ProjectData[] => {
         ? "RAG sobre o manual de motores elétricos da WEG: trechos guardam a página de origem; busca vetorial, por palavra (BM25) e híbrida (RRF), com reranker opcional; um LLM local no Ollama responde citando a página ou diz que não encontrou. Código em camadas (domínio, aplicação, infraestrutura)."
         : "RAG over WEG's electric-motor manual: chunks keep their source page; vector, keyword (BM25) and hybrid (RRF) retrieval with an optional reranker; a local LLM on Ollama answers citing the page or says it found nothing. Layered code (domain, application, infrastructure).",
       impact: pt
-        ? "Com 15 perguntas de teste, trocar o modelo de embedding por um multilíngue levou a busca de 7 para 12 acertos em 13 (resultado otimista, conjunto pequeno). A avaliação mostrou que o gargalo era o modelo gerador, não a busca."
-        : "On 15 test questions, switching to a multilingual embedding model took retrieval from 7 to 12 hits out of 13 (optimistic, small set). The evaluation showed the bottleneck was the generator model, not retrieval.",
+        ? "Em 15 perguntas de teste (13 com resposta no manual), trocar o modelo de embedding por um multilíngue levou a busca de 7 para 12 acertos em 13 (resultado otimista, conjunto pequeno). A avaliação mostrou que o gargalo era o modelo gerador, não a busca."
+        : "On 15 test questions (13 answerable from the manual), switching to a multilingual embedding model took retrieval from 7 to 12 hits out of 13 (optimistic, small set). The evaluation showed the bottleneck was the generator model, not retrieval.",
       tags:  ["Python", "RAG", "ChromaDB", "BM25", "Ollama", "Pytest"],
       link:  "",
       github: "https://github.com/Oseiasdfarias/rag-manual-poc",
@@ -273,7 +273,7 @@ export const getProjects = (lang: Language): ProjectData[] => {
       featured: true,
       status:   pt ? "em andamento" : "in progress",
       metrics: [
-        { label: pt ? "Testes" : "Tests", value: "109 no CI" },
+        { label: pt ? "Testes" : "Tests", value: pt ? "109 no CI" : "109 in CI" },
         { label: pt ? "Rastreamento" : "Tracking", value: "MLflow + DVC" },
         { label: pt ? "Promoção" : "Promotion", value: pt ? "Portão automático" : "Automated gate" },
       ],
