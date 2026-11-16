@@ -331,7 +331,7 @@ export const getProjects = (lang: Language): ProjectData[] => {
       metrics: [
         { label: pt ? "Pipeline fixo" : "Fixed pipeline", value: "39/40" },
         { label: pt ? "Agente" : "Agent", value: "33/40" },
-        { label: pt ? "Testes" : "Tests", value: "65" },
+        { label: pt ? "Testes" : "Tests", value: "69" },
       ],
       problem:  pt
         ? "Quando um lote volta com defeito, a qualidade monta o rastro à mão: reclamação, entrega, lote, máquina e o que a manutenção escreveu naquela semana, em sistemas diferentes e com notas em texto livre."
