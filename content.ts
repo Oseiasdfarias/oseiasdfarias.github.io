@@ -319,33 +319,32 @@ export const getProjects = (lang: Language): ProjectData[] => {
       github: "https://github.com/Oseiasdfarias/oseias_desafio_elite_dev_ia",
     },
     {
-      id:       "lab-virtual",
+      id:       "rastro",
       summary:  pt
-        ? "Aeropêndulo real com ESP32 e gêmeo digital 3D para testar controle em malha fechada. Meu TCC, com artigo no COBENGE 2023."
-        : "A real ESP32 aeropendulum with a 3D digital twin for testing closed-loop control. My thesis, with a COBENGE 2023 paper.",
-      title:    pt ? "Laboratório Virtual: aeropêndulo e gêmeo digital" : "Virtual Lab: aeropendulum and digital twin",
-      year:     "2023–2026",
-      category: pt ? "Hardware · Gêmeo Digital 3D · Controle" : "Hardware · 3D Digital Twin · Control",
+        ? "Agente de IA que segue a reclamação de um cliente pelo CRM e pelo ERP (dados sintéticos no formato SAP) até a máquina, com cada fato ligado a um registro e revisão humana."
+        : "An AI agent that follows a customer complaint through CRM and ERP records (synthetic SAP-format data) to the machine, with every fact tied to a record and human review.",
+      title:    pt ? "rastro: da reclamação até a máquina" : "rastro: from complaint to machine",
+      year:     "2026",
+      category: pt ? "Agentes LLM · Indústria · Avaliação" : "LLM agents · Manufacturing · Evaluation",
       featured: true,
-      status:   pt ? "concluído / docs" : "shipped / docs",
-      image:    "/assets/aeropendulo_gemeo_digital.png",
+      status:   "open source",
       metrics: [
-        { label: "Hardware", value: pt ? "ESP32 + planta real" : "ESP32 + real plant" },
-        { label: pt ? "Ambiente 3D" : "3D engine", value: "VPython & Three.js" },
-        { label: pt ? "Publicação" : "Thesis", value: "BDM / UFPA" },
+        { label: pt ? "Pipeline fixo" : "Fixed pipeline", value: "39/40" },
+        { label: pt ? "Agente" : "Agent", value: "33/40" },
+        { label: pt ? "Testes" : "Tests", value: "65" },
       ],
       problem:  pt
-        ? "O ensino de controle costuma ficar só na teoria, sem uma planta real e barata em que o aluno teste leis de controle em malha fechada."
-        : "Control courses often stay on paper, without a real, low-cost plant where students can test closed-loop control laws themselves.",
+        ? "Quando um lote volta com defeito, a qualidade monta o rastro à mão: reclamação, entrega, lote, máquina e o que a manutenção escreveu naquela semana, em sistemas diferentes e com notas em texto livre."
+        : "When a batch comes back defective, quality rebuilds the trail by hand: complaint, delivery, batch, machine and what maintenance wrote that week, across systems and in free-text notes.",
       solution: pt
-        ? "Plataforma aberta com protótipo físico (aeropêndulo com ESP32), firmware com PID rodando na placa, interface para ensaios em tempo real e um gêmeo digital 3D que acompanha o movimento medido."
-        : "An open platform with a physical prototype (ESP32 aeropendulum), PID firmware running on the board, a desktop interface for real-time tests and a 3D digital twin that follows the measured motion.",
+        ? "Agente LangGraph com seis ferramentas validadas, limite de passos e troca de provedor via LiteLLM. Todo registro citado é conferido, e uma pessoa aprova o relatório. Postgres com pgvector, Redis, Langfuse e FastAPI no Docker Compose."
+        : "A LangGraph agent with six validated tools, a step limit and provider fallback through LiteLLM. Every cited record is checked and a person approves the report. Postgres with pgvector, Redis, Langfuse and FastAPI in Docker Compose.",
       impact: pt
-        ? "Validado com PID em malha fechada. Monografia na biblioteca da UFPA, artigo no COBENGE 2023 e documentação online de modelagem e controle."
-        : "Validated with closed-loop PID. Thesis at the UFPA library, a COBENGE 2023 paper and online docs on modeling, identification and control.",
-      tags:  ["ESP32", "C++", "Python", "VPython", "PID", "Three.js"],
-      link:  "https://oseiasdfarias.github.io/lab-virtual/",
-      github: "https://github.com/Oseiasdfarias/lab-virtual",
+        ? "Em 40 casos com resposta conhecida, um pipeline fixo com uma chamada ao LLM acertou 39, contra 33 do agente, com 6 vezes menos tokens. A medição mostrou onde o agente não compensa."
+        : "On 40 cases with a known answer, a fixed pipeline with one LLM call got 39 right against the agent's 33, with 6x fewer tokens. The measurement showed where an agent does not pay off.",
+      tags:  ["Python", "LangGraph", "LiteLLM", "pgvector", "FastAPI", "Docker"],
+      link:  "",
+      github: "https://github.com/Oseiasdfarias/rastro-agent",
     },
     {
       id:       "glassllm",

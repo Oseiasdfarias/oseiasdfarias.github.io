@@ -434,9 +434,50 @@ const Inverter: React.FC<ArtProps> = ({ pt, t }) => {
   );
 };
 
+const Rastro: React.FC<ArtProps> = ({ pt, t }) => {
+  const f = fadeEnd(t), Y = 66;
+  const stops = [
+    { x: 44, r: 4, l: pt ? 'reclamação' : 'complaint' },
+    { x: 140, r: 5.5, l: pt ? 'entrega' : 'delivery' },
+    { x: 236, r: 7, l: pt ? 'lote' : 'batch' },
+    { x: 340, r: 0, l: pt ? 'máquina' : 'machine' },
+  ];
+  const leg = (i: number) => seg(t, 0.06 + i * 0.16, 0.2 + i * 0.16);
+  const hit = seg(t, 0.54, 0.6) * f, report = seg(t, 0.66, 0.74) * f;
+  return (
+    <>
+      <Label x={24} y={22}>{pt ? 'CRM → ERP (FORMATO SAP)' : 'CRM → ERP (SAP FORMAT)'}</Label>
+      {stops.slice(1).map((s, i) => {
+        const a = stops[i].x + 12, b = s.x - (i === 2 ? 20 : 12);
+        return (
+          <g key={s.l}>
+            <line x1={a} x2={b} y1={Y} y2={Y} stroke={LINE} strokeDasharray="2 5" strokeLinecap="round" />
+            <line x1={a} x2={a + (b - a) * leg(i)} y1={Y} y2={Y} stroke={ACC} strokeOpacity={0.6 * f} strokeDasharray="2 5" strokeLinecap="round" />
+            <Packet x1={a} x2={b} y={Y} p={leg(i)} />
+          </g>
+        );
+      })}
+      {stops.slice(0, 3).map((s, i) => (
+        <circle key={s.l} cx={s.x} cy={Y} r={s.r} fill={i === 0 || leg(i - 1) >= 1 ? 'var(--fg)' : 'var(--fg-muted)'} opacity={i === 0 || leg(i - 1) >= 1 ? 1 : 0.4} />
+      ))}
+      <circle cx={340} cy={Y} r={13} fill="none" stroke={hit > 0 ? ACC : LINE} strokeWidth={2.2} />
+      <circle cx={340} cy={Y} r={4.5} fill={ACC} opacity={0.3 + 0.7 * hit} />
+      {stops.map(s => <Label key={s.l} x={s.x} y={Y + 30} anchor="middle">{s.l}</Label>)}
+      <Appear k={report}>
+        <rect x={24} y={112} width={352} height={20} rx={3} fill="color-mix(in srgb, var(--accent) 12%, transparent)" stroke={ACC} />
+        <text x={34} y={125.5} fill="var(--fg)" fontFamily={MONO} fontSize={8.5}>
+          {pt ? 'causa + registros citados → revisão humana' : 'cause + cited records → human review'}
+        </text>
+      </Appear>
+      <Label x={376} y={22} anchor="end" color={ACC} o={0.35 + 0.65 * report}>{pt ? 'fixo 39/40 · agente 33/40' : 'fixed 39/40 · agent 33/40'}</Label>
+    </>
+  );
+};
+
 const VISUALS: Record<string, { art: React.FC<ArtProps>; stack: string[] }> = {
   'vibration-anomaly': { art: Vibration, stack: ['python', 'fastapi', 'redis', 'docker', 'pytest'] },
   'rag-manual':        { art: Rag,       stack: ['python', 'pytorch', 'ollama', 'pytest'] },
+  'rastro':            { art: Rastro,    stack: ['python', 'fastapi', 'postgresql', 'redis', 'docker', 'googlegemini'] },
   'youfy':             { art: Youfy,     stack: ['python', 'pytorch', 'mlflow', 'dvc', 'postgresql'] },
   'sdr-agent':         { art: Sdr,       stack: ['openai', 'fastapi', 'redis', 'react'] },
   'glassllm':          { art: Glass,     stack: ['python', 'numpy', 'pytorch', 'pypi'] },
