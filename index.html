@@ -222,18 +222,13 @@
       .mod { border-radius: 12px !important; -webkit-backdrop-filter: blur(10px) saturate(1.1); backdrop-filter: blur(10px) saturate(1.1); }
       .mod { position: relative; overflow: hidden; transition: border-color .4s, background .4s, transform .25s ease; }
       .mod:hover { border-color: var(--line-2) !important; }
-      /* ── Projetos: sombra em camadas que destaca o card da página ── */
-      .proj-card {
-        box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 8px 18px -6px rgba(0,0,0,.16), 0 28px 48px -18px rgba(0,0,0,.24);
-        transition: border-color .4s, background .4s, box-shadow .35s ease, translate .35s ease;
+      /* ── Sombra só nas ilustrações (Projetos e Pesquisa), na capa (Artigos) e no logo (Formação) ── */
+      .visual-panel, .writing-cover, .mod .exp-plate {
+        box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 6px 14px -6px rgba(0,0,0,.18), 0 16px 28px -14px rgba(0,0,0,.24);
       }
-      .proj-card:hover {
-        translate: 0 -4px;
-        box-shadow: 0 2px 4px rgba(0,0,0,.08), 0 14px 28px -8px rgba(0,0,0,.24), 0 44px 72px -24px rgba(0,0,0,.34);
+      .theme-dark .visual-panel, .theme-dark .writing-cover, .theme-dark .mod .exp-plate {
+        box-shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 16px -6px rgba(0,0,0,.6), 0 18px 32px -14px rgba(0,0,0,.7);
       }
-      .theme-dark .proj-card { box-shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 22px -6px rgba(0,0,0,.55), 0 32px 60px -18px rgba(0,0,0,.7); }
-      .theme-dark .proj-card:hover { box-shadow: 0 2px 4px rgba(0,0,0,.5), 0 16px 32px -8px rgba(0,0,0,.65), 0 52px 88px -22px rgba(0,0,0,.8); }
-      @media (prefers-reduced-motion: reduce) { .proj-card, .proj-card:hover { translate: none; transition: none; } }
       /* ── Mesma sombra, mais leve, nos quadrados de logo (stack e cards de projeto) ── */
       .stack-tile, .pv-logo {
         background: var(--panel);
@@ -247,8 +242,6 @@
       .theme-dark .stack-tile, .theme-dark .pv-logo { box-shadow: 0 1px 2px rgba(0,0,0,.35), 0 8px 16px -6px rgba(0,0,0,.5), 0 20px 36px -14px rgba(0,0,0,.6); }
       .theme-dark .stack-tile:hover, .theme-dark .pv-logo:hover { box-shadow: 0 2px 4px rgba(0,0,0,.45), 0 12px 24px -8px rgba(0,0,0,.6), 0 32px 54px -18px rgba(0,0,0,.75); }
       @media (prefers-reduced-motion: reduce) { .stack-tile, .pv-logo, .stack-tile:hover, .pv-logo:hover { translate: none; transition: none; } }
-      /* Artigos: o card ganha respiro lateral junto com a sombra */
-      .writing-card.proj-card { padding: 18px 16px 18px; background: var(--panel); }
       /* Certificações: sombra leve, que cresce no hover */
       .cert-card { box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 14px -6px rgba(0,0,0,.16); transition: border-color .3s, transform .3s, box-shadow .3s; }
       a.cert-card:hover { box-shadow: 0 2px 4px rgba(0,0,0,.07), 0 12px 24px -8px rgba(0,0,0,.26); }
@@ -639,7 +632,7 @@
   }
 }
 </script>
-    <script type="module" crossorigin src="/assets/index-O8X_RULD.js"></script>
+    <script type="module" crossorigin src="/assets/index-D_arXv4s.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-BCtgFolR.css">
   </head>
   <body>
