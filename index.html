@@ -163,7 +163,7 @@
       /* ── Componentes do design atual (vidro, raio 12, cobre) ── */
       .btn {
         display: inline-flex; align-items: center; justify-content: center; gap: 7px;
-        height: 36px; padding: 0 16px; border-radius: 8px;
+        height: 36px; padding: 0 16px; border-radius: 0;
         font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; font-size: 13px; font-weight: 500;
         letter-spacing: -.005em; line-height: 1; white-space: nowrap; text-decoration: none; cursor: pointer;
         color: var(--fg); background: var(--panel); border: 1px solid var(--line-2);
@@ -186,10 +186,10 @@
       .btn-icon { width: 36px; padding: 0; color: var(--fg-muted); }
       .btn-icon.btn-sm { width: 32px; }
       .btn-icon svg { color: currentColor; }
-      .btn-round { border-radius: 999px; }
+      .btn-round { border-radius: 0; }
 
       .chip {
-        display: inline-flex; align-items: center; height: 22px; padding: 0 9px; border-radius: 6px;
+        display: inline-flex; align-items: center; height: 22px; padding: 0 9px; border-radius: 0;
         font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1;
         color: var(--fg-muted); background: var(--inset); border: 1px solid var(--line);
         transition: border-color .25s, color .25s;
@@ -197,7 +197,7 @@
       .mod:hover .chip, .chip:hover { border-color: var(--line-2); color: var(--fg); }
 
       .badge {
-        display: inline-flex; align-items: center; height: 20px; padding: 0 9px; border-radius: 999px;
+        display: inline-flex; align-items: center; height: 20px; padding: 0 9px; border-radius: 0;
         font-family: 'Plus Jakarta Sans', sans-serif; font-size: 9.5px; font-weight: 600;
         letter-spacing: .14em; text-transform: uppercase; line-height: 1;
         color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
@@ -206,7 +206,7 @@
       .badge-muted { color: var(--fg-soft); border-color: var(--line-2); background: transparent; }
 
       .glass {
-        background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+        background: var(--panel); border: 1px solid var(--line); border-radius: 0;
         -webkit-backdrop-filter: blur(10px) saturate(1.1); backdrop-filter: blur(10px) saturate(1.1);
       }
       .field {
@@ -219,7 +219,7 @@
       .field:focus { background: color-mix(in srgb, var(--accent) 5%, transparent); }
 
       /* Mod card hover pattern */
-      .mod { border-radius: 12px !important; -webkit-backdrop-filter: blur(10px) saturate(1.1); backdrop-filter: blur(10px) saturate(1.1); }
+      .mod { border-radius: 0 !important; -webkit-backdrop-filter: blur(10px) saturate(1.1); backdrop-filter: blur(10px) saturate(1.1); }
       .mod { position: relative; overflow: hidden; transition: border-color .4s, background .4s, transform .25s ease; }
       .mod:hover { border-color: var(--line-2) !important; }
       /* ── Sombra só nas ilustrações (Projetos e Pesquisa), na capa (Artigos) e no logo (Experiência e Formação) ── */
@@ -341,7 +341,7 @@
       .skip-link:focus { top: 12px; outline: 2px solid var(--accent); outline-offset: 2px; }
 
       /* ── Menu superior: quadrado e minimalista (desktop) ─────── */
-      :root { --hdr-r: 999px; }            /* celular: a barra continua arredondada */
+      :root { --hdr-r: 0px; }              /* cantos retos em todas as telas */
       @media (min-width: 768px) { :root { --hdr-r: 0px; } }
       .nav-pill { display: flex; align-items: center; gap: 4px; padding: 0; border: 0; background: none; }
       .nav-item {
@@ -362,7 +362,7 @@
         .header-actions .btn:hover { transform: none; }
       }
       .drawer-item {
-        display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px;
+        display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 0;
         text-decoration: none; color: var(--fg-muted);
         font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; font-weight: 500;
         transition: background .2s, color .2s;
@@ -516,7 +516,7 @@
       .brand-image:hover .brand-mask, .brand-host:hover .brand-image .brand-mask { opacity: 0; }
       /* Logos coloridos escuros não leem sobre o fundo escuro: no hover ganham uma placa clara */
       .theme-dark .brand-image::before {
-        content: ""; position: absolute; inset: -6px -8px; border-radius: 6px; background: #f4f4f1; opacity: 0; transition: opacity .35s;
+        content: ""; position: absolute; inset: -6px -8px; border-radius: 0; background: #f4f4f1; opacity: 0; transition: opacity .35s;
       }
       .theme-dark .brand-image:hover::before, .theme-dark .brand-host:hover .brand-image::before { opacity: 1; }
       .theme-dark .brand-image img { position: relative; }
@@ -592,7 +592,7 @@
       .cert-chips { display: flex; flex-wrap: wrap; gap: 8px; }
       .cert-chip {
         display: inline-flex; align-items: center; gap: 8px; padding: 7px 13px; cursor: pointer;
-        background: none; border: 1px solid var(--line-2); border-radius: 999px; color: var(--fg-muted);
+        background: none; border: 1px solid var(--line-2); border-radius: 0; color: var(--fg-muted);
         font: 400 11px 'JetBrains Mono', monospace; letter-spacing: .06em; transition: border-color .25s, color .25s, background .25s;
       }
       .cert-chip:hover { border-color: var(--accent); color: var(--fg); }
@@ -602,7 +602,7 @@
       .cert-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); gap: 6px; }
       .cert-card {
         display: flex; align-items: flex-start; gap: 8px; height: 100%; padding: 8px 10px; text-decoration: none; color: inherit;
-        border: 1px solid var(--line); border-radius: 8px; background: var(--panel); backdrop-filter: blur(6px);
+        border: 1px solid var(--line); border-radius: 0; background: var(--panel); backdrop-filter: blur(6px);
       }
       a.cert-card:hover { border-color: var(--accent); transform: translateY(-1px); }
       .cert-title { font: 500 13px/1.3 'Plus Jakarta Sans', sans-serif; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -632,8 +632,8 @@
   }
 }
 </script>
-    <script type="module" crossorigin src="/assets/index-VV5A1Ztq.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-BCtgFolR.css">
+    <script type="module" crossorigin src="/assets/index-CDFV95Ui.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DTrkl5AU.css">
   </head>
   <body>
     <div id="root"></div>
