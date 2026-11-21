@@ -278,6 +278,14 @@
         mask-composite: intersect;
       }
 
+      /* ── Hero (desktop): a rede avança sobre o espaço livre à direita e um pouco sobre o vão ── */
+      @media (min-width: 1200px) {
+        .hero-grid .hero-neural {
+          width: calc(100% + clamp(0px, (100vw - 1240px) / 2 + 40px, 260px) + clamp(12px, 2vw, 32px)) !important;
+          margin-left: calc(-1 * clamp(12px, 2vw, 32px));
+        }
+      }
+
       /* ── Hero: passos da história (FIG.01) ── */
       .story-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
       .story-step {
@@ -527,14 +535,16 @@
       .cert-chip.is-on { border-color: var(--accent); color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent); }
       .cert-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
       .cert-chip-n { color: var(--fg-soft); font-size: 10px; }
-      .cert-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 8px; }
+      .cert-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); gap: 6px; }
       .cert-card {
-        display: flex; align-items: flex-start; gap: 11px; height: 100%; padding: 13px 14px; text-decoration: none; color: inherit;
-        border: 1px solid var(--line); border-radius: 10px; background: var(--panel); backdrop-filter: blur(6px);
+        display: flex; align-items: flex-start; gap: 8px; height: 100%; padding: 8px 10px; text-decoration: none; color: inherit;
+        border: 1px solid var(--line); border-radius: 8px; background: var(--panel); backdrop-filter: blur(6px);
         transition: border-color .3s, transform .3s;
       }
       a.cert-card:hover { border-color: var(--accent); transform: translateY(-1px); }
-      .cert-title { font: 500 14px/1.35 'Plus Jakarta Sans', sans-serif; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+      .cert-title { font: 500 13px/1.3 'Plus Jakarta Sans', sans-serif; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+      .cert-meta { display: flex; gap: 5px; align-items: baseline; margin-top: 2px; font: 400 9.5px 'JetBrains Mono', monospace; color: var(--fg-soft); min-width: 0; }
+      .cert-issuer { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
       .cert-arrow { color: var(--fg-soft); flex-shrink: 0; margin-top: 3px; transition: color .3s, transform .3s; }
       a.cert-card:hover .cert-arrow { color: var(--accent); transform: translate(2px, -2px); }
 
@@ -559,7 +569,7 @@
   }
 }
 </script>
-    <script type="module" crossorigin src="/assets/index-CN-Be98z.js"></script>
+    <script type="module" crossorigin src="/assets/index-C_5L7ccG.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-BCtgFolR.css">
   </head>
   <body>
