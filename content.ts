@@ -235,6 +235,34 @@ export const getProjects = (lang: Language): ProjectData[] => {
       github: "https://github.com/Oseiasdfarias/vibration-anomaly-detection",
     },
     {
+      id:       "roadmap-ai-engineer",
+      summary:  pt
+        ? "Roadmap aberto de AI Engineer em português: estudo e carreira lado a lado, com 55 tópicos e dicas, cada um com resumo completo e fontes."
+        : "An open AI Engineer roadmap in Portuguese: study and career side by side, with 55 topics and tips, each with a full summary and sources.",
+      title:    pt ? "Roadmap AI Engineer (RAI.E)" : "Roadmap AI Engineer (RAI.E)",
+      year:     "2026",
+      category: pt ? "Conteúdo aberto · Carreira · Astro" : "Open content · Career · Astro",
+      featured: true,
+      status:   pt ? "No ar" : "Live",
+      metrics: [
+        { label: pt ? "Níveis" : "Levels", value: "4" },
+        { label: pt ? "Fases de carreira" : "Career phases", value: "5" },
+        { label: pt ? "Tópicos e dicas" : "Topics and tips", value: "55" },
+      ],
+      problem:  pt
+        ? "A maioria dos roadmaps de IA diz o que estudar, mas não como chegar à vaga: onde buscar estágio, como montar currículo e LinkedIn, como se preparar para entrevistas."
+        : "Most AI roadmaps say what to study but not how to land the job: where to find internships, how to build a résumé and LinkedIn, how to prepare for interviews.",
+      solution: pt
+        ? "Site estático em Astro com mapa de duas pistas (estudo e carreira), linha do tempo em meses, 5 projetos de portfólio em camadas, progresso salvo no navegador, busca e PDF para baixar."
+        : "A static Astro site with a two-track map (study and career), a timeline in months, 5 layered portfolio projects, progress saved in the browser, search and a downloadable PDF.",
+      impact: pt
+        ? "69 textos revisados com referências verificadas, temas claro e escuro acessíveis (AA) e deploy contínuo no GitHub Pages."
+        : "69 reviewed texts with verified references, accessible (AA) light and dark themes and continuous deployment to GitHub Pages.",
+      tags:  ["Astro", "TypeScript", "Pagefind", "Playwright", "GitHub Actions"],
+      link:  "https://oseiasdfarias.github.io/roadmap-ai-engineer/",
+      github: "https://github.com/Oseiasdfarias/roadmap-ai-engineer",
+    },
+    {
       id:       "rag-manual",
       summary:  pt
         ? "RAG sobre manual de motores elétricos: resposta com a página de origem, 35 configurações de busca comparadas e 47 testes."
