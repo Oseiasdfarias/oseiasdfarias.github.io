@@ -434,9 +434,110 @@ const Inverter: React.FC<ArtProps> = ({ pt, t }) => {
   );
 };
 
+const Rastro: React.FC<ArtProps> = ({ pt, t }) => {
+  const f = fadeEnd(t), Y = 56;
+  const X = [40, 132, 224, 330];                                     // reclamação, entrega, lote, máquina
+  const leg = (i: number) => seg(t, 0.05 + i * 0.13, 0.17 + i * 0.13);
+  const lit = (i: number) => (i === 0 ? 1 : leg(i - 1) >= 1 ? 1 : 0);
+  const col = (i: number) => (lit(i) ? 'var(--fg)' : 'var(--fg-muted)');
+  const hot = seg(t, 0.44, 0.5) * f;
+  const sig = seg(t, 0.48, 0.64), rep = seg(t, 0.62, 0.68) * f;
+  const src = [0, 1, 2].map(k => seg(t, 0.66 + k * 0.05, 0.72 + k * 0.05) * f);
+  const ok = seg(t, 0.84, 0.9) * f;
+  const piston = hot > 0 ? 3 * (0.5 + 0.5 * Math.sin(t * Math.PI * 2 * 9)) : 0;
+  const wheel = t * Math.PI * 2 * 6;
+  const sparkline = () => {
+    const pts: string[] = [];
+    for (let i = 0; i <= 60 * sig; i++) {
+      const u = i / 60, drift = u > 0.55 ? (u - 0.55) * 30 : 0;
+      pts.push(`${(272 + u * 100).toFixed(1)},${(127 + Math.sin(u * 38) * 2.5 + drift * 0.7 * Math.sin(u * 55)).toFixed(1)}`);
+    }
+    return pts.join(' ');
+  };
+  return (
+    <>
+      <Label x={24} y={16}>{pt ? 'CRM → ERP (FORMATO SAP)' : 'CRM → ERP (SAP FORMAT)'}</Label>
+      <Label x={376} y={16} anchor="end" color={ACC} o={0.35 + 0.65 * ok}>{pt ? 'fixo 39/40 · agente 33/40' : 'fixed 39/40 · agent 33/40'}</Label>
+
+      {[0, 1, 2].map(i => {
+        const a0 = X[i] + 20, b0 = X[i + 1] - (i === 2 ? 26 : 20);
+        return (
+          <g key={i}>
+            <line x1={a0} x2={b0} y1={Y} y2={Y} stroke={LINE} strokeDasharray="2 4" strokeLinecap="round" />
+            <line x1={a0} x2={a0 + (b0 - a0) * leg(i)} y1={Y} y2={Y} stroke={ACC} strokeOpacity={0.7 * f} strokeDasharray="2 4" strokeLinecap="round" />
+            <Packet x1={a0} x2={b0} y={Y} p={leg(i)} />
+          </g>
+        );
+      })}
+
+      <g fill="none" strokeWidth={1.3} strokeLinecap="round" strokeLinejoin="round">
+        <g stroke={col(0)}>
+          <rect x={X[0] - 15} y={Y - 13} width={30} height={21} rx={4} />
+          <path d={`M${X[0] - 7} ${Y + 8} l-4 6 l9 -6`} />
+          <path d={`M${X[0]} ${Y - 7} v7`} />
+          <circle cx={X[0]} cy={Y + 3.5} r={0.8} fill={col(0)} />
+        </g>
+        <g stroke={col(1)}>
+          <rect x={X[1] - 17} y={Y - 12} width={22} height={16} rx={1.5} />
+          <path d={`M${X[1] + 5} ${Y - 6} h8 l5 6 v4 h-13`} />
+          {[X[1] - 10, X[1] + 11].map(wx => (
+            <g key={wx}>
+              <circle cx={wx} cy={Y + 7} r={3.5} />
+              <line x1={wx} y1={Y + 7} x2={wx + 2.5 * Math.cos(wheel)} y2={Y + 7 + 2.5 * Math.sin(wheel)} />
+            </g>
+          ))}
+        </g>
+        <g stroke={col(2)}>
+          <path d={`M${X[2] - 18} ${Y + 11} h36`} />
+          <rect x={X[2] - 16} y={Y - 4} width={15} height={14} rx={1} />
+          <rect x={X[2] + 1} y={Y - 4} width={15} height={14} rx={1} />
+          <rect x={X[2] - 7.5} y={Y - 18} width={15} height={14} rx={1} />
+          {lit(2) > 0 && [0, 2, 3, 5, 7].map(k => <line key={k} x1={X[2] - 4 + k} x2={X[2] - 4 + k} y1={Y - 15} y2={Y - 8} stroke={ACC} strokeWidth={0.8} />)}
+        </g>
+        <g stroke={hot > 0 ? ACC : col(3)}>
+          <path d={`M${X[3] - 24} ${Y + 14} V${Y - 8} l8 -8 l8 8 l8 -8 l8 8 l8 -8 l8 8 V${Y + 14} Z`} />
+          <path d={`M${X[3] - 8} ${Y + 12} V${Y - 4} H${X[3] + 8} V${Y + 12}`} />
+          <rect x={X[3] - 5} y={Y - 1 + piston} width={10} height={3} rx={0.8} fill={hot > 0 ? ACC : 'none'} />
+          <rect x={X[3] - 6} y={Y + 7} width={12} height={3} rx={0.8} />
+        </g>
+        {hot > 0 && <circle cx={X[3]} cy={Y - 2} r={25} stroke={ACC} strokeOpacity={0.35 * hot} />}
+      </g>
+      {[pt ? 'reclamação' : 'complaint', pt ? 'entrega' : 'delivery', pt ? 'lote' : 'batch', pt ? 'máquina' : 'machine']
+        .map((l, i) => <Label key={l} x={X[i]} y={Y + 34} anchor="middle" o={lit(i) ? 1 : 0.6}>{l}</Label>)}
+
+      <Appear k={rep}>
+        <rect x={24} y={104} width={214} height={36} rx={3} fill="none" stroke={LINE} />
+        <text x={32} y={116} fill="var(--fg)" fontFamily={MONO} fontSize={7.5} letterSpacing=".1em">{pt ? 'RELATÓRIO' : 'REPORT'}</text>
+      </Appear>
+      {src.map((k, i) => {
+        if (k <= 0) return null;
+        const ly = 123 + i * 6, dot = 214, tx = X[i + 1], ty = Y + 18;
+        return (
+          <g key={i} opacity={k}>
+            <rect x={32} y={ly - 1.5} width={120 - i * 18} height={3} rx={1.5} fill="var(--fg-muted)" opacity={0.6} />
+            <circle cx={dot} cy={ly} r={2} fill={ACC} />
+            <path d={`M${dot + 2} ${ly} L${dot + 2 + (tx - dot - 2) * k} ${ly + (ty - ly) * k}`} stroke={ACC} strokeOpacity={0.45} strokeDasharray="1.5 3" fill="none" />
+          </g>
+        );
+      })}
+      <Pop k={ok} cx={228} cy={114}>
+        <path d="M222 114 l4 4 l8 -9" stroke="var(--accent)" strokeWidth={2} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      </Pop>
+
+      <Appear k={seg(t, 0.46, 0.52) * f}>
+        <rect x={262} y={104} width={114} height={36} rx={3} fill="none" stroke={LINE} />
+        <rect x={262 + 0.55 * 114} y={105} width={0.45 * 114 - 1} height={34} fill={ACC} opacity={0.1 * seg(sig, 0.6, 1)} />
+        <polyline points={sparkline()} fill="none" stroke="var(--fg-muted)" strokeWidth={1} strokeLinejoin="round" />
+        <Label x={268} y={114}>sensor</Label>
+      </Appear>
+    </>
+  );
+};
+
 const VISUALS: Record<string, { art: React.FC<ArtProps>; stack: string[] }> = {
   'vibration-anomaly': { art: Vibration, stack: ['python', 'fastapi', 'redis', 'docker', 'pytest'] },
   'rag-manual':        { art: Rag,       stack: ['python', 'pytorch', 'ollama', 'pytest'] },
+  'rastro':            { art: Rastro,    stack: ['python', 'fastapi', 'postgresql', 'redis', 'docker', 'googlegemini'] },
   'youfy':             { art: Youfy,     stack: ['python', 'pytorch', 'mlflow', 'dvc', 'postgresql'] },
   'sdr-agent':         { art: Sdr,       stack: ['openai', 'fastapi', 'redis', 'react'] },
   'glassllm':          { art: Glass,     stack: ['python', 'numpy', 'pytorch', 'pypi'] },
