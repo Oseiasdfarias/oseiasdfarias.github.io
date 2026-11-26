@@ -332,6 +332,12 @@
       .story-step-bar > span { display: block; height: 100%; background: var(--accent); }
       @media (max-width: 560px) { .story-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
+      /* ── Publicações com link ── */
+      .pub-link { color: inherit; text-decoration: none; background-image: linear-gradient(var(--accent), var(--accent)); background-size: 0 1px; background-position: 0 100%; background-repeat: no-repeat; transition: background-size .35s, color .25s; }
+      .pub-link:hover, .pub-link:focus-visible { color: var(--accent); background-size: 100% 1px; }
+      .pub-arrow { color: var(--accent); vertical-align: -1px; transition: transform .25s; }
+      .pub-link:hover .pub-arrow { transform: translate(2px, -2px); }
+
       /* ── Link para pular o menu (aparece só com o teclado) ── */
       .skip-link {
         position: fixed; left: 12px; top: -60px; z-index: 200; padding: 10px 14px;
@@ -627,6 +633,13 @@
       .cert-arrow { color: var(--fg-soft); flex-shrink: 0; margin-top: 3px; transition: color .3s, transform .3s; }
       a.cert-card:hover .cert-arrow { color: var(--accent); transform: translate(2px, -2px); }
 
+      /* ── Publicações no cartão das Certificações ── */
+      .pub-grid { grid-template-columns: 1fr; }
+      .pub-grid .cert-card { padding: 11px 14px; }
+      .pub-grid .cert-title { font-size: 14px; }
+      .pub-grid .cert-meta { font-size: 10.5px; margin-top: 4px; }
+      .pub-title { -webkit-line-clamp: 3; }
+
       /* ── Placa de logo na Experiência e na Formação ── */
       .exp-plate {
         display: flex; align-items: center; justify-content: center; width: 176px; height: 88px; margin-top: 14px;
@@ -648,7 +661,7 @@
   }
 }
 </script>
-    <script type="module" crossorigin src="/assets/index-D78BNKKN.js"></script>
+    <script type="module" crossorigin src="/assets/index-B5NCXno1.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-ChLssapw.css">
   </head>
   <body>
